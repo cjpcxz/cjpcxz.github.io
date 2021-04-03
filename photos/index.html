@@ -43,143 +43,348 @@
     
       
     <main class="content on">
-      
-<section class="cover">
-    
-  <div class="cover-frame">
-    <div class="bg-box">
-      <img src="/images/cover1.jpg" alt="image frame" />
-    </div>
-    <div class="cover-inner text-center text-white">
-      <h1><a href="/">岛</a></h1>
-      <div id="subtitle-box">
-        
-        <span id="subtitle"></span>
-        
-      </div>
-      <div>
-        
-      </div>
-    </div>
-  </div>
-  <div class="cover-learn-more">
-    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
-  </div>
-</section>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
-
-
-<!-- Subtitle -->
-
-  <script>
-    try {
-      var typed = new Typed("#subtitle", {
-        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
-        startDelay: 0,
-        typeSpeed: 200,
-        loop: true,
-        backSpeed: 100,
-        showCursor: true
-      });
-    } catch (err) {
-      console.log(err)
-    }
-  </script>
-  
-<div id="main">
-  <section class="outer">
-  
-  
-  
-
-<div class="notice" style="margin-top:50px">
-    <i class="ri-heart-fill"></i>
-    <div class="notice-content" id="broad"></div>
-</div>
-<script type="text/javascript">
-    fetch('https://v1.hitokoto.cn')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("broad").innerHTML = data.hitokoto;
-        })
-        .catch(console.error)
-</script>
-
-<style>
-    .notice {
-        padding: 20px;
-        border: 1px dashed #e6e6e6;
-        color: #969696;
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        background: #fbfbfb50;
-        border-radius: 10px;
-    }
-
-    .notice i {
-        float: left;
-        color: #999;
-        font-size: 16px;
-        padding-right: 10px;
-        vertical-align: middle;
-        margin-top: -2px;
-    }
-
-    .notice-content {
-        display: initial;
-        vertical-align: middle;
-    }
-</style>
-  
-  <article class="articles">
-    
-    
-    
-    
-    <article
-  id="post-hello-world"
-  class="article article-type-post"
+      <section class="outer">
+  <article
+  id="page-"
+  class="article article-type-page"
   itemscope
   itemprop="blogPost"
   data-scroll-reveal
 >
   <div class="article-inner">
-    
-    <header class="article-header">
        
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/03/31/hello-world/"
-    >Hello World</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/03/31/hello-world/" class="article-date">
-  <time datetime="2021-03-31T09:36:18.693Z" itemprop="datePublished">2021-03-31</time>
-</a>    
-    </div>
-      
     <div class="article-entry" itemprop="articleBody">
        
-  <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+  <style type="text/css">
+    
+    .header-inner{
+         display: none;
+    }
+    .sidebar{
+        display: none;
+    }
+    .content{
+        margin-bottom: 360px;
+    }
+    .content-wrap{
+       width: 100%;
+       // box-sizing: content-box;
+       padding: initial !important;
+       background:url('https://s2.ax1x.com/2019/09/07/nlL4pR.jpg');
+    }
+    
+    .main-inner{
+        width: 100%;
+    }
+    .main {
+        padding-bottom: 150px;
+        margin-top: 0px;
+        background:url('https://s2.ax1x.com/2019/09/07/nlL4pR.jpg');
+    }
+    .main-inner{
+        margin-top: unset;
+    }
+    .page-post-detail .post-meta{
+        display: none;
+    }
+    body {
+        background-image: unset;
+        background-attachment: unset;
+        background-size: 100%;
+        /*background-position: top left;*/
+    }
+    .header{
+        background: rgba(28, 25, 25, 0.6);
+        border-bottom: unset;
+    }
+    .menu .menu-item a{
+            font-weight: 300;
+            color: #e6eaed;
+    }
+    .footer-inner {
+         padding-left: 0px;
+    }
+    
+    img:hover {
+        //opacity:0.8; /*透明度*/
+        //filter:alpha(opacity=100); /* For IE8 and earlier */
+    }
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+    .imgbox{
+        margin-top: 20px;
+        padding: 1px 10px;
+        width: 100%;
+        overflow: hidden;
+        height: 250px;
+        border-right: 1px solid #bcbcbc;
+        background:url('https://s2.ax1x.com/2019/09/07/nlL4pR.jpg');
+    }
+    .box{
+        visibility: visible;
+        overflow: auto; 
+        zoom: 1;
+    }
+    .box li{
+        float: left;
+        width: 25%;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        list-style: none;
+        margin: 0;
+        /*display: inline;*/
+        padding: 0;
+        height: 360px;
+    }
+    .box li span{
+        display: block;
+        padding: 12% 7% 10% 7%;
+        min-height: 80px;
+        //background: #fff;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 26px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+    img.imgitem{
+        padding: unset;
+        padding: unset;
+        border: unset;
+        position: relative;
+        padding: 0px;
+        height: auto;
+        width: 100%;
+    }
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+    div#posts.posts-expand {
+        border: unset;
+        padding: unset;
+        margin-bottom: 10px;
+    }
+    .posts-expand .post-body img{
+        padding: 0px !important;
+    }
+    .box p{
+        margin-top: -25px;
+        display: block;
+        background: #121212;
+        color: #fff;
+        font-size: 14px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        text-align: center;
+    }
+    
+    .box span strong{
+        background: rgba(0,0,0,0.4);
+        padding: 20px;
+    }
+    
+    .posts-expand .post-title {
+        display: none;
+    }
+    
+    .title{
+        margin: 10px auto;
+        display: inline-block;
+        vertical-align: middle;
+        //background: url(/images/beichen.jpg);
+        font: 85px/250px 'ChaletComprimeMilanSixty';
+        //background-position: left bottom !important;
+        background-position: center center !important;
+        color: #fff;
+        background-size: 100% auto !important; 
+        -webkit-background-size: cover; 
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        width: 100%;
+        text-align: center;
+        border: unset;
+        height: 560px;
+        cursor: unset !important;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    @media (max-width: 767px){
+        .box li {
+            width: 98%;
+        }
+        .title {
+            height: 200px;
+        }
+        
+        .box span {
+            min-height: 80px;
+            border-right: unset;
+            font-size: 17px;
+        }
+        .box p{
+            border-right: unset;
+            font-size: 12px;
+          
+        }
+        .posts-expand {
+            margin: unset;
+        }
+    
+    }
+
+    @media (min-width: 1600px){
+    
+        .container .main-inner{
+            width: 100%;
+        }
+    }
+
+</style>
+
+<div id="box" class="box"></div>
+
+<script type="text/javascript">
+   
+   // 相册json
+   var json = 
+    [
+        [
+            {
+                'title': '七彩丹霞',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRzZt.jpg'
+            },
+            {
+                'title': '9月雨后',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRvqI.jpg'
+            },
+            {
+                'title': '五花肉',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRbGD.jpg'
+            },
+            {
+                'title': '五花肉+1',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRHPO.jpg'
+            },
+            {
+                'title': '别样的艳',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRTIK.jpg'
+            },
+            {
+                'title': '远处的城堡',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRXMd.md.jpg'
+            },
+            {
+                'title': '夕阳红',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRqRe.md.jpg'
+            },
+            {
+                'title': '卢浮宫',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRIVx.md.jpg'
+            },
+            {
+                'title': '景区一角',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRhrR.md.jpg'
+            },
+            {
+                'title': '夕阳🌇',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRbGD.md.jpg'
+            },
+            {
+                'title': '冰沟丹霞',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRLxH.md.jpg'
+            },
+            {
+                'title': '别样的雨后',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlRRxJ.md.jpg'
+            },
+            {
+                'title': '卢浮宫',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlR4q1.md.jpg'
+            }
+        ],
+        
+        [
+            {
+                'title': '世界之巅',
+                'url': 'https://s2.ax1x.com/2019/09/07/nl5540.md.jpg'
+            },
+            {
+                'title': '一天的行程',
+                'url': 'https://s2.ax1x.com/2019/09/07/nl56gS.md.jpg'
+            },
+            {
+                'title': '珠峰国家公园',
+                'url': 'https://s2.ax1x.com/2019/09/07/nl5RBj.md.jpg'
+            },
+            {
+                'title': '盘山公路',
+                'url': 'https://s2.ax1x.com/2019/09/07/nl54Nq.md.jpg'
+            },
+            {
+                'title': '保护区',
+                'url': 'https://s2.ax1x.com/2019/09/07/nl5LDJ.md.png'
+            },
+            {
+                'title': '珠峰大本营',
+                'url': 'https://s2.ax1x.com/2019/09/07/nlINGV.md.png'
+            },
+            {
+                'title': '氧气瓶',
+                'url': 'https://s2.ax1x.com/2019/09/07/nl5jER.md.jpg'
+            },
+            {
+                'title': '珠峰日出',
+                'url': 'https://s2.ax1x.com/2019/09/07/nl5cjg.md.jpg'
+            },
+            {
+                'title': '海拔最高的寺庙—绒布寺',
+                'url': 'https://s2.ax1x.com/2019/09/07/nl5hEn.md.jpg'
+            }
+        ]
+    ]
+    
+    var content = json2Array(json);
+        
+    var wid = 250;
+    if ((window.innerWidth) > 1200) {
+        wid = (window.innerWidth*3)/18;
+    }
+    var box = document.getElementById('box');
+    
+    var i=0;
+    for (var i = 0; i < content.length; i++) {
+        var conBox = document.createElement("div");
+        conBox.id = 'conBox'+i;
+        box.appendChild(conBox);
+        var item = document.createElement("div");
+        var title = content[i][0].title;
+        var url = content[i][0].url;
+        item.innerHTML = "<button class = 'title' style = 'background: url(" + url + ");'><span style = 'display: inline;'><strong style = 'color:#f0f3f6;' >" + title + "</strong></span></button>";
+        conBox.appendChild(item);
+    
+        for (var j = 1; j < content[i].length ; j++) {
+            var _title = content[i][j].title;
+            var _url = content[i][j].url;
+            var item = document.createElement("li");
+            item.innerHTML="<div class = 'imgbox' id = 'imgbox' style = 'height: " + wid + "px;'><img class = 'imgitem' src='" + _url + "' alt='" + _url + "'></div><span>" + _title +"</span>";
+            conBox.appendChild(item);
+        }
+    }
+    
+    //json转二维数组
+    function json2Array(arr) {
+        for (var i=0; i<arr.length; i++) {
+            var tmpArr = []
+            for (var attr in arr[i]) {
+                tmpArr.push(arr[i][attr])
+            }
+            arr[i] = tmpArr
+        }
+        return arr
+    }
+
+</script>
  
       <!-- reward -->
       
@@ -188,24 +393,124 @@
 
     <!-- copyright -->
     
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
     <footer class="article-footer">
        
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/photos/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
     </footer>
   </div>
 
-    
+   
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
  
     
 </article>
 
-    
-  </article>
-  
-
-  
 </section>
-</div>
-
       <footer class="footer">
   <div class="outer">
     <ul>
