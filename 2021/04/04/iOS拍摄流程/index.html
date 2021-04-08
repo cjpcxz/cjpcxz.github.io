@@ -67,7 +67,7 @@
   <time datetime="2021-04-03T17:53:42.000Z" itemprop="datePublished">2021-04-04</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%A7%86%E9%A2%91/">视频</a>
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
   </div>
   
 <div class="word_count">
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.9k</span>
+            <span class="post-count">3k</span>
         </span>
     </span>
 
@@ -240,7 +240,7 @@
 <li><p>配置中初始化的视频采集以及声音采集<code>AVAssetWriterInput</code>，在其属性<code>readyForMoreMediaData</code>（输入准备好接收更多数据），调用apppendSampleBuffer:方法，将<code>CMSampleBufferRef</code>添加进去</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate method</span><br><span class="line">- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection &#123;</span><br><span class="line">    if (!self.videoRecording) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    CMFormatDescriptionRef desMedia &#x3D; CMSampleBufferGetFormatDescription(sampleBuffer);</span><br><span class="line">    CMMediaType mediaType &#x3D; CMFormatDescriptionGetMediaType(desMedia);</span><br><span class="line"></span><br><span class="line">    if (mediaType &#x3D;&#x3D; kCMMediaType_Video) &#123;</span><br><span class="line">        if (!self.canWritting) &#123;</span><br><span class="line">            [self.writer startWriting];</span><br><span class="line"></span><br><span class="line">            CMTime timestamp &#x3D; CMSampleBufferGetPresentationTimeStamp(sampleBuffer);</span><br><span class="line"></span><br><span class="line">            self.canWritting &#x3D; YES;</span><br><span class="line">            [self.writer startSessionAtSourceTime:timestamp];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    if (self.canWritting) &#123;</span><br><span class="line">        if (mediaType &#x3D;&#x3D; kCMMediaType_Video) &#123;</span><br><span class="line">            if (self.writerVideoInput.readyForMoreMediaData) &#123;</span><br><span class="line">                BOOL success &#x3D; [self.writerVideoInput appendSampleBuffer:sampleBuffer];</span><br><span class="line">                if (!success) &#123;</span><br><span class="line">                    LOG_DEBUG(@&quot;video write failed&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; else if (mediaType &#x3D;&#x3D; kCMMediaType_Audio &amp;&amp; self.canWritting) &#123;</span><br><span class="line">            if (self.writerAudioInput.readyForMoreMediaData) &#123;</span><br><span class="line">                BOOL success &#x3D; [self.writerAudioInput appendSampleBuffer:sampleBuffer];</span><br><span class="line">                if (!success) &#123;</span><br><span class="line">                    LOG_DEBUG(@&quot;audio write failed&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h3 id="录制完成"><a href="#录制完成" class="headerlink" title="录制完成"></a>录制完成</h3><p>停止会话，stopRunning停止会话。完成写入，AVAssetWriter的状态为正在写入，则调用<code>finishWritingWithCompletionHandler:</code>完成数据的写入</p>
+<h3 id="录制完成"><a href="#录制完成" class="headerlink" title="录制完成"></a>录制完成</h3><p>AVCaptureSession的startRunning方法是个耗时操作，如果在主线程调用的话会卡UI。停止会话，stopRunning停止会话。完成写入，AVAssetWriter的状态为正在写入，则调用<code>finishWritingWithCompletionHandler:</code>完成数据的写入</p>
 <h2 id="AVAssetWriter实现视频压缩"><a href="#AVAssetWriter实现视频压缩" class="headerlink" title="AVAssetWriter实现视频压缩"></a>AVAssetWriter实现视频压缩</h2><h3 id="传统视频压缩的方式"><a href="#传统视频压缩的方式" class="headerlink" title="传统视频压缩的方式"></a>传统视频压缩的方式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">AVURLAsset *avAsset &#x3D; [AVURLAsset URLAssetWithURL:inputURL options:nil];</span><br><span class="line">AVAssetExportSession *exportSession &#x3D; [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetMediumQuality];&#x2F;&#x2F;视频压缩的类型，还有AVAssetExportPresset960x540具体压缩的分辨率</span><br><span class="line">   exportSession.outputURL &#x3D; outputURL;</span><br><span class="line">   exportSession.outputFileType &#x3D; AVFileTypeMPEG4;</span><br><span class="line">   exportSession.shouldOptimizeForNetworkUse &#x3D; YES;</span><br><span class="line">   [exportSession exportAsynchronouslyWithCompletionHandler:^(void) &#123;</span><br><span class="line">       switch(exportSession.status) &#123;</span><br><span class="line">         case AVAssetExportSessionStatusCompleted:&#x2F;&#x2F;压缩完成</span><br><span class="line">         case AVAssetExportSessionStatusFailed:&#x2F;&#x2F;压缩失败</span><br><span class="line">         default:</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;];</span><br></pre></td></tr></table></figure>
 
 <p>绝大多数的情况下可以通过传统的压缩方式对视频进行压缩。为了获得最大的视频压缩率(最低的码率)最好的方式是</p>
@@ -351,6 +351,20 @@
   </div>
 
    
+  <nav class="article-nav">
+    
+      <a href="/2021/04/08/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            iOS视频采集的格式类型
+          
+        </div>
+      </a>
+    
+    
+  </nav>
+
    
 <!-- valine评论 -->
 <div id="vcomments-box">

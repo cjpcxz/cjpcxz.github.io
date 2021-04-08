@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-04-06T03:40:14.145Z</updated>
+  <updated>2021-04-08T02:09:23.906Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>iOS拍摄流程</title>
-    <link href="http://example.com/2021/04/04/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/"/>
-    <id>http://example.com/2021/04/04/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/</id>
-    <published>2021-04-03T17:53:42.000Z</published>
-    <updated>2021-04-06T03:40:14.145Z</updated>
+    <title>视频H264硬编码</title>
+    <link href="http://example.com/2021/04/08/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/"/>
+    <id>http://example.com/2021/04/08/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/</id>
+    <published>2021-04-08T02:09:23.000Z</published>
+    <updated>2021-04-08T02:09:23.906Z</updated>
     
     
       
@@ -34,7 +34,51 @@
     
     
     
-    <category term="视频" scheme="http://example.com/categories/%E8%A7%86%E9%A2%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>iOS视频采集的格式类型</title>
+    <link href="http://example.com/2021/04/08/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/"/>
+    <id>http://example.com/2021/04/08/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/</id>
+    <published>2021-04-08T02:04:42.000Z</published>
+    <updated>2021-04-08T03:32:44.220Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>iOS拍摄流程</title>
+    <link href="http://example.com/2021/04/04/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/"/>
+    <id>http://example.com/2021/04/04/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/</id>
+    <published>2021-04-03T17:53:42.000Z</published>
+    <updated>2021-04-08T03:02:36.763Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
