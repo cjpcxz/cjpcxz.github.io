@@ -141,6 +141,166 @@
     
     
     <article
+  id="post-iOS核心动画技巧"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/04/11/iOS%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E6%8A%80%E5%B7%A7/"
+    >iOS核心动画技巧</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/04/11/iOS%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time datetime="2021-04-11T06:36:38.000Z" itemprop="datePublished">2021-04-11</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="CALayer和UIView的区别"><a href="#CALayer和UIView的区别" class="headerlink" title="CALayer和UIView的区别"></a>CALayer和UIView的区别</h2><blockquote>
+<p><code>CALayer</code>类在概念上和<code>UIView</code>类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色），管理子图层的位置。它们有一些方法和属性用来做动画和变换。和<code>UIView</code>最大的不同是<code>CALayer</code>不处理用户的交互。<code>CALayer</code>并不清楚具体的<em>响应链</em>（iOS通过视图层级关系用来传送触摸事件的机制），于是它并不能够响应事件，即使它提供了一些方法来判断是否一个触点在图层的范围之内。</p>
+</blockquote>
+<h3 id="平行层级关系"><a href="#平行层级关系" class="headerlink" title="平行层级关系"></a>平行层级关系</h3><ul>
+<li>每一个<code>UIview</code>都有一个<code>CALayer</code>实例的图层属性，也就是所谓的<em>backing layer</em>，视图的职责就是创建并管理这个图层，以确保当子视图在层级关系中添加或者被移除的时候，他们关联的图层也同样对应在层级关系树当中有相同的操作</li>
+<li>实际上这些背后关联的图层才是真正用来在屏幕上显示和做动画，<code>UIView</code>仅仅是对它的一个封装，提供了一些iOS类似于处理触摸的具体功能，以及Core Animation底层方法的高级接口。</li>
+<li>但是为什么iOS要基于<code>UIView</code>和<code>CALayer</code>提供两个平行的层级关系呢？为什么不用一个简单的层级来处理所有事情呢？<ul>
+<li>原因在于要做职责分离，这样也能避免很多重复代码。在iOS和Mac OS两个平台上，事件和用户交互有很多地方的不同，基于多点触控的用户界面和基于鼠标键盘有着本质的区别，这就是为什么iOS有UIKit和<code>UIView</code>，但是Mac OS有AppKit和<code>NSView</code>的原因。他们功能上很相似，但是在实现上有着显著的区别。</li>
+<li>绘图，布局和动画，相比之下就是类似Mac笔记本和桌面系列一样应用于iPhone和iPad触屏的概念。把这种功能的逻辑分开并应用到独立的Core Animation框架，苹果就能够在iOS和Mac OS之间共享代码，使得对苹果自己的OS开发团队和第三方开发者去开发两个平台的应用更加便捷。</li>
+</ul>
+</li>
+<li>图层不能像视图那样处理触摸事件，那么他能做哪些视图不能做的呢？这里有一些<code>UIView</code>没有暴露出来的CALayer的功能：<ul>
+<li>阴影，圆角，带颜色的边框</li>
+<li>3D变换</li>
+<li>非矩形范围</li>
+<li>透明遮罩</li>
+<li>多级非线性动画</li>
+</ul>
+</li>
+</ul>
+<h3 id="CALayer一些特殊属性"><a href="#CALayer一些特殊属性" class="headerlink" title="CALayer一些特殊属性"></a>CALayer一些特殊属性</h3><h3 id="contents属性"><a href="#contents属性" class="headerlink" title="contents属性"></a>contents属性</h3><ul>
+<li><p>CALayer 有一个属性叫做<code>contents</code>，这个属性的类型被定义为id，意味着它可以是任何类型的对象。在这种情况下，你可以给<code>contents</code>属性赋任何值，你的app仍然能够编译通过。但是，在实践中，如果你给<code>contents</code>赋的不是CGImage，那么你得到的图层将是空白的。</p>
+</li>
+<li><p>事实上，你真正要赋值的类型应该是CGImageRef，它是一个指向CGImage结构的指针。UIImage有一个CGImage属性，它返回一个”CGImageRef”,如果你想把这个值直接赋值给CALayer的<code>contents</code>，那你将会得到一个编译错误。因为CGImageRef并不是一个真正的Cocoa对象(OC对象)，而是一个Core Foundation类型。实际要用<code>layer.contents = (__bridge id)image.CGImage;</code></p>
+</li>
+</ul>
+<h3 id="contentsGravity"><a href="#contentsGravity" class="headerlink" title="contentsGravity"></a>contentsGravity</h3><blockquote>
+<p>对于加载的图片无法适应视图时，对于UIimageView有一个contentMode属性，<code>view.contentMode = UIViewContentModeScaleAspectFit;</code>，而CALayer与<code>contentMode</code>对应的属性叫做<code>contentsGravity</code>，但是它是一个NSString类型，而不是像对应的UIKit部分，那里面的值是枚举。</p>
+</blockquote>
+<ul>
+<li><code>self.layerView.layer.contentsGravity = kCAGravityResizeAspect;</code>，<code>kCAGravityResizeAspect</code>，它的效果等同于UIViewContentModeScaleAspectFit， 同时它还能在图层中等比例拉伸以适应图层的边界。</li>
+</ul>
+<h3 id="contentsScale"><a href="#contentsScale" class="headerlink" title="contentsScale"></a>contentsScale</h3><blockquote>
+<p><code>contentsScale</code>属性定义了寄宿图的像素尺寸和视图大小的比例，默认情况下它是一个值为1.0的浮点数。它的优先级要低于了<code>contentsGravity</code>。</p>
+</blockquote>
+<ul>
+<li><code>contentsScale</code>属性其实属于支持高分辨率（又称Hi-DPI或Retina）屏幕机制的一部分。它用来判断在绘制图层的时候应该为寄宿图创建的空间大小，和需要显示的图片的拉伸度（假设并没有设置<code>contentsGravity</code>属性）。UIView有一个类似功能但是非常少用到的<code>contentScaleFactor</code>属性。</li>
+<li>如果<code>contentsScale</code>设置为1.0，将会以每个点1个像素绘制图片，如果设置为2.0，则会以每个点2个像素绘制图片，这就是我们熟知的Retina屏幕</li>
+<li>这并不会对我们在使用<code>kCAGravityResizeAspect</code>时产生任何影响，因为它就是拉伸图片以适应图层而已，根本不会考虑到分辨率问题。但是如果我们把<code>contentsGravity</code>设置为<code>kCAGravityCenter</code>（这个值并不会拉伸图片）。</li>
+<li>和UIImage不同，CGImage没有拉伸的概念。当我们使用UIImage类去读取图片的时候，他读取了高质量的Retina版本的图片。但是当我们用CGImage来设置我们的图层的内容时，拉伸这个因素在转换的时候就丢失了。可以通过设置<code>self.layerView.layer.contentsScale = image.scale;</code></li>
+</ul>
+<h3 id="maskToBounds"><a href="#maskToBounds" class="headerlink" title="maskToBounds"></a>maskToBounds</h3><blockquote>
+<p>默认情况下，UIView仍然会绘制超过边界的内容或是子视图，在CALayer下也是这样的。UIView有一个叫做<code>clipsToBounds</code>的属性可以用来决定是否显示超出边界的内容，CALayer对应的属性叫做<code>masksToBounds</code>。</p>
+</blockquote>
+<h3 id="contentsRect"><a href="#contentsRect" class="headerlink" title="contentsRect"></a>contentsRect</h3><blockquote>
+<p>CALayer的<code>contentsRect</code>属性允许我们在图层边框里显示寄宿图的一个子域。这涉及到图片是如何显示和拉伸的，所以要比<code>contentsGravity</code>灵活多了和<code>bounds</code>，<code>frame</code>不同，<code>contentsRect</code>不是按点来计算的，它使用了<em>单位坐标</em>，单位坐标指定在0到1之间，是一个相对值（像素和点就是绝对值）。所以他们是相对与寄宿图的尺寸的。</p>
+</blockquote>
+<ul>
+<li>iOS使用了以下的坐标系统：<ol>
+<li>点 —— 在iOS和Mac OS中最常见的坐标体系。点就像是虚拟的像素，也被称作逻辑像素。在标准设备上，一个点就是一个像素，但是在Retina设备上，一个点等于2*2个像素。iOS用点作为屏幕的坐标测算体系就是为了在Retina设备和普通设备上能有一致的视觉效果。</li>
+<li>像素 —— 物理像素坐标并不会用来屏幕布局，但是仍然与图片有相对关系。UIImage是一个屏幕分辨率解决方案，所以指定点来度量大小。但是一些底层的图片表示如CGImage就会使用像素，所以你要清楚在Retina设备和普通设备上，他们表现出来了不同的大小。</li>
+<li>单位 —— 对于与图片大小或是图层边界相关的显示，单位坐标是一个方便的度量方式， 当大小改变的时候，也不需要再次调整。单位坐标在OpenGL这种纹理坐标系统中用得很多，Core Animation中也用到了单位坐标。</li>
+</ol>
+</li>
+<li>默认的<code>contentsRect</code>是{0, 0, 1, 1}，这意味着整个寄宿图默认都是可见的，如果我们指定一个小一点的矩形，图片就会被裁剪。事实上给<code>contentsRect</code>设置一个负数的原点或是大于{1, 1}的尺寸也是可以的。这种情况下，最外面的像素会被拉伸以填充剩下的区域。</li>
+<li>可以通过<code>contentsRect</code>从大图中截取小图，分给其他的视图（1个image，分给不同的视图显示），因为单张大图比多张小图载入地更快，可以有效地提高了载入性能</li>
+</ul>
+<h3 id="contentsCenter"><a href="#contentsCenter" class="headerlink" title="contentsCenter"></a>contentsCenter</h3><blockquote>
+<p><code>contentsCenter</code>其实是一个CGRect，它定义了一个固定的边框和一个在图层上可拉伸的区域。 改变<code>contentsCenter</code>的值并不会影响到寄宿图的显示，除非这个图层的大小改变了，你才看得到效果。</p>
+</blockquote>
+<ul>
+<li>默认情况下，<code>contentsCenter</code>是{0, 0, 1, 1}，这意味着如果大小（由<code>conttensGravity</code>决定）改变了,那么寄宿图将会均匀地拉伸开。但是如果我们增加原点的值并减小尺寸。我们会在图片的周围创造一个边框。下图展示了<code>contentsCenter</code>设置为{0.25, 0.25, 0.5, 0.5}的效果。</li>
+</ul>
+<p><img src="2021/04/11/iOS%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E6%8A%80%E5%B7%A7/image/1.png"></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-流媒体基础"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/04/08/%E6%B5%81%E5%AA%92%E4%BD%93%E5%9F%BA%E7%A1%80/"
+    >流媒体基础</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/04/08/%E6%B5%81%E5%AA%92%E4%BD%93%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time datetime="2021-04-08T10:02:01.000Z" itemprop="datePublished">2021-04-08</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+   
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-视频H264硬编码"
   class="article article-type-post"
   itemscope
@@ -162,12 +322,19 @@
     <div class="article-meta">
       <a href="/2021/04/08/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/" class="article-date">
   <time datetime="2021-04-08T02:09:23.000Z" itemprop="datePublished">2021-04-08</time>
-</a>    
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
+  </div>
+   
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-   
+  <blockquote>
+<p>像素的大小是8bit，一张1920✖️1080的图片需要1920✖️1080✖️8✖️3bit / (1024✖️1024)  = 47Mbit = 5.8MB；在观看30FPS的视频时，1s需要30张图片，也就是需要47 ✖️ 30 = 1.4Gbit，也就是1.4Gbit的带宽；以我们现在的网络带宽远远不够。所以必须进行视频源压缩编码。</p>
+</blockquote>
+ 
       <!-- reward -->
       
     </div>
