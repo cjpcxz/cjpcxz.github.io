@@ -141,6 +141,100 @@
     
     
     <article
+  id="post-碎片化随笔"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/04/13/%E7%A2%8E%E7%89%87%E5%8C%96%E9%9A%8F%E7%AC%94/"
+    >碎片化随笔</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/04/13/%E7%A2%8E%E7%89%87%E5%8C%96%E9%9A%8F%E7%AC%94/" class="article-date">
+  <time datetime="2021-04-13T02:50:03.000Z" itemprop="datePublished">2021-04-13</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/">零碎知识点</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>记录偶尔发现有用的知识点</p>
+</blockquote>
+<h2 id="delegate能一对多吗"><a href="#delegate能一对多吗" class="headerlink" title="delegate能一对多吗"></a>delegate能一对多吗</h2><ul>
+<li>在不同控制页面实现同一代理，并且执行代理的类为单例执行；代码验证时发现<ul>
+<li>尽管为单例，但是其属性delegate为唯一，与当前控制页是相互持有关系，因此，在页面1时，只会执行页面1上的代理方法；</li>
+<li>当从页面1进入页面2后，delegate的对象变成了页面2，因此，在页面2时，只会执行页面1上的代理方法</li>
+<li>当从页面2退到页面1后，页面1销毁，由于为weak，弱引用，在页面1上也不会执行代理方法，被销毁的页面2上更不会执行了</li>
+</ul>
+</li>
+<li>通过相关的设计也可以实现一对多的关系<ol>
+<li>用多播代理的方式，多播代理相比一般的只是多了一个中间层，由中间层实现代理，获取数据；中间层与控制器之间<ol>
+<li>用一个block数组，作为中间层单例的属性</li>
+<li>在其他控制器中，都设置一个回调的block，并将该block添加到数组中</li>
+<li>在中间层实现代理获取数据的时候，遍历这个blcok数组，将数据进行分发</li>
+</ol>
+</li>
+<li>1个代理在多个页面内实现，<ol>
+<li>关键点在于<ol>
+<li>协议名称和对象构成一个健值对，形成1-1对应关系</li>
+<li>NSPointerArray的使用，使得弱引用对象，且在对象释放时自动删除NSPointerArray中的元素。</li>
+</ol>
+</li>
+<li>使用<ol>
+<li>将其他页面要实现的代理同样均设为一个单例消息分发中心，有一个字典数据(键为协议，值为NSPointerArray，数组中存有各个页面的对象)</li>
+<li>在一个页面触发代理后，首先会实现代理的消息分发中心是否实现了，在这里是没有实现相关的代理方法的，<ol>
+<li>借助<code>- (BOOL)respondsToSelector:(SEL)aSelector;</code>，判断本管理对象是否可以响应方法<ol>
+<li>如果存的pointArray中可以响应方法则返回YES</li>
+</ol>
+</li>
+<li>下面有两种方式实现<ol>
+<li>借助<code>- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;</code>以及<code>-(void)forwardInvocation:(NSInvocation *)anInvocation;</code>（这两个方法是一起的）。可以实现在多个未销毁页面中，同时实现代理，达成通知的效果，实现消息的分发</li>
+<li>也可以单独实现<code>- (id)forwardingTargetForSelector:(SEL)aSelector;</code>（返回未识别消息应首先指向的对象（本来默认是向上传的）），但这是在相应的NSPointArray中找到能实现该方法的对象，只能实现消息的转发，在多个页面的对象中找到真正一个能响应该方法的</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-图层几何学"
   class="article article-type-post"
   itemscope
