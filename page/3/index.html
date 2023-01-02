@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title> ayer</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
+      
+    <link rel="alternate" href="/atom.xml" title="ayer" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      
+<section class="cover">
+    
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="/images/cover4.jpg" alt="image frame" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">ayer</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
+  </div>
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 100,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
+<div id="main">
+  <section class="outer">
+  
+  
+  
+
+<div class="notice" style="margin-top:50px">
+    <i class="ri-heart-fill"></i>
+    <div class="notice-content" id="broad"></div>
+</div>
+<script type="text/javascript">
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("broad").innerHTML = data.hitokoto;
+        })
+        .catch(console.error)
+</script>
+
+<style>
+    .notice {
+        padding: 20px;
+        border: 1px dashed #e6e6e6;
+        color: #969696;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #fbfbfb50;
+        border-radius: 10px;
+    }
+
+    .notice i {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        padding-right: 10px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+
+    .notice-content {
+        display: initial;
+        vertical-align: middle;
+    }
+</style>
+  
+  <article class="articles">
+    
+    
+    
+    
+    <article
+  id="post-其他/16676513774655"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/11/05/%E5%85%B6%E4%BB%96/16676513774655/" class="article-date">
+  <time datetime="2022-11-05T12:29:37.466Z" itemprop="datePublished">2022-11-05</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="用theos去hook"><a href="#用theos去hook" class="headerlink" title="用theos去hook"></a>用theos去hook</h1><ol>
+<li>安装threos<a href="media/16676513774655/07-theos%E7%9A%84%E5%89%AF%E6%9C%AC.pdf">theos安装教程</a></li>
+<li><code>nic.pl</code>指令选择创建<code>iphone/tweak</code>项目,（自己的bundId，和越狱app的bundId）<ol>
+<li>在生成的Makefile文件内，增加端口信息<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export THEOS_DEVICE_IP = localhost</span><br><span class="line">export THEOS_DEVICE_PORT = 100010</span><br><span class="line">include $(THEOS)/makefiles/common.mk</span><br><span class="line">TWEAK_NAME = tingweak</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>THES_DEVICE_IP</code>,<code>THEOS_DEVICE_PORT</code>可以配置到.bash_profile的文件下,全局配置</li>
+</ul>
+</li>
+<li>实际在Tweak.x文件内进行hook，找到相应的view，然后写hook后的方法.<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  #import &lt;UIKit/UIView.h&gt;</span><br><span class="line"> %hook XMNowPlayingADView</span><br><span class="line">   - (id)initWithFrame:(struct CGRect)arg1 &#123;</span><br><span class="line">       return nil;</span><br><span class="line">   &#125;</span><br><span class="line"> %end</span><br><span class="line"> ///%orig(arg1,arg2);调用原始方法</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>make</code> 自动编译makefile中的文件</li>
+<li><code>make package</code>打包成越狱插件</li>
+<li><code>make install</code>默认安装到手机上</li>
+<li>手机重启，则会看到修改后的程序，注入的包位置在<code>/library/MobileSubstrate/DynamicLibraries</code>位置，删除，则无效果了（Cydia中也有该插件）<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2></li>
+</ol>
+</li>
+<li>在生成的Tweak.x文件中的方法，一般均会被认为是要hook替换的，如果没有的话，则不会生效。如果是新方法的话，需要在方法前加<code>%new</code></li>
+<li><code>%orig</code>为原始方法</li>
+<li>资源文件，<ol>
+<li>内部图片，则放到<code>对应应用内</code>,</li>
+<li>如果加载自己的，则用<code>imageWithContentsOfFile:</code>加载图片路径，例如，<code>/text.png</code>则在文件根目录</li>
+<li>在theos中直接打包资源文件，在中，构建一个<code>layout</code>文件夹(实际放在<code>根目录</code>下)，将资源放进去，一般会放到<code>layout/Library/PreferenceLoader/Preferences</code>目录下（偏好设置），其他的可以放到<code>layout/Library/Caches</code>文件中</li>
+</ol>
+</li>
+<li>注意<code>theos</code>将其他类型认为是id，因此直接用<code>self.view</code>是会报错的，要用<code>[self view]</code></li>
+<li>可以像OC项目一样,多文件开发，建立相关的.h和.m文件，然后在<code>Tweak.x</code>文件中按正常的#import导入(注意文件夹)即可，此外在<code>Makefile</code>中要指定编译的文件<code>tweaksp_FILES = xxx/Tweak.x xxx/xxxx.m</code>，也可以通过<code>tweaksp_FILES = xxx/*.x</code>导入，但是无法用<code>xxx/**/*.x</code>的方式,必须指定文件夹</li>
+<li>生成<code>Realease</code>版本，<code>make package debug=0</code></li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16675799552760"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/11/05/%E5%85%B6%E4%BB%96/16675799552760/" class="article-date">
+  <time datetime="2022-11-04T16:39:15.276Z" itemprop="datePublished">2022-11-05</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id><a href="#" class="headerlink" title></a></h1> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-底层原理/Mach-o文件"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/11/03/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Mach-o%E6%96%87%E4%BB%B6/" class="article-date">
+  <time datetime="2022-11-03T14:41:23.893Z" itemprop="datePublished">2022-11-03</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Mach-o文件"><a href="#Mach-o文件" class="headerlink" title="Mach-o文件"></a>Mach-o文件</h1><ul>
+<li>一个Mach-O文件包含3个主要区域<ul>
+<li>Header <ul>
+<li>文件类型、目标架构类型等</li>
+</ul>
+</li>
+<li>Load commands<ul>
+<li>描述文件在虚拟内存中的逻辑结构、布局</li>
+</ul>
+</li>
+<li>Raw segment data<ul>
+<li>在Load commands中定义的Segment的原始数据<br><img src="/.com//16674864838934/16674865436160.jpg"><h2 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h2><h3 id="file："><a href="#file：" class="headerlink" title="file："></a>file：</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>查看Mach-O的文件类型</li>
+<li><code>file  文件路径</code><h3 id="otool："><a href="#otool：" class="headerlink" title="otool："></a>otool：</h3></li>
+<li>查看Mach-O特定部分和段的内容<ul>
+<li><code>otool -L 文件路径</code>查看依赖的库</li>
+<li><code>otool -h 文件路径</code>mach中head的信息</li>
+<li><code>otool -l 文件路径</code>mach中loadcommand的信息<h3 id="dyld"><a href="#dyld" class="headerlink" title="dyld"></a>dyld</h3></li>
+</ul>
+</li>
+<li><code>dyld</code>是mach-o文件（MH_DYLINKER），但是它也能加载mach-o文件，但是能加载<ul>
+<li><code>MH_EXEUTE</code>，可执行文件</li>
+<li><code>MH_DYLIB</code>,动态库</li>
+<li><code>MH_BUNDLE</code></li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16673137289641"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/11/01/%E5%85%B6%E4%BB%96/16673137289641/" class="article-date">
+  <time datetime="2022-11-01T14:42:08.964Z" itemprop="datePublished">2022-11-01</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Hopper"><a href="#Hopper" class="headerlink" title="Hopper"></a>Hopper</h1><h2 id="Mach-o"><a href="#Mach-o" class="headerlink" title="Mach-o"></a>Mach-o</h2><ul>
+<li>机器码可以反编译成汇编，但是汇编很难反编译成OC<h2 id="ios系统Mach-o文件在手机上"><a href="#ios系统Mach-o文件在手机上" class="headerlink" title="ios系统Mach-o文件在手机上"></a>ios系统Mach-o文件在手机上</h2></li>
+<li>从iOS3.1开始，为了提高性能，绝大部分的系统动态库文件都打包存放到了一个缓存文件中（<code>dyld shared cache</code>）<ol>
+<li>缓存文件路径：<code>/System/Library/Caches/com.apple.dyld/dyld_shared_cache_armX</code></li>
+<li>绝大部分的系统动态库都放在共享缓存中，一个文件中，（多个动态库<code>mach</code>会有多个描述信息，因此降低内存，放到了一个文件中，也就是mach文件中<code>dlyld</code>(命令在/usr/lib中)加载指令(通过这个指令去加载动态库)，只会加载到一处）</li>
+<li>用<code>[[NSBundle bundleWithPath:&quot;/System/Library/Frameworks/UIKit.framework&quot;] load]</code>去加载动态库，实际上是调用2.中<code>dlyld</code>去判断是否在缓存中，有则去1.位置处的共享缓存去加载<code>UIKit.framework</code></li>
+<li><a target="_blank" rel="noopener" href="https://opensource.apple.com/tarballs/dyld/">dyld源码 </a></li>
+<li><code>dlyld</code>中的<code>dsc_extractor</code>文件可以，将1中缓存文件抽取出压缩在里面的库<ol>
+<li>先用<code>clang++</code>编译,`clang++ -o dsc_extractor dsc_extractor.cpp</li>
+<li><code>/dsc_extractor dyld_shared_cache_armv7s armv7s</code>所有动态库在呵rmv7s文件夹中<br>`</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16672327206592"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/11/01/%E5%85%B6%E4%BB%96/16672327206592/" class="article-date">
+  <time datetime="2022-10-31T16:12:00.659Z" itemprop="datePublished">2022-11-01</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="class-dump"><a href="#class-dump" class="headerlink" title="class-dump"></a>class-dump</h1><pre><code>-它的作用就是把Mach-O文件的class信息给dump出来（把类信息给导出来），生成对应的.h头文件
+</code></pre>
+<hr>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><ul>
+<li>将命令放大/usr/local/bin目录下(mac下不能放到/usr/bin下)</li>
+<li><code>class-dump  -H  Mach-O文件路径  -o  头文件存放目录</code></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16670594766148"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/10/30/%E5%85%B6%E4%BB%96/16670594766148/" class="article-date">
+  <time datetime="2022-10-29T16:04:36.615Z" itemprop="datePublished">2022-10-30</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id><a href="#" class="headerlink" title></a></h1> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16670400106477"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/10/29/%E5%85%B6%E4%BB%96/16670400106477/" class="article-date">
+  <time datetime="2022-10-29T10:40:10.648Z" itemprop="datePublished">2022-10-29</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
+<li>ssh <a href="mailto:&#114;&#111;&#111;&#116;&#64;&#49;&#57;&#50;&#46;&#x31;&#54;&#x38;&#46;&#x31;&#46;&#49;&#x34;">&#114;&#111;&#111;&#116;&#64;&#49;&#57;&#50;&#46;&#x31;&#54;&#x38;&#46;&#x31;&#46;&#49;&#x34;</a>,跳转到指定ip的命令</li>
+<li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
+</ul>
+<ol>
+<li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
+<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#x6f;&#111;&#x74;&#64;&#49;&#57;&#x32;&#46;&#49;&#x36;&#x38;&#46;&#49;&#x2e;&#49;&#x34;">&#x72;&#x6f;&#111;&#x74;&#64;&#49;&#57;&#x32;&#46;&#49;&#x36;&#x38;&#46;&#49;&#x2e;&#49;&#x34;</a>，追加到当前ip服务器授权文件的尾部</li>
+</ul>
+</li>
+<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#x72;&#111;&#111;&#x74;&#x40;&#49;&#x39;&#x32;&#46;&#x31;&#x36;&#56;&#x2e;&#49;&#x2e;&#49;&#52;">&#x72;&#111;&#111;&#x74;&#x40;&#49;&#x39;&#x32;&#46;&#x31;&#x36;&#56;&#x2e;&#49;&#x2e;&#49;&#52;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
+<li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>chmod 755 ~/.ssh 给文件夹赋予权限，755含义<ul>
+<li>读（r=4），写（w=2），执行（x=1）</li>
+<li>文件所有者可读可写可执行                                   –7</li>
+<li>与文件所有者同属一个用户组的其他用户可读可执行                 –5 </li>
+<li>其它用户组可读可执行                                       –5<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2></li>
+</ul>
+</li>
+<li>每个端口都有个端口号，（范围是0～65535，公2^16）</li>
+<li>21端口，FTP服务</li>
+<li>80端口，http服务</li>
+<li>22端口，ssh服务<h2 id="通过USB进行SSH登录"><a href="#通过USB进行SSH登录" class="headerlink" title="通过USB进行SSH登录"></a>通过USB进行SSH登录</h2></li>
+<li>默认会用网络登录，USB登录的方式是，先用SSH登录MAC上的10010端口(非保留端口均可)，在通过usbmuxd连接22端口</li>
+<li>将iPhone的22端口（SSH端口）映射到Mac本地的10010端口</li>
+<li>用python脚本，将mac上10010映射到22，python3 tcprelay.py -t 22:10010</li>
+<li>ssh root@localhost -p 10010,直接连接本地的10010接口</li>
+<li>scp -P 10010 <del>/.ssh/id_rsa.pub root@localhost:</del>,拷贝的方法</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16629071383706"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/09/11/%E5%85%B6%E4%BB%96/16629071383706/" class="article-date">
+  <time datetime="2022-09-11T14:38:58.371Z" itemprop="datePublished">2022-09-11</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h1><ul>
+<li>flutter run –no-sound-null-safety  解决flutter插件旧版本兼容问题</li>
+<li>flutter create –template=package hello 创建pakcage</li>
+<li>flutter create -t module flutter_module 创建fluttermodule</li>
+<li>flutter create example 创建flutter项目<h1 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h1></li>
+<li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
+<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h1 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h1></li>
+<li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS动画学习/详解iOS的presentViewController"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/07/23/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E8%AF%A6%E8%A7%A3iOS%E7%9A%84presentViewController/"
+    >详解iOS的presentViewController</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/07/23/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E8%AF%A6%E8%A7%A3iOS%E7%9A%84presentViewController/" class="article-date">
+  <time datetime="2021-07-23T15:11:44.000Z" itemprop="datePublished">2021-07-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>iOS中显示ViewController的方式有两种push和modal，modal也叫模态，模态显示VC是iOS的重要特性之一，其主要用于有以下场景：</p>
+<ol>
+<li>收集用户输入信息 </li>
+<li> 临时呈现一些内容 </li>
+<li>临时改变工作模式 </li>
+<li>相应设备方向变化（用于针对不同方向分别是想两个ViewController的情况）</li>
+<li> 显示一个新的view层级</li>
+</ol>
+<p>这些场景都会暂时中断APP的正常执行流程，主要作用是收集信息以及显示一些重要的提示等。当VCA模态的弹出了VCB，那么VCA就是<code>presenting view controller</code>，VCB就是<code>presented view controller</code></p>
+</blockquote>
+<h3 id="ModalPresentationStyle-amp-Presentation-Context"><a href="#ModalPresentationStyle-amp-Presentation-Context" class="headerlink" title="ModalPresentationStyle &amp; Presentation Context"></a>ModalPresentationStyle &amp; Presentation Context</h3><h4 id="ModalPresentationStyle"><a href="#ModalPresentationStyle" class="headerlink" title="ModalPresentationStyle"></a>ModalPresentationStyle</h4><p>​        <code>presented VC </code>的<code>modalPresentationStyle</code>属性决定了此次<code>presentation</code>的行为方式及UIKit寻找<code>presentation context</code>的方法，iOS提供了以下几种常用的<code>presentation style</code></p>
+<ol>
+<li><p><strong>UIModalPresentationFullScreen</strong></p>
+<p>UIKit默认的<code>presentation style</code>。 使用这种模式时，<code>presented VC</code>的宽高与屏幕相同，并且UIKit会直接使用<code>rootViewController</code>做为<code>presentation context</code>，在此次presentation完成之后，UIKit会将<code>presentation context及其子VC</code>都移出UI栈，这时候观察VC的层级关系，会发现UIWindow下只有<code>presented VC</code>（视图层级下UIWindow上只有presented VC）.</p>
+</li>
+<li><p><strong>UIModalPresentationCurrentContext</strong></p>
+<p>使用这种方式<code>present VC</code>时，<code>presented VC</code>的宽高取决于<code>presentation context</code>的宽高，并且UIKit会寻找属性<code>definesPresentationContext</code>为YES的VC作为<code>presentation context</code> 。当此次<code>presentation</code>完成之后，<code>presentation context</code>及其子VC都将被暂时移出当前的UI栈。</p>
+</li>
+<li><p><strong>UIModalPresentationCustom</strong></p>
+<p>自定义模式，需要实现UIViewControllerTransitioningDelegate的相关方法，并将presented VC的transitioningDelegate 设置为实现了UIViewControllerTransitioningDelegate协议的对象。</p>
+</li>
+<li><p><strong>UIModalPresentationOverFullScreen</strong></p>
+<p>与<code>UIModalPresentationFullScreen</code>的唯一<strong>区别</strong>在于，UIWindow下除了<code>presented VC</code>，还有其他正常的VC层级关系。也就是说该模式下，UIKit以<code>rootViewController</code>为<code>presentation context</code>，但presentation完成之后不会将<code>rootViewController移出当前的UI栈</code>。</p>
+</li>
+<li><p><strong>UIModalPresentationOverCurrentContext</strong></p>
+<p>寻找<code>presentation context</code>的方式与<code>UIModalPresentationCurrentContext</code>相同，所不同的是<code>presentation</code>完成之后，不会将<code>context及其子VC移出当前UI栈</code>。但是，这种方式只<strong>适用于transition style为UIModalTransitionStyleCoverVertical的情况</strong>(UIKit默认就是这种transition style)。其他transition style下使用这种方式将会触发异常。</p>
+</li>
+<li><p><strong>UIModalPresentationBlurOverFullScreen</strong></p>
+<p><code>presentation</code>完成之后，如果<code>presented VC</code>的背景有透明部分，会看到presented VC下面的VC会变得模糊，其他与<code>UIModalPresentationOverFullScreen</code>模式没有区别。</p>
+</li>
+<li><p><strong>UIModalPresentationPageSheet</strong></p>
+<p>在常规型设备（大屏手机，例如plus系列以及iPad系列）的水平方向，<code>presented VC</code>的高为当前屏幕的高度，宽为该设备竖直方向屏幕的宽度，其余部分用透明背景做填充。对于紧凑型设备（小屏手机）的水平方向及所有设备的竖直方向，其显示效果与<code>UIModalPresentationFullScreen</code>相同。</p>
+</li>
+<li><p><strong>UIModalPresentationFormSheet</strong></p>
+<p>在常规型设备的水平方向，<code>presented VC</code>的宽高均小于屏幕尺寸，其余部分用透明背景填充。对于紧凑型设备的水平方向及所有设备的竖直方向，其显示效果与<code>UIModalPresentationFullScreen</code>相同</p>
+</li>
+</ol>
+<p><code>UIModalPresentationFullScreen</code>、<code>UIModalPresentationCurrentContext</code>在转场完成后会将<code>context及其子VC移出当前UI栈</code>,因此转场结束后是无法看到presenting的视图的，而其他情况下的style是可以看到的</p>
+<h4 id="presentation-context"><a href="#presentation-context" class="headerlink" title="presentation context"></a>presentation context</h4><blockquote>
+<p><code>presentation context</code>是指为本次<code>present</code>提供上下文环境的类，需要指出的是，<code>presenting VC</code>通常并不是<code>presentation context</code></p>
+</blockquote>
+<p>​        当我们需要<code>present VC</code>的时候，除非我们指定了<code>context</code>，否则UIKit会优先选择<code>presenting VC</code>所属的容器类做为<code>presentation context</code>，如果没有容器类，那么会选择<code>rootViewController</code>。但是，UIKit搜索context的方式还与<code>presented VC</code>的<code>modalPresentationStyle</code>属性有关，当<code>modalPresentationStyle</code>为<code>UIModalPresentationFullScreen</code>、<code>UIModalPresentationOverFullScreen</code>等模式时，UIKit会直接选择<code>rootViewController</code>做为<code>context</code>。当<code>modalPresentationStyle</code>为<code>UIModalPresentationOverCurrentContext</code>、<code>UIModalPresentationCurrentContext</code>模式时，UIKit搜索<code>context</code>的方式如下：</p>
+<ul>
+<li><p><code>UIModalPresentationOverCurrentContext</code>、<code>UIModalPresentationCurrentContext</code>模式下，一个VC能否成为<code>presentation context</code> 是由VC的<code>definesPresentationContext</code>属性决定的，这是一个<code>BOOL</code>值，默认<code>UIViewController的definesPresentationContext</code>属性值是<code>NO</code>，而<strong>container view controller</strong>（容器控制器）的<code>definesPresentationContext</code>默认值是<code>YES</code>，这也是上文中，UIKit总是将<code>container view controller</code>做为<code>presentation context</code>的原因。如果我们想指定<code>presenting VC</code>做为<code>context</code>，只需要在<code>presenting VC</code>的<code>viewDidLoad</code>方法里添加如下代码即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.definesPresentationContext = YES</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>UIKit搜索<code>presentation context</code>的顺序为： </p>
+<ol>
+<li><code>presenting VC</code> </li>
+<li><code>presenting VC</code> 的<code>父VC </code></li>
+<li><code>presenting VC</code> 所属的<code>container VC </code></li>
+<li><code>rootViewController</code></li>
+</ol>
+<h3 id="层级关系"><a href="#层级关系" class="headerlink" title="层级关系"></a>层级关系</h3><blockquote>
+<p><strong>presented VC 总是与 presentation context 处于同一层级，而与presenting VC所在的层级无关，且同一个presentation context同时只能有一个presented VC。</strong></p>
+</blockquote>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-零碎知识点/碰到的一些问题"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/07/10/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%B0%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/"
+    >碰到的一些问题</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/07/10/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%B0%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2021-07-10T09:45:59.000Z" itemprop="datePublished">2021-07-10</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/">零碎知识点</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="场景图片的问题"><a href="#场景图片的问题" class="headerlink" title="场景图片的问题"></a>场景图片的问题</h3><ol>
+<li>从相册中导出全场景图片存在的问题<ol>
+<li>压缩图片的质量</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[[PHCachingImageManager defaultManager]</span><br><span class="line">        requestImageDataForAsset:mAsset</span><br><span class="line">                         options:nil</span><br><span class="line">                   resultHandler:^(NSData *_Nullable imageData, NSString *_Nullable dataUTI, UIImageOrientation orientation, NSDictionary *_Nullable info) &#123;</span><br><span class="line">                     UIImage *resultImage = [UIImage imageWithData:imageData];</span><br><span class="line">                     //获得的image要转换为正确的方向</span><br><span class="line">                    // 然后将该image导入到本地文件中</span><br><span class="line">                     //注意要用jpg的形式导入本地，否则，图片文件的大小会激增，有4M多变成90Mb（原因未知）</span><br><span class="line">                      BOOL result = [UIImageJPEGRepresentation(image, 0.5) writeToFile:filePath atomically:YES];</span><br><span class="line">                     //采用png的形式保存场景图片，会出现存储图片内存激增</span><br><span class="line">                     BOOL result = [UIImagePNGRepresentation(image) writeToFile:filePath atomically:YES];</span><br><span class="line">                   &#125;];</span><br></pre></td></tr></table></figure>
+
+<p>​        2. 全场景图片一般为十几万✖️几千的分辨率，上述压缩的方式可以使全场景图片在iphone6plus上显示，没有卡顿现象，但是这样的图片在iphone6上仍有有明显的卡顿，</p>
+<h3 id="单例block引用导致内存泄漏的问题"><a href="#单例block引用导致内存泄漏的问题" class="headerlink" title="单例block引用导致内存泄漏的问题"></a>单例block引用导致内存泄漏的问题</h3><ol>
+<li>注意如果block为单例的属性，那么在该block中要注意内存泄露的问题，因为单例会一直无法释放，会一直持有属性，而属性会一直持有block中的对象，那么就会导致block中捕获的对象，造成对象无法释放</li>
+<li>如果是方法中的block，那么方法在执行完毕之后，便会释放block，不会一直持有，不用担心内存泄露的问题</li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
+  </nav>
+  
+</section>
+</div>
+
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2021-2023
+        <i class="ri-heart-fill heart_icon"></i> jingbo
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="ayer"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/photos">相册</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+ 
+<script src="/js/clickLove.js"></script>
+ 
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+ 
+<script src="/js/dz.js"></script>
+ 
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707022&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"show":true,"jsonPath":"ak12_3302"},"display":{"position":"right","width":150,"height":300,"vOffset":100},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+
+</html>

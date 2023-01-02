@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title> ayer</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
+      
+    <link rel="alternate" href="/atom.xml" title="ayer" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      
+<section class="cover">
+    
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="/images/cover4.jpg" alt="image frame" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">ayer</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
+  </div>
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 100,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
+<div id="main">
+  <section class="outer">
+  
+  
+  
+
+<div class="notice" style="margin-top:50px">
+    <i class="ri-heart-fill"></i>
+    <div class="notice-content" id="broad"></div>
+</div>
+<script type="text/javascript">
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("broad").innerHTML = data.hitokoto;
+        })
+        .catch(console.error)
+</script>
+
+<style>
+    .notice {
+        padding: 20px;
+        border: 1px dashed #e6e6e6;
+        color: #969696;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #fbfbfb50;
+        border-radius: 10px;
+    }
+
+    .notice i {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        padding-right: 10px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+
+    .notice-content {
+        display: initial;
+        vertical-align: middle;
+    }
+</style>
+  
+  <article class="articles">
+    
+    
+    
+    
+    <article
+  id="post-底层原理/OC对象的分类"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/18/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/"
+    >OC对象的分类</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/18/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/" class="article-date">
+  <time datetime="2022-12-17T16:00:00.000Z" itemprop="datePublished">2022-12-18</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="OC对象的分类"><a href="#OC对象的分类" class="headerlink" title="OC对象的分类"></a>OC对象的分类</h1><p>主要分为3种</p>
+<ol>
+<li><code>instance</code>对象，实例对象 </li>
+<li><code>class</code>对象，类对象</li>
+<li><code>meta-class</code>对象，元类对象<h2 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h2>通过类alloc出来的对象，instance对象在内存种存储的信息（只有成员变量）包括</li>
+</ol>
+<ul>
+<li>isa指针</li>
+<li>其他成员变量</li>
+</ul>
+<p>isa指针始终在对象结构体的前面，因此，isa指针的地址即实例对象的地址</p>
+<h2 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h2><ul>
+<li><code>[objec class]</code>、<code>[NSObject class]</code>、<code>object_getClass(object)</code>都是获取<code>NSobject</code>的<code>class</code>对象</li>
+<li>它们都是同一个对象，在内存中有且只有一个class对象</li>
+<li>class对象在内存中存储的信息主要包括</li>
+</ul>
+<ol>
+<li>isa指针</li>
+<li>superclass指针</li>
+<li>类的属性信息（@property）、类的<code>对象方法</code>信息（instance method）</li>
+<li>类的协议信息（protocol）、类的成员变量信息（ivar）<ol>
+<li>ivar并非成员变量的值，成员变量的值有instance决定</li>
+<li>ivar实际存储的类型，名称等描述信息<h2 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h2><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除isa指针、superclass指针、类方法信息外，其他均为null<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系<img src="/.com//16713605118546.png"></h3></li>
+</ol>
+</li>
+<li>instance的isa指向class</li>
+<li>class的isa指向meta-class</li>
+<li>meta-class的isa指向基类的meta-class</li>
+<li>class的superclass指向父类的class<ol>
+<li>如果没有父类，superclass指针为nil</li>
+</ol>
+</li>
+<li>meta-class的superclass指向父类的meta-class<ol>
+<li>基类的meta-class的superclass指向基类的class</li>
+</ol>
+</li>
+<li></li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16708614441261"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/17/%E5%85%B6%E4%BB%96/16708614441261/"
+    >NSObject</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/17/%E5%85%B6%E4%BB%96/16708614441261/" class="article-date">
+  <time datetime="2022-12-16T16:00:00.000Z" itemprop="datePublished">2022-12-17</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h1><h3 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><ul>
+<li>系统分配了16个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
+<li>但<code>NSObject</code>对象内部只使用了8个字节（<code>isa</code>指针）的空间（64bit环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
+<li>用<code>clang -rewrite-objc main.m -o main.cpp</code>编译成<code>C++</code>文件（全平台），</li>
+<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m -o main.cpp</code>(推荐)编译成指定平台的</li>
+<li>16字节而不是8字节的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小16字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>扩展例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> @interface student: NSObject &#123;</span><br><span class="line"> int _no;</span><br><span class="line"> int _age;</span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">int _no; //4字节</span><br><span class="line">int _age; //4 字节</span><br><span class="line">&#125;</span><br><span class="line">内存对齐: 结构体的大小必须是最大成员大小的倍数</span><br></pre></td></tr></table></figure></li>
+<li>注意，ios操作系统的内存对齐，是按16倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)<strong>24位大小，但是用<code>malloc_size</code>计算</strong>实际</strong>分配的确实32位 </li>
+<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为8，实际不知道内存中的大小<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3></li>
+</ul>
+<ol>
+<li><code>print、p</code>：打印</li>
+<li><code>po</code>: 打印对象</li>
+<li>读取内存<ol>
+<li><code>memory red/数量格式字节数 内存地址</code>:`memory red/3xw 0x10010</li>
+<li><code>x/数量格式字节数 内存地址</code>: x/3xw 0x10010</li>
+<li>格式: x-16进制，d是10进制</li>
+<li>字节大小:b 1字节，h 2字节，w 4字节，g 8字节</li>
+</ol>
+</li>
+<li>修改内存中的值，<code>memory write 内存地址 数值</code>：memory write 0x0000010 10</li>
+<li><h3 id="对象的isa指针指向哪里"><a href="#对象的isa指针指向哪里" class="headerlink" title="对象的isa指针指向哪里"></a>对象的isa指针指向哪里</h3></li>
+</ol>
+<ul>
+<li>instance对象的isa指针指向类对象</li>
+<li>类对象的isa指针指向元类对象</li>
+<li>元类对象的isa指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
+<li>对象的方法、属性、协议信息、成员变量，存放在类对象</li>
+<li>类方法存放在元类对象</li>
+<li>成员变量的具体值，存放在instance</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16710932427871"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/12/15/%E5%85%B6%E4%BB%96/16710932427871/" class="article-date">
+  <time datetime="2022-12-15T08:34:02.787Z" itemprop="datePublished">2022-12-15</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="协议注意的点"><a href="#协议注意的点" class="headerlink" title="协议注意的点"></a>协议注意的点</h1><h2 id="已重写的限制条件会在某些泛型上下文中失效"><a href="#已重写的限制条件会在某些泛型上下文中失效" class="headerlink" title="已重写的限制条件会在某些泛型上下文中失效"></a>已重写的限制条件会在某些泛型上下文中失效</h2><p>对于一些通过条件遵循获得了特定行为的类型，在某些泛型上下文中，并不能够确保能够使用协议限制中的特定实现。为了说明这个行为，下面的例子中定义了两个协议以及一个有条件地遵循两个协议的泛型类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">protocol Loggable &#123;</span><br><span class="line">    func log()</span><br><span class="line">&#125;</span><br><span class="line">extension Loggable &#123;</span><br><span class="line">    func log() &#123;</span><br><span class="line">        print(self)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol TitledLoggable: Loggable &#123;</span><br><span class="line">    static var logTitle: String &#123; get &#125;</span><br><span class="line">&#125;</span><br><span class="line">extension TitledLoggable &#123;</span><br><span class="line">    func log() &#123;</span><br><span class="line">        print(&quot;\(Self.logTitle): \(self)&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Pair&lt;T&gt;: CustomStringConvertible &#123;</span><br><span class="line">    let first: T</span><br><span class="line">    let second: T</span><br><span class="line">    var description: String &#123;</span><br><span class="line">        return &quot;(\(first), \(second))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Pair: Loggable where T: Loggable &#123; &#125;</span><br><span class="line">extension Pair: TitledLoggable where T: TitledLoggable &#123;</span><br><span class="line">    static var logTitle: String &#123;</span><br><span class="line">        return &quot;Pair of &#x27;\(T.logTitle)&#x27;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension String: TitledLoggable &#123;</span><br><span class="line">    static var logTitle: String &#123;</span><br><span class="line">        return &quot;String&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当其泛型类型遵循 Loggable 协议以及 TitleLoggale 协议时，结构体 Pair 遵循 Loggable 协议以及 TitleLoggale 协议。下面的例子中，oneAndTwo 是 Pair<String> 的一个实例。因为 String 遵循 TitleLoggable ，因此 oneAndTwo 也遵循此协议。当 log() 方法被 oneAndTwo 直接调用时，此方法使用的是包含标题的特定版本。</String></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let oneAndTwo = Pair(first: &quot;one&quot;, second: &quot;two&quot;)</span><br><span class="line">oneAndTwo.log()</span><br><span class="line">// Prints &quot;Pair of &#x27;String&#x27;: (one, two)&quot;</span><br></pre></td></tr></table></figure>
+<p>虽然如此，当 oneAndTwo 在泛型上下文中使用，或者它是 Loggable/TitledLoggable 类型的实例时，包含标题的特定版本 log() 方法不会被使用。Swift 只会根据这样的规则来选择 log() 的实现版本—— **<code>Pair 遵循 Loggable 所需要的最少的限制条件</code>**。因此 Loggable 所提供的默认实现版本会被使用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let oneAndTwo:Loggable = Pair(first: &quot;one&quot;, second: &quot;two&quot;)</span><br><span class="line">oneAndTwo.log()****</span><br><span class="line">// Prints &quot;(one, two)&quot;</span><br><span class="line">let oneAndTwo:TitledLoggable = Pair(first: &quot;one&quot;, second: &quot;two&quot;)</span><br><span class="line">oneAndTwo.log()</span><br><span class="line">// Prints &quot;(one, two)&quot;</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16706010476870"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/12/09/%E5%85%B6%E4%BB%96/16706010476870/" class="article-date">
+  <time datetime="2022-12-09T15:50:47.687Z" itemprop="datePublished">2022-12-09</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="FishHook"><a href="#FishHook" class="headerlink" title="FishHook"></a>FishHook</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>iOS中通过<code>Method Swizzling</code>实现<code>hook</code>，其原理是利用OC的<code>Runtime</code>特性，动态改变<code>SEL</code>（方法编号）和<code>IMP</code>（方法实现）的对应关系，达到OC方法交换的目的。然而只适用于动态的OC方法，对于C函数Hook，可以引用fishHook，通过修改machO文件中<code>la_symbol_ptr</code>和<code>non_la_symbol_ptr</code>两个表的指针达到C函数HOOK的目的。</p>
+<h2 id="框架地址"><a href="#框架地址" class="headerlink" title="框架地址"></a>框架地址</h2><p><code>fishhook</code>是一个非常简单的库，可以在模拟器和设备上运行在iOS上的Mach-O二进制文件中动态重新绑定符号,代码地址<a target="_blank" rel="noopener" href="https://github.com/facebook/fishhook">https://github.com/facebook/fishhook</a></p>
+<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><ol>
+<li>头文件导入<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;fishhook.h&quot;</span><br></pre></td></tr></table></figure></li>
+<li>交换制定的C函数,构建<code>rebinding</code>结构体<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct rebinding rebindSend;</span><br><span class="line">rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br></pre></td></tr></table></figure></li>
+<li><code>rebind_symbols</code>重新绑定符号<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">rebind_symbols(rebs, 1);</span><br></pre></td></tr></table></figure></li>
+<li>完整使用用例<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//  FishHooklViewController.m</span><br><span class="line">//  transitionController</span><br><span class="line">//</span><br><span class="line">//  Created by 陈晶泊 on 2022/8/10.</span><br><span class="line">//</span><br><span class="line">#import &quot;fishhook.h&quot;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdarg.h&gt;</span><br><span class="line">#import &quot;FishHooklViewController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface FishHooklViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation FishHooklViewController</span><br><span class="line">__unused static void(*orig_objc_nslog)(NSString *format, ...);</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    self.view.backgroundColor = UIColor.whiteColor;</span><br><span class="line">    struct rebinding rebindSend;</span><br><span class="line">    rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">    rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">    rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br><span class="line">    struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">    rebind_symbols(rebs, 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void hook_Objc_nslog(NSString *format, ...) &#123;</span><br><span class="line">    format = [format stringByAppendingFormat:@&quot;已hook&quot;];</span><br><span class="line">    orig_objc_nslog(format);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event &#123;</span><br><span class="line">    NSLog(@&quot;FishHooklViewController&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><code>MachO</code>文件的静态链接在编译的时候，就确定了方法地址，位于代码段模，是不可写的，因此静态链接的函数方法，在运行时是无法更改的。<br>然而动态链接，是在运行时进行方法链接的，在<code>MachO</code>文件中，访问动态库里的数据符号地址放在<code>got</code>(也称<code>Non-Lazy Symbol Pointers</code>)数据段，调用动态库的函数的地址放在<code>la_symbol_ptr</code>数据段的数据段中，是可读写的，因此可以在程序运行期间修改<code>got</code>(<code>non_la_symbol_ptr</code>)和<code>la_symbol_ptr</code>数据段，来替换函数跟全局变量的地址。<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="1-传入需要替换的函数"><a href="#1-传入需要替换的函数" class="headerlink" title="1. 传入需要替换的函数"></a>1. 传入需要替换的函数<img src="/.com//16706010476870/16706577321150.png"></h4> <code>rebindings_head</code>的<code>next</code>为nil是第一次调用；去注册方法，其中<code>_dyld_register_func_for_add_image</code>做了2件事，1.是跟<code>else</code>里面一样，为每个image(镜像)调用<code>_rebind_symbols_for_image</code>，2.是当<code>dyld</code>后面加载镜像时候，也为这个新镜像调用<code>_rebind_symbols_for_image</code>。<br> <code>rebindings_head</code>采用的链表结构，具体如下:<br><img src="/.com//16706010476870/16706578333010.jpg"><h4 id="2-计算地址"><a href="#2-计算地址" class="headerlink" title="2. 计算地址"></a>2. 计算地址</h4><code>rebind_symbols_for_image</code>方法的目的，主要是计算基址，找到符号表、字符串表、间接符号表、<code>nl_symbol_ptr(got)</code>以及<code>la_symbol_ptr</code>数据段的地址。</li>
+<li>首先遍历加载命令，获得<code>MachO</code>文件中符号表、间接符号表、<code>LINKEDIT</code>三个加载命令<br><img src="/.com//16706010476870/16706583225213.png"></li>
+<li>根据<code>LINKEDIT</code>获取的真实基址，根据第一步中得到的加载命令，确定符号表、间接符号表、字符串表的虚拟内存地址<br><img src="/.com//16706010476870/16706584145390.png"></li>
+<li>遍历加载命令，找到数据段，在从数据段的<code>section</code>中找到<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code></li>
+</ol>
+<p><img src="/.com//16706010476870/16706586123063.png"></p>
+<h4 id="3-方法替换"><a href="#3-方法替换" class="headerlink" title="3. 方法替换"></a>3. 方法替换</h4><p>最后遍历<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和数据地址，并结合间接符号表、符号表、以及字符串表，得到地址对应的函数，变量名称，找到相同的名称，即可进行地址的替换。<br><img src="/.com//16706010476870/16706587741784.png"></p>
+<h2 id="通过MachOView分析"><a href="#通过MachOView分析" class="headerlink" title="通过MachOView分析"></a>通过MachOView分析</h2><ol>
+<li>计算出符号表、间接符号表、字符串表的地址<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.07.46.png" alt="截屏2022-12-10 16.07.46"></li>
+<li><code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和函数数据地址，其中<code>reserved1</code>即为数据段中的函数在间接符号表中的位置<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.16.25.png" alt="截屏2022-12-10 16.16.25"></li>
+<li>间接符号表中的地址，和实际数据段地址是对应的，其中间接符号表中的数据，实际对应的是符号表中的索引。<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.20.04.png" alt="截屏2022-12-10 16.20.04"></li>
+</ol>
+<p><img src="/.com//16706010476870/16706604848859.png"><br>4. 符号表中，关联由字符串表，从而知道函数的名称，因此，最终，根据名称，从间接符号表中拿到原始函数地址，从而完成了方法的替换。<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.24.10.png" alt="截屏2022-12-10 16.24.10"></p>
+<h2 id="FishHook应用实例"><a href="#FishHook应用实例" class="headerlink" title="FishHook应用实例"></a>FishHook应用实例</h2><p><code>SMCallTrace</code>通过hook<code>objc_msgSend</code>方法，hook了所有OC的方法，在hook方法中通过汇编语言来计算方法的耗时，可以用来项目中方法的执行情况。在需要检测耗时时间的地方调用 <code>[SMCallTrace start]</code>，结束时调用 <code>stop</code> 和 <code>save</code> 就可以打印出方法的调用层级和耗时了。还可以设置最大深度和最小耗时检测，来过滤不需要看到的信息。<a target="_blank" rel="noopener" href="https://github.com/ming1016/GCDFetchFeed">源码地址</a><br>具体使用后的效果<img src="/.com//16706010476870/IMG_963F24C3F87F-1.jpeg" alt="IMG_963F24C3F87F-1"></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16703379364755"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/12/06/%E5%85%B6%E4%BB%96/16703379364755/" class="article-date">
+  <time datetime="2022-12-06T14:45:36.476Z" itemprop="datePublished">2022-12-06</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="theos-tweak原理"><a href="#theos-tweak原理" class="headerlink" title="theos-tweak原理"></a>theos-tweak原理</h1><ol>
+<li><code>make</code>指令实际上是将<code>Tweak.xm</code>的代码编译成动态库</li>
+<li><code>make packpage</code>指令，将动态库文件打包成了<code>deb</code>文件，插件安装包</li>
+<li><code>make install</code>指令，远程登录手机安装插件到app内，<code>Makefile</code>文件内配置<ol>
+<li>安装完的包会在<code>/Library/MobileSubstrate/DynamicLibraries</code>文件夹内,包含动态库，以及相关的<code>.plist</code>文件(里面由相关应用的bundlId)</li>
+<li>该文件夹由Cydia管理</li>
+</ol>
+</li>
+<li>对应bundlId的应用打开后，会加载相关插件的动态库到内存中（不会缓存，每次重新打开，都会加载），去做交换方法的操作</li>
+<li>实际上没次动态修改，并为修改代码<h3 id="过程图"><a href="#过程图" class="headerlink" title="过程图"></a>过程图</h3><img src="/.com//16703379364755/16703398332015.png"></li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16693590363882"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/11/25/%E5%85%B6%E4%BB%96/16693590363882/" class="article-date">
+  <time datetime="2022-11-25T06:50:36.388Z" itemprop="datePublished">2022-11-25</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id><a href="#" class="headerlink" title></a></h1> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16693590004039"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/11/25/%E5%85%B6%E4%BB%96/16693590004039/" class="article-date">
+  <time datetime="2022-11-25T06:50:00.404Z" itemprop="datePublished">2022-11-25</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id><a href="#" class="headerlink" title></a></h1> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16690972051464"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/11/22/%E5%85%B6%E4%BB%96/16690972051464/" class="article-date">
+  <time datetime="2022-11-22T06:06:45.146Z" itemprop="datePublished">2022-11-22</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="T-2-0场景开发总结"><a href="#T-2-0场景开发总结" class="headerlink" title="T+2.0场景开发总结"></a>T+2.0场景开发总结</h1><h2 id="1-项目背景"><a href="#1-项目背景" class="headerlink" title="1. 项目背景"></a>1. 项目背景</h2><p>   此前场景的创建链路较长，较为繁琐，同时视觉实现效果较为简单，缺乏吸引力；而且，缺乏用户学习和用户引导。由于此前场景均为<code>RN</code>实现，而<code>RN</code>受限于生态环境有限，难以实现较为复杂的视觉效果，且容易出各种UI显示问题，以及难以排查的bug。考虑于此，在2.0版本用<code>app原生语言</code>对场景模块进行重构，翻新。目标在于简化场景创建的流程，提升用户对<code>TCL场景生态</code>的认知。</p>
+<h2 id="2-功能模块"><a href="#2-功能模块" class="headerlink" title="2. 功能模块"></a>2. 功能模块</h2><h3 id="2-1-功能版块介绍"><a href="#2-1-功能版块介绍" class="headerlink" title="2.1 功能版块介绍"></a>2.1 功能版块介绍</h3><p>   <img src="/.com//16690972051464/%E5%9C%BA%E6%99%AF%E5%88%9B%E5%BB%BA.jpg" alt="场景创建"></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16690971923137"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/11/22/%E5%85%B6%E4%BB%96/16690971923137/" class="article-date">
+  <time datetime="2022-11-22T06:06:32.314Z" itemprop="datePublished">2022-11-22</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="IPC时间推送"><a href="#IPC时间推送" class="headerlink" title="IPC时间推送"></a>IPC时间推送</h1><p>1、消息列表点击事件消息不再弹出购买套餐提示，消息列表点击事件消息，统一跳转至对应事件的播放器页面弹出相对应的提示<br>2、事件播放器页面App判断事件列表里是否存在视频URL，若视频URL不为空，则表示事件上报时用户购买了套餐，则App可以直接播放视频，如视频无法播放则提示「该视频已过期」<br>3、若视频URL为空，则App调用支付平台接口判断用户当前是否购买套餐，若用户当前已购买套餐，则在APP的事件播放器页面提示「因该视频生成时未购买云套餐，无法支持其播放」<br>4、若视频URL为空，并且用户当前没有购买套餐，则在APP的事件播放器页面去弹框引导用户购买套餐</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-其他/16677424889825"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2022/11/06/%E5%85%B6%E4%BB%96/16677424889825/" class="article-date">
+  <time datetime="2022-11-06T13:48:08.983Z" itemprop="datePublished">2022-11-06</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="练习一-喜玛拉广告去除"><a href="#练习一-喜玛拉广告去除" class="headerlink" title="练习一 喜玛拉广告去除"></a>练习一 喜玛拉广告去除</h1><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li><code>Revel</code>中查看广告的图层信息，通过Cycript<code>[#0x12333 removeFromSuperlayer]</code>只能暂时将广告屏蔽</li>
+<li>用<code>CLutch</code>脱壳应用，<code>class-dump</code>指令拿到头文件信息，查看相关视图图层的信息，通过hook的方式去去除广告<h1 id="练习二，桌面更新数字去除"><a href="#练习二，桌面更新数字去除" class="headerlink" title="练习二，桌面更新数字去除"></a>练习二，桌面更新数字去除</h1></li>
+</ol>
+<ul>
+<li>iOS桌面为<code>springboard</code>，位置在<code>/System/Library/CoreServices/SpringBoard.app</code></li>
+<li><code>springboard</code>无法通过<code>revel</code>的方式查看，需要用<code>cycript</code>的方式查看</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
+  </nav>
+  
+</section>
+</div>
+
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2021-2023
+        <i class="ri-heart-fill heart_icon"></i> jingbo
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="ayer"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/photos">相册</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+ 
+<script src="/js/clickLove.js"></script>
+ 
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+ 
+<script src="/js/dz.js"></script>
+ 
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707022&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"show":true,"jsonPath":"ak12_3302"},"display":{"position":"right","width":150,"height":300,"vOffset":100},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+
+</html>

@@ -1,0 +1,1750 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>视频H264硬编码</title>
+    <url>/2021/06/23/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p>像素的大小是8bit，一张1920✖️1080的图片需要1920✖️1080✖️8✖️3bit / (1024✖️1024) = 47Mbit = 5.8MB；在观看30FPS的视频时，1s需要30张图片，也就是需要47 ✖️ 30 = 1.4Gbit，也就是1.4Gbit的带宽；以我们现在的网络带宽远远不够。所以必须进行视频源压缩编码。</p>
+</blockquote>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>音视频学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>iOS拍摄流程</title>
+    <url>/2021/06/23/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p>iOS相机拍摄所需框架为&lt;ACFoundation/AVFoundation.h&gt;，该框架中基本上包含了视频中所需的全部方法。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="拍摄的流程"><a href="#拍摄的流程" class="headerlink" title="拍摄的流程"></a>拍摄的流程</h2><h3 id="session-初始化"><a href="#session-初始化" class="headerlink" title="session 初始化"></a>session 初始化</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[AVCaptureSession alloc] init]</span><br></pre></td></tr></table></figure>
+
+<h3 id="Input初始化"><a href="#Input初始化" class="headerlink" title="Input初始化"></a>Input初始化</h3><ol>
+<li>device初始化</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//音频设备初始化，AVMediaTypeAudio替换为AVMediaTypeVideo即为视频，默认为后置摄像头</span><br><span class="line">[AVCaptureDeviceInput deviceInputWithDevice:[AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio] error:&amp;error];</span><br><span class="line">//视频设置初始化，详细版</span><br><span class="line">AVCaptureDeviceDiscoverySession *captureDeviceDiscoverySession =</span><br><span class="line">            [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[ AVCaptureDeviceTypeBuiltInWideAngleCamera ] mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];//发现所有后置视频设备的会话</span><br><span class="line">[[AVCaptureDeviceDiscoverySession devices] enumeratObjectsUsingBlock:^(AVCaptureDevice *camera, NSUInteger idx, BOOL *_Nonnull stop) &#123;</span><br><span class="line">            if (camera.position == AVCaptureDevicePositionBack) &#123;</span><br><span class="line">                backCamera = camera;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;];//遍历会话获取后置设备，可以对设备进行一些属性设置，例如曝光模式，但是，要调用lockForConfiguration:调用完之后使用unlockForConfiguration方法解锁，</span><br><span class="line">[AVCaptureDeviceInput deviceInputWithDevice:backCamera error:nil];//同样的方式初始化设备输入</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>然后通过<code>canAddInput</code>来判断是否能在会话中，通过<code>addInput</code>将input添加到会话中，视频要添加2个会话，视频输入以及语音输入</li>
+<li>如果要切换摄像头<ol>
+<li>在<code>session</code>的<code>beginConfiguration</code>和<code>commitConfiguration</code>之间重新设置摄像头，</li>
+<li><code>removeInput</code>删除原来的媒体设备输入</li>
+<li>获取后置的摄像头的设备<code>AVCaptureDevice</code></li>
+<li><code>[AVCaptureDeviceInput deviceInputWithDevice:swithToDevice error:**nil**];</code>重新设置摄像头，并将其添加到<code>session</code>中</li>
+<li><strong>注意</strong>，如果为前置摄像头，遍历会话中的<code>outputs</code>，将其输入和输出的连接会话<code>AVCaptureConnection</code>的视频镜像属性<code>videoMirrored</code>，设为<code>YES</code></li>
+</ol>
+</li>
+</ol>
+<h3 id="output初始化"><a href="#output初始化" class="headerlink" title="output初始化"></a>output初始化</h3><ol>
+<li><p><code>AVCaptureMovieFileOutput</code> 输出视频，</p>
+<ol>
+<li><p>只用初始化<code>AVCaptureMovieFileOutput</code>，将视频输出加到会话当中</p>
+</li>
+<li><p>调用<code>startRecordingToOutputFileURl:recordingDelegate:</code>处理输出的视频，通过调用<code>stopRecod</code>停止录屏</p>
+</li>
+<li><p>实现<code>AVCaptureFileOutputRecordingDelegate</code></p>
+<ol>
+<li><code>captureOutput:didStartRecordingToOutputFileAtURL:fromConnections:</code>开始写入视频文件时调用</li>
+<li><code>captureOutput:didFinishRecordingToOutputFileAtURL:fromConnections:error:</code>写入完成时调用</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>AVAssetWriter</code>输出数据，见第2节</p>
+</li>
+</ol>
+<h3 id="初始化预览层AVCaptureVideoPreviewLayer"><a href="#初始化预览层AVCaptureVideoPreviewLayer" class="headerlink" title="初始化预览层AVCaptureVideoPreviewLayer"></a>初始化预览层AVCaptureVideoPreviewLayer</h3><ol>
+<li>根据媒体会话初始化视图层，也就是预览层，该属性可以添加到相应图层的子层中</li>
+<li><code>[AVCaptureVideoPreviewLayer layerWithSession:self.captureSession];</code>获取一个预览图层</li>
+<li><code>addSublayer</code>加到要显示的视图图层内</li>
+</ol>
+<h3 id="开始录制"><a href="#开始录制" class="headerlink" title="开始录制"></a>开始录制</h3><ol>
+<li><code>[session StartRunning]</code>，会话开始，开始录制（每次录制都需要<code>StartRunning</code>）</li>
+</ol>
+<h2 id="AVAssetWriter实现拍摄"><a href="#AVAssetWriter实现拍摄" class="headerlink" title="AVAssetWriter实现拍摄"></a>AVAssetWriter实现拍摄</h2><h3 id="初始化视频-音频数据输出"><a href="#初始化视频-音频数据输出" class="headerlink" title="初始化视频/音频数据输出"></a>初始化视频/音频数据输出</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">NSDictionary *videoSetting = @&#123;(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)&#125;;//32BGRA像素格式，和后面要取的视频帧数据对应</span><br><span class="line">self.videoPutData = [[AVCaptureVideoDataOutput alloc] init];</span><br><span class="line">self.videoPutData.videoSettings = videoSetting;</span><br><span class="line"></span><br><span class="line">[[AVCaptureAudioDataOutput alloc] init];</span><br></pre></td></tr></table></figure>
+
+<p>在<code>canAddOutput</code>判断后，通过<code>addOutput</code>添加到session中</p>
+<h3 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h3><p>通过<code>setSampleBufferDelegate:queue: </code>设置应该调用回调的缓冲区委托和队列,获取视频流</p>
+<h3 id="配置AVAssetWriter"><a href="#配置AVAssetWriter" class="headerlink" title="配置AVAssetWriter"></a>配置AVAssetWriter</h3><ol>
+<li><p>配置并发队列，<code>dispatch_async</code>异步执行</p>
+</li>
+<li><p>在队列中配置<code>AVAssetWriter</code>，用<code>[AVAsswtWriter assWriterWithURL:文件输出地址 fileType:AVFileTypeMPEG4 error:&amp;error]</code>初始化<code>AVAssetWriter</code>;</p>
+</li>
+<li><p>配置详细参数，视频硬编码参数</p>
+<ol>
+<li><p>码率和帧率的设置</p>
+<ol>
+<li><p><code>AVVideoAverageBitRateKey</code>：指单位时间内处理的数据位数，单位是 b/s 。码率=视频文件大小/视频时长。数值越大，显示越精细</p>
+</li>
+<li><p><code>AVVideoMaxKeyFrameIntervalKey</code>：关键帧最大间隔，1为每个都是关键帧，数值越大压缩率越高，也就是文件越大（如果画面包含大量场景变换或迅速移动的动作或动画，那么减少关键帧距离将会提高图像的整体品质。一个较小的关键帧距离对应于一个较大的输出文件。注意减少了关键帧间距，注意增大比特率也就是码率，保证视频质量）</p>
+</li>
+<li><p><code>AVVideoProfileLevelKey</code>：H.264专用参数，代表画质级别，从低到高分贝为BP、EP、MP、HP</p>
+<ol>
+<li><p>而H264最大的优势就是低码率情况下提供高质量的视频图像，总的来说编码流程可以分为五部分：帧间和帧内预测（Estimation）、变换（Transform）和反变换、量化（Quantization）和反量化、环路滤波（Loop Filter）、熵编码（Entropy Coding）</p>
+</li>
+<li><p>H264为了满足不同设备不同场景的需要（比如直播注重实时性，存储注重压缩比）定义了多种编码层次也就是Profile，具体如下</p>
+<ol>
+<li><p><code>BaslineProfile</code>：支持I/P 帧，只支持无交错（Progressive）和CAVLC</p>
+</li>
+<li><p><code>Extended Profile</code>：支持I/P/B/SP/SI 帧，只支持无交错（Progressive）和CAVLC</p>
+</li>
+<li><p><code>MainProfile</code>：提供I/P/B 帧，支持无交错（Progressive）和交错（Interlaced），也支持CAVLC 和CABAC</p>
+</li>
+<li><p><code>High Profile</code>：在mainProfile 的基础上增加了8x8内部预测、自定义量化、 无损视频编码和更多的YUV 格式；</p>
+</li>
+<li><p>视频压缩很重要的一个就是帧间预测，也就是视频相邻的几帧有很大的相关性，变化不会太大，所以存在很多冗余信息，压缩要做的就是去除这些冗余信息。帧类型主要有以下几种</p>
+<ol>
+<li>I帧表示关键帧，这一帧保留完整的画面数据，解码时只需要本帧数据就可以完成</li>
+<li>P帧，前向预测帧，表示的是这一帧跟之前的一个关键帧（或P帧）的差别，解码时需要用之前的画面叠加上本帧定义的差别，生成最终画面。</li>
+<li>B帧是双向预测帧，也就是B帧记录的是本帧与前后帧的差别，要解码B帧，不仅要取得之前的画面，还要解码之后的画面，通过前后画面的与本帧数据的叠加取得最终的画面。B帧压缩率高，但是解码时比较耗费CPU 。</li>
+</ol>
+</li>
+<li><p><code>Profile</code> 越高，压缩比就越高，但是编码、解码时要求的设备性能也就越高，编码、解码的效率也就越低。</p>
+</li>
+<li><p>这里的<code>level</code>就是对每个<code>profile</code>的能力细分。</p>
+<ol>
+<li>实时直播</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">COPY低清Baseline Level 1.3</span><br><span class="line">标清Baseline Level 3</span><br><span class="line">半高清Baseline Level 3.1</span><br><span class="line">全高清Baseline Level 4.1</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>存储媒体</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">低清 Main Level 1.3</span><br><span class="line">标清 Main Level 3</span><br><span class="line">半高清 Main Level 3.1</span><br><span class="line">全高清 Main Level 4.1</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>高清存储</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">半高清 High Level 3.1</span><br><span class="line">全高清 High Level 4.1</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>iPad 支持：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Baseline Level 1-3.1</span><br><span class="line">Main Level 1-3.1</span><br><span class="line">High Level 1-3.1</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>AVVideoExpectedSourceFrameRateKey</code>：预期的源帧速率，不用于控制帧速率，作为提示提供给视频编码器的，如果使用率自动级别的AVVideoProfileLevelKey，或者源内容的帧率高于30fps，则应设置此项。如果没有指定的话，编码器可能必须丢弃帧以满足位流要求</p>
+</li>
+</ol>
+</li>
+<li><p>视频属性设置</p>
+<ol>
+<li><code>AVVideoCodecKey</code>:用于压缩视频的编码器的名称，这里用的是硬编码AVVideoCodecTypeH264</li>
+<li><code>AVVideoWidthKey</code>、AVVideoHeightKey：设定视频的宽高</li>
+<li><code>AVVideoScalingModeKey</code>：视频压缩填充的方式，AVVideoScalingModeResizeAspectFill</li>
+<li><code>AVVideoCompressionPropertiesKey</code>：视频压缩编码器，压缩的属性字典，即1中码率和帧率的设置</li>
+</ol>
+</li>
+<li><p>音频设置</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">NSDictionary *audioSetting =</span><br><span class="line">                @&#123;AVEncoderBitRatePerChannelKey : @(28000),//声道采样率</span><br><span class="line">                  AVFormatIDKey : @(kAudioFormatMPEG4AAC),//音频格式，在视频中也是mp4格式</span><br><span class="line">                  AVNumberOfChannelsKey : @(1),//声道数</span><br><span class="line">                  AVSampleRateKey : @(22050)&#125;;//采样率</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>初始化视频采集<code>AVAssetWriterInput</code>，采用方法<code>[AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSetting:视频设置]</code>，也用同样方式设置音频采集<code>AVAssetWriterInput</code></li>
+<li>对于视频采集，可以通过视频采集的transform来调整视频流的方向，横屏还是竖屏，拍摄完默认是横的，要调整transform属性，<code>self.writerVideoInput.transform = CGAffineTransformMakeRotation(-M_PI / 2.0);</code></li>
+<li>最后将视频采集和声音采集，通过<code>canAddInput</code>判断，<code>addInput</code>添加到创建的写入<code>AVAssetWrite</code>中</li>
+</ol>
+</li>
+</ol>
+<h3 id="代理实现"><a href="#代理实现" class="headerlink" title="代理实现"></a>代理实现</h3><p>实现<code>AVCaptureAudioDataOutSampleBufferDelegate</code>、<code>AVCaptureVideoDataOutSampleBufferDelegate</code>，具体是在<code>captureOutput:didOutputSampleBuffer:fromConnection:</code>方法中实现（每当输出捕获和输出新视频帧时，委托将接收此消息，并按照其<code>videoSetting</code>属性指定对其进行解码或重新编码，该方法在输出的<code>sampleBufferCallbackQueue</code>属性指定的调度队列上调用，为周期性的调用）</p>
+<ol>
+<li><p><code>CMSampleBufferRef</code>，是相关媒体流数据，可以获取媒体流的类型为语音还是视频流以及资源的时间戳</p>
+</li>
+<li><p>在媒体流属性为视频里(确保写入的第一帧为视频图像，保证不会出现有声音但无画面的情况)，调用（AVAssetWriter）的<code>startWriting</code>方法开始写入，从视频流中获取最早时间戳，调用<code>startSessionAtSourceTime</code>，开始写入</p>
+<ol>
+<li>视频和音频开始写入的判断<code>canWritting</code>（Bool）放在<code>startSessionAtSourceTime</code>下，会导致视频前几帧相同，因为调用<code>startSessionAtSourceTime````就开始录制了，所以要放在startsessionAtSourceTime</code>的上面</li>
+</ol>
+</li>
+<li><p>配置中初始化的视频采集以及声音采集<code>AVAssetWriterInput</code>，在其属性<code>readyForMoreMediaData</code>（输入准备好接收更多数据），调用apppendSampleBuffer:方法，将<code>CMSampleBufferRef</code>添加进去</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate method</span><br><span class="line">- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection &#123;</span><br><span class="line">    if (!self.videoRecording) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    CMFormatDescriptionRef desMedia = CMSampleBufferGetFormatDescription(sampleBuffer);</span><br><span class="line">    CMMediaType mediaType = CMFormatDescriptionGetMediaType(desMedia);</span><br><span class="line"></span><br><span class="line">    if (mediaType == kCMMediaType_Video) &#123;</span><br><span class="line">        if (!self.canWritting) &#123;</span><br><span class="line">            [self.writer startWriting];</span><br><span class="line"></span><br><span class="line">            CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);</span><br><span class="line"></span><br><span class="line">            self.canWritting = YES;</span><br><span class="line">            [self.writer startSessionAtSourceTime:timestamp];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    if (self.canWritting) &#123;</span><br><span class="line">        if (mediaType == kCMMediaType_Video) &#123;</span><br><span class="line">            if (self.writerVideoInput.readyForMoreMediaData) &#123;</span><br><span class="line">                BOOL success = [self.writerVideoInput appendSampleBuffer:sampleBuffer];</span><br><span class="line">                if (!success) &#123;</span><br><span class="line">                    LOG_DEBUG(@&quot;video write failed&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; else if (mediaType == kCMMediaType_Audio &amp;&amp; self.canWritting) &#123;</span><br><span class="line">            if (self.writerAudioInput.readyForMoreMediaData) &#123;</span><br><span class="line">                BOOL success = [self.writerAudioInput appendSampleBuffer:sampleBuffer];</span><br><span class="line">                if (!success) &#123;</span><br><span class="line">                    LOG_DEBUG(@&quot;audio write failed&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="录制完成"><a href="#录制完成" class="headerlink" title="录制完成"></a>录制完成</h3><p>AVCaptureSession的startRunning方法是个耗时操作，如果在主线程调用的话会卡UI。完成写入，AVAssetWriter的状态为正在写入，则调用<code>finishWritingWithCompletionHandler:</code>完成数据的写入</p>
+<h2 id="AVAssetWriter实现视频压缩"><a href="#AVAssetWriter实现视频压缩" class="headerlink" title="AVAssetWriter实现视频压缩"></a>AVAssetWriter实现视频压缩</h2><h3 id="传统视频压缩的方式"><a href="#传统视频压缩的方式" class="headerlink" title="传统视频压缩的方式"></a>传统视频压缩的方式</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:inputURL options:nil];</span><br><span class="line">AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetMediumQuality];//视频压缩的类型，还有AVAssetExportPresset960x540具体压缩的分辨率</span><br><span class="line">   exportSession.outputURL = outputURL;</span><br><span class="line">   exportSession.outputFileType = AVFileTypeMPEG4;</span><br><span class="line">   exportSession.shouldOptimizeForNetworkUse = YES;</span><br><span class="line">   [exportSession exportAsynchronouslyWithCompletionHandler:^(void) &#123;</span><br><span class="line">       switch(exportSession.status) &#123;</span><br><span class="line">         case AVAssetExportSessionStatusCompleted://压缩完成</span><br><span class="line">         case AVAssetExportSessionStatusFailed://压缩失败</span><br><span class="line">         default:</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;];</span><br></pre></td></tr></table></figure>
+
+<p>绝大多数的情况下可以通过传统的压缩方式对视频进行压缩。为了获得最大的视频压缩率(最低的码率)最好的方式是</p>
+<ol>
+<li>指定high的<code>profile</code></li>
+<li>降低帧率</li>
+<li>适当降低分辨率</li>
+</ol>
+<p>但是传统的压缩方式不支持指定profile，帧率和码率，所以只有通过其他方式来实现。可以在相机录像时需要将拍摄的每一帧<code>sampleBuffer</code>（音频或者视频）传给<code>AVassetWriter</code>，并制定压缩参数。</p>
+<h3 id="AVAassetWriter实现视频压缩"><a href="#AVAassetWriter实现视频压缩" class="headerlink" title="AVAassetWriter实现视频压缩"></a>AVAassetWriter实现视频压缩</h3><h4 id="流程图："><a href="#流程图：" class="headerlink" title="流程图："></a>流程图：</h4><p><img src="/.com//1.png" alt="img"></p>
+<h4 id="代码的实现"><a href="#代码的实现" class="headerlink" title="代码的实现"></a>代码的实现</h4><ol>
+<li>初始化<code>reader</code>，<code>writer</code>，<code>video/audio track</code>, <code>video/audio input</code>, <code>video/audio output</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- (void)comppressVideoUrl:(NSURL *) videoUrl withOutputUrl:(NSURL *)outputUrl &#123;</span><br><span class="line">    AVAsset *asset = [AVAsset assetWithURL:videoUrl];</span><br><span class="line">    AVAssetReader *reader = [AVAssetReader assetReaderWithAsset:asset error:nil];</span><br><span class="line">    AVAssetWriter *writer = [AVAssetWriter assetWriterWithURL:outputUrl fileType:AVFileTypeMPEG4 error:nil];</span><br><span class="line">    </span><br><span class="line">    AVAssetTrack *videoTrack = [[asset tracksWithMediaType:AVMediaTypeVideo] firstObject];//获取轨道，一般视频至少两个轨道，一个播放声音的一个播放画面的</span><br><span class="line">    </span><br><span class="line">    //视频输出源</span><br><span class="line">    NSDictionary *videoOuptSetting = @&#123;(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)&#125;;</span><br><span class="line">    AVAssetReaderTrackOutput *videoOutput = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:videoTrack outputSettings:videoOuptSetting];</span><br><span class="line">    </span><br><span class="line">    //视频采集输入设置，</span><br><span class="line">    // 码率和帧率设置</span><br><span class="line">    NSDictionary *compressionProperties = @&#123;</span><br><span class="line">        AVVideoAverageBitRateKey : @(DSScreenWidth() * DSScreenHeight()*12),</span><br><span class="line">        AVVideoExpectedSourceFrameRateKey : @(15),</span><br><span class="line">        AVVideoMaxKeyFrameIntervalKey : @(10),</span><br><span class="line">        AVVideoProfileLevelKey : AVVideoProfileLevelH264BaselineAutoLevel</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    //视频属性</span><br><span class="line">    NSDictionary *videoSetting = @&#123;</span><br><span class="line">        AVVideoCodecKey : AVVideoCodecTypeH264,</span><br><span class="line">        AVVideoWidthKey : @(DSScreenHeight() * 2),</span><br><span class="line">        AVVideoHeightKey : @(DSScreenWidth() * 2),</span><br><span class="line">        AVVideoScalingModeKey : AVVideoScalingModeResizeAspectFill,</span><br><span class="line">        AVVideoCompressionPropertiesKey : compressionProperties</span><br><span class="line">    &#125;;</span><br><span class="line">    AVAssetWriterInput *videoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:videoSetting];</span><br><span class="line">  //注意要设置视频的方向，每个视频都有方向，这里先获取视频的方向</span><br><span class="line">  int degress = [self degressFromVideoFileWithAsset:asset];</span><br><span class="line">    videoInput.transform = CGAffineTransformMakeRotation(M_PI * (degress / 180.0));</span><br><span class="line">    if([reader canAddOutput:videoOutput])&#123;</span><br><span class="line">        [reader addOutput:videoOutput];</span><br><span class="line">    &#125;</span><br><span class="line">    if ([writer canAddInput:videoInput]) &#123;</span><br><span class="line">        [writer addInput:videoInput];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //音频部分</span><br><span class="line">  //音频输出设置，和视频拍摄不一样，视频拍摄时，指点了缓存流的格式，而文件压缩的时候则没有因此视频和音频一定要设置输出格式</span><br><span class="line">  NSDictionary *readerOutputSettings = @&#123;AVFormatIDKey: @(kAudioFormatLinearPCM)&#125;;</span><br><span class="line">    AVAssetTrack *audioTrack = [[asset tracksWithMediaType:AVMediaTypeAudio] firstObject];</span><br><span class="line">    AVAssetReaderTrackOutput *audioOutput = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:audioTrack outputSettings:readerOutputSettings];</span><br><span class="line">    //声音采集设置</span><br><span class="line">    NSDictionary *audioSetting =</span><br><span class="line">        @&#123;AVEncoderBitRatePerChannelKey : @(28000),</span><br><span class="line">          AVFormatIDKey : @(kAudioFormatMPEG4AAC),</span><br><span class="line">          AVNumberOfChannelsKey : @(1),</span><br><span class="line">          AVSampleRateKey : @(22050)&#125;;</span><br><span class="line">    AVAssetWriterInput *audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioSetting];</span><br><span class="line">    if ([reader canAddOutput:audioOutput]) &#123;</span><br><span class="line">        [reader addOutput:audioOutput];</span><br><span class="line">    &#125;</span><br><span class="line">    if ([writer canAddInput:audioInput]) &#123;</span><br><span class="line">        [writer addInput:audioInput];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>获取视频的方向</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/// 获取视频的方向</span><br><span class="line">+ (int)degressFromVideoFileWithAsset:(AVAsset *)asset &#123;</span><br><span class="line">    int degress = 0;</span><br><span class="line">    NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];</span><br><span class="line">    if ([tracks count] &gt; 0) &#123;</span><br><span class="line">        AVAssetTrack *videoTrack = [tracks objectAtIndex:0];</span><br><span class="line">        CGAffineTransform t = videoTrack.preferredTransform;</span><br><span class="line">        if (t.a == 0 &amp;&amp; t.b == 1.0 &amp;&amp; t.c == -1.0 &amp;&amp; t.d == 0) &#123;</span><br><span class="line">            // Portrait</span><br><span class="line">            degress = 90;</span><br><span class="line">        &#125; else if (t.a == 0 &amp;&amp; t.b == -1.0 &amp;&amp; t.c == 1.0 &amp;&amp; t.d == 0) &#123;</span><br><span class="line">            // PortraitUpsideDown</span><br><span class="line">            degress = 270;</span><br><span class="line">        &#125; else if (t.a == 1.0 &amp;&amp; t.b == 0 &amp;&amp; t.c == 0 &amp;&amp; t.d == 1.0) &#123;</span><br><span class="line">            // LandscapeRight</span><br><span class="line">            degress = 0;</span><br><span class="line">        &#125; else if (t.a == -1.0 &amp;&amp; t.b == 0 &amp;&amp; t.c == 0 &amp;&amp; t.d == -1.0) &#123;</span><br><span class="line">            // LandscapeLeft</span><br><span class="line">            degress = 180;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return degress;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>开始读写</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">COPY[reader startReading];</span><br><span class="line">[writer startWriting];</span><br><span class="line">[writer startSessionAtSourceTime:KCMTimeZero];</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>设置写入的队列，注意音频、视频写入的队列要一样的，并且是FIFO队列。因为是写入同一个writer，如果用并发，会出现reader的状态不对，导致崩溃</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dispatch_queue_t writeQueueCreate = dispatch_queue_create(&quot;writeQueueCreate&quot;, DISPATCH_QUEUE_SERIAL);</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>视频逐帧写入</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dispatch_group_t group = dispatch_group_create();</span><br><span class="line">dispatch_group_enter(group);</span><br><span class="line">[videoInout requestMediaDataWhenReadyOnQueue:  usingBlock:^&#123;</span><br><span class="line">  while ([videoInput isReadyForMoreMediaData]) &#123;</span><br><span class="line">    CMSampleBufferRef sampleBuffer;</span><br><span class="line">    if ([reader status] == AVAssetReaderStatusReading &amp;&amp; (sampleBuffer = [videoOutput copyNextSampleBuffer]))&#123;</span><br><span class="line">      BOOL result = [videoInput appendSampleBuffer:sampleBuffer];</span><br><span class="line">      CFRelease(sampleBuffer);</span><br><span class="line">      if (!result) &#123;</span><br><span class="line">        [reader cancelReading];</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    [videoInput markAsFinished];</span><br><span class="line">    dispatch_group_leave(group);</span><br><span class="line">    break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>音频逐帧写入</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dispatch_group_enter(group);</span><br><span class="line">[audioInout requestMediaDataWhenReadyOnQueue:  usingBlock:^&#123;</span><br><span class="line">  while ([audioInput isReadyForMoreMediaData]) &#123;</span><br><span class="line">    CMSampleBufferRef sampleBuffer;</span><br><span class="line">    if ([reader status] == AVAssetReaderStatusReading &amp;&amp; (sampleBuffer = [audioOutput copyNextSampleBuffer]))&#123;</span><br><span class="line">      BOOL result = [audioInput appendSampleBuffer:sampleBuffer];</span><br><span class="line">      CFRelease(sampleBuffer);</span><br><span class="line">      if (!result) &#123;</span><br><span class="line">        [reader cancelReading];</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    [audioInput markAsFinished];</span><br><span class="line">    dispatch_group_leave(group);</span><br><span class="line">    break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>完成压缩</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dispatch_group_notify(group,dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAYLT,0),^&#123;</span><br><span class="line">  if ([reader status] == AVAssetReaderStatusReading)&#123;</span><br><span class="line">    [reader cancelReading];</span><br><span class="line">  &#125;</span><br><span class="line">  switch (writer.status) &#123;</span><br><span class="line">    case AVAssetWriterStatusWriting:</span><br><span class="line">      &#123;</span><br><span class="line">        [writer finishWritingWithCompletionHandler:^&#123;</span><br><span class="line">          </span><br><span class="line">        &#125;];</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">    default:</span><br><span class="line">      break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>音视频学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>iOS视频采集的格式类型</title>
+    <url>/2021/06/23/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p>iOS定义了很多的视频格式，这里简单介绍一下它的命名规则，具体还需要看开发文档。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ol>
+<li>在视频采集中，设置视频输出</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">COPYNSDictionary *videoSetting = @&#123;(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)&#125;;</span><br><span class="line"></span><br><span class="line">self.videoPutData = [[AVCaptureVideoDataOutput alloc] init];</span><br><span class="line">self.videoPutData.videoSettings = videoSetting;</span><br></pre></td></tr></table></figure>
+
+<h2 id="命名规则"><a href="#命名规则" class="headerlink" title="命名规则"></a>命名规则</h2><ol>
+<li>命名规则</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">COPYkCVPixelFormatType_&#123;长度|序列&#125;&#123;颜色空间&#125;&#123;Planar|BiPlanar&#125;&#123;VideoRange|FullRange&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>Planar</code>：平面；<code>BiPlanar</code>：双平面</p>
+<ul>
+<li>平面/双平面主要用在<code>YUV</code>上。<code>UV</code>分开存储为<code>Planar</code>，反之是<code>BiPlanar</code>。所以：<ul>
+<li><code>kCVPixelFormatType_420YpCbCr8PlanarFullRange</code>是420p</li>
+<li><code>kCVPixelFormatType_420YpCbCr8BiPlanarFullRange</code>是nv12</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>VideoRange</code>和<code>FullRange</code> 的区别在于数值的范围，<code>FullRange</code>比<code>VideoRange</code>大一些，颜色也更丰富一些</p>
+<ul>
+<li>如果没有指定颜色范围，默认都是<code>FullRange</code>。但有一种情况除外，例如:<ul>
+<li><code>kCVPixelFormatType_420YpCbCr8Planar</code>和<code>kCVPixelFormatType_420YpCbCr8PlanarFullRange</code>,因为已经有FullRange了，所以未指定的应该为<code>VideoRange</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>颜色空间对应的就是它在内存中的顺序。比如<code>  kCVPixelFormatType_32BGRA</code>，内存中的顺序是<code>B G R A B G R A B…</code>。</p>
+<ul>
+<li>也有一些特别的，比如<code>kCVPixelFormatType_16BE555</code>，这里需要用BE或LE指定字节顺序。其后面还带有一种数字，用于表示bit长度</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>音视频学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>iOS核心动画技巧</title>
+    <url>/2021/06/23/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E6%8A%80%E5%B7%A7/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="CALayer和UIView的区别"><a href="#CALayer和UIView的区别" class="headerlink" title="CALayer和UIView的区别"></a>CALayer和UIView的区别</h2><blockquote>
+<p><code>CALayer</code>类在概念上和<code>UIView</code>类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色），管理子图层的位置。它们有一些方法和属性用来做动画和变换。和<code>UIView</code>最大的不同是<code>CALayer</code>不处理用户的交互。<code>CALayer</code>并不清楚具体的<em>响应链</em>（iOS通过视图层级关系用来传送触摸事件的机制），于是它并不能够响应事件，即使它提供了一些方法来判断是否一个触点在图层的范围之内。</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="平行层级关系"><a href="#平行层级关系" class="headerlink" title="平行层级关系"></a>平行层级关系</h3><ul>
+<li><p>每一个<code>UIview</code>都有一个<code>CALayer</code>实例的图层属性，也就是所谓的<em>backing layer</em>，视图的职责就是创建并管理这个图层，以确保当子视图在层级关系中添加或者被移除的时候，他们关联的图层也同样对应在层级关系树当中有相同的操作</p>
+</li>
+<li><p>实际上这些背后关联的图层才是真正用来在屏幕上显示和做动画，<code>UIView</code>仅仅是对它的一个封装，提供了一些iOS类似于处理触摸的具体功能，以及Core Animation底层方法的高级接口。</p>
+</li>
+<li><p>但是为什么iOS要基于<code>UIView</code> 和 <code>CALayer</code></p>
+<p>提供两个平行的层级关系呢？为什么不用一个简单的层级来处理所有事情呢？</p>
+<ul>
+<li>原因在于要做职责分离，这样也能避免很多重复代码。在iOS和Mac OS两个平台上，事件和用户交互有很多地方的不同，基于多点触控的用户界面和基于鼠标键盘有着本质的区别，这就是为什么iOS有UIKit和<code>UIView</code>，但是Mac OS有AppKit和<code>NSView</code>的原因。他们功能上很相似，但是在实现上有着显著的区别。</li>
+<li>绘图，布局和动画，相比之下就是类似Mac笔记本和桌面系列一样应用于iPhone和iPad触屏的概念。把这种功能的逻辑分开并应用到独立的Core Animation框架，苹果就能够在iOS和Mac OS之间共享代码，使得对苹果自己的OS开发团队和第三方开发者去开发两个平台的应用更加便捷。</li>
+</ul>
+</li>
+<li><p>图层不能像视图那样处理触摸事件，那么他能做哪些视图不能做的呢？这里有一些<code>UIView</code>没有暴露出来的CALayer的功能：</p>
+<ul>
+<li>阴影，圆角，带颜色的边框</li>
+<li>3D变换</li>
+<li>非矩形范围</li>
+<li>透明遮罩</li>
+<li>多级非线性动画</li>
+</ul>
+</li>
+</ul>
+<h3 id="CALayer一些特殊属性"><a href="#CALayer一些特殊属性" class="headerlink" title="CALayer一些特殊属性"></a>CALayer一些特殊属性</h3><h3 id="contents属性"><a href="#contents属性" class="headerlink" title="contents属性"></a>contents属性</h3><ul>
+<li>CALayer 有一个属性叫做<code>contents</code>，这个属性的类型被定义为id，意味着它可以是任何类型的对象。在这种情况下，你可以给<code>contents</code>属性赋任何值，你的app仍然能够编译通过。但是，在实践中，如果你给<code>contents</code>赋的不是CGImage，那么你得到的图层将是空白的。</li>
+<li>事实上，你真正要赋值的类型应该是CGImageRef，它是一个指向CGImage结构的指针。UIImage有一个CGImage属性，它返回一个”CGImageRef”,如果你想把这个值直接赋值给CALayer的<code>contents</code>，那你将会得到一个编译错误。因为CGImageRef并不是一个真正的Cocoa对象(OC对象)，而是一个Core Foundation类型。实际要用<code>layer.contents = (__bridge id)image.CGImage;</code></li>
+</ul>
+<h3 id="contentsGravity"><a href="#contentsGravity" class="headerlink" title="contentsGravity"></a>contentsGravity</h3><blockquote>
+<p>对于加载的图片无法适应视图时，对于UIimageView有一个contentMode属性，<code>view.contentMode = UIViewContentModeScaleAspectFit;</code>，而CALayer与<code>contentMode</code>对应的属性叫做<code>contentsGravity</code>，但是它是一个NSString类型，而不是像对应的UIKit部分，那里面的值是枚举。</p>
+</blockquote>
+<ul>
+<li><code>self.layerView.layer.contentsGravity = kCAGravityResizeAspect;</code>，<code>kCAGravityResizeAspect</code>，它的效果等同于UIViewContentModeScaleAspectFit， 同时它还能在图层中等比例拉伸以适应图层的边界。</li>
+</ul>
+<h3 id="contentsScale"><a href="#contentsScale" class="headerlink" title="contentsScale"></a>contentsScale</h3><blockquote>
+<p><code>contentsScale</code>属性定义了寄宿图的像素尺寸和视图大小的比例，默认情况下它是一个值为1.0的浮点数。它的优先级要低于了<code>contentsGravity</code>。</p>
+</blockquote>
+<ul>
+<li><code>contentsScale</code>属性其实属于支持高分辨率（又称Hi-DPI或Retina）屏幕机制的一部分。它用来判断在绘制图层的时候应该为寄宿图创建的空间大小，和需要显示的图片的拉伸度（假设并没有设置<code>contentsGravity</code>属性）。UIView有一个类似功能但是非常少用到的<code>contentScaleFactor</code>属性。</li>
+<li>如果<code>contentsScale</code>设置为1.0，将会以每个点1个像素绘制图片，如果设置为2.0，则会以每个点2个像素绘制图片，这就是我们熟知的Retina屏幕</li>
+<li>这并不会对我们在使用<code>kCAGravityResizeAspect</code>时产生任何影响，因为它就是拉伸图片以适应图层而已，根本不会考虑到分辨率问题。但是如果我们把<code>contentsGravity</code>设置为<code>kCAGravityCenter</code>（这个值并不会拉伸图片）。</li>
+<li>和UIImage不同，CGImage没有拉伸的概念。当我们使用UIImage类去读取图片的时候，他读取了高质量的Retina版本的图片。但是当我们用CGImage来设置我们的图层的内容时，拉伸这个因素在转换的时候就丢失了。可以通过设置<code>self.layerView.layer.contentsScale = image.scale;</code></li>
+</ul>
+<h3 id="maskToBounds"><a href="#maskToBounds" class="headerlink" title="maskToBounds"></a>maskToBounds</h3><blockquote>
+<p>默认情况下，UIView仍然会绘制超过边界的内容或是子视图，在CALayer下也是这样的。UIView有一个叫做<code>clipsToBounds</code>的属性可以用来决定是否显示超出边界的内容，CALayer对应的属性叫做<code>masksToBounds</code>。</p>
+</blockquote>
+<h3 id="contentsRect"><a href="#contentsRect" class="headerlink" title="contentsRect"></a>contentsRect</h3><blockquote>
+<p>CALayer的<code>contentsRect</code>属性允许我们在图层边框里显示寄宿图的一个子域。这涉及到图片是如何显示和拉伸的，所以要比<code>contentsGravity</code>灵活多了和<code>bounds</code>，<code>frame</code>不同，<code>contentsRect</code>不是按点来计算的，它使用了<em>单位坐标</em>，单位坐标指定在0到1之间，是一个相对值（像素和点就是绝对值）。所以他们是相对与寄宿图的尺寸的。</p>
+</blockquote>
+<ul>
+<li>iOS使用了以下的坐标系统：<ol>
+<li>点 —— 在iOS和Mac OS中最常见的坐标体系。点就像是虚拟的像素，也被称作逻辑像素。在标准设备上，一个点就是一个像素，但是在Retina设备上，一个点等于2*2个像素。iOS用点作为屏幕的坐标测算体系就是为了在Retina设备和普通设备上能有一致的视觉效果。</li>
+<li>像素 —— 物理像素坐标并不会用来屏幕布局，但是仍然与图片有相对关系。UIImage是一个屏幕分辨率解决方案，所以指定点来度量大小。但是一些底层的图片表示如CGImage就会使用像素，所以你要清楚在Retina设备和普通设备上，他们表现出来了不同的大小。</li>
+<li>单位 —— 对于与图片大小或是图层边界相关的显示，单位坐标是一个方便的度量方式， 当大小改变的时候，也不需要再次调整。单位坐标在OpenGL这种纹理坐标系统中用得很多，Core Animation中也用到了单位坐标。</li>
+</ol>
+</li>
+<li>默认的<code>contentsRect</code>是{0, 0, 1, 1}，这意味着整个寄宿图默认都是可见的，如果我们指定一个小一点的矩形，图片就会被裁剪。事实上给<code>contentsRect</code>设置一个负数的原点或是大于{1, 1}的尺寸也是可以的。这种情况下，最外面的像素会被拉伸以填充剩下的区域。</li>
+<li>可以通过<code>contentsRect</code>从大图中截取小图，分给其他的视图（1个image，分给不同的视图显示），因为单张大图比多张小图载入地更快，可以有效地提高了载入性能</li>
+</ul>
+<h3 id="contentsCenter"><a href="#contentsCenter" class="headerlink" title="contentsCenter"></a>contentsCenter</h3><blockquote>
+<p><code>contentsCenter</code>其实是一个CGRect，它定义了一个固定的边框和一个在图层上可拉伸的区域。 改变<code>contentsCenter</code>的值并不会影响到寄宿图的显示，除非这个图层的大小改变了，你才看得到效果。</p>
+</blockquote>
+<ul>
+<li>默认情况下，<code>contentsCenter</code>是{0, 0, 1, 1}，这意味着如果大小（由<code>conttensGravity</code>决定）改变了,那么寄宿图将会均匀地拉伸开。但是如果我们增加原点的值并减小尺寸。我们会在图片的周围创造一个边框。下图展示了<code>contentsCenter</code>设置为{0.25, 0.25, 0.5, 0.5}的效果。</li>
+</ul>
+<p><img src="/.com//1.png" alt="img"></p>
+<h2 id="drawRect"><a href="#drawRect" class="headerlink" title="drawRect"></a>drawRect</h2><blockquote>
+<p>给<code>contents</code>赋CGImage的值不是唯一的设置寄宿图的方法。我们也可以直接用Core Graphics直接绘制寄宿图。能够通过继承UIView并实现<code>-drawRect:</code>方法来自定义绘制。</p>
+</blockquote>
+<ul>
+<li><p><code>-drawRect:</code> 方法没有默认的实现，因为对UIView来说，寄宿图并不是必须的，它不在意那到底是单调的颜色还是有一个图片的实例。如果UIView检测到<code>-drawRect:</code> 方法被调用了，它就会为视图分配一个寄宿图，这个寄宿图的像素尺寸等于视图大小乘以 <code>contentsScale</code>的值。</p>
+</li>
+<li><p>如果你不需要寄宿图，那就不要创建这个方法了，这会造成CPU资源和内存的浪费。这为屏外渲染而非GPU渲染</p>
+</li>
+<li><p>当视图在屏幕上出现的时候 <code>-drawRect:</code>方法就会被自动调用。<code>-drawRect:</code>方法里面的代码利用Core Graphics去绘制一个寄宿图，然后内容就会被缓存起来(屏外渲染的缓存区)直到它需要被更新（通常是因为开发者调用了<code>-setNeedsDisplay</code>方法，尽管影响到表现效果的属性值被更改时，一些视图类型会被自动重绘，如<code>bounds</code>属性）。虽然<code>-drawRect:</code>方法是一个UIView方法，事实上都是底层的CALayer安排了重绘工作和保存了因此产生的图片。</p>
+</li>
+<li><p>CALayer有一个可选的<code>delegate</code>属性，实现了<code>CALayerDelegate</code> 协议，当CALayer需要一个内容特定的信息时，就会从协议中请求。CALayerDelegate是一个非正式协议（凡是NSObject或其子类的类别，都是非正式协议）。其代理方法有：</p>
+<ul>
+<li><code>- (void)displayLayer:(CALayerCALayer *)layer;</code></li>
+<li><code>- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx;</code></li>
+<li>在调用这个方法之前，CALayer创建了一个合适尺寸的空寄宿图（尺寸由<code>bounds</code>和<code>contentsScale</code>决定）和一个Core Graphics的绘制上下文环境，为绘制寄宿图做准备，他作为ctx参数传入。</li>
+</ul>
+</li>
+<li><p>当使用寄宿了视图的图层的时候，你也不必实现<code>-displayLayer:</code>和<code>-drawLayer:inContext:</code>方法来绘制你的寄宿图。通常做法是实现UIView的<code>-drawRect:</code>方法，UIView就会帮你做完剩下的工作，包括在需要重绘的时候调用<code>-display</code>方法。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>iOS动画学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>iOS视图控制器转场详解</title>
+    <url>/2021/07/02/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E8%BD%AC%E5%9C%BA%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p>视图控制器中的视图显示在屏幕上有两种方式：</p>
+<ol>
+<li>最主要的方式是内嵌在容器控制器中，比如<code>UINavigationController</code>（<code>push</code>或<code>pop</code>一个<code>viewController</code>），<code>UITabBarController</code>（切换到其他<code>viewController</code>）, <code>UISplitController</code>；</li>
+<li>由另一个视图控制器显示它，也就是模态(<code>Modal</code>)显示(以Model方式显示另一个<code>viewController</code>)</li>
+</ol>
+<p>在 <code>storyboard</code> 里，每个<code>View Controller</code>是一个<code> Scene</code>，<code>View Controller Transition </code>便是从一个 <code>Scene</code> 转换到另外一个 <code>Scene</code>。</p>
+<p>在iOS7之前，只能使用系统提供的转场效果，iOS7之后开放相关API运行对转场效果进行定制</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="Transition-解释"><a href="#Transition-解释" class="headerlink" title="Transition 解释"></a>Transition 解释</h3><p>转场时视图控制器和其对应的视图在结构上的变化：</p>
+<p><img src="/.com//1.png" alt="1.png"></p>
+<p>​        转场过程中，作为容器的父 VC 维护着多个子 VC，但在视图结构上，只保留一个子 VC 的视图，所以转场的本质是下一场景(子 VC)的视图替换当前场景(子 VC)的视图以及相应的控制器(子 VC)的替换，表现为当前视图消失和下一视图出现。</p>
+<h3 id="系统自带的方式"><a href="#系统自带的方式" class="headerlink" title="系统自带的方式"></a>系统自带的方式</h3><h4 id="CATransition"><a href="#CATransition" class="headerlink" title="CATransition"></a>CATransition</h4><p><code>CATransition</code>是<code>CAAnimation</code>的子类，用于过渡动画或转场动画。为视图层移入移除屏幕提供转场动画。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CATransition *animation = [CATransition animation];</span><br><span class="line">animation.type = type;</span><br><span class="line">animation.subtype = kCATransitionFromRight;</span><br><span class="line">animation.duration = 1.0;</span><br><span class="line">[vc.view.window.layer addAnimation:animation forKey:kCATransition];</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>type：转场动画的类型。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fade=1,                   //淡入淡出</span><br><span class="line">  pageCurl,                 //翻页</span><br><span class="line">  push,                     //推挤</span><br><span class="line">  pageUnCurl,               //反翻页</span><br><span class="line">  reveal,                   //揭开</span><br><span class="line">  cameraIrisHollowOpen,     //开镜头</span><br><span class="line">  moveIn,                   //覆盖</span><br><span class="line">  cameraIrisHolowClose,     //关镜头</span><br><span class="line">  cube,                     //立方体</span><br><span class="line">  suckEffect,               //吮吸</span><br><span class="line">  oglFlip,                  //翻转</span><br><span class="line">  rippleEffect,             //波纹</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>subtype：动画类型的方向，4个方向上下左右</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kCATransitionFromRight,</span><br><span class="line">kCATransitionFromLeft,</span><br><span class="line">kCATransitionFromTop,</span><br><span class="line">kCATransitionFromBottom</span><br></pre></td></tr></table></figure>
+
+<h4 id="TransitionFromViewController"><a href="#TransitionFromViewController" class="headerlink" title="TransitionFromViewController"></a>TransitionFromViewController</h4><ul>
+<li>同一页面显示多个视图的方式，采用<code>UIViewController</code>自带的方法：<code>transitionFromViewController:toViewController:duration:options:animations:completion:</code>这种转场动画是在当一个父视图控制器中有几个<code>childViewController</code>，当要在这个几个子视图控制器之间切换时可以用这个方法</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//1. 在一个控制器内加入多个子控制器</span><br><span class="line">[self addChildViewCOntroller:fristVc];</span><br><span class="line">[self addChildViewCOntroller:secondVc];</span><br><span class="line">//2. 当前控制器显示的视图</span><br><span class="line">[self.view addSubview:[self.childViewControllers[0] view]];</span><br><span class="line">//3. 多视图的转换</span><br><span class="line">/*</span><br><span class="line">     *  fromViewController      当前显示在父视图控制器中的子视图控制器</span><br><span class="line">     *  toViewController        将要显示的姿势图控制器</span><br><span class="line">     *  duration                动画时间(这个属性,old friend 了 O(∩_∩)O)</span><br><span class="line">     *  options                 动画效果(渐变,从下往上等等,具体查看API)</span><br><span class="line">     *  animations              转换过程中的动画</span><br><span class="line">     *  completion              转换完成</span><br><span class="line">*/</span><br><span class="line">[self transitionFromViewController:self.childViewControllers[0] toViewController:self.childViewControllers[1] duration:0.5 options:UIViewAnimationOptionTransitionCurlUp animations:^&#123;</span><br><span class="line">        </span><br><span class="line"> &#125; completion:^(BOOL finished) &#123;</span><br><span class="line">        </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="Transition-Animation（自定义转场动画的实现）"><a href="#Transition-Animation（自定义转场动画的实现）" class="headerlink" title="Transition Animation（自定义转场动画的实现）"></a>Transition Animation（自定义转场动画的实现）</h4><p>官方支持以下几种方式的自定义转场：</p>
+<ol>
+<li><code>UINavigationController</code> 中<code> push</code> 和 <code>pop</code></li>
+<li><code> UITabBarController</code> 中切换 <code>Tab</code></li>
+<li><code>Modal</code>转场：<code>presentation</code> 和 <code>dismissal</code>，俗称视图控制器的模态显示和消失，仅限于<code>modalPresentationStyle</code>属性为 <code>UIModalPresentationFullScreen</code> 或 <code>UIModalPresentationCustom</code> 这两种模式;</li>
+<li><code>UICollectionViewController</code> 的布局转场：<code>UICollectionViewController </code>与 <code>UINavigationController </code>结合的转场方式</li>
+</ol>
+<p>转场协议由5种协议组成，实际中只需要提供其中的两个或者三个便能实现绝大部分的转场动画</p>
+<h5 id="转场代理（Transition-Delegate）"><a href="#转场代理（Transition-Delegate）" class="headerlink" title="转场代理（Transition Delegate）"></a>转场代理（<strong>Transition Delegate</strong>）</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;UINavigationControllerDelegate&gt; //UINavigationController 的 delegate 属性遵守该协议。</span><br><span class="line">&lt;UITabBarControllerDelegate&gt; //UITabBarController 的 delegate 属性遵守该协议。</span><br><span class="line">&lt;UIViewControllerTransitioningDelegate&gt; //UIViewController 的 transitioningDelegate 属性遵守该协议。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>转场发生时，<code>UIKit </code>将要求转场代理将提供转场动画的核心构件：动画控制器和交互控制器(可选的)；由我们实现。</li>
+</ul>
+<h5 id="动画控制器-Animation-Controller-："><a href="#动画控制器-Animation-Controller-：" class="headerlink" title="动画控制器(Animation Controller)："></a>动画控制器(Animation Controller)：</h5><ul>
+<li>最重要的部分，负责添加视图以及执行动画；遵守<code>&lt;UIViewControllerContextTransitioning&gt;</code>协议。</li>
+</ul>
+<h5 id="交互控制器-Interaction-Controller-："><a href="#交互控制器-Interaction-Controller-：" class="headerlink" title="交互控制器(Interaction Controller)："></a>交互控制器(Interaction Controller)：</h5><p>通过交互手段，通常是手势来驱动动画控制器实现的动画，使得用户能够控制整个过程；遵守<code>&lt;UIViewControllerInteractiveTransitioning&gt;</code>协议；系统已经打包好现成的类供我们使用。</p>
+<h5 id="转场环境-Transition-Context"><a href="#转场环境-Transition-Context" class="headerlink" title="转场环境(Transition Context):"></a>转场环境(Transition Context):</h5><p>提供转场中需要的数据；遵守<code>&lt;UIViewControllerContextTransitioning&gt;</code>协议；由 <code>UIKit </code>在转场开始前生成并提供给我们提交的动画控制器和交互控制器使用。</p>
+<h5 id="转场协调器-Transition-Coordinator-："><a href="#转场协调器-Transition-Coordinator-：" class="headerlink" title="转场协调器(Transition Coordinator)："></a>转场协调器(Transition Coordinator)：</h5><p>可在转场动画发生的同时并行执行其他的动画，其作用与其说协调不如说辅助，主要在 Modal 转场和交互转场取消时使用，其他时候很少用到；遵守<code>&lt;UIViewCOntrollerTrabsitionCoordinator&gt;</code>协议；由<code> UIKit</code> 在转场时生成，<code>UIViewController</code> 在 iOS 7 中新增了方法<code> transitionCoordinator()</code>返回一个遵守该协议的对象，且该方法只在该控制器处于转场过程中才返回一个此类对象，不参与转场时返回 nil。</p>
+<h3 id="阶段一：非交互转场"><a href="#阶段一：非交互转场" class="headerlink" title="阶段一：非交互转场"></a>阶段一：非交互转场</h3><blockquote>
+<p>这个阶段要做两件事，提供转场代理并由代理提供动画控制器。在转场代理协议里动画控制器和交互控制器都是可选实现的，没有实现或者返回 nil 的话则使用默认的转场效果。动画控制器是表现转场效果的核心部分</p>
+</blockquote>
+<h4 id="动画控制器协议"><a href="#动画控制器协议" class="headerlink" title="动画控制器协议"></a>动画控制器协议</h4><ol>
+<li>动画控制器实现代理<code>&lt;UIViewControllerAnimatedTransitioning&gt;</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-(void)animateTransition:(id&lt;UIViewControllerContextTransitioning&gt;)transitionContext &#123; </span><br><span class="line">  //1. </span><br><span class="line">  UIView *container = [transitionContext containerView];</span><br><span class="line">  </span><br><span class="line">  //2. </span><br><span class="line"> if ([transitionContext respondsToSelector:@selector(viewForKey:)]) &#123;</span><br><span class="line">        // iOS8以上新增加API获取参与转场的视图，能精确获取参与转场的视图</span><br><span class="line">        fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];</span><br><span class="line">        toView = [transitionContext viewForKey:UITransitionContextToViewKey];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">   		//获取参与转场的控制器视图</span><br><span class="line">        fromView = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view;</span><br><span class="line">        toView = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  //3. </span><br><span class="line">  [container addSubview:toView];</span><br><span class="line">  ......</span><br><span class="line">  [UIView animateWithDuration:[self transitionDuration:transitionContext] 					animations:^&#123;</span><br><span class="line">  				  ......</span><br><span class="line">        &#125; completion:^(BOOL finished) &#123;</span><br><span class="line">    //4. </span><br><span class="line">   					BOOL isCancelled = [transitionContext transitionWasCancelled];</span><br><span class="line">            [transitionContext completeTransition:!isCancelled];</span><br><span class="line">        &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>返回容器视图，也就是转场动画发生的地方</li>
+<li>通过<code>viewForKey:</code>获取的视图是<code>viewControllerForKey:</code>返回的控制器的根视图，或者<code> nil</code>。<code>viewForKey:</code>方法返回<code> nil</code> 只有一种情况：<code> UIModalPresentationCustom</code>以及 <code> UIModalPresentationOverFullScreen</code>等模式下的<code> Modal</code> 转场 （这些转场结束后不会移除<code>preserting</code>），通过此方法获取 <code>presentingView </code>时得到的将是 nil。</li>
+<li>将<code>toView</code>添加到容器视图中，使得<code>toView</code>在屏幕上显示（<code>Modal</code>转场中此点稍有不同）</li>
+<li>正确地结束转场过程。转场的结果有两种：完成或取消。非交互转场的结果只有完成一种情况，不过交互式转场需要考虑取消的情况。如何结束取决于转场的进度，通过<code>transitionWasCancelled</code>方法来获取转场的状态，使用<code>completeTransition:</code>来完成或取消转场</li>
+</ol>
+<p>​    转场的本质是下一个场景的视图替换当前场景的视图，从当前场景过渡下一个场景。下面称即将消失的场景的视图为<code> fromView</code>，对应的视图控制器为<code> fromVC</code>，即将出现的视图为 <code>toView</code>，对应的视图控制器称之为<code> toVC</code>。几种转场方式的转场操作都是可逆的，一种操作里的<code> fromView</code> 和 <code>toView</code> 在逆向操作里的角色互换成对方，<code>fromVC</code> 和<code>toVC</code>也是如此。在动画控制器里，参与转场的视图只有 <code>fromView </code>和<code> toView</code> 之分，与转场方式无关。</p>
+<p>​    实际上无论是简单的转场动画，还是那些很复杂的转场动画在转场的部分要做的事情都是上面提到的4个过程，它们的区别主要在于动画的部分。</p>
+<h5 id="逐帧播放的动画方式"><a href="#逐帧播放的动画方式" class="headerlink" title="逐帧播放的动画方式"></a>逐帧播放的动画方式</h5><blockquote>
+<p>与原来的动画相比能在动画里面，在通过帧率逐帧的实现</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[UIView animateKeyframesWithDuration:self.duration delay:0 options:0 animations:^&#123;</span><br><span class="line">            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:0.9 animations:^&#123;</span><br><span class="line">                ......</span><br><span class="line">            &#125;];</span><br><span class="line">            [UIView addKeyframeWithRelativeStartTime:0.9 relativeDuration:0.1 animations:^&#123;</span><br><span class="line">                ......</span><br><span class="line">            &#125;];</span><br><span class="line">        &#125; completion:^(BOOL finished) &#123;</span><br><span class="line">            [imageView removeFromSuperview];</span><br><span class="line">            BOOL wasCancelled = [transitionContext transitionWasCancelled];</span><br><span class="line">            [transitionContext completeTransition:!wasCancelled];</span><br><span class="line">        &#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="特殊的Modal转场"><a href="#特殊的Modal转场" class="headerlink" title="特殊的Modal转场"></a>特殊的Modal转场</h4><blockquote>
+<p>Modal 转场中需要做的事情和两种容器 VC 的转场一样，但在细节上有些差异。</p>
+</blockquote>
+<p><img src="/.com//2.png" alt="2.png"></p>
+<ol>
+<li>根视图是否参与转场</li>
+</ol>
+<p>​        <code>   UINavigationController</code>和<code>UITabBarController</code>这两个容器 <code>VC</code> 的根视图在屏幕上是不可见的(或者说是透明的)，可见的只是内嵌在这两者中的<code>子 VC </code>中的视图，转场是从<code>子 VC </code>的视图转换到另外一个<code>子 VC </code>的视图，其根视图并未参与转场；而<code>Modal</code>转场，以 <code>presentation </code>为例，是从 <code>presentingView </code>转换到 <code>presentedView</code>，根视图 <code>presentingView </code>也就是<code>fromView</code>参与了转场。而且 <code>NavigationController</code> 和 <code>TabBarController</code> 转场中的<code> containerView</code> 也并非这两者的根视图。</p>
+<ol start="2">
+<li>转场后的<code>fromView</code>是否依然可见</li>
+</ol>
+<p>​        <code>Modal </code>转场结束后 <code>presentingView </code>可能依然可见，除<code>UIModalPresentationFullScreen</code>之外，其他模式就是这样。这种不同导致了 <code>Modal </code>转场和<code>容器 VC</code> 的转场对 <code>fromView</code> 的处理差异：<code>容器 VC</code> 的转场结束后 <code>fromView </code>会被主动移出视图结构，这是可预见的结果，我们也可以在转场结束前手动移除；而<code>Modal</code> 转场中，<code>presentation</code> 结束后 <code>presentingView(fromView) </code>并未主动被从视图结构中移除。准确来说，是 <code>UIModalPresentationCustom </code>这种模式下的 <code>Modal</code> 转场结束时<code>fromView</code>并未从视图结构中移除；<code>UIModalPresentationFullScreen </code>模式的<code> Modal</code> 转场结束后<code>fromView</code>依然主动被从视图结构中移除了。这种差异导致在处理<code> dismissal</code> 转场的时候很容易出现问题，没有意识到这个不同点的话出错时就会毫无头绪。</p>
+<p>​        下面来看看 <code>dismissal</code> 转场时的场景：</p>
+<ol>
+<li><code>UIModalPresentationFullScreen </code>模式：:转场时 <code>containerView </code>并不管理 <code>presentingView</code> ，<code>presentation</code> 后，<code>presentingView </code>被主动移出视图结构，在 <code>dismissal</code> 中<code> presentingView</code> 是 <code>toView</code> 的角色，其将会重新加入<code>containerView</code>中，实际上，我们不主动将其加入，<code>UIKit </code>也会这么做，前面的两种容器控制器的转场里不是这样处理的，不过这个差异基本没什么影响。</li>
+<li><code>UIModalPresentationCustom 模式</code>:转场时 <code>containerView </code>并不担任 <code>presentingView</code> 的父视图，后者由 <code>UIKit</code> 另行管理。在 <code>presentation</code> 后，<code>fromView(presentingView) </code>未被移出视图结构，在 <code>dismissal </code>中，注意不要像其他转场中那样将 <code>toView(presentingView)</code> 加入 <code>containerView </code>中，否则本来可见的<code> presentingView</code> 将会被移除出自身所处的视图结构消失不见<ol>
+<li>这里注意：如果采用<code>viewForKey</code>直接获取视图，那么<code>custon模式</code>下，**present时，<code>fromView（presentingView）为nil</code>，而<code>dimissal</code>时，<code>toView（presentingView）为nil</code>**，也就是用这种方式获取的视图，添加到containerView中，<code>dismissal</code>不会出问题。但是如果通过<code>viewControllerForKey</code>直接获取控制器中的<code>View</code>则不会为nil，这时候添加则会出现问题</li>
+</ol>
+</li>
+</ol>
+<h4 id="实现代理"><a href="#实现代理" class="headerlink" title="实现代理"></a>实现代理</h4><ol>
+<li><code>UINavigationController</code>转场动画的实现，实现代理 <code>&lt;UINavigationControllerDelegate&gt;</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//self.navigationController.delegate = self;</span><br><span class="line"></span><br><span class="line">-(id&lt;UIViewControllerAnimatedTransitioning&gt;)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC &#123; </span><br><span class="line">  ....</span><br><span class="line">    //返回自定义的动画控制器，push和pop都在这个方法中返回</span><br><span class="line">  switch (operation) &#123;</span><br><span class="line">        case UINavigationControllerOperationPush:</span><br><span class="line">            animationController.type = AnimationTypePush;</span><br><span class="line">            return  animationController;</span><br><span class="line">        case UINavigationControllerOperationPop:</span><br><span class="line">            animationController.type = AnimationTypePop;</span><br><span class="line">            return animationController;</span><br><span class="line">        default: return nil;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><code>presenting</code>出的视图</li>
+</ol>
+<h3 id="阶段二：交互式转场"><a href="#阶段二：交互式转场" class="headerlink" title="阶段二：交互式转场"></a>阶段二：交互式转场</h3><blockquote>
+<p>实现交互化，在非交互转场的基础上将之交互化需要两个条件：</p>
+</blockquote>
+<ol>
+<li>由转场代理提供交互控制器，这是一个遵守<code>&lt;UIViewControllerInteractiveTransitioning&gt;</code>协议的对象，不过系统已经打包好了现成的类<code>UIPercentDrivenInteractiveTransition</code>。我们不需要做任何配置，仅仅在转场代理的相应方法中提供一个该类实例便能工作。另外交互控制器必须有动画控制器才能工作。</li>
+<li>交互控制器还需要交互手段的配合，最常见的是使用手势</li>
+</ol>
+<p>正确的提供交互控制器:</p>
+<p>​    转场代理中提供了交互控制器，而转场发生时并没有方法来驱动转场进程（比如手势），转场过程将一直处于开始阶段无法结束，应用界面也会失去响应：在<code>NavigationController </code>中点击 <code>NavigationBar </code>也能实现 <code>pop </code>返回操作，但此时没有了交互手段的支持，转场过程卡壳；在 <code>TabBarController </code>的代理里提供交互控制器存在同样的问题，点击 <code>TabBar</code> 切换页面时也没有实现交互控制。因此仅在确实处于交互状态时才提供交互控制器，可以使用一个变量来标记交互状态，该变量由交互手势来更新状态。、</p>
+<h4 id="UINavigationControllerDelegaate的交互转场"><a href="#UINavigationControllerDelegaate的交互转场" class="headerlink" title="UINavigationControllerDelegaate的交互转场"></a>UINavigationControllerDelegaate的交互转场</h4><ol>
+<li>实现代理方法</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- (nullable id &lt;UIViewControllerInteractiveTransitioning&gt;)navigationController:(UINavigationController *)navigationController</span><br><span class="line">                          interactionControllerForAnimationController:(id &lt;UIViewControllerAnimatedTransitioning&gt;) animationController &#123;</span><br><span class="line">    //注意没有手势的时候要返回nil，否则无法通过点击导航栏左边的item正常退出                        </span><br><span class="line">    if (self.interactiveAnimation.isInteractive) &#123;</span><br><span class="line">        return self.interactiveAnimation;</span><br><span class="line">    &#125;</span><br><span class="line">    return  nil</span><br><span class="line">                          &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="modal弹窗显示交互手势"><a href="#modal弹窗显示交互手势" class="headerlink" title="modal弹窗显示交互手势"></a>modal弹窗显示交互手势</h4><ol>
+<li>实现代理</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- (nullable id &lt;UIViewControllerInteractiveTransitioning&gt;)interactionControllerForPresentation:(id &lt;UIViewControllerAnimatedTransitioning&gt;)animator &#123;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (nullable id &lt;UIViewControllerInteractiveTransitioning&gt;)interactionControllerForDismissal:(id &lt;UIViewControllerAnimatedTransitioning&gt;)animator &#123;</span><br><span class="line">    if (self.interactiveAnimation.isInteractive) &#123;</span><br><span class="line">        return self.interactiveAnimation;</span><br><span class="line">    &#125;</span><br><span class="line">    return  nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="交互控制器的实现"><a href="#交互控制器的实现" class="headerlink" title="交互控制器的实现"></a>交互控制器的实现</h4><p>交互控制器为继承<code>UIPercentDrivenInteractiveTransition</code>的类，主要结合边缘滑动手势</p>
+<p><code>UIScreenEdgePanGestureRecognizer</code>，其中主要依靠的方法</p>
+<ol>
+<li><p><code>[self updateInteractiveTransition:_percent]</code>,更新交互转场完成的百分比;</p>
+</li>
+<li><p><code>[self finishInteractiveTransition]</code>完成交互转场</p>
+</li>
+<li><p><code>[self cancelInteractiveTransition];</code>取消交互转场</p>
+</li>
+</ol>
+<h5 id="具体的实现"><a href="#具体的实现" class="headerlink" title="具体的实现"></a>具体的实现</h5><ol>
+<li>给页面添加边缘滑动手势</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UIScreenEdgePanGestureRecognizer *interactiveTransitionRecognizer  = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];</span><br><span class="line">interactiveTransitionRecognizer.edges = UIRectEdgeLeft;</span><br><span class="line">[vc.view addGestureRecognizer:interactiveTransitionRecognizer];</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>找到转场动画的容器</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- (void)startInteractiveTransition:(id&lt;UIViewControllerContextTransitioning&gt;)transitionContext &#123;</span><br><span class="line">    [super startInteractiveTransition:transitionContext];</span><br><span class="line">    self.transitionContext = transitionContext;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>实际手势的实现</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- (void)panAction:(UIPanGestureRecognizer *)pan&#123;</span><br><span class="line">    _percent = 0.0;</span><br><span class="line">    //UIView *transitionContainerView = pan.view;从手势中也可以获取手势滑动的view，但是转场动画中涉及3d变化的动画操作，那么将无法从手势中获取相应变换的相对位置</span><br><span class="line">    UIView *transitionContainerView = self.transitionContext.containerView;</span><br><span class="line">    CGFloat totalWidth  = CGRectGetWidth(transitionContainerView.bounds);</span><br><span class="line">    CGFloat totalHeight = CGRectGetHeight(transitionContainerView.bounds);</span><br><span class="line">  	CGFloat x = [pan translationInView:transitionContainerView].x;</span><br><span class="line">            _percent = -x/totalWidth;</span><br><span class="line">  switch (pan.state) &#123;</span><br><span class="line">        case UIGestureRecognizerStateBegan:</span><br><span class="line">            _isInter = YES;</span><br><span class="line">            [self.vc.navigationController popViewControllerAnimated:YES];</span><br><span class="line">    			//  [self.vc dismissViewControllerAnimated:YES completion:nil];</span><br><span class="line">            break;</span><br><span class="line">        case UIGestureRecognizerStateChanged:</span><br><span class="line">            [self updateInteractiveTransition:_percent];</span><br><span class="line">            break;</span><br><span class="line">        case UIGestureRecognizerStateEnded:</span><br><span class="line">            _isInter = NO;</span><br><span class="line">            [self continueAction];</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>手势结束后动画UI的变化，</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//采用gui定时器的方式来处理转场动画变换</span><br><span class="line">- (void)continueAction&#123;</span><br><span class="line">    if (_displayLink) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(UIChange)];</span><br><span class="line">    [_displayLink  addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">//转场uI的变换</span><br><span class="line">- (void)UIChange &#123;</span><br><span class="line">    CGFloat timeDistance = 2.0/60;</span><br><span class="line">    if (_percent &gt; 0.4) &#123;</span><br><span class="line">        _percent += timeDistance;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        _percent -= timeDistance;</span><br><span class="line">    &#125;</span><br><span class="line">    [self updateInteractiveTransition:_percent];</span><br><span class="line">    if (_percent &gt;= 1.0) &#123;</span><br><span class="line">        [self finishInteractiveTransition];</span><br><span class="line">        [self stopDisplayLink];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if (_percent &lt;= 0.0) &#123;</span><br><span class="line">        [self stopDisplayLink];</span><br><span class="line">        [self cancelInteractiveTransition];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​        </p>
+]]></content>
+      <categories>
+        <category>iOS动画学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>图层几何学</title>
+    <url>/2021/06/23/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E5%87%A0%E4%BD%95%E5%AD%A6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="图层布局"><a href="#图层布局" class="headerlink" title="图层布局"></a>图层布局</h2><blockquote>
+<p>UIView有三个比较重要的布局属性：<code>frame</code>，<code>bounds</code>和<code>center</code>，CALayer对应地叫做<code>frame</code>，<code>bounds</code>和<code>position</code>。<code>frame</code>代表了图层的外部坐标（也就是在父图层上占据的空间），<code>bounds</code>是内部坐标（{0, 0}通常是图层的左上角），<code>center</code>和<code>position</code>都代表了相对于父图层<code>anchorPoint</code>（也可以理解为中心）所在的位置。</p>
+</blockquote>
+<span id="more"></span>
+
+<ul>
+<li><p>下图显示了这些属性是如何展示的：<br><img src="/.com//1.png" alt="img"></p>
+</li>
+<li><p>视图的<code>frame</code> ，<code>bounds</code>和<code>center</code>属性仅仅是存取方法，当操纵视图的frame，实际上是在改变位于视图下方CALayer的<code>frame</code>，不能够独立于图层之外改变视图的<code>frame</code>。</p>
+<ul>
+<li>对于视图或者图层而言，<code>frame</code>并不是一个非常清晰的属性，它其实是一个虚拟属性，是根据<code>bounds</code>，<code>position</code>和<code>transform</code>计算而来，所以当其中任何一个值发生改变，<code>frame</code>都会变化。相反，改变frame的值同样会影响到他们当中的值</li>
+<li>记住当对图层做变换的时候，比如旋转或者缩放，frame实际上代表了覆盖在图层旋转之后的整个轴对齐的矩形区域，也就是说frame的宽高可能和bounds的宽高不再一致了,具体见下图</li>
+</ul>
+</li>
+</ul>
+<p><img src="/.com//2.png" alt="img"></p>
+<h2 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h2><blockquote>
+<p>视图的<code>center</code>属性和图层的<code>position</code>属性都指定了<code>anchorPoint</code>相对于父图层的位置。图层的<code>anchorPoint</code>通过<code>position</code>来控制它的<code>frame</code>的位置。默认来说<code>anchorPoint</code>位于图层的中点，所以图层的将会以这个点为中心放置。对于UIView而言，没有暴露<code>anchorPoint</code>,只有center；而图层的暴露出来了，<code>anchorPoint</code>可以被移动。anchorPoint为单位坐标</p>
+</blockquote>
+<p><img src="/.com//3.png" alt="img"></p>
+<ul>
+<li>改变<code>anchorPoint</code>，图层的内容会向右下角的<code>position</code>方向移动，而并不是居中了;图中当改变anchorPoint，position是<code>anchorPoint</code>与父图层的位置，由于锚点的变化，相对位置的基础点，发生改变（从原来中心点，变成了右上角），图层右下角移动，frame改变了。</li>
+<li><code>anchorPoint</code>属性为锚点，一般在<code>transform</code>图层旋转中常用到，作为旋转的基点.</li>
+</ul>
+<h3 id="Z坐标轴"><a href="#Z坐标轴" class="headerlink" title="Z坐标轴"></a>Z坐标轴</h3><blockquote>
+<p>和UIView严格的二维坐标系不同，CALayer存在于一个三维空间当中。除了<code>position</code>和<code>anchorPoint</code>属性之外，CALayer还有另外两个属性，<code>zPosition</code>和<code>anchorPointZ</code>，二者都是在Z轴上描述图层位置的浮点类型。</p>
+</blockquote>
+<ul>
+<li><code>zPosition</code>常用的地方<ul>
+<li><code>CATransform3D</code>,在三维空间移动和旋转图层</li>
+<li>改变图层的显示顺序<ul>
+<li>通常，图层是根据它们子图层的sublayers出现的顺序来类绘制的，后被绘制上的图层将会遮盖住之前的图层。</li>
+<li>但是通过增加图层的<code>zPosition</code>,可以把图层前置显示，在其他图层的前面，（图层是很薄的，在这里只用提高一个像素即可实现前置）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="图层中常用的方法"><a href="#图层中常用的方法" class="headerlink" title="图层中常用的方法"></a>图层中常用的方法</h2><blockquote>
+<p>CALayer并不关心任何响应链事件，所以不能直接处理触摸事件或者手势。这里有两个常见的方法帮处理事件：</p>
+<ol>
+<li><code>-containsPoint:</code></li>
+<li><code>-hitTest:</code></li>
+</ol>
+</blockquote>
+<ul>
+<li><code>-containsPoint:</code>,接受一个在本图层坐标系下的<code>CGPoint</code>，如果这个点在图层frame范围内就返回YES</li>
+<li><code>-hitTest:</code>,方法同样接受一个<code>CGPoint</code>类型参数，而不是BOOL类型，它返回图层本身，或者包含这个坐标点的叶子节点图层。<ul>
+<li><code>注意</code>当调用图层的<code>-hitTest:</code>方法时，测算的顺序严格依赖于图层树当中的图层顺序（和UIView处理事件类似）。之前提到的<code>zPosition</code>属性可以明显改变屏幕上<code>图层的顺序</code>，但不能改变<code>事件传递的顺序</code>。</li>
+<li>这意味着如果改变了图层的z轴顺序，你会发现将不能够检测到最前方的视图点击事件，这是因为被另一个图层遮盖住了，虽然它的zPosition值较小，但是在图层树中的顺序靠前。</li>
+</ul>
+</li>
+</ul>
+<h2 id="图层的视觉效果展示"><a href="#图层的视觉效果展示" class="headerlink" title="图层的视觉效果展示"></a>图层的视觉效果展示</h2><blockquote>
+<p>一些常用的视觉显示所需要的图层属性</p>
+</blockquote>
+<ol>
+<li><p>圆角:</p>
+<ol>
+<li><code>cornerRadius</code>,控制着图层角的曲率。它是一个浮点数，默认为0（为0的时候就是直角）</li>
+<li><code> masksToBounds</code>,默认情况下，<code>cornerRadius</code>只影响背景颜色而不影响背景图片或是子图层,把<code>masksToBounds</code>设置成YES的话，图层里面的所有东西都会受到影响，被截取。</li>
+</ol>
+</li>
+<li><p>图层边框</p>
+<ol>
+<li><code>borderWidth</code>是以点为单位的定义边框粗细的浮点数，默认为0</li>
+<li><code>borderColor</code>定义了边框的颜色，默认为黑色。(CGColorRef类型，而不是UIColor)</li>
+</ol>
+</li>
+<li><p>阴影</p>
+<ol>
+<li><code>shadowOpacity</code>:给<code>shadowOpacity</code>属性一个大于默认值（也就是0）的值，阴影就可以显示在任意图层之下</li>
+<li><code>shadowColor</code>属性控制着阴影的颜色,(CGColorRef),默认是黑色</li>
+<li><code>shadowOffset</code>属性控制着阴影的方向和距离。它是一个CGSize的值，宽度控制这阴影横向的位移，高度控制着纵向的位移。默认值是 {0, -3}(Mac与iphone的y轴颠倒的，因此在mac上是向下，而iphone是向上)</li>
+<li><code>shadowRadius</code>属性控制着阴影的模糊度，为0的时候，阴影就和视图一样有一个非常确定的边界线，当值越来越大的时候，边界线看上去就会越来越模糊和自然。<ol>
+<li>注意，阴影通常就是在layer的边界之外，如果开启masksToBounds属性，所有从图层中突出来的内容都会被裁剪掉，阴影也就不存在了</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="shadowPath属性"><a href="#shadowPath属性" class="headerlink" title="shadowPath属性"></a><code>shadowPath</code>属性</h3><blockquote>
+<p><code>shadowPath</code>属性,图层阴影是从图层内容的形状继承而来,实时计算阴影也是一个非常消耗资源的，尤其是图层有多个子图层，每个图层还有一个有透明效果的寄宿图的时候</p>
+</blockquote>
+<ol>
+<li>如果你事先知道你的阴影形状会是什么样子的，你可以通过指定一个<code>shadowPath</code>来提高性能。<ol>
+<li><code>shadowPath</code>是一个<code>CGPathRef</code>类型(一个指向CGPath的指针)。CGPath是一个<code>Core Graphics</code>对象，用来指定任意的一个矢量图形。我们可以通过这个属性单独于图层形状之外指定阴影的形状。</li>
+<li>代码</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//enable layer shadows</span><br><span class="line">  self.layerView1.layer.shadowOpacity = 0.5f;</span><br><span class="line">  self.layerView2.layer.shadowOpacity = 0.5f;</span><br><span class="line"></span><br><span class="line">  //方形的阴影</span><br><span class="line">  CGMutablePathRef squarePath = CGPathCreateMutable();</span><br><span class="line">  CGPathAddRect(squarePath, NULL, self.layerView1.bounds);</span><br><span class="line">  self.layerView1.layer.shadowPath = squarePath; CGPathRelease(squarePath);</span><br><span class="line"></span><br><span class="line">  ￼//圆形的阴影</span><br><span class="line">  CGMutablePathRef circlePath = CGPathCreateMutable();</span><br><span class="line">  CGPathAddEllipseInRect(circlePath, NULL, self.layerView2.bounds);</span><br><span class="line">  self.layerView2.layer.shadowPath = circlePath; CGPathRelease(circlePath);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>iOS动画学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>图层视觉效果</title>
+    <url>/2021/06/23/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E8%A7%86%E8%A7%89%E6%95%88%E6%9E%9C/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="图层蒙板"><a href="#图层蒙板" class="headerlink" title="图层蒙板"></a>图层蒙板</h2><blockquote>
+<p><code>CALayer</code>有一个属性叫做<code>mask</code>可以解决这个问题，这个属性本身就是个<code>CALayer</code>类型，有和其他图层一样的绘制和布局属性。它类似于一个子图层，相对于父图层（即拥有该属性的图层）布局，不同于那些绘制在父图层中的子图层，<code>mask</code>图层定义了父图层的部分可见区域。</p>
+</blockquote>
+<ul>
+<li><code>mask</code>图层的Color属性是无关紧要的，真正重要的是图层的轮廓。其显示的轮廓即为图层能显示的区域</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="拉伸过滤算法"><a href="#拉伸过滤算法" class="headerlink" title="拉伸过滤算法"></a>拉伸过滤算法</h2><blockquote>
+<p>当图片需要显示不同的大小的时候<code>minificationFilter</code>和<code>magnificationFilter</code>属性。，有一种叫做拉伸过滤的算法就起到作用了。它作用于原图的像素上并根据需要生成新的像素显示在屏幕上。</p>
+</blockquote>
+<ul>
+<li>事实上，重绘图片大小也没有一个统一的通用算法。这取决于需要拉伸的内容，放大或是缩小的需求等这些因素。<code>CALayer</code>为此提供了三种拉伸过滤方法，他们是：<ol>
+<li> kCAFilterLinear</li>
+<li> kCAFilterNearest</li>
+<li> kCAFilterTrilinear</li>
+</ol>
+</li>
+</ul>
+<h3 id="kCAFilterLinear和kCAFilterTrilinear"><a href="#kCAFilterLinear和kCAFilterTrilinear" class="headerlink" title="kCAFilterLinear和kCAFilterTrilinear"></a><code>kCAFilterLinear</code>和<code>kCAFilterTrilinear</code></h3><ul>
+<li><p>minification（缩小图片）和magnification（放大图片）默认的过滤器都是<code>kCAFilterLinear</code>，这个过滤器采用双线性滤波算法，它在大多数情况下都表现良好。双线性滤波算法通过对多个像素取样最终生成新的值，得到一个平滑的表现不错的拉伸。但是当放大倍数比较大的时候图片就模糊不清了。</p>
+</li>
+<li><p><code>kCAFilterTrilinear</code>和<code>kCAFilterLinear</code>非常相似，大部分情况下二者都看不出来有什么差别。但是，较双线性滤波算法而言，三线性滤波算法存储了多个大小情况下的图片（也叫多重贴图），并三维取样，同时结合大图和小图的存储进而得到最后的结果。这个方法的好处在于算法能够从一系列已经接近于最终大小的图片中得到想要的结果，也就是说不要对很多像素同步取样。这不仅提高了性能，也避免了小概率因舍入错误引起的取样失灵的问题</p>
+<h3 id="kCAFilterNearest"><a href="#kCAFilterNearest" class="headerlink" title="kCAFilterNearest"></a><code>kCAFilterNearest</code></h3></li>
+<li><p><code>kCAFilterNearest</code>是一种比较武断的方法,这个算法（也叫最近过滤）就是取样最近的单像素点而不管其他的颜色。这样做非常快，也不会使图片模糊。但是，最明显的效果就是，会使得压缩图片更糟，图片放大之后也显得块状或是马赛克严重。</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3></li>
+<li><p>总的来说，对于比较小的图或者是差异特别明显，极少斜线的大图，最近过滤算法会保留这种差异明显的特质以呈现更好的结果。但是对于大多数的图尤其是有很多斜线或是曲线轮廓的图片来说，最近过滤算法会导致更差的结果。换句话说，线性过滤保留了形状，最近过滤则保留了像素的差异。因此对于大图来说，双线性滤波和三线性滤波表现得更出色,而对于没有斜线的小图来说，最近过滤算法要好很多。</p>
+</li>
+<li><p>用法</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//对于小图片极少斜线的图，用最近的放大算法较好</span><br><span class="line">view.layer.magnificationFilter = kCAFilterNearest;</span><br></pre></td></tr></table></figure>
+<h2 id="组透明"><a href="#组透明" class="headerlink" title="组透明"></a>组透明</h2><blockquote>
+<p>UIView有一个叫做<code>alpha</code>的属性来确定视图的透明度。CALayer有一个等同的属性叫做<code>opacity</code>，这两个属性都是影响子层级的。也就是说，如果你给一个图层设置了opacity属性，那它的子图层都会受此影响。</p>
+</blockquote>
+<ul>
+<li>下图展示了一个内嵌UILabel的自定义UIButton；左边是一个不透明的按钮，右边是50%透明度的相同按钮。我们可以注意到，里面的标签的轮廓跟按钮的背景很不搭调。</li>
+</ul>
+<p><img src="/.com//1.png" alt="1.png"></p>
+<ul>
+<li>这是由透明度混合叠加造成的，当你显示一个个50%透明度的图层时，图层的每个像素都会一半显示自己的颜色，另一半显示图层下面的颜色。这是正常的透明度的表现。但是如果图层包含一个同样显示50%透明的子图层时，你所看到的视图，50%来自子视图，25%来自图层本身的颜色，另外的25%则来自背景色。所以合起来中间标签可见度为75%</li>
+<li>处理方法<ul>
+<li>可以设置CALayer的一个叫做<code>shouldRasterize</code>属性来实现组透明的效果，如果它被设置为YES，在应用透明度之前，图层及其子图层都会被整合成一个整体的图片，这样就没有透明度混合的问题了.</li>
+<li>为了启用<code>shouldRasterize</code>属性，我们设置了图层的<code>rasterizationScale</code>属性。默认情况下，所有图层拉伸都是1.0， 所以如果你使用了<code>shouldRasterize</code>属性，你就要确保你设置了<code>rasterizationScale</code>属性去匹配屏幕，以防止出现Retina屏幕(Retina的像素比和一般屏幕不一样)像素化的问题。</li>
+<li>代码</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">button2.layer.shouldRasterize = YES;</span><br><span class="line">button2.layer.rasterizationScale = [UIScreen mainScreen].scale;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>iOS动画学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>详解iOS的presentViewController</title>
+    <url>/2021/07/23/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E8%AF%A6%E8%A7%A3iOS%E7%9A%84presentViewController/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p>iOS中显示ViewController的方式有两种push和modal，modal也叫模态，模态显示VC是iOS的重要特性之一，其主要用于有以下场景：</p>
+<ol>
+<li>收集用户输入信息 </li>
+<li> 临时呈现一些内容 </li>
+<li>临时改变工作模式 </li>
+<li>相应设备方向变化（用于针对不同方向分别是想两个ViewController的情况）</li>
+<li> 显示一个新的view层级</li>
+</ol>
+<p>这些场景都会暂时中断APP的正常执行流程，主要作用是收集信息以及显示一些重要的提示等。当VCA模态的弹出了VCB，那么VCA就是<code>presenting view controller</code>，VCB就是<code>presented view controller</code></p>
+</blockquote>
+<h3 id="ModalPresentationStyle-amp-Presentation-Context"><a href="#ModalPresentationStyle-amp-Presentation-Context" class="headerlink" title="ModalPresentationStyle &amp; Presentation Context"></a>ModalPresentationStyle &amp; Presentation Context</h3><h4 id="ModalPresentationStyle"><a href="#ModalPresentationStyle" class="headerlink" title="ModalPresentationStyle"></a>ModalPresentationStyle</h4><p>​        <code>presented VC </code>的<code>modalPresentationStyle</code>属性决定了此次<code>presentation</code>的行为方式及UIKit寻找<code>presentation context</code>的方法，iOS提供了以下几种常用的<code>presentation style</code></p>
+<ol>
+<li><p><strong>UIModalPresentationFullScreen</strong></p>
+<p>UIKit默认的<code>presentation style</code>。 使用这种模式时，<code>presented VC</code>的宽高与屏幕相同，并且UIKit会直接使用<code>rootViewController</code>做为<code>presentation context</code>，在此次presentation完成之后，UIKit会将<code>presentation context及其子VC</code>都移出UI栈，这时候观察VC的层级关系，会发现UIWindow下只有<code>presented VC</code>（视图层级下UIWindow上只有presented VC）.</p>
+</li>
+<li><p><strong>UIModalPresentationCurrentContext</strong></p>
+<p>使用这种方式<code>present VC</code>时，<code>presented VC</code>的宽高取决于<code>presentation context</code>的宽高，并且UIKit会寻找属性<code>definesPresentationContext</code>为YES的VC作为<code>presentation context</code> 。当此次<code>presentation</code>完成之后，<code>presentation context</code>及其子VC都将被暂时移出当前的UI栈。</p>
+</li>
+<li><p><strong>UIModalPresentationCustom</strong></p>
+<p>自定义模式，需要实现UIViewControllerTransitioningDelegate的相关方法，并将presented VC的transitioningDelegate 设置为实现了UIViewControllerTransitioningDelegate协议的对象。</p>
+</li>
+<li><p><strong>UIModalPresentationOverFullScreen</strong></p>
+<p>与<code>UIModalPresentationFullScreen</code>的唯一<strong>区别</strong>在于，UIWindow下除了<code>presented VC</code>，还有其他正常的VC层级关系。也就是说该模式下，UIKit以<code>rootViewController</code>为<code>presentation context</code>，但presentation完成之后不会将<code>rootViewController移出当前的UI栈</code>。</p>
+</li>
+<li><p><strong>UIModalPresentationOverCurrentContext</strong></p>
+<p>寻找<code>presentation context</code>的方式与<code>UIModalPresentationCurrentContext</code>相同，所不同的是<code>presentation</code>完成之后，不会将<code>context及其子VC移出当前UI栈</code>。但是，这种方式只<strong>适用于transition style为UIModalTransitionStyleCoverVertical的情况</strong>(UIKit默认就是这种transition style)。其他transition style下使用这种方式将会触发异常。</p>
+</li>
+<li><p><strong>UIModalPresentationBlurOverFullScreen</strong></p>
+<p><code>presentation</code>完成之后，如果<code>presented VC</code>的背景有透明部分，会看到presented VC下面的VC会变得模糊，其他与<code>UIModalPresentationOverFullScreen</code>模式没有区别。</p>
+</li>
+<li><p><strong>UIModalPresentationPageSheet</strong></p>
+<p>在常规型设备（大屏手机，例如plus系列以及iPad系列）的水平方向，<code>presented VC</code>的高为当前屏幕的高度，宽为该设备竖直方向屏幕的宽度，其余部分用透明背景做填充。对于紧凑型设备（小屏手机）的水平方向及所有设备的竖直方向，其显示效果与<code>UIModalPresentationFullScreen</code>相同。</p>
+</li>
+<li><p><strong>UIModalPresentationFormSheet</strong></p>
+<p>在常规型设备的水平方向，<code>presented VC</code>的宽高均小于屏幕尺寸，其余部分用透明背景填充。对于紧凑型设备的水平方向及所有设备的竖直方向，其显示效果与<code>UIModalPresentationFullScreen</code>相同</p>
+</li>
+</ol>
+<p><code>UIModalPresentationFullScreen</code>、<code>UIModalPresentationCurrentContext</code>在转场完成后会将<code>context及其子VC移出当前UI栈</code>,因此转场结束后是无法看到presenting的视图的，而其他情况下的style是可以看到的</p>
+<h4 id="presentation-context"><a href="#presentation-context" class="headerlink" title="presentation context"></a>presentation context</h4><blockquote>
+<p><code>presentation context</code>是指为本次<code>present</code>提供上下文环境的类，需要指出的是，<code>presenting VC</code>通常并不是<code>presentation context</code></p>
+</blockquote>
+<p>​        当我们需要<code>present VC</code>的时候，除非我们指定了<code>context</code>，否则UIKit会优先选择<code>presenting VC</code>所属的容器类做为<code>presentation context</code>，如果没有容器类，那么会选择<code>rootViewController</code>。但是，UIKit搜索context的方式还与<code>presented VC</code>的<code>modalPresentationStyle</code>属性有关，当<code>modalPresentationStyle</code>为<code>UIModalPresentationFullScreen</code>、<code>UIModalPresentationOverFullScreen</code>等模式时，UIKit会直接选择<code>rootViewController</code>做为<code>context</code>。当<code>modalPresentationStyle</code>为<code>UIModalPresentationOverCurrentContext</code>、<code>UIModalPresentationCurrentContext</code>模式时，UIKit搜索<code>context</code>的方式如下：</p>
+<ul>
+<li><p><code>UIModalPresentationOverCurrentContext</code>、<code>UIModalPresentationCurrentContext</code>模式下，一个VC能否成为<code>presentation context</code> 是由VC的<code>definesPresentationContext</code>属性决定的，这是一个<code>BOOL</code>值，默认<code>UIViewController的definesPresentationContext</code>属性值是<code>NO</code>，而<strong>container view controller</strong>（容器控制器）的<code>definesPresentationContext</code>默认值是<code>YES</code>，这也是上文中，UIKit总是将<code>container view controller</code>做为<code>presentation context</code>的原因。如果我们想指定<code>presenting VC</code>做为<code>context</code>，只需要在<code>presenting VC</code>的<code>viewDidLoad</code>方法里添加如下代码即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">self.definesPresentationContext = YES</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>UIKit搜索<code>presentation context</code>的顺序为： </p>
+<ol>
+<li><code>presenting VC</code> </li>
+<li><code>presenting VC</code> 的<code>父VC </code></li>
+<li><code>presenting VC</code> 所属的<code>container VC </code></li>
+<li><code>rootViewController</code></li>
+</ol>
+<h3 id="层级关系"><a href="#层级关系" class="headerlink" title="层级关系"></a>层级关系</h3><blockquote>
+<p><strong>presented VC 总是与 presentation context 处于同一层级，而与presenting VC所在的层级无关，且同一个presentation context同时只能有一个presented VC。</strong></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>iOS动画学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>碰到的一些问题</title>
+    <url>/2021/07/10/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%B0%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="场景图片的问题"><a href="#场景图片的问题" class="headerlink" title="场景图片的问题"></a>场景图片的问题</h3><ol>
+<li>从相册中导出全场景图片存在的问题<ol>
+<li>压缩图片的质量</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[[PHCachingImageManager defaultManager]</span><br><span class="line">        requestImageDataForAsset:mAsset</span><br><span class="line">                         options:nil</span><br><span class="line">                   resultHandler:^(NSData *_Nullable imageData, NSString *_Nullable dataUTI, UIImageOrientation orientation, NSDictionary *_Nullable info) &#123;</span><br><span class="line">                     UIImage *resultImage = [UIImage imageWithData:imageData];</span><br><span class="line">                     //获得的image要转换为正确的方向</span><br><span class="line">                    // 然后将该image导入到本地文件中</span><br><span class="line">                     //注意要用jpg的形式导入本地，否则，图片文件的大小会激增，有4M多变成90Mb（原因未知）</span><br><span class="line">                      BOOL result = [UIImageJPEGRepresentation(image, 0.5) writeToFile:filePath atomically:YES];</span><br><span class="line">                     //采用png的形式保存场景图片，会出现存储图片内存激增</span><br><span class="line">                     BOOL result = [UIImagePNGRepresentation(image) writeToFile:filePath atomically:YES];</span><br><span class="line">                   &#125;];</span><br></pre></td></tr></table></figure>
+
+<p>​        2. 全场景图片一般为十几万✖️几千的分辨率，上述压缩的方式可以使全场景图片在iphone6plus上显示，没有卡顿现象，但是这样的图片在iphone6上仍有有明显的卡顿，</p>
+<h3 id="单例block引用导致内存泄漏的问题"><a href="#单例block引用导致内存泄漏的问题" class="headerlink" title="单例block引用导致内存泄漏的问题"></a>单例block引用导致内存泄漏的问题</h3><ol>
+<li>注意如果block为单例的属性，那么在该block中要注意内存泄露的问题，因为单例会一直无法释放，会一直持有属性，而属性会一直持有block中的对象，那么就会导致block中捕获的对象，造成对象无法释放</li>
+<li>如果是方法中的block，那么方法在执行完毕之后，便会释放block，不会一直持有，不用担心内存泄露的问题</li>
+</ol>
+]]></content>
+      <categories>
+        <category>零碎知识点</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>碎片化笔记</title>
+    <url>/2021/06/23/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%8E%E7%89%87%E5%8C%96%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p>记录偶尔发现有用的知识点</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="delegate能一对多吗"><a href="#delegate能一对多吗" class="headerlink" title="delegate能一对多吗"></a>delegate能一对多吗</h2><ul>
+<li><p>在不同控制页面实现同一代理，并且执行代理的类为单例执行；代码验证时发现</p>
+<ul>
+<li>尽管为单例，但是其属性<code>delegate</code>为唯一，与当前控制页是相互持有关系，因此，在页面1时，只会执行页面1上的代理方法；</li>
+<li>当从页面1进入页面2后，<code>delegate</code>的对象变成了页面2，因此，在页面2时，只会执行页面1上的代理方法</li>
+<li>当从页面2退到页面1后，页面1销毁，由于为weak，弱引用，在页面1上也不会执行代理方法，被销毁的页面2上更不会执行了</li>
+</ul>
+</li>
+<li><p>通过相关的设计也可以实现一对多的关系</p>
+<ol>
+<li><p>用多播代理的方式，多播代理相比一般的只是多了一个中间层，由中间层实现代理，获取数据；中间层与控制器之间</p>
+<ol>
+<li>用一个block数组，作为中间层单例的属性</li>
+<li>在其他控制器中，都设置一个回调的block，并将该block添加到数组中</li>
+<li>在中间层实现代理获取数据的时候，遍历这个blcok数组，将数据进行分发</li>
+</ol>
+</li>
+<li><p>1个代理在多个页面内实现，</p>
+<ol>
+<li><p>关键点在于</p>
+<ol>
+<li>协议名称和对象构成一个健值对，形成1-1对应关系</li>
+<li><code>NSPointerArray</code>的使用，使得弱引用对象，且在对象释放时自动删除<code>NSPointerArray</code>中的元素。</li>
+</ol>
+</li>
+<li><p>使用</p>
+<ol>
+<li><p>将其他页面要实现的代理同样均设为一个单例消息分发中心，有一个字典数据(键为协议，值为<code>NSPointerArray</code>，数组中存有各个页面的对象)</p>
+</li>
+<li><p>在一个页面触发代理后，首先会实现代理的消息分发中心是否实现了，在这里是没有实现相关的代理方法的，</p>
+<ol>
+<li><p>借助</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- (BOOL)respondsToSelector:(SEL)aSelector;</span><br></pre></td></tr></table></figure>
+
+<p>，判断本管理对象是否可以响应方法</p>
+<ol>
+<li>如果存的<code>pointArray</code>中可以响应方法则返回YES</li>
+</ol>
+</li>
+<li><p>下面有两种方式实现</p>
+<ol>
+<li>借助<code>- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;</code>以及<code>-(void)forwardInvocation:(NSInvocation *)anInvocation;</code>（这两个方法是一起的）。可以实现在多个未销毁页面中，同时实现代理，达成通知的效果，实现消息的分发</li>
+<li>也可以单独实现<code>- (id)forwardingTargetForSelector:(SEL)aSelector;</code>（返回未识别消息应首先指向的对象（本来默认是向上传的）），但这是在相应的NSPointArray中找到能实现该方法的对象，只能实现消息的转发，在多个页面的对象中找到真正一个能响应该方法的</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="block"><a href="#block" class="headerlink" title="block"></a>block</h3><hr>
+<blockquote>
+<p>众所周知，当某个对象持有着一个Block的时候，如果在Block内部使用强引用反过来持有这个对象，就会导致引用循环。为了避免引用循环，可以使用__weak修饰符。</p>
+</blockquote>
+<h4 id="block中的引用"><a href="#block中的引用" class="headerlink" title="block中的引用"></a>block中的引用</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">__weak typeof(self) weakSelf = self;</span><br><span class="line">self.block = ^&#123;</span><br><span class="line">  _strong typeof(self) strongSelf = weakSelf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>C语言编译后可以发现，<code>Block</code>本身对<code>self</code>的引用仍然只是弱引用，并不造成引用循环</li>
+<li><code>strongSelf</code>只存在于Block对应的函数里，它的生命周期只在这个函数执行的过程中，函数执行前它不会存在，函数执行完它立刻就被释放了.因此<ol>
+<li>如果函数执行前self变为nil了，那么函数不会执行，没有任何引用循环发生；</li>
+<li>如果函数执行过程中self变为nil了，那么函数一开始声明的strongSelf会暂时持有着self，此时会有一个暂时的引用循环。当函数执行完（即是Block执行完），strongSelf超出作用域被释放，引用循环从这里开始打破。接下来，由于没有任何强引用持有self了，于是self被释放，最后Block也因为没有任何强引用持有它也被释放了。所有对象就都被顺利释放了。</li>
+</ol>
+</li>
+</ol>
+<h5 id="解决block循环引用"><a href="#解决block循环引用" class="headerlink" title="解决block循环引用"></a>解决block循环引用</h5><ol>
+<li>通过Weak修饰的方式来处理的。 weak是弱引用，用weak来修饰、描述所引用对象的计数器并不会加1，weak会在引用对象被释放的时候自动置为nil</li>
+<li><code>__block</code>修饰变量，依赖于中介者模式，属于手动释放。其实现是通过<code>__block</code>修饰对象，因为<code>__block</code>修饰的对象是可以改变的，可以在block中手动的释放掉引用的对象</li>
+<li>直接将对象作为参数，直接将对象作为参数传入了block中，block中并没有对对象进行持有，因此也不会造出循环引用的问题</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">typedef void(^TBlock)(ViewController *); </span><br><span class="line">@property(nonatomic, copy) TBlock tBlock; </span><br><span class="line">self.tBlock = ^(ViewController *vc)&#123; </span><br><span class="line">  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(),    ^&#123; </span><br><span class="line">       NSLog(@&quot;%@&quot;,vc.name);</span><br><span class="line">   &#125;);</span><br><span class="line"> &#125;; </span><br><span class="line">self.tBlock(self);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><code>NSProxy</code>转发消息打破循环引用，实际上也是使用了<code>weak</code>修饰,在<code>NSProxt</code>中使用了<code>weak</code>来修饰对象属性</li>
+</ol>
+<h4 id="block中变量捕获"><a href="#block中变量捕获" class="headerlink" title="block中变量捕获"></a>block中变量捕获</h4><ol>
+<li>局部变量捕获瞬时值,局部静态变量捕获指针。</li>
+<li>全局变量、全局静态变量直接使用不捕获</li>
+<li>成员变量是指针捕获</li>
+<li>_block修饰自动变量，会将本来传值的，变为地址</li>
+</ol>
+<h3 id="UIView用weak修饰还是strong修饰"><a href="#UIView用weak修饰还是strong修饰" class="headerlink" title="UIView用weak修饰还是strong修饰"></a>UIView用weak修饰还是strong修饰</h3><hr>
+<ol>
+<li>从stroryboard中拖出来的控件一般用weak来修饰，这么做的原因是因为stroryboard已经持有控件的，引用计数已经加1了，不需要在用strong时引用数加1，但是用strong修饰也可以，因为在控制器销毁后，不管是strong还是weak，引用计数都会变为0。</li>
+<li>在控制器中手写UI也可以用weak修饰，因为subViews为copy修饰的强引用数组，因为会持有控件，但是要注意一定要在addSubview作用范围内进行赋值属性，否则出来作用范围，由于用weak修饰，属性的引用计数为0，会销毁掉；同样用strong修饰的话也可以，在控制器销毁后，不管是strong还是weak，引用计数都会变为0<ol>
+<li>注意这里的不能直接对成员变量进行赋值，否则会直接提醒无引用计数，要设置一个临时变量，这样临时变量会暂时持有，等addsubview添加后，由控制器持有</li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>零碎知识点</category>
+      </categories>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/03/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Mach-o%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Mach-o文件"><a href="#Mach-o文件" class="headerlink" title="Mach-o文件"></a>Mach-o文件</h1><ul>
+<li>一个Mach-O文件包含3个主要区域<ul>
+<li>Header <ul>
+<li>文件类型、目标架构类型等</li>
+</ul>
+</li>
+<li>Load commands<ul>
+<li>描述文件在虚拟内存中的逻辑结构、布局</li>
+</ul>
+</li>
+<li>Raw segment data<ul>
+<li>在Load commands中定义的Segment的原始数据<br><img src="/.com//16674864838934/16674865436160.jpg"><h2 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h2><h3 id="file："><a href="#file：" class="headerlink" title="file："></a>file：</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>查看Mach-O的文件类型</li>
+<li><code>file  文件路径</code><h3 id="otool："><a href="#otool：" class="headerlink" title="otool："></a>otool：</h3></li>
+<li>查看Mach-O特定部分和段的内容<ul>
+<li><code>otool -L 文件路径</code>查看依赖的库</li>
+<li><code>otool -h 文件路径</code>mach中head的信息</li>
+<li><code>otool -l 文件路径</code>mach中loadcommand的信息<h3 id="dyld"><a href="#dyld" class="headerlink" title="dyld"></a>dyld</h3></li>
+</ul>
+</li>
+<li><code>dyld</code>是mach-o文件（MH_DYLINKER），但是它也能加载mach-o文件，但是能加载<ul>
+<li><code>MH_EXEUTE</code>，可执行文件</li>
+<li><code>MH_DYLIB</code>,动态库</li>
+<li><code>MH_BUNDLE</code></li>
+</ul>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>load、initialize方法的区别</title>
+    <url>/2022/12/23/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="load、initialize方法的区别"><a href="#load、initialize方法的区别" class="headerlink" title="load、initialize方法的区别"></a>load、initialize方法的区别</h1><ol>
+<li><p>调用方式</p>
+<ul>
+<li> load是根据函数地址直接调用</li>
+<li> initialize是通过objc_msgSend调用</li>
+</ul>
+</li>
+<li><p>调用时刻</p>
+<ul>
+<li>load是runtime加载类、分类的时候调用（只会调用1次）</li>
+<li>initialize是累第一次接收到消息的时候调用，每个类只会initialize一次（父类的initialize方法可能会被调用多次）</li>
+</ul>
+</li>
+<li><p>load、initialize的调用顺序</p>
+<ol>
+<li>load<ul>
+<li>先调用类的load<ul>
+<li>先编译的类，优先调用load</li>
+<li>调用子类的load之前，会先调用父类的load</li>
+</ul>
+</li>
+<li>再调用分类的load<ul>
+<li>先编译的分类，优先调用load</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>initialize<ul>
+<li>在，第一次使用的时候调用，先初始化父类，</li>
+<li>再初始化子类（可能最终调用的是父类的）</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>load、initialize</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>initialize</title>
+    <url>/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="initialize"><a href="#initialize" class="headerlink" title="initialize"></a>initialize</h1><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><ol>
+<li>在查找方法前，进行initialize的调用<br><img src="/.com//16721352310424.png"><img src="/.com//16721353684859.png"></li>
+</ol>
+<ul>
+<li>类没有初始化，则去调用初始化<br><img src="/.com//16721354586849.png"></li>
+<li>先查看有没有父类，且父类，没有初始化，则先初始化父类的initial<br><img src="/.com//16721355384202.png"></li>
+<li>采用的是objc_msSend去调用initialize方法<br><img src="/.com//16721356497584.png"></li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>initialize和load的很大区别是，initize是通过objc_msgSend进行调用的。而load是拿到函数地址后直接调用的<ul>
+<li>如果子类没有实现initialize，会调用父类的initialize（所以父类的initialize可能会调用多次）</li>
+<li>如果分类实现了initialize，就会覆盖本身的initialize调用</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>load、initialize</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>KVC</title>
+    <url>/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h1><ol>
+<li>通过KVC修改属性会触发KVO，例如age属性,<ul>
+<li>注意，就是age属性没有实现set的方法，只有成员变量，通过KVC设置，同样会触发KVO</li>
+<li>表明KVC内部实际上有调用willchangForkey、以及didChangeForKey:方法<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><img src="/.com//16719622557599.png"></li>
+</ul>
+</li>
+<li>根据setAge:,_setAge:的顺序找到，找到则调用,设置</li>
+<li>如果1没找到，查看<code>accessInstanceVariablesDirectly</code>（是否可直接查找成员变量）是否返回true，为No，直接报没找到key的异常</li>
+<li>如果为true，则按照_age,_isAge,age,isAge的顺序查找成员变量，找到直接赋值<h2 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h2><img src="/.com//%E6%88%AA%E5%B1%8F2022-12-25%2020.15.39.png" alt="截屏2022-12-25 20.15.39"></li>
+</ol>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>KVC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>KVO</title>
+    <url>/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVO/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h1><h3 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h3><ul>
+<li>未使用KVO监听，其isa指针指向的是其class对象，（isa指针、superclass指针、实例方法、协议列表、属性列表、成员变量）</li>
+<li>使用KVO监听，其isa指向为<code>NSKVONotifying_class</code>一个全新的class对象,有<code>runtime</code>运行时，动态创建的类,<ul>
+<li>该类实现为其class对象的子类，其内部实现了class、delloc、_isKVOA，以及重新了相关的set方法</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[self.person1 addObserver:self forKeyPath:@&quot;height&quot; options:options context:@&quot;456&quot;];</span><br><span class="line">    int num;</span><br><span class="line">    //=注意，这里如果用[self.person1 class]拿不到，被重写了，不会拿到实际的类</span><br><span class="line">    Method * list = class_copyMethodList(object_getClass(self.person1), &amp;num);</span><br><span class="line">    for(int i = 0;i &lt; num;i++) &#123;</span><br><span class="line">        Method method = list[i];</span><br><span class="line">        NSLog(@&quot;%@&quot;,NSStringFromSelector(method_getName(method)));</span><br><span class="line">    &#125;</span><br><span class="line">    free(list);</span><br><span class="line">    /*</span><br><span class="line">    输出setHeight:、setAge:、class、dealloc、_isKVOA</span><br><span class="line">    */</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在调用set方法后实际调用了<code>_NSSetIntValueAndNotify();</code>(整型所以是int，如果是double则是<code>_NSSetDoubleValueAndNotify()</code>)</li>
+<li><code>_NSSetIntValueAndNotify()</code>内，类似实现,伪代码<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">NSKVONotifying_MJPerson中</span><br><span class="line">- (void)setAge:(int)age &#123;</span><br><span class="line">    _NSSetIntValueAndNotify()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void _NSSetIntValueAndNotify() &#123;</span><br><span class="line">    [self willChangeValueForKey:&quot;age&quot;]</span><br><span class="line">    [super setAge:age]</span><br><span class="line">    [self didChangeValueForKey:&quot;age&quot;] //里面调用监听器的方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void) didChangeValueForKey:(NSString *)key &#123;</span><br><span class="line">    [observer observeValueForKeyPath:key ofObject: change: content:]//通知观察者</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>如果内存中有个<code>NSKVONotifying_xxx</code>类，则相应的kvo无法实现</li>
+<li>通过<code>[self.person1 methodForSelector:@selector(setAge:)]</code>找到对应方法的实现，在lldb中根据内存，用<code>p (IMP)0x7ff800bde9cb</code>即可找到实际实现的方法<code>Foundation _NSSetIntValueAndNotify</code></li>
+<li>被kvo的对象，其元类对象也是不同的`</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>KVO的本质是什么</li>
+</ol>
+<ul>
+<li>利用RuntimeAPI动态生成一个子类，并且让instance对象的isa指向这个全新的子类</li>
+<li>当修改instance对象的属性时，会调用Foundation的_NSSetxxxValueAndNotif函数<ul>
+<li>willchangValueForKey</li>
+<li>父类原来的setter</li>
+<li>didChangeValueForKey<ul>
+<li>其内部会触发监听器Obserser的监听方法（observeValueForKeyPath:ofObject:change:）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>KVO的本质是什么</li>
+</ol>
+<ul>
+<li>设置方法时，自动触发</li>
+<li>手动调用willChangeForKey：和didChangeForKey： </li>
+</ul>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>KVO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Load</title>
+    <url>/2022/12/26/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Load方法"><a href="#Load方法" class="headerlink" title="Load方法"></a>Load方法</h1><ul>
+<li>+load方法会在runtime加载类、分类时调用</li>
+<li>每个类、分类的+load，在程序运行过程中只调用一次<ul>
+<li>flags标识位保证类只会加载一次</li>
+<li>这里有递归，首选会先将父类添加到数组，后将自己加进去数组，因此最后，先父类，再执行子类的load方法</li>
+<li>最开始的关系时按照编译的顺序来的<br><img src="/.com//16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="/.com//16720646359112.png"></p>
+</li>
+<li><p>构建有类load方法的数组，以及有分类load方法的数组，整个添加顺序是</p>
+<ol>
+<li>类先按编译的顺序进行添加，其中父类会比子类先添加到数组中</li>
+<li>分类按编译的顺序进行添加的<br><img src="/.com//16720651219179.png"></li>
+</ol>
+</li>
+<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="/.com//16720639325952.png"></p>
+</li>
+<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="/.com//16720641861246.png"></p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>调用顺序</li>
+</ul>
+<ol>
+<li><p>先带哦用类的+load</p>
+<ol>
+<li>按照编译先后顺序调用，先编译，先调用</li>
+<li>调用子类的+load之前会先调用父类的+load</li>
+</ol>
+</li>
+<li><p>再调用分类的+load</p>
+<ol>
+<li>按照编译先后顺序调用，先编译，先调用</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li></li>
+</ul>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>load、initialize</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>objc_class的结构</title>
+    <url>/2022/12/21/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="objc-class的结构"><a href="#objc-class的结构" class="headerlink" title="objc_class的结构"></a>objc_class的结构</h1><p><img src="/.com//16715558479895.png"></p>
+<ul>
+<li>如何去查看<code>objc_class</code>的源码在真实项目中用，吧objc_class结构体，在函数类直接写出来，用桥接的方式实现<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">#ifndef MJClassInfo_h</span><br><span class="line">#define MJClassInfo_h</span><br><span class="line"></span><br><span class="line"># if __arm64__</span><br><span class="line">#   define ISA_MASK        0x0000000ffffffff8ULL</span><br><span class="line"># elif __x86_64__</span><br><span class="line">#   define ISA_MASK        0x00007ffffffffff8ULL</span><br><span class="line"># endif</span><br><span class="line"></span><br><span class="line">#if __LP64__</span><br><span class="line">typedef uint32_t mask_t;</span><br><span class="line">#else</span><br><span class="line">typedef uint16_t mask_t;</span><br><span class="line">#endif</span><br><span class="line">typedef uintptr_t cache_key_t;</span><br><span class="line"></span><br><span class="line">struct bucket_t &#123;</span><br><span class="line">    cache_key_t _key;</span><br><span class="line">    IMP _imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct cache_t &#123;</span><br><span class="line">    bucket_t *_buckets;</span><br><span class="line">    mask_t _mask;</span><br><span class="line">    mask_t _occupied;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct entsize_list_tt &#123;</span><br><span class="line">    uint32_t entsizeAndFlags;</span><br><span class="line">    uint32_t count;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_t &#123;</span><br><span class="line">    SEL name;</span><br><span class="line">    const char *types;</span><br><span class="line">    IMP imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_list_t : entsize_list_tt &#123;</span><br><span class="line">    method_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_t &#123;</span><br><span class="line">    int32_t *offset;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *type;</span><br><span class="line">    uint32_t alignment_raw;</span><br><span class="line">    uint32_t size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_list_t : entsize_list_tt &#123;</span><br><span class="line">    ivar_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_t &#123;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *attributes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_list_t : entsize_list_tt &#123;</span><br><span class="line">    property_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct chained_property_list &#123;</span><br><span class="line">    chained_property_list *next;</span><br><span class="line">    uint32_t count;</span><br><span class="line">    property_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef uintptr_t protocol_ref_t;</span><br><span class="line">struct protocol_list_t &#123;</span><br><span class="line">    uintptr_t count;</span><br><span class="line">    protocol_ref_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_ro_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t instanceStart;</span><br><span class="line">    uint32_t instanceSize;  // instance对象占用的内存空间</span><br><span class="line">#ifdef __LP64__</span><br><span class="line">    uint32_t reserved;</span><br><span class="line">#endif</span><br><span class="line">    const uint8_t * ivarLayout;</span><br><span class="line">    const char * name;  // 类名</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;  // 成员变量列表</span><br><span class="line">    const uint8_t * weakIvarLayout;</span><br><span class="line">    property_list_t *baseProperties;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line">    method_list_t * methods;    // 方法列表</span><br><span class="line">    property_list_t *properties;    // 属性列表</span><br><span class="line">    const protocol_list_t * protocols;  // 协议列表</span><br><span class="line">    Class firstSubclass;</span><br><span class="line">    Class nextSiblingClass;</span><br><span class="line">    char *demangledName;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#define FAST_DATA_MASK          0x00007ffffffffff8UL</span><br><span class="line">struct class_data_bits_t &#123;</span><br><span class="line">    uintptr_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* OC对象 */</span><br><span class="line">struct mj_objc_object &#123;</span><br><span class="line">    void *isa;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* 类对象 */</span><br><span class="line">struct mj_objc_class : mj_objc_object &#123;</span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;</span><br><span class="line">    class_data_bits_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return bits.data();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mj_objc_class* metaClass() &#123;</span><br><span class="line">        return (mj_objc_class *)((long long)isa &amp; ISA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#endif /* MJClassInfo_h */</span><br></pre></td></tr></table></figure></li>
+<li>实际使用,即可查看相关类<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        MJStudent *stu = [[MJStudent alloc] init];</span><br><span class="line">        stu-&gt;_weight = 10;</span><br><span class="line">        </span><br><span class="line">        mj_objc_class *studentClass = (__bridge mj_objc_class *)([MJStudent class]);</span><br><span class="line">        mj_objc_class *personClass = (__bridge mj_objc_class *)([MJPerson class]);</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentClassData = studentClass-&gt;data();</span><br><span class="line">        class_rw_t *personClassData = personClass-&gt;data();</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentMetaClassData = studentClass-&gt;metaClass()-&gt;data();</span><br><span class="line">        class_rw_t *personMetaClassData = personClass-&gt;metaClass()-&gt;data();</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;1111&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>类的结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>分类</title>
+    <url>/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><ol>
+<li>通过runtime动态将分类的方法合并到类对象、元类对象中，并非编译</li>
+<li>一个分类文件的编译后的结构体实际为<br><img src="/.com//16719733229400.png"><ul>
+<li>由runtime在运行时，将分类的方法合并到类对象、元类对象中</li>
+<li>编译成cpp，MJPerson(Eat)生成的 <code>_category_t</code>的静态结构体变量，其是单独的静态变量，编译时并未合入到类对象中<br><img src="/.com//16719737845768.png"></li>
+</ul>
+</li>
+</ol>
+<h1 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h1><ul>
+<li><p>objc4源码解读过程：objc-os.mm</p>
+<ol>
+<li><p>_objc_init</p>
+</li>
+<li><p>load_images</p>
+</li>
+<li><p>prepare_load_methods</p>
+<ul>
+<li>schedule_class_load</li>
+<li>add_class_to_loadable_list</li>
+<li>add_category_to_loadable_list</li>
+</ul>
+</li>
+<li><p>call_load_methods</p>
+<ul>
+<li>call_class_loads</li>
+<li>call_category_loads</li>
+<li>(*load_method)(cls, SEL_load)</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>load方法是根据方法地址直接调用，并不是经过objc_msgSend函数调用</p>
+<h3 id="在runtime运行后，添加到class-rw-t的method-array-t二维方法数组中"><a href="#在runtime运行后，添加到class-rw-t的method-array-t二维方法数组中" class="headerlink" title="在runtime运行后，添加到class_rw_t的method_array_t二维方法数组中"></a>在runtime运行后，添加到class_rw_t的method_array_t二维方法数组中</h3></li>
+<li><p>类的realize方法，可以看到class_rw_t实际上是在现在创建的，此前类中的bits中保存的是class_ro_t相关数据，才在这里realize，创建class_rw_t数据，并将其赋给bits中<br><img src="/.com//2.png" alt="截屏2023-01-01 23.10.16"></p>
+</li>
+<li><p>加载分类的方法，保证类realize完成后，再去加载分类<br><img src="/.com//1.png" alt="截屏2023-01-01 23.10.16"></p>
+</li>
+<li><p>核心添加方法 <code>attachLists</code></p>
+</li>
+<li><p>objc838版本，在构建分类大数组是，最后编译的分类，放到最前面，将所有的分类方法、属性、协议数据合并到一个大数组中<br><img src="/.com//16720409049409.png"></p>
+</li>
+<li><p>构建一个新数组，由后往前添加<br><img src="/.com//16720258260842.png"></p>
+</li>
+<li><p>objc750方法，</p>
+</li>
+<li><p>最后编译的分类，放到最前面，最终所有的分类方法、属性、协议数据合并到一个大数组中</p>
+</li>
+<li><p><img src="/.com//16720410519764.png"> </p>
+</li>
+<li><p>会通过memmove（内存挪动）(会根据方向挪动位置，保证数据完整性)将原来的方法列表，往后移动相应增加分类容量的位置。前面空出来的位置，用memcpy（内存拷贝）（只会从小地址，开始拷贝），添加在方法列表前面。也就是分类的方法，会在原方法的前面<br><img src="/.com//16720259301593.png"></p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>为什么两个版本的，方法数组的组合方式会不一样</li>
+<li>Category的实现原理<ul>
+<li>Category编译之后的底层结构是struct category_t,里面吗存储着分类的对象方法、类方法、属性、协议信息</li>
+<li>在程序运行的时候，runtime会将Category的数据，合并到类信息中（类对象、元类对象中）</li>
+</ul>
+</li>
+<li>Category和Class EXtension的区别是什么<ul>
+<li>Class Extension在编译的时候，他的数据已经包含在类信息中</li>
+<li>Category是在运行时，才会将数据合并到类信息中</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>分类</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>objc_class</title>
+    <url>/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/objc-class/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Class的结构"><a href="#Class的结构" class="headerlink" title="Class的结构"></a>Class的结构</h2><p><img src="/.com//1.png"></p>
+<h3 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h3><blockquote>
+<p>class_rw_t里面的methods、properties、protocols是二维数组，是可读可写的，包含了类的初始内容、分类的内容</p>
+</blockquote>
+<p><img src="/.com//2.png"></p>
+<h3 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h3><blockquote>
+<p>class_ro_t里面的baseMethodList、baseProtocols、ivars、baseProperties是一维数组，是只读的，包含了类的初始内容</p>
+</blockquote>
+<p><img src="/.com//3.png"></p>
+<h3 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h3><blockquote>
+<p>method_t是对方法\函数的封装</p>
+</blockquote>
+<p><img src="/.com//4.png"></p>
+<ul>
+<li>IMP代表函数的具体实现<ul>
+<li><code>typedef id _Nullable (*IMP)(id _Nonnull,SEL _Nonnull,...)</code></li>
+</ul>
+</li>
+<li>SEL代表方法\函数名，一般叫做选择器，底层结构跟char *类似 <ul>
+<li>可以通过@selector()和sel_registerName()获得</li>
+<li>可以通过sel_getName()和NSStringFromSelector()转成字符串</li>
+<li>不同类中相同名字的方法，所对应的方法选择器是相同的 </li>
+</ul>
+</li>
+<li>types包含了函数返回值、参数编码的字符串<ul>
+<li>方法位objc_msgSend(id self,SEL,…)</li>
+<li>i-&gt;int,@-&gt;id,@-&gt;SEL,f-&gt;float</li>
+<li>24参数总字节，0从0字节开始，8从第8字节开始…<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">types:i24@0:8i16f20</span><br><span class="line"> i 24 @ 0 : 8 i 16 f 20</span><br><span class="line">- (int)test:(int)age height:(float)height;</span><br></pre></td></tr></table></figure>
+<h3 id="方法缓存"><a href="#方法缓存" class="headerlink" title="方法缓存"></a>方法缓存</h3><blockquote>
+<p>Class内部结构中有个方法缓存（cache_t），用散列表（哈希表）来缓存曾经调用过的方法，可以提高方法的查找速度</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>mask存储的是散列表的长度减1<br><img src="/.com//5.png"></li>
+<li>缓存查找<ul>
+<li><code>objc-cache.mm</code></li>
+<li><code>void cache_t::insert(SEL sel, IMP imp, id receiver)</code></li>
+</ul>
+</li>
+<li>插入之前，会先判断是否需要扩容，扩容为条件为，大于之前的3/4倍,扩容为2倍扩容，不超过最大缓存尺寸<br><img src="/.com//8.png"></li>
+<li>当扩容时，会清除之前缓存的方法，也就是说，之前缓存的方法，不过传给新的扩容缓存，会全部释放。新缓存又重新开始计数<br><img src="/.com//9.png"></li>
+<li>向缓存中插入方法<br><img src="/.com//6.png"></li>
+<li>hash的方式，直接用SEL &amp; mask得到key的方式,会存在，冲突，根据取到的sel判断是不是同一方法<br><img src="/.com//10.png"><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bucket_t *buckets = cache._buckets;</span><br><span class="line">bucket_t bucket = buckets[(long long)@selector(studentTest) &amp; cache._mask];</span><br><span class="line">//即可拿到缓存中的选择器，和实现，可能会有hash冲突，源码中会根据拿到的sel看是不是一致的</span><br><span class="line">NSLog(@&quot;%s %p&quot;, bucket._key, bucket._imp);</span><br></pre></td></tr></table></figure></li>
+<li>解决hash冲突的方式，开放地址法，线性探测<br><img src="/.com//7.png"></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Runtime</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>isa</title>
+    <url>/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/Runtime/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h2><blockquote>
+<ul>
+<li>objective-C的动态性是由runtime API来支撑的</li>
+<li>runtime API提供的接口基本都是C语言的，源码又C\C++\汇编语言编写</li>
+</ul>
+</blockquote>
+<h2 id="isa"><a href="#isa" class="headerlink" title="isa"></a>isa</h2><blockquote>
+<ul>
+<li>在arm64架构之前，isa就是一个普通的指针，存储着Class、Meta-Class对象的内存地址</li>
+<li>从arm64架构开始，对isa进行了优化，变成了一个共用体（<code>union</code>）(结构体和数据共用的一个内存地址，实际共用体中的结构体，只做展示作用)结构，使用位域来存储更多信息</li>
+</ul>
+</blockquote>
+<h3 id="isa结构"><a href="#isa结构" class="headerlink" title="isa结构"></a>isa结构</h3><ol>
+<li>共用体（<code>union</code>）结构(结构体和数据共用的一个内存地址，实际数据存储在bits中，共用体中的结构体，只做展示作用)<br><img src="/.com//1.png"><img src="/.com//2.png"><h3 id="从内存地址，从上往下，即地址从右边，往左"><a href="#从内存地址，从上往下，即地址从右边，往左" class="headerlink" title="从内存地址，从上往下，即地址从右边，往左"></a>从内存地址，从上往下，即地址从右边，往左</h3></li>
+</ol>
+<ul>
+<li>nonpointer<ul>
+<li>0,代表普通的指针，存储着Class、Meta—Class对象的内存地址</li>
+<li>1,代表优化过，使用位域存储更多的信息</li>
+</ul>
+</li>
+<li>has_assoc<ul>
+<li>是否又设置过关联对象，如果没有，释放会更快</li>
+</ul>
+</li>
+<li>has_cxx_dtor<ul>
+<li>是否有C++的析构函数（.cxx_destruct),如果没有，释放会更快</li>
+</ul>
+</li>
+<li>shiftcls<ul>
+<li>存储着Class、Meta-Class对象的内存地址信息</li>
+<li>ios中mask为<code>0x0000000ffffffff8</code>,因此，很多类以及元类的地址是以8和0结尾的，因为最后三位均是000.</li>
+</ul>
+</li>
+<li>magic<ul>
+<li>用于在调试时分辨对象是否未完成初始化</li>
+</ul>
+</li>
+<li>weakly_referenced<ul>
+<li>是否有被弱引用指向过，如果没有,释放时会更快</li>
+</ul>
+</li>
+<li>deallocating/unused(818版本之后)<ul>
+<li>对象是否正在释放</li>
+</ul>
+</li>
+<li>extra_rc<ul>
+<li>里面存储的值是引用计数器减1</li>
+</ul>
+</li>
+<li>has_sidetable_rc<ul>
+<li>引用计数器是否过大无法存储在isa中，如果为1，那么引用计数会存储在一个叫<code>SideTable</code>的类的属性中</li>
+</ul>
+</li>
+</ul>
+<p>注意，这里的都是是否有设置过，就像关联对象，就算最后将所有的关联对象删除，仍是1，如果有这些，在销毁的时候，会做额外工作<br><img src="/.com//16725690610032.png"></p>
+]]></content>
+      <categories>
+        <category>Runtime</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>isa指针</title>
+    <url>/2022/12/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h1><ul>
+<li>从64bit开始，isa需要进行一次位运算，才能计算出真实地址,<code>isa &amp; ISA_MASK</code>即为实际的isas地址<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># if __arm64__</span><br><span class="line">#     define ISA_MASK   0x0000000ffffffff8ULL</span><br><span class="line">elif __x86_64__</span><br><span class="line"># define ISA_MASK        0x00007ffffffffff8ULL</span><br></pre></td></tr></table></figure></li>
+<li>Class中的isa指针没有暴露出来，可以通过构建一个相同的结构体，通过桥接得到<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct objc_class &#123;</span><br><span class="line">    Class isa;</span><br><span class="line">    Class superclass;</span><br><span class="line">&#125;;</span><br><span class="line">struct objc_class *personClass = (__bridge struct objc_class *)([Person class]);</span><br></pre></td></tr></table></figure></li>
+<li>superclass直接指向父类，不需要转换</li>
+</ul>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>类的结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OC对象的分类</title>
+    <url>/2022/12/18/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="OC对象的分类"><a href="#OC对象的分类" class="headerlink" title="OC对象的分类"></a>OC对象的分类</h1><p>主要分为3种</p>
+<ol>
+<li><code>instance</code>对象，实例对象 </li>
+<li><code>class</code>对象，类对象</li>
+<li><code>meta-class</code>对象，元类对象<h2 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h2>通过类alloc出来的对象，instance对象在内存种存储的信息（只有成员变量）包括</li>
+</ol>
+<ul>
+<li>isa指针</li>
+<li>其他成员变量</li>
+</ul>
+<p>isa指针始终在对象结构体的前面，因此，isa指针的地址即实例对象的地址</p>
+<h2 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h2><ul>
+<li><code>[objec class]</code>、<code>[NSObject class]</code>、<code>object_getClass(object)</code>都是获取<code>NSobject</code>的<code>class</code>对象</li>
+<li>它们都是同一个对象，在内存中有且只有一个class对象</li>
+<li>class对象在内存中存储的信息主要包括</li>
+</ul>
+<ol>
+<li>isa指针</li>
+<li>superclass指针</li>
+<li>类的属性信息（@property）、类的<code>对象方法</code>信息（instance method）</li>
+<li>类的协议信息（protocol）、类的成员变量信息（ivar）<ol>
+<li>ivar并非成员变量的值，成员变量的值有instance决定</li>
+<li>ivar实际存储的类型，名称等描述信息<h2 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h2><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除isa指针、superclass指针、类方法信息外，其他均为null<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系<img src="/.com//16713605118546.png"></h3></li>
+</ol>
+</li>
+<li>instance的isa指向class</li>
+<li>class的isa指向meta-class</li>
+<li>meta-class的isa指向基类的meta-class</li>
+<li>class的superclass指向父类的class<ol>
+<li>如果没有父类，superclass指针为nil</li>
+</ol>
+</li>
+<li>meta-class的superclass指向父类的meta-class<ol>
+<li>基类的meta-class的superclass指向基类的class</li>
+</ol>
+</li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>类的结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/10/29/%E5%85%B6%E4%BB%96/16670400106477/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
+<li>ssh <a href="mailto:&#114;&#111;&#111;&#116;&#64;&#49;&#57;&#50;&#46;&#x31;&#54;&#x38;&#46;&#x31;&#46;&#49;&#x34;">&#114;&#111;&#111;&#116;&#64;&#49;&#57;&#50;&#46;&#x31;&#54;&#x38;&#46;&#x31;&#46;&#49;&#x34;</a>,跳转到指定ip的命令</li>
+<li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
+</ul>
+<ol>
+<li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
+<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#x6f;&#111;&#x74;&#64;&#49;&#57;&#x32;&#46;&#49;&#x36;&#x38;&#46;&#49;&#x2e;&#49;&#x34;">&#x72;&#x6f;&#111;&#x74;&#64;&#49;&#57;&#x32;&#46;&#49;&#x36;&#x38;&#46;&#49;&#x2e;&#49;&#x34;</a>，追加到当前ip服务器授权文件的尾部</li>
+</ul>
+</li>
+<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#x72;&#111;&#111;&#x74;&#x40;&#49;&#x39;&#x32;&#46;&#x31;&#x36;&#56;&#x2e;&#49;&#x2e;&#49;&#52;">&#x72;&#111;&#111;&#x74;&#x40;&#49;&#x39;&#x32;&#46;&#x31;&#x36;&#56;&#x2e;&#49;&#x2e;&#49;&#52;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
+<li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>chmod 755 ~/.ssh 给文件夹赋予权限，755含义<ul>
+<li>读（r=4），写（w=2），执行（x=1）</li>
+<li>文件所有者可读可写可执行                                   –7</li>
+<li>与文件所有者同属一个用户组的其他用户可读可执行                 –5 </li>
+<li>其它用户组可读可执行                                       –5<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2></li>
+</ul>
+</li>
+<li>每个端口都有个端口号，（范围是0～65535，公2^16）</li>
+<li>21端口，FTP服务</li>
+<li>80端口，http服务</li>
+<li>22端口，ssh服务<h2 id="通过USB进行SSH登录"><a href="#通过USB进行SSH登录" class="headerlink" title="通过USB进行SSH登录"></a>通过USB进行SSH登录</h2></li>
+<li>默认会用网络登录，USB登录的方式是，先用SSH登录MAC上的10010端口(非保留端口均可)，在通过usbmuxd连接22端口</li>
+<li>将iPhone的22端口（SSH端口）映射到Mac本地的10010端口</li>
+<li>用python脚本，将mac上10010映射到22，python3 tcprelay.py -t 22:10010</li>
+<li>ssh root@localhost -p 10010,直接连接本地的10010接口</li>
+<li>scp -P 10010 <del>/.ssh/id_rsa.pub root@localhost:</del>,拷贝的方法</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Block的类型</title>
+    <url>/2021/06/23/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Block%E7%9A%84%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Block的类型"><a href="#Block的类型" class="headerlink" title="Block的类型"></a>Block的类型</h1><table>
+<thead>
+<tr>
+<th>block类型</th>
+<th>环境</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>NSGlobalBlock</em></td>
+<td>没有访问auto变量</td>
+</tr>
+<tr>
+<td><em>NSStackBlock</em></td>
+<td>访问了auto变量</td>
+</tr>
+<tr>
+<td><em>NSMallocBlock</em></td>
+<td>_NSStackBlock_调用了copy</td>
+</tr>
+</tbody></table>
+<ul>
+<li>注意在非ARC环境下是准确的，如果在ARC环境下,编译器会根据情况，将栈上的block,变成<code>NSMalloCBlock</code></li>
+<li>每一种block调用copy后的结果如图所示</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>block的类</th>
+<th>副本源的配置存储域</th>
+<th>赋值效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>_NSConcreteStackBlock</td>
+<td>栈</td>
+<td>从栈复制到堆</td>
+</tr>
+<tr>
+<td>_NSConcreteGlobalBlock</td>
+<td>程序的数据区域</td>
+<td>什么也不做</td>
+</tr>
+<tr>
+<td>_NSConcreteMallocBlock</td>
+<td>堆</td>
+<td>引用计数增加</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>在ARC环境下，编译器会根据情况，将栈上的block,拷贝到堆上,有以下情况</p>
+<ol>
+<li><code>block</code>作为函数的返回值时</li>
+<li>将<code>block</code>赋值给<code>__strong</code>引指针</li>
+<li><code>block</code>作为<code>Cocoa api</code>名含有<code>usingBlock</code>的方法参数输入时</li>
+<li><code>block</code>作为<code>GCD API</code>的方法参数时</li>
+</ol>
+</li>
+<li><p>在将有_weak的方法，使用clang转换OC为C++代码时，注意支持ARC、以及指定运行时系统版本</p>
+<ul>
+<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc -fobjc-arc -fobjc-runtime=ios-16.0.0 main.m -o main.cpp</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="当block内部访问了对象类型的auto变量时"><a href="#当block内部访问了对象类型的auto变量时" class="headerlink" title="当block内部访问了对象类型的auto变量时"></a>当block内部访问了对象类型的auto变量时</h2><ul>
+<li><p>如果block是在栈上，将不会对auto变量产生强引用</p>
+</li>
+<li><p>如果block是在堆上</p>
+<ul>
+<li>会调用block内部的copy函数</li>
+<li>copy函数内部会调用_Block_objc_assign函数</li>
+<li>_Block_objc_assign函数会根据auto变量的修饰符（_string、_weak、_unsafe_unretained）做出相应的操作，类似于retain（形成强引用、弱引用）<h2 id="block的内存管理"><a href="#block的内存管理" class="headerlink" title="block的内存管理"></a>block的内存管理</h2></li>
+</ul>
+</li>
+<li><p><strong>当block在栈上</strong>时，并不会对<code>__block</code>变量，以及<code>auto</code>的对象产生强引用</p>
+</li>
+<li><p>当block被copy到堆时</p>
+<ul>
+<li>会调用block内部的copy函数</li>
+<li>copy函数内部会调用_Block_object_assign函数</li>
+<li>_Block_object_assign函数会对_block变量形成强引用,会区分是auto对象（会区分是_weak还是_strong），还是_block对象（强引用）</li>
+</ul>
+</li>
+<li><p>当block从堆移除</p>
+<ul>
+<li>会调用block内部的dispose函数</li>
+<li>dispose函数内部会调用_Block_object_dispose函数</li>
+<li>_Block_object_dispose函数会自动释放引用的_block变量</li>
+</ul>
+</li>
+<li><ul>
+<li>当<code>__block</code>修饰对象时，其构建的_block变量内，也会有copy方法和dispose方法<ul>
+<li>其内copy方法，同样也有<code>_Block_object_assign</code>,以及<code>_Block_object_dispose</code>,对其内修饰的对象进行内存管理（跟外围是_strong还是_weak有一定关系）<ul>
+<li> <strong>但是注意，该内存管理只会在ARC下生效，如果在MRC下，在_block不会增加其内对象的引用，属于unowned关系</strong></li>
+<li> <strong>如果不是__block,而是直接引用了auto对象，则和此前一样，block直接引用对象(mrc下，copy时，内部也会对auto增加引用)，而非通过__block间接引用</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>_block的生成的对象，通过fowarding去指向的原因</p>
+<ul>
+<li>在栈上的时候，指针指向自己</li>
+<li>而赋值到堆上时，栈上的指向堆上复制的，栈上赋值时，其值是保存堆上的值，从而保证了，无论是在栈上还是堆上修改，最后值都会保存的堆上。最终使用的是堆上的block</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>Block</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/09/11/%E5%85%B6%E4%BB%96/16629071383706/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h1><ul>
+<li>flutter run –no-sound-null-safety  解决flutter插件旧版本兼容问题</li>
+<li>flutter create –template=package hello 创建pakcage</li>
+<li>flutter create -t module flutter_module 创建fluttermodule</li>
+<li>flutter create example 创建flutter项目<h1 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h1></li>
+<li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
+<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h1 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h1></li>
+<li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/10/30/%E5%85%B6%E4%BB%96/16670594766148/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id><a href="#" class="headerlink" title></a></h1>]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/01/%E5%85%B6%E4%BB%96/16672327206592/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="class-dump"><a href="#class-dump" class="headerlink" title="class-dump"></a>class-dump</h1><pre><code>-它的作用就是把Mach-O文件的class信息给dump出来（把类信息给导出来），生成对应的.h头文件
+</code></pre>
+<hr>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><ul>
+<li>将命令放大/usr/local/bin目录下(mac下不能放到/usr/bin下)</li>
+<li><code>class-dump  -H  Mach-O文件路径  -o  头文件存放目录</code></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/01/%E5%85%B6%E4%BB%96/16673137289641/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Hopper"><a href="#Hopper" class="headerlink" title="Hopper"></a>Hopper</h1><h2 id="Mach-o"><a href="#Mach-o" class="headerlink" title="Mach-o"></a>Mach-o</h2><ul>
+<li>机器码可以反编译成汇编，但是汇编很难反编译成OC<h2 id="ios系统Mach-o文件在手机上"><a href="#ios系统Mach-o文件在手机上" class="headerlink" title="ios系统Mach-o文件在手机上"></a>ios系统Mach-o文件在手机上</h2></li>
+<li>从iOS3.1开始，为了提高性能，绝大部分的系统动态库文件都打包存放到了一个缓存文件中（<code>dyld shared cache</code>）<ol>
+<li>缓存文件路径：<code>/System/Library/Caches/com.apple.dyld/dyld_shared_cache_armX</code></li>
+<li>绝大部分的系统动态库都放在共享缓存中，一个文件中，（多个动态库<code>mach</code>会有多个描述信息，因此降低内存，放到了一个文件中，也就是mach文件中<code>dlyld</code>(命令在/usr/lib中)加载指令(通过这个指令去加载动态库)，只会加载到一处）</li>
+<li>用<code>[[NSBundle bundleWithPath:&quot;/System/Library/Frameworks/UIKit.framework&quot;] load]</code>去加载动态库，实际上是调用2.中<code>dlyld</code>去判断是否在缓存中，有则去1.位置处的共享缓存去加载<code>UIKit.framework</code></li>
+<li><a href="https://opensource.apple.com/tarballs/dyld/">dyld源码 </a></li>
+<li><code>dlyld</code>中的<code>dsc_extractor</code>文件可以，将1中缓存文件抽取出压缩在里面的库<ol>
+<li>先用<code>clang++</code>编译,`clang++ -o dsc_extractor dsc_extractor.cpp</li>
+<li><code>/dsc_extractor dyld_shared_cache_armv7s armv7s</code>所有动态库在呵rmv7s文件夹中<br>`</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/06/%E5%85%B6%E4%BB%96/16677424889825/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="练习一-喜玛拉广告去除"><a href="#练习一-喜玛拉广告去除" class="headerlink" title="练习一 喜玛拉广告去除"></a>练习一 喜玛拉广告去除</h1><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
+<li><code>Revel</code>中查看广告的图层信息，通过Cycript<code>[#0x12333 removeFromSuperlayer]</code>只能暂时将广告屏蔽</li>
+<li>用<code>CLutch</code>脱壳应用，<code>class-dump</code>指令拿到头文件信息，查看相关视图图层的信息，通过hook的方式去去除广告<h1 id="练习二，桌面更新数字去除"><a href="#练习二，桌面更新数字去除" class="headerlink" title="练习二，桌面更新数字去除"></a>练习二，桌面更新数字去除</h1></li>
+</ol>
+<ul>
+<li>iOS桌面为<code>springboard</code>，位置在<code>/System/Library/CoreServices/SpringBoard.app</code></li>
+<li><code>springboard</code>无法通过<code>revel</code>的方式查看，需要用<code>cycript</code>的方式查看</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/05/%E5%85%B6%E4%BB%96/16676513774655/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="用theos去hook"><a href="#用theos去hook" class="headerlink" title="用theos去hook"></a>用theos去hook</h1><ol>
+<li>安装threos<a href="media/16676513774655/07-theos%E7%9A%84%E5%89%AF%E6%9C%AC.pdf">theos安装教程</a></li>
+<li><code>nic.pl</code>指令选择创建<code>iphone/tweak</code>项目,（自己的bundId，和越狱app的bundId）<ol>
+<li>在生成的Makefile文件内，增加端口信息<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export THEOS_DEVICE_IP = localhost</span><br><span class="line">export THEOS_DEVICE_PORT = 100010</span><br><span class="line">include $(THEOS)/makefiles/common.mk</span><br><span class="line">TWEAK_NAME = tingweak</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>THES_DEVICE_IP</code>,<code>THEOS_DEVICE_PORT</code>可以配置到.bash_profile的文件下,全局配置</li>
+</ul>
+</li>
+<li>实际在Tweak.x文件内进行hook，找到相应的view，然后写hook后的方法.<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">  #import &lt;UIKit/UIView.h&gt;</span><br><span class="line"> %hook XMNowPlayingADView</span><br><span class="line">   - (id)initWithFrame:(struct CGRect)arg1 &#123;</span><br><span class="line">       return nil;</span><br><span class="line">   &#125;</span><br><span class="line"> %end</span><br><span class="line"> ///%orig(arg1,arg2);调用原始方法</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>make</code> 自动编译makefile中的文件</li>
+<li><code>make package</code>打包成越狱插件</li>
+<li><code>make install</code>默认安装到手机上</li>
+<li>手机重启，则会看到修改后的程序，注入的包位置在<code>/library/MobileSubstrate/DynamicLibraries</code>位置，删除，则无效果了（Cydia中也有该插件）<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2></li>
+</ol>
+</li>
+<li>在生成的Tweak.x文件中的方法，一般均会被认为是要hook替换的，如果没有的话，则不会生效。如果是新方法的话，需要在方法前加<code>%new</code></li>
+<li><code>%orig</code>为原始方法</li>
+<li>资源文件，<ol>
+<li>内部图片，则放到<code>对应应用内</code>,</li>
+<li>如果加载自己的，则用<code>imageWithContentsOfFile:</code>加载图片路径，例如，<code>/text.png</code>则在文件根目录</li>
+<li>在theos中直接打包资源文件，在中，构建一个<code>layout</code>文件夹(实际放在<code>根目录</code>下)，将资源放进去，一般会放到<code>layout/Library/PreferenceLoader/Preferences</code>目录下（偏好设置），其他的可以放到<code>layout/Library/Caches</code>文件中</li>
+</ol>
+</li>
+<li>注意<code>theos</code>将其他类型认为是id，因此直接用<code>self.view</code>是会报错的，要用<code>[self view]</code></li>
+<li>可以像OC项目一样,多文件开发，建立相关的.h和.m文件，然后在<code>Tweak.x</code>文件中按正常的#import导入(注意文件夹)即可，此外在<code>Makefile</code>中要指定编译的文件<code>tweaksp_FILES = xxx/Tweak.x xxx/xxxx.m</code>，也可以通过<code>tweaksp_FILES = xxx/*.x</code>导入，但是无法用<code>xxx/**/*.x</code>的方式,必须指定文件夹</li>
+<li>生成<code>Realease</code>版本，<code>make package debug=0</code></li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/22/%E5%85%B6%E4%BB%96/16690971923137/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="IPC时间推送"><a href="#IPC时间推送" class="headerlink" title="IPC时间推送"></a>IPC时间推送</h1><p>1、消息列表点击事件消息不再弹出购买套餐提示，消息列表点击事件消息，统一跳转至对应事件的播放器页面弹出相对应的提示<br>2、事件播放器页面App判断事件列表里是否存在视频URL，若视频URL不为空，则表示事件上报时用户购买了套餐，则App可以直接播放视频，如视频无法播放则提示「该视频已过期」<br>3、若视频URL为空，则App调用支付平台接口判断用户当前是否购买套餐，若用户当前已购买套餐，则在APP的事件播放器页面提示「因该视频生成时未购买云套餐，无法支持其播放」<br>4、若视频URL为空，并且用户当前没有购买套餐，则在APP的事件播放器页面去弹框引导用户购买套餐</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/05/%E5%85%B6%E4%BB%96/16675799552760/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id><a href="#" class="headerlink" title></a></h1>]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/25/%E5%85%B6%E4%BB%96/16693590004039/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id><a href="#" class="headerlink" title></a></h1>]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/22/%E5%85%B6%E4%BB%96/16690972051464/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="T-2-0场景开发总结"><a href="#T-2-0场景开发总结" class="headerlink" title="T+2.0场景开发总结"></a>T+2.0场景开发总结</h1><h2 id="1-项目背景"><a href="#1-项目背景" class="headerlink" title="1. 项目背景"></a>1. 项目背景</h2><p>   此前场景的创建链路较长，较为繁琐，同时视觉实现效果较为简单，缺乏吸引力；而且，缺乏用户学习和用户引导。由于此前场景均为<code>RN</code>实现，而<code>RN</code>受限于生态环境有限，难以实现较为复杂的视觉效果，且容易出各种UI显示问题，以及难以排查的bug。考虑于此，在2.0版本用<code>app原生语言</code>对场景模块进行重构，翻新。目标在于简化场景创建的流程，提升用户对<code>TCL场景生态</code>的认知。</p>
+<h2 id="2-功能模块"><a href="#2-功能模块" class="headerlink" title="2. 功能模块"></a>2. 功能模块</h2><h3 id="2-1-功能版块介绍"><a href="#2-1-功能版块介绍" class="headerlink" title="2.1 功能版块介绍"></a>2.1 功能版块介绍</h3><p>   <img src="/.com//16690972051464/%E5%9C%BA%E6%99%AF%E5%88%9B%E5%BB%BA.jpg" alt="场景创建"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/11/25/%E5%85%B6%E4%BB%96/16693590363882/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id><a href="#" class="headerlink" title></a></h1>]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/12/06/%E5%85%B6%E4%BB%96/16703379364755/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="theos-tweak原理"><a href="#theos-tweak原理" class="headerlink" title="theos-tweak原理"></a>theos-tweak原理</h1><ol>
+<li><code>make</code>指令实际上是将<code>Tweak.xm</code>的代码编译成动态库</li>
+<li><code>make packpage</code>指令，将动态库文件打包成了<code>deb</code>文件，插件安装包</li>
+<li><code>make install</code>指令，远程登录手机安装插件到app内，<code>Makefile</code>文件内配置<ol>
+<li>安装完的包会在<code>/Library/MobileSubstrate/DynamicLibraries</code>文件夹内,包含动态库，以及相关的<code>.plist</code>文件(里面由相关应用的bundlId)</li>
+<li>该文件夹由Cydia管理</li>
+</ol>
+</li>
+<li>对应bundlId的应用打开后，会加载相关插件的动态库到内存中（不会缓存，每次重新打开，都会加载），去做交换方法的操作</li>
+<li>实际上没次动态修改，并为修改代码<h3 id="过程图"><a href="#过程图" class="headerlink" title="过程图"></a>过程图</h3><img src="/.com//16703379364755/16703398332015.png"></li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/12/09/%E5%85%B6%E4%BB%96/16706010476870/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="FishHook"><a href="#FishHook" class="headerlink" title="FishHook"></a>FishHook</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>iOS中通过<code>Method Swizzling</code>实现<code>hook</code>，其原理是利用OC的<code>Runtime</code>特性，动态改变<code>SEL</code>（方法编号）和<code>IMP</code>（方法实现）的对应关系，达到OC方法交换的目的。然而只适用于动态的OC方法，对于C函数Hook，可以引用fishHook，通过修改machO文件中<code>la_symbol_ptr</code>和<code>non_la_symbol_ptr</code>两个表的指针达到C函数HOOK的目的。</p>
+<h2 id="框架地址"><a href="#框架地址" class="headerlink" title="框架地址"></a>框架地址</h2><p><code>fishhook</code>是一个非常简单的库，可以在模拟器和设备上运行在iOS上的Mach-O二进制文件中动态重新绑定符号,代码地址<a href="https://github.com/facebook/fishhook">https://github.com/facebook/fishhook</a></p>
+<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><ol>
+<li>头文件导入<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#import &quot;fishhook.h&quot;</span><br></pre></td></tr></table></figure></li>
+<li>交换制定的C函数,构建<code>rebinding</code>结构体<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct rebinding rebindSend;</span><br><span class="line">rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br></pre></td></tr></table></figure></li>
+<li><code>rebind_symbols</code>重新绑定符号<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">rebind_symbols(rebs, 1);</span><br></pre></td></tr></table></figure></li>
+<li>完整使用用例<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//</span><br><span class="line">//  FishHooklViewController.m</span><br><span class="line">//  transitionController</span><br><span class="line">//</span><br><span class="line">//  Created by 陈晶泊 on 2022/8/10.</span><br><span class="line">//</span><br><span class="line">#import &quot;fishhook.h&quot;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdarg.h&gt;</span><br><span class="line">#import &quot;FishHooklViewController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface FishHooklViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation FishHooklViewController</span><br><span class="line">__unused static void(*orig_objc_nslog)(NSString *format, ...);</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    self.view.backgroundColor = UIColor.whiteColor;</span><br><span class="line">    struct rebinding rebindSend;</span><br><span class="line">    rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">    rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">    rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br><span class="line">    struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">    rebind_symbols(rebs, 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void hook_Objc_nslog(NSString *format, ...) &#123;</span><br><span class="line">    format = [format stringByAppendingFormat:@&quot;已hook&quot;];</span><br><span class="line">    orig_objc_nslog(format);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event &#123;</span><br><span class="line">    NSLog(@&quot;FishHooklViewController&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><code>MachO</code>文件的静态链接在编译的时候，就确定了方法地址，位于代码段模，是不可写的，因此静态链接的函数方法，在运行时是无法更改的。<br>然而动态链接，是在运行时进行方法链接的，在<code>MachO</code>文件中，访问动态库里的数据符号地址放在<code>got</code>(也称<code>Non-Lazy Symbol Pointers</code>)数据段，调用动态库的函数的地址放在<code>la_symbol_ptr</code>数据段的数据段中，是可读写的，因此可以在程序运行期间修改<code>got</code>(<code>non_la_symbol_ptr</code>)和<code>la_symbol_ptr</code>数据段，来替换函数跟全局变量的地址。<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="1-传入需要替换的函数"><a href="#1-传入需要替换的函数" class="headerlink" title="1. 传入需要替换的函数"></a>1. 传入需要替换的函数<img src="/.com//16706010476870/16706577321150.png"></h4> <code>rebindings_head</code>的<code>next</code>为nil是第一次调用；去注册方法，其中<code>_dyld_register_func_for_add_image</code>做了2件事，1.是跟<code>else</code>里面一样，为每个image(镜像)调用<code>_rebind_symbols_for_image</code>，2.是当<code>dyld</code>后面加载镜像时候，也为这个新镜像调用<code>_rebind_symbols_for_image</code>。<br> <code>rebindings_head</code>采用的链表结构，具体如下:<br><img src="/.com//16706010476870/16706578333010.jpg"><h4 id="2-计算地址"><a href="#2-计算地址" class="headerlink" title="2. 计算地址"></a>2. 计算地址</h4><code>rebind_symbols_for_image</code>方法的目的，主要是计算基址，找到符号表、字符串表、间接符号表、<code>nl_symbol_ptr(got)</code>以及<code>la_symbol_ptr</code>数据段的地址。</li>
+<li>首先遍历加载命令，获得<code>MachO</code>文件中符号表、间接符号表、<code>LINKEDIT</code>三个加载命令<br><img src="/.com//16706010476870/16706583225213.png"></li>
+<li>根据<code>LINKEDIT</code>获取的真实基址，根据第一步中得到的加载命令，确定符号表、间接符号表、字符串表的虚拟内存地址<br><img src="/.com//16706010476870/16706584145390.png"></li>
+<li>遍历加载命令，找到数据段，在从数据段的<code>section</code>中找到<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code></li>
+</ol>
+<p><img src="/.com//16706010476870/16706586123063.png"></p>
+<h4 id="3-方法替换"><a href="#3-方法替换" class="headerlink" title="3. 方法替换"></a>3. 方法替换</h4><p>最后遍历<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和数据地址，并结合间接符号表、符号表、以及字符串表，得到地址对应的函数，变量名称，找到相同的名称，即可进行地址的替换。<br><img src="/.com//16706010476870/16706587741784.png"></p>
+<h2 id="通过MachOView分析"><a href="#通过MachOView分析" class="headerlink" title="通过MachOView分析"></a>通过MachOView分析</h2><ol>
+<li>计算出符号表、间接符号表、字符串表的地址<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.07.46.png" alt="截屏2022-12-10 16.07.46"></li>
+<li><code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和函数数据地址，其中<code>reserved1</code>即为数据段中的函数在间接符号表中的位置<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.16.25.png" alt="截屏2022-12-10 16.16.25"></li>
+<li>间接符号表中的地址，和实际数据段地址是对应的，其中间接符号表中的数据，实际对应的是符号表中的索引。<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.20.04.png" alt="截屏2022-12-10 16.20.04"></li>
+</ol>
+<p><img src="/.com//16706010476870/16706604848859.png"><br>4. 符号表中，关联由字符串表，从而知道函数的名称，因此，最终，根据名称，从间接符号表中拿到原始函数地址，从而完成了方法的替换。<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.24.10.png" alt="截屏2022-12-10 16.24.10"></p>
+<h2 id="FishHook应用实例"><a href="#FishHook应用实例" class="headerlink" title="FishHook应用实例"></a>FishHook应用实例</h2><p><code>SMCallTrace</code>通过hook<code>objc_msgSend</code>方法，hook了所有OC的方法，在hook方法中通过汇编语言来计算方法的耗时，可以用来项目中方法的执行情况。在需要检测耗时时间的地方调用 <code>[SMCallTrace start]</code>，结束时调用 <code>stop</code> 和 <code>save</code> 就可以打印出方法的调用层级和耗时了。还可以设置最大深度和最小耗时检测，来过滤不需要看到的信息。<a href="https://github.com/ming1016/GCDFetchFeed">源码地址</a><br>具体使用后的效果<img src="/.com//16706010476870/IMG_963F24C3F87F-1.jpeg" alt="IMG_963F24C3F87F-1"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/12/15/%E5%85%B6%E4%BB%96/16710932427871/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="协议注意的点"><a href="#协议注意的点" class="headerlink" title="协议注意的点"></a>协议注意的点</h1><h2 id="已重写的限制条件会在某些泛型上下文中失效"><a href="#已重写的限制条件会在某些泛型上下文中失效" class="headerlink" title="已重写的限制条件会在某些泛型上下文中失效"></a>已重写的限制条件会在某些泛型上下文中失效</h2><p>对于一些通过条件遵循获得了特定行为的类型，在某些泛型上下文中，并不能够确保能够使用协议限制中的特定实现。为了说明这个行为，下面的例子中定义了两个协议以及一个有条件地遵循两个协议的泛型类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">protocol Loggable &#123;</span><br><span class="line">    func log()</span><br><span class="line">&#125;</span><br><span class="line">extension Loggable &#123;</span><br><span class="line">    func log() &#123;</span><br><span class="line">        print(self)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol TitledLoggable: Loggable &#123;</span><br><span class="line">    static var logTitle: String &#123; get &#125;</span><br><span class="line">&#125;</span><br><span class="line">extension TitledLoggable &#123;</span><br><span class="line">    func log() &#123;</span><br><span class="line">        print(&quot;\(Self.logTitle): \(self)&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Pair&lt;T&gt;: CustomStringConvertible &#123;</span><br><span class="line">    let first: T</span><br><span class="line">    let second: T</span><br><span class="line">    var description: String &#123;</span><br><span class="line">        return &quot;(\(first), \(second))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Pair: Loggable where T: Loggable &#123; &#125;</span><br><span class="line">extension Pair: TitledLoggable where T: TitledLoggable &#123;</span><br><span class="line">    static var logTitle: String &#123;</span><br><span class="line">        return &quot;Pair of &#x27;\(T.logTitle)&#x27;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension String: TitledLoggable &#123;</span><br><span class="line">    static var logTitle: String &#123;</span><br><span class="line">        return &quot;String&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当其泛型类型遵循 Loggable 协议以及 TitleLoggale 协议时，结构体 Pair 遵循 Loggable 协议以及 TitleLoggale 协议。下面的例子中，oneAndTwo 是 Pair<String> 的一个实例。因为 String 遵循 TitleLoggable ，因此 oneAndTwo 也遵循此协议。当 log() 方法被 oneAndTwo 直接调用时，此方法使用的是包含标题的特定版本。</String></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let oneAndTwo = Pair(first: &quot;one&quot;, second: &quot;two&quot;)</span><br><span class="line">oneAndTwo.log()</span><br><span class="line">// Prints &quot;Pair of &#x27;String&#x27;: (one, two)&quot;</span><br></pre></td></tr></table></figure>
+<p>虽然如此，当 oneAndTwo 在泛型上下文中使用，或者它是 Loggable/TitledLoggable 类型的实例时，包含标题的特定版本 log() 方法不会被使用。Swift 只会根据这样的规则来选择 log() 的实现版本—— **<code>Pair 遵循 Loggable 所需要的最少的限制条件</code>**。因此 Loggable 所提供的默认实现版本会被使用。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let oneAndTwo:Loggable = Pair(first: &quot;one&quot;, second: &quot;two&quot;)</span><br><span class="line">oneAndTwo.log()****</span><br><span class="line">// Prints &quot;(one, two)&quot;</span><br><span class="line">let oneAndTwo:TitledLoggable = Pair(first: &quot;one&quot;, second: &quot;two&quot;)</span><br><span class="line">oneAndTwo.log()</span><br><span class="line">// Prints &quot;(one, two)&quot;</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>NSObject</title>
+    <url>/2022/12/17/%E5%85%B6%E4%BB%96/16708614441261/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h1><h3 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><ul>
+<li>系统分配了16个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
+<li>但<code>NSObject</code>对象内部只使用了8个字节（<code>isa</code>指针）的空间（64bit环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
+<li>用<code>clang -rewrite-objc main.m -o main.cpp</code>编译成<code>C++</code>文件（全平台），</li>
+<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m -o main.cpp</code>(推荐)编译成指定平台的</li>
+<li>16字节而不是8字节的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小16字节<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>扩展例子<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> @interface student: NSObject &#123;</span><br><span class="line"> int _no;</span><br><span class="line"> int _age;</span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">int _no; //4字节</span><br><span class="line">int _age; //4 字节</span><br><span class="line">&#125;</span><br><span class="line">内存对齐: 结构体的大小必须是最大成员大小的倍数</span><br></pre></td></tr></table></figure></li>
+<li>注意，ios操作系统的内存对齐，是按16倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)<strong>24位大小，但是用<code>malloc_size</code>计算</strong>实际</strong>分配的确实32位 </li>
+<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为8，实际不知道内存中的大小<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3></li>
+</ul>
+<ol>
+<li><code>print、p</code>：打印</li>
+<li><code>po</code>: 打印对象</li>
+<li>读取内存<ol>
+<li><code>memory red/数量格式字节数 内存地址</code>:`memory red/3xw 0x10010</li>
+<li><code>x/数量格式字节数 内存地址</code>: x/3xw 0x10010</li>
+<li>格式: x-16进制，d是10进制</li>
+<li>字节大小:b 1字节，h 2字节，w 4字节，g 8字节</li>
+</ol>
+</li>
+<li>修改内存中的值，<code>memory write 内存地址 数值</code>：memory write 0x0000010 10</li>
+<li><h3 id="对象的isa指针指向哪里"><a href="#对象的isa指针指向哪里" class="headerlink" title="对象的isa指针指向哪里"></a>对象的isa指针指向哪里</h3></li>
+</ol>
+<ul>
+<li>instance对象的isa指针指向类对象</li>
+<li>类对象的isa指针指向元类对象</li>
+<li>元类对象的isa指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
+<li>对象的方法、属性、协议信息、成员变量，存放在类对象</li>
+<li>类方法存放在元类对象</li>
+<li>成员变量的具体值，存放在instance</li>
+</ul>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>类的结构</tag>
+      </tags>
+  </entry>
+</search>

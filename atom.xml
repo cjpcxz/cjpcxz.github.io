@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ayer</title>
+  
+  
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2023-01-02T09:22:44.289Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>jingbo</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>objc_class</title>
+    <link href="http://example.com/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/objc-class/"/>
+    <id>http://example.com/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/objc-class/</id>
+    <published>2023-01-01T13:53:01.000Z</published>
+    <updated>2023-01-02T09:22:44.289Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Runtime" scheme="http://example.com/categories/Runtime/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>isa</title>
+    <link href="http://example.com/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/Runtime/"/>
+    <id>http://example.com/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/Runtime/</id>
+    <published>2023-01-01T08:21:47.000Z</published>
+    <updated>2023-01-01T10:31:51.041Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Runtime" scheme="http://example.com/categories/Runtime/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>initialize</title>
+    <link href="http://example.com/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/"/>
+    <id>http://example.com/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/</id>
+    <published>2022-12-27T10:40:00.000Z</published>
+    <updated>2022-12-30T16:25:26.411Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="load、initialize" scheme="http://example.com/tags/load%E3%80%81initialize/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分类</title>
+    <link href="http://example.com/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/"/>
+    <id>http://example.com/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/</id>
+    <published>2022-12-26T16:00:00.000Z</published>
+    <updated>2023-01-01T15:18:32.494Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="分类" scheme="http://example.com/tags/%E5%88%86%E7%B1%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Load</title>
+    <link href="http://example.com/2022/12/26/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/"/>
+    <id>http://example.com/2022/12/26/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/</id>
+    <published>2022-12-26T10:40:00.000Z</published>
+    <updated>2022-12-30T16:25:26.405Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="load、initialize" scheme="http://example.com/tags/load%E3%80%81initialize/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>KVC</title>
+    <link href="http://example.com/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/"/>
+    <id>http://example.com/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/</id>
+    <published>2022-12-24T16:00:00.000Z</published>
+    <updated>2022-12-30T16:30:19.403Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="KVC" scheme="http://example.com/tags/KVC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>KVO</title>
+    <link href="http://example.com/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVO/"/>
+    <id>http://example.com/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVO/</id>
+    <published>2022-12-24T16:00:00.000Z</published>
+    <updated>2022-12-30T16:30:42.405Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="KVO" scheme="http://example.com/tags/KVO/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>load、initialize方法的区别</title>
+    <link href="http://example.com/2022/12/23/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>http://example.com/2022/12/23/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
+    <published>2022-12-23T08:35:53.000Z</published>
+    <updated>2022-12-30T16:25:26.397Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="load、initialize" scheme="http://example.com/tags/load%E3%80%81initialize/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>objc_class的结构</title>
+    <link href="http://example.com/2022/12/21/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/"/>
+    <id>http://example.com/2022/12/21/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/</id>
+    <published>2022-12-20T16:00:00.000Z</published>
+    <updated>2022-12-30T16:45:30.258Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="类的结构" scheme="http://example.com/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>isa指针</title>
+    <link href="http://example.com/2022/12/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/"/>
+    <id>http://example.com/2022/12/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/</id>
+    <published>2022-12-18T16:00:00.000Z</published>
+    <updated>2022-12-30T16:46:29.262Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="类的结构" scheme="http://example.com/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OC对象的分类</title>
+    <link href="http://example.com/2022/12/18/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/"/>
+    <id>http://example.com/2022/12/18/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/</id>
+    <published>2022-12-17T16:00:00.000Z</published>
+    <updated>2022-12-30T16:47:01.527Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="类的结构" scheme="http://example.com/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NSObject</title>
+    <link href="http://example.com/2022/12/17/%E5%85%B6%E4%BB%96/16708614441261/"/>
+    <id>http://example.com/2022/12/17/%E5%85%B6%E4%BB%96/16708614441261/</id>
+    <published>2022-12-16T16:00:00.000Z</published>
+    <updated>2022-12-30T16:47:01.519Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    
+    
+    <category term="类的结构" scheme="http://example.com/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2022/12/15/%E5%85%B6%E4%BB%96/16710932427871/"/>
+    <id>http://example.com/2022/12/15/%E5%85%B6%E4%BB%96/16710932427871/</id>
+    <published>2022-12-15T08:34:02.787Z</published>
+    <updated>2022-12-15T08:38:55.992Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2022/12/09/%E5%85%B6%E4%BB%96/16706010476870/"/>
+    <id>http://example.com/2022/12/09/%E5%85%B6%E4%BB%96/16706010476870/</id>
+    <published>2022-12-09T15:50:47.687Z</published>
+    <updated>2022-12-10T08:44:50.347Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2022/12/06/%E5%85%B6%E4%BB%96/16703379364755/"/>
+    <id>http://example.com/2022/12/06/%E5%85%B6%E4%BB%96/16703379364755/</id>
+    <published>2022-12-06T14:45:36.476Z</published>
+    <updated>2022-12-06T15:17:32.605Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2022/11/25/%E5%85%B6%E4%BB%96/16693590363882/"/>
+    <id>http://example.com/2022/11/25/%E5%85%B6%E4%BB%96/16693590363882/</id>
+    <published>2022-11-25T06:50:36.388Z</published>
+    <updated>2022-11-25T06:50:36.388Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2022/11/25/%E5%85%B6%E4%BB%96/16693590004039/"/>
+    <id>http://example.com/2022/11/25/%E5%85%B6%E4%BB%96/16693590004039/</id>
+    <published>2022-11-25T06:50:00.404Z</published>
+    <updated>2022-11-25T06:50:00.404Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2022/11/22/%E5%85%B6%E4%BB%96/16690972051464/"/>
+    <id>http://example.com/2022/11/22/%E5%85%B6%E4%BB%96/16690972051464/</id>
+    <published>2022-11-22T06:06:45.146Z</published>
+    <updated>2022-11-22T06:15:16.087Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2022/11/22/%E5%85%B6%E4%BB%96/16690971923137/"/>
+    <id>http://example.com/2022/11/22/%E5%85%B6%E4%BB%96/16690971923137/</id>
+    <published>2022-11-22T06:06:32.314Z</published>
+    <updated>2022-11-25T06:50:36.402Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2022/11/06/%E5%85%B6%E4%BB%96/16677424889825/"/>
+    <id>http://example.com/2022/11/06/%E5%85%B6%E4%BB%96/16677424889825/</id>
+    <published>2022-11-06T13:48:08.983Z</published>
+    <updated>2022-12-04T15:22:59.824Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
