@@ -107,7 +107,7 @@
 <span id="more"></span>
 
 <ul>
-<li><p>下图显示了这些属性是如何展示的：<br><img src="/.com//1.png" alt="img"></p>
+<li><p>下图显示了这些属性是如何展示的：<br><img src="1.png" alt="img"></p>
 </li>
 <li><p>视图的<code>frame</code> ，<code>bounds</code>和<code>center</code>属性仅仅是存取方法，当操纵视图的frame，实际上是在改变位于视图下方CALayer的<code>frame</code>，不能够独立于图层之外改变视图的<code>frame</code>。</p>
 <ul>
@@ -116,11 +116,11 @@
 </ul>
 </li>
 </ul>
-<p><img src="/.com//2.png" alt="img"></p>
+<p><img src="2.png" alt="img"></p>
 <h2 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h2><blockquote>
 <p>视图的<code>center</code>属性和图层的<code>position</code>属性都指定了<code>anchorPoint</code>相对于父图层的位置。图层的<code>anchorPoint</code>通过<code>position</code>来控制它的<code>frame</code>的位置。默认来说<code>anchorPoint</code>位于图层的中点，所以图层的将会以这个点为中心放置。对于UIView而言，没有暴露<code>anchorPoint</code>,只有center；而图层的暴露出来了，<code>anchorPoint</code>可以被移动。anchorPoint为单位坐标</p>
 </blockquote>
-<p><img src="/.com//3.png" alt="img"></p>
+<p><img src="3.png" alt="img"></p>
 <ul>
 <li>改变<code>anchorPoint</code>，图层的内容会向右下角的<code>position</code>方向移动，而并不是居中了;图中当改变anchorPoint，position是<code>anchorPoint</code>与父图层的位置，由于锚点的变化，相对位置的基础点，发生改变（从原来中心点，变成了右上角），图层右下角移动，frame改变了。</li>
 <li><code>anchorPoint</code>属性为锚点，一般在<code>transform</code>图层旋转中常用到，作为旋转的基点.</li>

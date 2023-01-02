@@ -106,22 +106,22 @@
 <li>每个类、分类的+load，在程序运行过程中只调用一次<ul>
 <li>flags标识位保证类只会加载一次</li>
 <li>这里有递归，首选会先将父类添加到数组，后将自己加进去数组，因此最后，先父类，再执行子类的load方法</li>
-<li>最开始的关系时按照编译的顺序来的<br><img src="/.com//16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
+<li>最开始的关系时按照编译的顺序来的<br><img src="16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
 </ul>
 </li>
 </ul>
 <ol>
-<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="/.com//16720646359112.png"></p>
+<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="16720646359112.png"></p>
 </li>
 <li><p>构建有类load方法的数组，以及有分类load方法的数组，整个添加顺序是</p>
 <ol>
 <li>类先按编译的顺序进行添加，其中父类会比子类先添加到数组中</li>
-<li>分类按编译的顺序进行添加的<br><img src="/.com//16720651219179.png"></li>
+<li>分类按编译的顺序进行添加的<br><img src="16720651219179.png"></li>
 </ol>
 </li>
-<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="/.com//16720639325952.png"></p>
+<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="16720639325952.png"></p>
 </li>
-<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="/.com//16720641861246.png"></p>
+<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="16720641861246.png"></p>
 </li>
 </ol>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>

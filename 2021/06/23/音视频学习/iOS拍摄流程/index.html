@@ -260,7 +260,7 @@
 <li>适当降低分辨率</li>
 </ol>
 <p>但是传统的压缩方式不支持指定profile，帧率和码率，所以只有通过其他方式来实现。可以在相机录像时需要将拍摄的每一帧<code>sampleBuffer</code>（音频或者视频）传给<code>AVassetWriter</code>，并制定压缩参数。</p>
-<h3 id="AVAassetWriter实现视频压缩"><a href="#AVAassetWriter实现视频压缩" class="headerlink" title="AVAassetWriter实现视频压缩"></a>AVAassetWriter实现视频压缩</h3><h4 id="流程图："><a href="#流程图：" class="headerlink" title="流程图："></a>流程图：</h4><p><img src="/.com//1.png" alt="img"></p>
+<h3 id="AVAassetWriter实现视频压缩"><a href="#AVAassetWriter实现视频压缩" class="headerlink" title="AVAassetWriter实现视频压缩"></a>AVAassetWriter实现视频压缩</h3><h4 id="流程图："><a href="#流程图：" class="headerlink" title="流程图："></a>流程图：</h4><p><img src="1.png" alt="img"></p>
 <h4 id="代码的实现"><a href="#代码的实现" class="headerlink" title="代码的实现"></a>代码的实现</h4><ol>
 <li>初始化<code>reader</code>，<code>writer</code>，<code>video/audio track</code>, <code>video/audio input</code>, <code>video/audio output</code></li>
 </ol>

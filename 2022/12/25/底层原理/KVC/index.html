@@ -104,12 +104,12 @@
   <h1 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h1><ol>
 <li>通过KVC修改属性会触发KVO，例如age属性,<ul>
 <li>注意，就是age属性没有实现set的方法，只有成员变量，通过KVC设置，同样会触发KVO</li>
-<li>表明KVC内部实际上有调用willchangForkey、以及didChangeForKey:方法<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><img src="/.com//16719622557599.png"></li>
+<li>表明KVC内部实际上有调用willchangForkey、以及didChangeForKey:方法<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><img src="16719622557599.png"></li>
 </ul>
 </li>
 <li>根据setAge:,_setAge:的顺序找到，找到则调用,设置</li>
 <li>如果1没找到，查看<code>accessInstanceVariablesDirectly</code>（是否可直接查找成员变量）是否返回true，为No，直接报没找到key的异常</li>
-<li>如果为true，则按照_age,_isAge,age,isAge的顺序查找成员变量，找到直接赋值<h2 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h2><img src="/.com//%E6%88%AA%E5%B1%8F2022-12-25%2020.15.39.png" alt="截屏2022-12-25 20.15.39"></li>
+<li>如果为true，则按照_age,_isAge,age,isAge的顺序查找成员变量，找到直接赋值<h2 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h2><img src="%E6%88%AA%E5%B1%8F2022-12-25%2020.15.39.png" alt="截屏2022-12-25 20.15.39"></li>
 </ol>
  
       <!-- reward -->

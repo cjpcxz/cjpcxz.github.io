@@ -101,19 +101,19 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="Class的结构"><a href="#Class的结构" class="headerlink" title="Class的结构"></a>Class的结构</h2><img src="/.com//01/01/Runtime%E7%9F%A5%E8%AF%86/objc-class/1.png" class title="This is an image">
+  <h2 id="Class的结构"><a href="#Class的结构" class="headerlink" title="Class的结构"></a>Class的结构</h2><p><img src="1.png"></p>
 <h3 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h3><blockquote>
 <p>class_rw_t里面的methods、properties、protocols是二维数组，是可读可写的，包含了类的初始内容、分类的内容</p>
 </blockquote>
-<p><img src="/.com//2.png"></p>
+<p><img src="2.png"></p>
 <h3 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h3><blockquote>
 <p>class_ro_t里面的baseMethodList、baseProtocols、ivars、baseProperties是一维数组，是只读的，包含了类的初始内容</p>
 </blockquote>
-<p><img src="/.com//3.png"></p>
+<p><img src="3.png"></p>
 <h3 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h3><blockquote>
 <p>method_t是对方法\函数的封装</p>
 </blockquote>
-<p><img src="/.com//4.png"></p>
+<p><img src="4.png"></p>
 <ul>
 <li>IMP代表函数的具体实现<ul>
 <li><code>typedef id _Nullable (*IMP)(id _Nonnull,SEL _Nonnull,...)</code></li>
@@ -135,17 +135,17 @@
 </li>
 </ul>
 </li>
-<li>mask存储的是散列表的长度减1<br><img src="/.com//5.png"></li>
+<li>mask存储的是散列表的长度减1<br><img src="5.png"></li>
 <li>缓存查找<ul>
 <li><code>objc-cache.mm</code></li>
 <li><code>void cache_t::insert(SEL sel, IMP imp, id receiver)</code></li>
 </ul>
 </li>
-<li>插入之前，会先判断是否需要扩容，扩容为条件为，大于之前的3/4倍,扩容为2倍扩容，不超过最大缓存尺寸<br><img src="/.com//8.png"></li>
-<li>当扩容时，会清除之前缓存的方法，也就是说，之前缓存的方法，不过传给新的扩容缓存，会全部释放。新缓存又重新开始计数<br><img src="/.com//9.png"></li>
-<li>向缓存中插入方法<br><img src="/.com//6.png"></li>
-<li>hash的方式，直接用SEL &amp; mask得到key的方式,会存在，冲突，根据取到的sel判断是不是同一方法<br><img src="/.com//10.png"><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bucket_t *buckets = cache._buckets;</span><br><span class="line">bucket_t bucket = buckets[(long long)@selector(studentTest) &amp; cache._mask];</span><br><span class="line">//即可拿到缓存中的选择器，和实现，可能会有hash冲突，源码中会根据拿到的sel看是不是一致的</span><br><span class="line">NSLog(@&quot;%s %p&quot;, bucket._key, bucket._imp);</span><br></pre></td></tr></table></figure></li>
-<li>解决hash冲突的方式，开放地址法，线性探测<br><img src="/.com//7.png"></li>
+<li>插入之前，会先判断是否需要扩容，扩容为条件为，大于之前的3/4倍,扩容为2倍扩容，不超过最大缓存尺寸<br><img src="8.png"></li>
+<li>当扩容时，会清除之前缓存的方法，也就是说，之前缓存的方法，不过传给新的扩容缓存，会全部释放。新缓存又重新开始计数<br><img src="9.png"></li>
+<li>向缓存中插入方法<br><img src="6.png"></li>
+<li>hash的方式，直接用SEL &amp; mask得到key的方式,会存在，冲突，根据取到的sel判断是不是同一方法<br><img src="10.png"><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bucket_t *buckets = cache._buckets;</span><br><span class="line">bucket_t bucket = buckets[(long long)@selector(studentTest) &amp; cache._mask];</span><br><span class="line">//即可拿到缓存中的选择器，和实现，可能会有hash冲突，源码中会根据拿到的sel看是不是一致的</span><br><span class="line">NSLog(@&quot;%s %p&quot;, bucket._key, bucket._imp);</span><br></pre></td></tr></table></figure></li>
+<li>解决hash冲突的方式，开放地址法，线性探测<br><img src="7.png"></li>
 </ul>
  
       <!-- reward -->

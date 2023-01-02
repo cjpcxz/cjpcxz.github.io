@@ -113,7 +113,7 @@
 <span id="more"></span>
 
 <h3 id="Transition-解释"><a href="#Transition-解释" class="headerlink" title="Transition 解释"></a>Transition 解释</h3><p>转场时视图控制器和其对应的视图在结构上的变化：</p>
-<p><img src="/.com//1.png" alt="1.png"></p>
+<p><img src="1.png" alt="1.png"></p>
 <p>​        转场过程中，作为容器的父 VC 维护着多个子 VC，但在视图结构上，只保留一个子 VC 的视图，所以转场的本质是下一场景(子 VC)的视图替换当前场景(子 VC)的视图以及相应的控制器(子 VC)的替换，表现为当前视图消失和下一视图出现。</p>
 <h3 id="系统自带的方式"><a href="#系统自带的方式" class="headerlink" title="系统自带的方式"></a>系统自带的方式</h3><h4 id="CATransition"><a href="#CATransition" class="headerlink" title="CATransition"></a>CATransition</h4><p><code>CATransition</code>是<code>CAAnimation</code>的子类，用于过渡动画或转场动画。为视图层移入移除屏幕提供转场动画。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CATransition *animation = [CATransition animation];</span><br><span class="line">animation.type = type;</span><br><span class="line">animation.subtype = kCATransitionFromRight;</span><br><span class="line">animation.duration = 1.0;</span><br><span class="line">[vc.view.window.layer addAnimation:animation forKey:kCATransition];</span><br></pre></td></tr></table></figure>
@@ -176,7 +176,7 @@
 <h4 id="特殊的Modal转场"><a href="#特殊的Modal转场" class="headerlink" title="特殊的Modal转场"></a>特殊的Modal转场</h4><blockquote>
 <p>Modal 转场中需要做的事情和两种容器 VC 的转场一样，但在细节上有些差异。</p>
 </blockquote>
-<p><img src="/.com//2.png" alt="2.png"></p>
+<p><img src="2.png" alt="2.png"></p>
 <ol>
 <li>根视图是否参与转场</li>
 </ol>

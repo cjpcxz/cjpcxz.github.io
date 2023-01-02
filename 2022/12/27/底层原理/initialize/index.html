@@ -102,12 +102,12 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h1 id="initialize"><a href="#initialize" class="headerlink" title="initialize"></a>initialize</h1><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><ol>
-<li>在查找方法前，进行initialize的调用<br><img src="/.com//16721352310424.png"><img src="/.com//16721353684859.png"></li>
+<li>在查找方法前，进行initialize的调用<br><img src="16721352310424.png"><img src="16721353684859.png"></li>
 </ol>
 <ul>
-<li>类没有初始化，则去调用初始化<br><img src="/.com//16721354586849.png"></li>
-<li>先查看有没有父类，且父类，没有初始化，则先初始化父类的initial<br><img src="/.com//16721355384202.png"></li>
-<li>采用的是objc_msSend去调用initialize方法<br><img src="/.com//16721356497584.png"></li>
+<li>类没有初始化，则去调用初始化<br><img src="16721354586849.png"></li>
+<li>先查看有没有父类，且父类，没有初始化，则先初始化父类的initial<br><img src="16721355384202.png"></li>
+<li>采用的是objc_msSend去调用initialize方法<br><img src="16721356497584.png"></li>
 </ul>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>initialize和load的很大区别是，initize是通过objc_msgSend进行调用的。而load是拿到函数地址后直接调用的<ul>

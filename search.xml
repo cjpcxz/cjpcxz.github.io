@@ -3,19 +3,19 @@
   <entry>
     <title>objc_class</title>
     <url>/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/objc-class/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Class的结构"><a href="#Class的结构" class="headerlink" title="Class的结构"></a>Class的结构</h2><img src="/.com//01/01/Runtime%E7%9F%A5%E8%AF%86/objc-class/1.png" class title="This is an image">
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Class的结构"><a href="#Class的结构" class="headerlink" title="Class的结构"></a>Class的结构</h2><p><img src="1.png"></p>
 <h3 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h3><blockquote>
 <p>class_rw_t里面的methods、properties、protocols是二维数组，是可读可写的，包含了类的初始内容、分类的内容</p>
 </blockquote>
-<p><img src="/.com//2.png"></p>
+<p><img src="2.png"></p>
 <h3 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h3><blockquote>
 <p>class_ro_t里面的baseMethodList、baseProtocols、ivars、baseProperties是一维数组，是只读的，包含了类的初始内容</p>
 </blockquote>
-<p><img src="/.com//3.png"></p>
+<p><img src="3.png"></p>
 <h3 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h3><blockquote>
 <p>method_t是对方法\函数的封装</p>
 </blockquote>
-<p><img src="/.com//4.png"></p>
+<p><img src="4.png"></p>
 <ul>
 <li>IMP代表函数的具体实现<ul>
 <li><code>typedef id _Nullable (*IMP)(id _Nonnull,SEL _Nonnull,...)</code></li>
@@ -37,17 +37,17 @@
 </li>
 </ul>
 </li>
-<li>mask存储的是散列表的长度减1<br><img src="/.com//5.png"></li>
+<li>mask存储的是散列表的长度减1<br><img src="5.png"></li>
 <li>缓存查找<ul>
 <li><code>objc-cache.mm</code></li>
 <li><code>void cache_t::insert(SEL sel, IMP imp, id receiver)</code></li>
 </ul>
 </li>
-<li>插入之前，会先判断是否需要扩容，扩容为条件为，大于之前的3/4倍,扩容为2倍扩容，不超过最大缓存尺寸<br><img src="/.com//8.png"></li>
-<li>当扩容时，会清除之前缓存的方法，也就是说，之前缓存的方法，不过传给新的扩容缓存，会全部释放。新缓存又重新开始计数<br><img src="/.com//9.png"></li>
-<li>向缓存中插入方法<br><img src="/.com//6.png"></li>
-<li>hash的方式，直接用SEL &amp; mask得到key的方式,会存在，冲突，根据取到的sel判断是不是同一方法<br><img src="/.com//10.png"><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bucket_t *buckets = cache._buckets;</span><br><span class="line">bucket_t bucket = buckets[(long long)@selector(studentTest) &amp; cache._mask];</span><br><span class="line">//即可拿到缓存中的选择器，和实现，可能会有hash冲突，源码中会根据拿到的sel看是不是一致的</span><br><span class="line">NSLog(@&quot;%s %p&quot;, bucket._key, bucket._imp);</span><br></pre></td></tr></table></figure></li>
-<li>解决hash冲突的方式，开放地址法，线性探测<br><img src="/.com//7.png"></li>
+<li>插入之前，会先判断是否需要扩容，扩容为条件为，大于之前的3/4倍,扩容为2倍扩容，不超过最大缓存尺寸<br><img src="8.png"></li>
+<li>当扩容时，会清除之前缓存的方法，也就是说，之前缓存的方法，不过传给新的扩容缓存，会全部释放。新缓存又重新开始计数<br><img src="9.png"></li>
+<li>向缓存中插入方法<br><img src="6.png"></li>
+<li>hash的方式，直接用SEL &amp; mask得到key的方式,会存在，冲突，根据取到的sel判断是不是同一方法<br><img src="10.png"><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bucket_t *buckets = cache._buckets;</span><br><span class="line">bucket_t bucket = buckets[(long long)@selector(studentTest) &amp; cache._mask];</span><br><span class="line">//即可拿到缓存中的选择器，和实现，可能会有hash冲突，源码中会根据拿到的sel看是不是一致的</span><br><span class="line">NSLog(@&quot;%s %p&quot;, bucket._key, bucket._imp);</span><br></pre></td></tr></table></figure></li>
+<li>解决hash冲突的方式，开放地址法，线性探测<br><img src="7.png"></li>
 </ul>
 ]]></content>
       <categories>
@@ -70,7 +70,7 @@
 </ul>
 </blockquote>
 <h3 id="isa结构"><a href="#isa结构" class="headerlink" title="isa结构"></a>isa结构</h3><ol>
-<li>共用体（<code>union</code>）结构(结构体和数据共用的一个内存地址，实际数据存储在bits中，共用体中的结构体，只做展示作用)<br><img src="/.com//1.png"><img src="/.com//2.png"><h3 id="从内存地址，从上往下，即地址从右边，往左"><a href="#从内存地址，从上往下，即地址从右边，往左" class="headerlink" title="从内存地址，从上往下，即地址从右边，往左"></a>从内存地址，从上往下，即地址从右边，往左</h3></li>
+<li>共用体（<code>union</code>）结构(结构体和数据共用的一个内存地址，实际数据存储在bits中，共用体中的结构体，只做展示作用)<br><img src="1.png"><img src="2.png"><h3 id="从内存地址，从上往下，即地址从右边，往左"><a href="#从内存地址，从上往下，即地址从右边，往左" class="headerlink" title="从内存地址，从上往下，即地址从右边，往左"></a>从内存地址，从上往下，即地址从右边，往左</h3></li>
 </ol>
 <ul>
 <li>nonpointer<ul>
@@ -112,7 +112,7 @@
 </ul>
 </li>
 </ul>
-<p>注意，这里的都是是否有设置过，就像关联对象，就算最后将所有的关联对象删除，仍是1，如果有这些，在销毁的时候，会做额外工作<br><img src="/.com//16725690610032.png"></p>
+<p>注意，这里的都是是否有设置过，就像关联对象，就算最后将所有的关联对象删除，仍是1，如果有这些，在销毁的时候，会做额外工作<br><img src="16725690610032.png"></p>
 ]]></content>
       <categories>
         <category>Runtime</category>
@@ -122,12 +122,12 @@
     <title>initialize</title>
     <url>/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="initialize"><a href="#initialize" class="headerlink" title="initialize"></a>initialize</h1><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><ol>
-<li>在查找方法前，进行initialize的调用<br><img src="/.com//16721352310424.png"><img src="/.com//16721353684859.png"></li>
+<li>在查找方法前，进行initialize的调用<br><img src="16721352310424.png"><img src="16721353684859.png"></li>
 </ol>
 <ul>
-<li>类没有初始化，则去调用初始化<br><img src="/.com//16721354586849.png"></li>
-<li>先查看有没有父类，且父类，没有初始化，则先初始化父类的initial<br><img src="/.com//16721355384202.png"></li>
-<li>采用的是objc_msSend去调用initialize方法<br><img src="/.com//16721356497584.png"></li>
+<li>类没有初始化，则去调用初始化<br><img src="16721354586849.png"></li>
+<li>先查看有没有父类，且父类，没有初始化，则先初始化父类的initial<br><img src="16721355384202.png"></li>
+<li>采用的是objc_msSend去调用initialize方法<br><img src="16721356497584.png"></li>
 </ul>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>initialize和load的很大区别是，initize是通过objc_msgSend进行调用的。而load是拿到函数地址后直接调用的<ul>
@@ -149,9 +149,9 @@
     <url>/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><ol>
 <li>通过runtime动态将分类的方法合并到类对象、元类对象中，并非编译</li>
-<li>一个分类文件的编译后的结构体实际为<br><img src="/.com//16719733229400.png"><ul>
+<li>一个分类文件的编译后的结构体实际为<br><img src="16719733229400.png"><ul>
 <li>由runtime在运行时，将分类的方法合并到类对象、元类对象中</li>
-<li>编译成cpp，MJPerson(Eat)生成的 <code>_category_t</code>的静态结构体变量，其是单独的静态变量，编译时并未合入到类对象中<br><img src="/.com//16719737845768.png"></li>
+<li>编译成cpp，MJPerson(Eat)生成的 <code>_category_t</code>的静态结构体变量，其是单独的静态变量，编译时并未合入到类对象中<br><img src="16719737845768.png"></li>
 </ul>
 </li>
 </ol>
@@ -180,23 +180,23 @@
 </li>
 <li><p>load方法是根据方法地址直接调用，并不是经过objc_msgSend函数调用</p>
 <h3 id="在runtime运行后，添加到class-rw-t的method-array-t二维方法数组中"><a href="#在runtime运行后，添加到class-rw-t的method-array-t二维方法数组中" class="headerlink" title="在runtime运行后，添加到class_rw_t的method_array_t二维方法数组中"></a>在runtime运行后，添加到class_rw_t的method_array_t二维方法数组中</h3></li>
-<li><p>类的realize方法，可以看到class_rw_t实际上是在现在创建的，此前类中的bits中保存的是class_ro_t相关数据，才在这里realize，创建class_rw_t数据，并将其赋给bits中<br><img src="/.com//2.png" alt="截屏2023-01-01 23.10.16"></p>
+<li><p>类的realize方法，可以看到class_rw_t实际上是在现在创建的，此前类中的bits中保存的是class_ro_t相关数据，才在这里realize，创建class_rw_t数据，并将其赋给bits中<br><img src="2.png" alt="截屏2023-01-01 23.10.16"></p>
 </li>
-<li><p>加载分类的方法，保证类realize完成后，再去加载分类<br><img src="/.com//1.png" alt="截屏2023-01-01 23.10.16"></p>
+<li><p>加载分类的方法，保证类realize完成后，再去加载分类<br><img src="1.png" alt="截屏2023-01-01 23.10.16"></p>
 </li>
 <li><p>核心添加方法 <code>attachLists</code></p>
 </li>
-<li><p>objc838版本，在构建分类大数组是，最后编译的分类，放到最前面，将所有的分类方法、属性、协议数据合并到一个大数组中<br><img src="/.com//16720409049409.png"></p>
+<li><p>objc838版本，在构建分类大数组是，最后编译的分类，放到最前面，将所有的分类方法、属性、协议数据合并到一个大数组中<br><img src="16720409049409.png"></p>
 </li>
-<li><p>构建一个新数组，由后往前添加<br><img src="/.com//16720258260842.png"></p>
+<li><p>构建一个新数组，由后往前添加<br><img src="16720258260842.png"></p>
 </li>
 <li><p>objc750方法，</p>
 </li>
 <li><p>最后编译的分类，放到最前面，最终所有的分类方法、属性、协议数据合并到一个大数组中</p>
 </li>
-<li><p><img src="/.com//16720410519764.png"> </p>
+<li><p><img src="16720410519764.png"> </p>
 </li>
-<li><p>会通过memmove（内存挪动）(会根据方向挪动位置，保证数据完整性)将原来的方法列表，往后移动相应增加分类容量的位置。前面空出来的位置，用memcpy（内存拷贝）（只会从小地址，开始拷贝），添加在方法列表前面。也就是分类的方法，会在原方法的前面<br><img src="/.com//16720259301593.png"></p>
+<li><p>会通过memmove（内存挪动）(会根据方向挪动位置，保证数据完整性)将原来的方法列表，往后移动相应增加分类容量的位置。前面空出来的位置，用memcpy（内存拷贝）（只会从小地址，开始拷贝），添加在方法列表前面。也就是分类的方法，会在原方法的前面<br><img src="16720259301593.png"></p>
 </li>
 </ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
@@ -228,22 +228,22 @@
 <li>每个类、分类的+load，在程序运行过程中只调用一次<ul>
 <li>flags标识位保证类只会加载一次</li>
 <li>这里有递归，首选会先将父类添加到数组，后将自己加进去数组，因此最后，先父类，再执行子类的load方法</li>
-<li>最开始的关系时按照编译的顺序来的<br><img src="/.com//16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
+<li>最开始的关系时按照编译的顺序来的<br><img src="16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
 </ul>
 </li>
 </ul>
 <ol>
-<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="/.com//16720646359112.png"></p>
+<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="16720646359112.png"></p>
 </li>
 <li><p>构建有类load方法的数组，以及有分类load方法的数组，整个添加顺序是</p>
 <ol>
 <li>类先按编译的顺序进行添加，其中父类会比子类先添加到数组中</li>
-<li>分类按编译的顺序进行添加的<br><img src="/.com//16720651219179.png"></li>
+<li>分类按编译的顺序进行添加的<br><img src="16720651219179.png"></li>
 </ol>
 </li>
-<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="/.com//16720639325952.png"></p>
+<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="16720639325952.png"></p>
 </li>
-<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="/.com//16720641861246.png"></p>
+<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="16720641861246.png"></p>
 </li>
 </ol>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
@@ -279,12 +279,12 @@
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h1><ol>
 <li>通过KVC修改属性会触发KVO，例如age属性,<ul>
 <li>注意，就是age属性没有实现set的方法，只有成员变量，通过KVC设置，同样会触发KVO</li>
-<li>表明KVC内部实际上有调用willchangForkey、以及didChangeForKey:方法<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><img src="/.com//16719622557599.png"></li>
+<li>表明KVC内部实际上有调用willchangForkey、以及didChangeForKey:方法<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><img src="16719622557599.png"></li>
 </ul>
 </li>
 <li>根据setAge:,_setAge:的顺序找到，找到则调用,设置</li>
 <li>如果1没找到，查看<code>accessInstanceVariablesDirectly</code>（是否可直接查找成员变量）是否返回true，为No，直接报没找到key的异常</li>
-<li>如果为true，则按照_age,_isAge,age,isAge的顺序查找成员变量，找到直接赋值<h2 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h2><img src="/.com//%E6%88%AA%E5%B1%8F2022-12-25%2020.15.39.png" alt="截屏2022-12-25 20.15.39"></li>
+<li>如果为true，则按照_age,_isAge,age,isAge的顺序查找成员变量，找到直接赋值<h2 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h2><img src="%E6%88%AA%E5%B1%8F2022-12-25%2020.15.39.png" alt="截屏2022-12-25 20.15.39"></li>
 </ol>
 ]]></content>
       <categories>
@@ -392,7 +392,7 @@
   <entry>
     <title>objc_class的结构</title>
     <url>/2022/12/21/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="objc-class的结构"><a href="#objc-class的结构" class="headerlink" title="objc_class的结构"></a>objc_class的结构</h1><p><img src="/.com//16715558479895.png"></p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="objc-class的结构"><a href="#objc-class的结构" class="headerlink" title="objc_class的结构"></a>objc_class的结构</h1><p><img src="16715558479895.png"></p>
 <ul>
 <li>如何去查看<code>objc_class</code>的源码在真实项目中用，吧objc_class结构体，在函数类直接写出来，用桥接的方式实现<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">#ifndef MJClassInfo_h</span><br><span class="line">#define MJClassInfo_h</span><br><span class="line"></span><br><span class="line"># if __arm64__</span><br><span class="line">#   define ISA_MASK        0x0000000ffffffff8ULL</span><br><span class="line"># elif __x86_64__</span><br><span class="line">#   define ISA_MASK        0x00007ffffffffff8ULL</span><br><span class="line"># endif</span><br><span class="line"></span><br><span class="line">#if __LP64__</span><br><span class="line">typedef uint32_t mask_t;</span><br><span class="line">#else</span><br><span class="line">typedef uint16_t mask_t;</span><br><span class="line">#endif</span><br><span class="line">typedef uintptr_t cache_key_t;</span><br><span class="line"></span><br><span class="line">struct bucket_t &#123;</span><br><span class="line">    cache_key_t _key;</span><br><span class="line">    IMP _imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct cache_t &#123;</span><br><span class="line">    bucket_t *_buckets;</span><br><span class="line">    mask_t _mask;</span><br><span class="line">    mask_t _occupied;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct entsize_list_tt &#123;</span><br><span class="line">    uint32_t entsizeAndFlags;</span><br><span class="line">    uint32_t count;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_t &#123;</span><br><span class="line">    SEL name;</span><br><span class="line">    const char *types;</span><br><span class="line">    IMP imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_list_t : entsize_list_tt &#123;</span><br><span class="line">    method_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_t &#123;</span><br><span class="line">    int32_t *offset;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *type;</span><br><span class="line">    uint32_t alignment_raw;</span><br><span class="line">    uint32_t size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_list_t : entsize_list_tt &#123;</span><br><span class="line">    ivar_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_t &#123;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *attributes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_list_t : entsize_list_tt &#123;</span><br><span class="line">    property_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct chained_property_list &#123;</span><br><span class="line">    chained_property_list *next;</span><br><span class="line">    uint32_t count;</span><br><span class="line">    property_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef uintptr_t protocol_ref_t;</span><br><span class="line">struct protocol_list_t &#123;</span><br><span class="line">    uintptr_t count;</span><br><span class="line">    protocol_ref_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_ro_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t instanceStart;</span><br><span class="line">    uint32_t instanceSize;  // instance对象占用的内存空间</span><br><span class="line">#ifdef __LP64__</span><br><span class="line">    uint32_t reserved;</span><br><span class="line">#endif</span><br><span class="line">    const uint8_t * ivarLayout;</span><br><span class="line">    const char * name;  // 类名</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;  // 成员变量列表</span><br><span class="line">    const uint8_t * weakIvarLayout;</span><br><span class="line">    property_list_t *baseProperties;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line">    method_list_t * methods;    // 方法列表</span><br><span class="line">    property_list_t *properties;    // 属性列表</span><br><span class="line">    const protocol_list_t * protocols;  // 协议列表</span><br><span class="line">    Class firstSubclass;</span><br><span class="line">    Class nextSiblingClass;</span><br><span class="line">    char *demangledName;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#define FAST_DATA_MASK          0x00007ffffffffff8UL</span><br><span class="line">struct class_data_bits_t &#123;</span><br><span class="line">    uintptr_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* OC对象 */</span><br><span class="line">struct mj_objc_object &#123;</span><br><span class="line">    void *isa;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* 类对象 */</span><br><span class="line">struct mj_objc_class : mj_objc_object &#123;</span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;</span><br><span class="line">    class_data_bits_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return bits.data();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mj_objc_class* metaClass() &#123;</span><br><span class="line">        return (mj_objc_class *)((long long)isa &amp; ISA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#endif /* MJClassInfo_h */</span><br></pre></td></tr></table></figure></li>
 <li>实际使用,即可查看相关类<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        MJStudent *stu = [[MJStudent alloc] init];</span><br><span class="line">        stu-&gt;_weight = 10;</span><br><span class="line">        </span><br><span class="line">        mj_objc_class *studentClass = (__bridge mj_objc_class *)([MJStudent class]);</span><br><span class="line">        mj_objc_class *personClass = (__bridge mj_objc_class *)([MJPerson class]);</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentClassData = studentClass-&gt;data();</span><br><span class="line">        class_rw_t *personClassData = personClass-&gt;data();</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentMetaClassData = studentClass-&gt;metaClass()-&gt;data();</span><br><span class="line">        class_rw_t *personMetaClassData = personClass-&gt;metaClass()-&gt;data();</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;1111&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
@@ -446,7 +446,7 @@
 <li>类的属性信息（@property）、类的<code>对象方法</code>信息（instance method）</li>
 <li>类的协议信息（protocol）、类的成员变量信息（ivar）<ol>
 <li>ivar并非成员变量的值，成员变量的值有instance决定</li>
-<li>ivar实际存储的类型，名称等描述信息<h2 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h2><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除isa指针、superclass指针、类方法信息外，其他均为null<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系<img src="/.com//16713605118546.png"></h3></li>
+<li>ivar实际存储的类型，名称等描述信息<h2 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h2><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除isa指针、superclass指针、类方法信息外，其他均为null<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系<img src="16713605118546.png"></h3></li>
 </ol>
 </li>
 <li>instance的isa指向class</li>
@@ -534,20 +534,20 @@
 <li>交换制定的C函数,构建<code>rebinding</code>结构体<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct rebinding rebindSend;</span><br><span class="line">rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br></pre></td></tr></table></figure></li>
 <li><code>rebind_symbols</code>重新绑定符号<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">rebind_symbols(rebs, 1);</span><br></pre></td></tr></table></figure></li>
 <li>完整使用用例<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//</span><br><span class="line">//  FishHooklViewController.m</span><br><span class="line">//  transitionController</span><br><span class="line">//</span><br><span class="line">//  Created by 陈晶泊 on 2022/8/10.</span><br><span class="line">//</span><br><span class="line">#import &quot;fishhook.h&quot;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdarg.h&gt;</span><br><span class="line">#import &quot;FishHooklViewController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface FishHooklViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation FishHooklViewController</span><br><span class="line">__unused static void(*orig_objc_nslog)(NSString *format, ...);</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    self.view.backgroundColor = UIColor.whiteColor;</span><br><span class="line">    struct rebinding rebindSend;</span><br><span class="line">    rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">    rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">    rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br><span class="line">    struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">    rebind_symbols(rebs, 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void hook_Objc_nslog(NSString *format, ...) &#123;</span><br><span class="line">    format = [format stringByAppendingFormat:@&quot;已hook&quot;];</span><br><span class="line">    orig_objc_nslog(format);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event &#123;</span><br><span class="line">    NSLog(@&quot;FishHooklViewController&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><code>MachO</code>文件的静态链接在编译的时候，就确定了方法地址，位于代码段模，是不可写的，因此静态链接的函数方法，在运行时是无法更改的。<br>然而动态链接，是在运行时进行方法链接的，在<code>MachO</code>文件中，访问动态库里的数据符号地址放在<code>got</code>(也称<code>Non-Lazy Symbol Pointers</code>)数据段，调用动态库的函数的地址放在<code>la_symbol_ptr</code>数据段的数据段中，是可读写的，因此可以在程序运行期间修改<code>got</code>(<code>non_la_symbol_ptr</code>)和<code>la_symbol_ptr</code>数据段，来替换函数跟全局变量的地址。<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="1-传入需要替换的函数"><a href="#1-传入需要替换的函数" class="headerlink" title="1. 传入需要替换的函数"></a>1. 传入需要替换的函数<img src="/.com//16706010476870/16706577321150.png"></h4> <code>rebindings_head</code>的<code>next</code>为nil是第一次调用；去注册方法，其中<code>_dyld_register_func_for_add_image</code>做了2件事，1.是跟<code>else</code>里面一样，为每个image(镜像)调用<code>_rebind_symbols_for_image</code>，2.是当<code>dyld</code>后面加载镜像时候，也为这个新镜像调用<code>_rebind_symbols_for_image</code>。<br> <code>rebindings_head</code>采用的链表结构，具体如下:<br><img src="/.com//16706010476870/16706578333010.jpg"><h4 id="2-计算地址"><a href="#2-计算地址" class="headerlink" title="2. 计算地址"></a>2. 计算地址</h4><code>rebind_symbols_for_image</code>方法的目的，主要是计算基址，找到符号表、字符串表、间接符号表、<code>nl_symbol_ptr(got)</code>以及<code>la_symbol_ptr</code>数据段的地址。</li>
-<li>首先遍历加载命令，获得<code>MachO</code>文件中符号表、间接符号表、<code>LINKEDIT</code>三个加载命令<br><img src="/.com//16706010476870/16706583225213.png"></li>
-<li>根据<code>LINKEDIT</code>获取的真实基址，根据第一步中得到的加载命令，确定符号表、间接符号表、字符串表的虚拟内存地址<br><img src="/.com//16706010476870/16706584145390.png"></li>
+<h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><code>MachO</code>文件的静态链接在编译的时候，就确定了方法地址，位于代码段模，是不可写的，因此静态链接的函数方法，在运行时是无法更改的。<br>然而动态链接，是在运行时进行方法链接的，在<code>MachO</code>文件中，访问动态库里的数据符号地址放在<code>got</code>(也称<code>Non-Lazy Symbol Pointers</code>)数据段，调用动态库的函数的地址放在<code>la_symbol_ptr</code>数据段的数据段中，是可读写的，因此可以在程序运行期间修改<code>got</code>(<code>non_la_symbol_ptr</code>)和<code>la_symbol_ptr</code>数据段，来替换函数跟全局变量的地址。<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="1-传入需要替换的函数"><a href="#1-传入需要替换的函数" class="headerlink" title="1. 传入需要替换的函数"></a>1. 传入需要替换的函数<img src="16706010476870/16706577321150.png"></h4> <code>rebindings_head</code>的<code>next</code>为nil是第一次调用；去注册方法，其中<code>_dyld_register_func_for_add_image</code>做了2件事，1.是跟<code>else</code>里面一样，为每个image(镜像)调用<code>_rebind_symbols_for_image</code>，2.是当<code>dyld</code>后面加载镜像时候，也为这个新镜像调用<code>_rebind_symbols_for_image</code>。<br> <code>rebindings_head</code>采用的链表结构，具体如下:<br><img src="16706010476870/16706578333010.jpg"><h4 id="2-计算地址"><a href="#2-计算地址" class="headerlink" title="2. 计算地址"></a>2. 计算地址</h4><code>rebind_symbols_for_image</code>方法的目的，主要是计算基址，找到符号表、字符串表、间接符号表、<code>nl_symbol_ptr(got)</code>以及<code>la_symbol_ptr</code>数据段的地址。</li>
+<li>首先遍历加载命令，获得<code>MachO</code>文件中符号表、间接符号表、<code>LINKEDIT</code>三个加载命令<br><img src="16706010476870/16706583225213.png"></li>
+<li>根据<code>LINKEDIT</code>获取的真实基址，根据第一步中得到的加载命令，确定符号表、间接符号表、字符串表的虚拟内存地址<br><img src="16706010476870/16706584145390.png"></li>
 <li>遍历加载命令，找到数据段，在从数据段的<code>section</code>中找到<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code></li>
 </ol>
-<p><img src="/.com//16706010476870/16706586123063.png"></p>
-<h4 id="3-方法替换"><a href="#3-方法替换" class="headerlink" title="3. 方法替换"></a>3. 方法替换</h4><p>最后遍历<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和数据地址，并结合间接符号表、符号表、以及字符串表，得到地址对应的函数，变量名称，找到相同的名称，即可进行地址的替换。<br><img src="/.com//16706010476870/16706587741784.png"></p>
+<p><img src="16706010476870/16706586123063.png"></p>
+<h4 id="3-方法替换"><a href="#3-方法替换" class="headerlink" title="3. 方法替换"></a>3. 方法替换</h4><p>最后遍历<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和数据地址，并结合间接符号表、符号表、以及字符串表，得到地址对应的函数，变量名称，找到相同的名称，即可进行地址的替换。<br><img src="16706010476870/16706587741784.png"></p>
 <h2 id="通过MachOView分析"><a href="#通过MachOView分析" class="headerlink" title="通过MachOView分析"></a>通过MachOView分析</h2><ol>
-<li>计算出符号表、间接符号表、字符串表的地址<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.07.46.png" alt="截屏2022-12-10 16.07.46"></li>
-<li><code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和函数数据地址，其中<code>reserved1</code>即为数据段中的函数在间接符号表中的位置<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.16.25.png" alt="截屏2022-12-10 16.16.25"></li>
-<li>间接符号表中的地址，和实际数据段地址是对应的，其中间接符号表中的数据，实际对应的是符号表中的索引。<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.20.04.png" alt="截屏2022-12-10 16.20.04"></li>
+<li>计算出符号表、间接符号表、字符串表的地址<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.07.46.png" alt="截屏2022-12-10 16.07.46"></li>
+<li><code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和函数数据地址，其中<code>reserved1</code>即为数据段中的函数在间接符号表中的位置<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.16.25.png" alt="截屏2022-12-10 16.16.25"></li>
+<li>间接符号表中的地址，和实际数据段地址是对应的，其中间接符号表中的数据，实际对应的是符号表中的索引。<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.20.04.png" alt="截屏2022-12-10 16.20.04"></li>
 </ol>
-<p><img src="/.com//16706010476870/16706604848859.png"><br>4. 符号表中，关联由字符串表，从而知道函数的名称，因此，最终，根据名称，从间接符号表中拿到原始函数地址，从而完成了方法的替换。<br><img src="/.com//16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.24.10.png" alt="截屏2022-12-10 16.24.10"></p>
-<h2 id="FishHook应用实例"><a href="#FishHook应用实例" class="headerlink" title="FishHook应用实例"></a>FishHook应用实例</h2><p><code>SMCallTrace</code>通过hook<code>objc_msgSend</code>方法，hook了所有OC的方法，在hook方法中通过汇编语言来计算方法的耗时，可以用来项目中方法的执行情况。在需要检测耗时时间的地方调用 <code>[SMCallTrace start]</code>，结束时调用 <code>stop</code> 和 <code>save</code> 就可以打印出方法的调用层级和耗时了。还可以设置最大深度和最小耗时检测，来过滤不需要看到的信息。<a href="https://github.com/ming1016/GCDFetchFeed">源码地址</a><br>具体使用后的效果<img src="/.com//16706010476870/IMG_963F24C3F87F-1.jpeg" alt="IMG_963F24C3F87F-1"></p>
+<p><img src="16706010476870/16706604848859.png"><br>4. 符号表中，关联由字符串表，从而知道函数的名称，因此，最终，根据名称，从间接符号表中拿到原始函数地址，从而完成了方法的替换。<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.24.10.png" alt="截屏2022-12-10 16.24.10"></p>
+<h2 id="FishHook应用实例"><a href="#FishHook应用实例" class="headerlink" title="FishHook应用实例"></a>FishHook应用实例</h2><p><code>SMCallTrace</code>通过hook<code>objc_msgSend</code>方法，hook了所有OC的方法，在hook方法中通过汇编语言来计算方法的耗时，可以用来项目中方法的执行情况。在需要检测耗时时间的地方调用 <code>[SMCallTrace start]</code>，结束时调用 <code>stop</code> 和 <code>save</code> 就可以打印出方法的调用层级和耗时了。还可以设置最大深度和最小耗时检测，来过滤不需要看到的信息。<a href="https://github.com/ming1016/GCDFetchFeed">源码地址</a><br>具体使用后的效果<img src="16706010476870/IMG_963F24C3F87F-1.jpeg" alt="IMG_963F24C3F87F-1"></p>
 ]]></content>
   </entry>
   <entry>
@@ -562,7 +562,7 @@
 </ol>
 </li>
 <li>对应bundlId的应用打开后，会加载相关插件的动态库到内存中（不会缓存，每次重新打开，都会加载），去做交换方法的操作</li>
-<li>实际上没次动态修改，并为修改代码<h3 id="过程图"><a href="#过程图" class="headerlink" title="过程图"></a>过程图</h3><img src="/.com//16703379364755/16703398332015.png"></li>
+<li>实际上没次动态修改，并为修改代码<h3 id="过程图"><a href="#过程图" class="headerlink" title="过程图"></a>过程图</h3><img src="16703379364755/16703398332015.png"></li>
 </ol>
 ]]></content>
   </entry>
@@ -580,7 +580,7 @@
     <title></title>
     <url>/2022/11/22/%E5%85%B6%E4%BB%96/16690972051464/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="T-2-0场景开发总结"><a href="#T-2-0场景开发总结" class="headerlink" title="T+2.0场景开发总结"></a>T+2.0场景开发总结</h1><h2 id="1-项目背景"><a href="#1-项目背景" class="headerlink" title="1. 项目背景"></a>1. 项目背景</h2><p>   此前场景的创建链路较长，较为繁琐，同时视觉实现效果较为简单，缺乏吸引力；而且，缺乏用户学习和用户引导。由于此前场景均为<code>RN</code>实现，而<code>RN</code>受限于生态环境有限，难以实现较为复杂的视觉效果，且容易出各种UI显示问题，以及难以排查的bug。考虑于此，在2.0版本用<code>app原生语言</code>对场景模块进行重构，翻新。目标在于简化场景创建的流程，提升用户对<code>TCL场景生态</code>的认知。</p>
-<h2 id="2-功能模块"><a href="#2-功能模块" class="headerlink" title="2. 功能模块"></a>2. 功能模块</h2><h3 id="2-1-功能版块介绍"><a href="#2-1-功能版块介绍" class="headerlink" title="2.1 功能版块介绍"></a>2.1 功能版块介绍</h3><p>   <img src="/.com//16690972051464/%E5%9C%BA%E6%99%AF%E5%88%9B%E5%BB%BA.jpg" alt="场景创建"></p>
+<h2 id="2-功能模块"><a href="#2-功能模块" class="headerlink" title="2. 功能模块"></a>2. 功能模块</h2><h3 id="2-1-功能版块介绍"><a href="#2-1-功能版块介绍" class="headerlink" title="2.1 功能版块介绍"></a>2.1 功能版块介绍</h3><p>   <img src="16690972051464/%E5%9C%BA%E6%99%AF%E5%88%9B%E5%BB%BA.jpg" alt="场景创建"></p>
 ]]></content>
   </entry>
   <entry>
@@ -653,7 +653,7 @@
 </ul>
 </li>
 <li>Raw segment data<ul>
-<li>在Load commands中定义的Segment的原始数据<br><img src="/.com//16674864838934/16674865436160.jpg"><h2 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h2><h3 id="file："><a href="#file：" class="headerlink" title="file："></a>file：</h3></li>
+<li>在Load commands中定义的Segment的原始数据<br><img src="16674864838934/16674865436160.jpg"><h2 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h2><h3 id="file："><a href="#file：" class="headerlink" title="file："></a>file：</h3></li>
 </ul>
 </li>
 </ul>
@@ -716,15 +716,15 @@
     <title></title>
     <url>/2022/10/29/%E5%85%B6%E4%BB%96/16670400106477/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
-<li>ssh <a href="mailto:&#x72;&#x6f;&#x6f;&#116;&#x40;&#x31;&#57;&#x32;&#x2e;&#49;&#x36;&#x38;&#x2e;&#49;&#46;&#49;&#52;">&#x72;&#x6f;&#x6f;&#116;&#x40;&#x31;&#57;&#x32;&#x2e;&#49;&#x36;&#x38;&#x2e;&#49;&#46;&#49;&#52;</a>,跳转到指定ip的命令</li>
+<li>ssh <a href="mailto:&#x72;&#111;&#x6f;&#x74;&#64;&#49;&#57;&#x32;&#46;&#x31;&#x36;&#56;&#x2e;&#x31;&#46;&#x31;&#52;">&#x72;&#111;&#x6f;&#x74;&#64;&#49;&#57;&#x32;&#46;&#x31;&#x36;&#56;&#x2e;&#x31;&#46;&#x31;&#52;</a>,跳转到指定ip的命令</li>
 <li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
 </ul>
 <ol>
 <li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
-<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#111;&#x6f;&#x74;&#x40;&#49;&#x39;&#x32;&#x2e;&#x31;&#x36;&#x38;&#46;&#x31;&#46;&#x31;&#52;">&#x72;&#111;&#x6f;&#x74;&#x40;&#49;&#x39;&#x32;&#x2e;&#x31;&#x36;&#x38;&#46;&#x31;&#46;&#x31;&#52;</a>，追加到当前ip服务器授权文件的尾部</li>
+<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#111;&#x6f;&#x74;&#x40;&#49;&#x39;&#50;&#46;&#49;&#x36;&#56;&#x2e;&#x31;&#x2e;&#49;&#x34;">&#x72;&#111;&#x6f;&#x74;&#x40;&#49;&#x39;&#50;&#46;&#49;&#x36;&#56;&#x2e;&#x31;&#x2e;&#49;&#x34;</a>，追加到当前ip服务器授权文件的尾部</li>
 </ul>
 </li>
-<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#x72;&#111;&#x6f;&#116;&#x40;&#x31;&#x39;&#50;&#46;&#49;&#54;&#56;&#x2e;&#x31;&#x2e;&#49;&#52;">&#x72;&#111;&#x6f;&#116;&#x40;&#x31;&#x39;&#50;&#46;&#49;&#54;&#56;&#x2e;&#x31;&#x2e;&#49;&#52;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
+<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#114;&#x6f;&#111;&#x74;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#46;&#x31;&#x2e;&#49;&#x34;">&#114;&#x6f;&#111;&#x74;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#46;&#x31;&#x2e;&#49;&#x34;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
 <li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
 </ul>
 </li>
@@ -864,7 +864,7 @@
 <span id="more"></span>
 
 <h3 id="Transition-解释"><a href="#Transition-解释" class="headerlink" title="Transition 解释"></a>Transition 解释</h3><p>转场时视图控制器和其对应的视图在结构上的变化：</p>
-<p><img src="/.com//1.png" alt="1.png"></p>
+<p><img src="1.png" alt="1.png"></p>
 <p>​        转场过程中，作为容器的父 VC 维护着多个子 VC，但在视图结构上，只保留一个子 VC 的视图，所以转场的本质是下一场景(子 VC)的视图替换当前场景(子 VC)的视图以及相应的控制器(子 VC)的替换，表现为当前视图消失和下一视图出现。</p>
 <h3 id="系统自带的方式"><a href="#系统自带的方式" class="headerlink" title="系统自带的方式"></a>系统自带的方式</h3><h4 id="CATransition"><a href="#CATransition" class="headerlink" title="CATransition"></a>CATransition</h4><p><code>CATransition</code>是<code>CAAnimation</code>的子类，用于过渡动画或转场动画。为视图层移入移除屏幕提供转场动画。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CATransition *animation = [CATransition animation];</span><br><span class="line">animation.type = type;</span><br><span class="line">animation.subtype = kCATransitionFromRight;</span><br><span class="line">animation.duration = 1.0;</span><br><span class="line">[vc.view.window.layer addAnimation:animation forKey:kCATransition];</span><br></pre></td></tr></table></figure>
@@ -927,7 +927,7 @@
 <h4 id="特殊的Modal转场"><a href="#特殊的Modal转场" class="headerlink" title="特殊的Modal转场"></a>特殊的Modal转场</h4><blockquote>
 <p>Modal 转场中需要做的事情和两种容器 VC 的转场一样，但在细节上有些差异。</p>
 </blockquote>
-<p><img src="/.com//2.png" alt="2.png"></p>
+<p><img src="2.png" alt="2.png"></p>
 <ol>
 <li>根视图是否参与转场</li>
 </ol>
@@ -1050,7 +1050,7 @@
 <ul>
 <li>下图展示了一个内嵌UILabel的自定义UIButton；左边是一个不透明的按钮，右边是50%透明度的相同按钮。我们可以注意到，里面的标签的轮廓跟按钮的背景很不搭调。</li>
 </ul>
-<p><img src="/.com//1.png" alt="1.png"></p>
+<p><img src="1.png" alt="1.png"></p>
 <ul>
 <li>这是由透明度混合叠加造成的，当你显示一个个50%透明度的图层时，图层的每个像素都会一半显示自己的颜色，另一半显示图层下面的颜色。这是正常的透明度的表现。但是如果图层包含一个同样显示50%透明的子图层时，你所看到的视图，50%来自子视图，25%来自图层本身的颜色，另外的25%则来自背景色。所以合起来中间标签可见度为75%</li>
 <li>处理方法<ul>
@@ -1287,7 +1287,7 @@
 <li>适当降低分辨率</li>
 </ol>
 <p>但是传统的压缩方式不支持指定profile，帧率和码率，所以只有通过其他方式来实现。可以在相机录像时需要将拍摄的每一帧<code>sampleBuffer</code>（音频或者视频）传给<code>AVassetWriter</code>，并制定压缩参数。</p>
-<h3 id="AVAassetWriter实现视频压缩"><a href="#AVAassetWriter实现视频压缩" class="headerlink" title="AVAassetWriter实现视频压缩"></a>AVAassetWriter实现视频压缩</h3><h4 id="流程图："><a href="#流程图：" class="headerlink" title="流程图："></a>流程图：</h4><p><img src="/.com//1.png" alt="img"></p>
+<h3 id="AVAassetWriter实现视频压缩"><a href="#AVAassetWriter实现视频压缩" class="headerlink" title="AVAassetWriter实现视频压缩"></a>AVAassetWriter实现视频压缩</h3><h4 id="流程图："><a href="#流程图：" class="headerlink" title="流程图："></a>流程图：</h4><p><img src="1.png" alt="img"></p>
 <h4 id="代码的实现"><a href="#代码的实现" class="headerlink" title="代码的实现"></a>代码的实现</h4><ol>
 <li>初始化<code>reader</code>，<code>writer</code>，<code>video/audio track</code>, <code>video/audio input</code>, <code>video/audio output</code></li>
 </ol>
@@ -1336,7 +1336,7 @@
 <span id="more"></span>
 
 <ul>
-<li><p>下图显示了这些属性是如何展示的：<br><img src="/.com//1.png" alt="img"></p>
+<li><p>下图显示了这些属性是如何展示的：<br><img src="1.png" alt="img"></p>
 </li>
 <li><p>视图的<code>frame</code> ，<code>bounds</code>和<code>center</code>属性仅仅是存取方法，当操纵视图的frame，实际上是在改变位于视图下方CALayer的<code>frame</code>，不能够独立于图层之外改变视图的<code>frame</code>。</p>
 <ul>
@@ -1345,11 +1345,11 @@
 </ul>
 </li>
 </ul>
-<p><img src="/.com//2.png" alt="img"></p>
+<p><img src="2.png" alt="img"></p>
 <h2 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h2><blockquote>
 <p>视图的<code>center</code>属性和图层的<code>position</code>属性都指定了<code>anchorPoint</code>相对于父图层的位置。图层的<code>anchorPoint</code>通过<code>position</code>来控制它的<code>frame</code>的位置。默认来说<code>anchorPoint</code>位于图层的中点，所以图层的将会以这个点为中心放置。对于UIView而言，没有暴露<code>anchorPoint</code>,只有center；而图层的暴露出来了，<code>anchorPoint</code>可以被移动。anchorPoint为单位坐标</p>
 </blockquote>
-<p><img src="/.com//3.png" alt="img"></p>
+<p><img src="3.png" alt="img"></p>
 <ul>
 <li>改变<code>anchorPoint</code>，图层的内容会向右下角的<code>position</code>方向移动，而并不是居中了;图中当改变anchorPoint，position是<code>anchorPoint</code>与父图层的位置，由于锚点的变化，相对位置的基础点，发生改变（从原来中心点，变成了右上角），图层右下角移动，frame改变了。</li>
 <li><code>anchorPoint</code>属性为锚点，一般在<code>transform</code>图层旋转中常用到，作为旋转的基点.</li>
@@ -1498,7 +1498,7 @@
 <ul>
 <li>默认情况下，<code>contentsCenter</code>是{0, 0, 1, 1}，这意味着如果大小（由<code>conttensGravity</code>决定）改变了,那么寄宿图将会均匀地拉伸开。但是如果我们增加原点的值并减小尺寸。我们会在图片的周围创造一个边框。下图展示了<code>contentsCenter</code>设置为{0.25, 0.25, 0.5, 0.5}的效果。</li>
 </ul>
-<p><img src="/.com//1.png" alt="img"></p>
+<p><img src="1.png" alt="img"></p>
 <h2 id="drawRect"><a href="#drawRect" class="headerlink" title="drawRect"></a>drawRect</h2><blockquote>
 <p>给<code>contents</code>赋CGImage的值不是唯一的设置寄宿图的方法。我们也可以直接用Core Graphics直接绘制寄宿图。能够通过继承UIView并实现<code>-drawRect:</code>方法来自定义绘制。</p>
 </blockquote>

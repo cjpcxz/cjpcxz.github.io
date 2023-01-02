@@ -103,9 +103,9 @@
        
   <h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><ol>
 <li>通过runtime动态将分类的方法合并到类对象、元类对象中，并非编译</li>
-<li>一个分类文件的编译后的结构体实际为<br><img src="/.com//16719733229400.png"><ul>
+<li>一个分类文件的编译后的结构体实际为<br><img src="16719733229400.png"><ul>
 <li>由runtime在运行时，将分类的方法合并到类对象、元类对象中</li>
-<li>编译成cpp，MJPerson(Eat)生成的 <code>_category_t</code>的静态结构体变量，其是单独的静态变量，编译时并未合入到类对象中<br><img src="/.com//16719737845768.png"></li>
+<li>编译成cpp，MJPerson(Eat)生成的 <code>_category_t</code>的静态结构体变量，其是单独的静态变量，编译时并未合入到类对象中<br><img src="16719737845768.png"></li>
 </ul>
 </li>
 </ol>
@@ -134,23 +134,23 @@
 </li>
 <li><p>load方法是根据方法地址直接调用，并不是经过objc_msgSend函数调用</p>
 <h3 id="在runtime运行后，添加到class-rw-t的method-array-t二维方法数组中"><a href="#在runtime运行后，添加到class-rw-t的method-array-t二维方法数组中" class="headerlink" title="在runtime运行后，添加到class_rw_t的method_array_t二维方法数组中"></a>在runtime运行后，添加到class_rw_t的method_array_t二维方法数组中</h3></li>
-<li><p>类的realize方法，可以看到class_rw_t实际上是在现在创建的，此前类中的bits中保存的是class_ro_t相关数据，才在这里realize，创建class_rw_t数据，并将其赋给bits中<br><img src="/.com//2.png" alt="截屏2023-01-01 23.10.16"></p>
+<li><p>类的realize方法，可以看到class_rw_t实际上是在现在创建的，此前类中的bits中保存的是class_ro_t相关数据，才在这里realize，创建class_rw_t数据，并将其赋给bits中<br><img src="2.png" alt="截屏2023-01-01 23.10.16"></p>
 </li>
-<li><p>加载分类的方法，保证类realize完成后，再去加载分类<br><img src="/.com//1.png" alt="截屏2023-01-01 23.10.16"></p>
+<li><p>加载分类的方法，保证类realize完成后，再去加载分类<br><img src="1.png" alt="截屏2023-01-01 23.10.16"></p>
 </li>
 <li><p>核心添加方法 <code>attachLists</code></p>
 </li>
-<li><p>objc838版本，在构建分类大数组是，最后编译的分类，放到最前面，将所有的分类方法、属性、协议数据合并到一个大数组中<br><img src="/.com//16720409049409.png"></p>
+<li><p>objc838版本，在构建分类大数组是，最后编译的分类，放到最前面，将所有的分类方法、属性、协议数据合并到一个大数组中<br><img src="16720409049409.png"></p>
 </li>
-<li><p>构建一个新数组，由后往前添加<br><img src="/.com//16720258260842.png"></p>
+<li><p>构建一个新数组，由后往前添加<br><img src="16720258260842.png"></p>
 </li>
 <li><p>objc750方法，</p>
 </li>
 <li><p>最后编译的分类，放到最前面，最终所有的分类方法、属性、协议数据合并到一个大数组中</p>
 </li>
-<li><p><img src="/.com//16720410519764.png"> </p>
+<li><p><img src="16720410519764.png"> </p>
 </li>
-<li><p>会通过memmove（内存挪动）(会根据方向挪动位置，保证数据完整性)将原来的方法列表，往后移动相应增加分类容量的位置。前面空出来的位置，用memcpy（内存拷贝）（只会从小地址，开始拷贝），添加在方法列表前面。也就是分类的方法，会在原方法的前面<br><img src="/.com//16720259301593.png"></p>
+<li><p>会通过memmove（内存挪动）(会根据方向挪动位置，保证数据完整性)将原来的方法列表，往后移动相应增加分类容量的位置。前面空出来的位置，用memcpy（内存拷贝）（只会从小地址，开始拷贝），添加在方法列表前面。也就是分类的方法，会在原方法的前面<br><img src="16720259301593.png"></p>
 </li>
 </ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
