@@ -142,6 +142,64 @@
     
     
     <article
+  id="post-底层原理/isa指针"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/"
+    >isa指针</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/" class="article-date">
+  <time datetime="2022-12-18T16:00:00.000Z" itemprop="datePublished">2022-12-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h1><ul>
+<li>从64bit开始，isa需要进行一次位运算，才能计算出真实地址,<code>isa &amp; ISA_MASK</code>即为实际的isas地址<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># if __arm64__</span><br><span class="line">#     define ISA_MASK   0x0000000ffffffff8ULL</span><br><span class="line">elif __x86_64__</span><br><span class="line"># define ISA_MASK        0x00007ffffffffff8ULL</span><br></pre></td></tr></table></figure></li>
+<li>Class中的isa指针没有暴露出来，可以通过构建一个相同的结构体，通过桥接得到<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct objc_class &#123;</span><br><span class="line">    Class isa;</span><br><span class="line">    Class superclass;</span><br><span class="line">&#125;;</span><br><span class="line">struct objc_class *personClass = (__bridge struct objc_class *)([Person class]);</span><br></pre></td></tr></table></figure></li>
+<li>superclass直接指向父类，不需要转换</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-底层原理/OC对象的分类"
   class="article article-type-post"
   itemscope
@@ -591,50 +649,6 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h1 id="IPC时间推送"><a href="#IPC时间推送" class="headerlink" title="IPC时间推送"></a>IPC时间推送</h1><p>1、消息列表点击事件消息不再弹出购买套餐提示，消息列表点击事件消息，统一跳转至对应事件的播放器页面弹出相对应的提示<br>2、事件播放器页面App判断事件列表里是否存在视频URL，若视频URL不为空，则表示事件上报时用户购买了套餐，则App可以直接播放视频，如视频无法播放则提示「该视频已过期」<br>3、若视频URL为空，则App调用支付平台接口判断用户当前是否购买套餐，若用户当前已购买套餐，则在APP的事件播放器页面提示「因该视频生成时未购买云套餐，无法支持其播放」<br>4、若视频URL为空，并且用户当前没有购买套餐，则在APP的事件播放器页面去弹框引导用户购买套餐</p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-其他/16677424889825"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/11/06/%E5%85%B6%E4%BB%96/16677424889825/" class="article-date">
-  <time datetime="2022-11-06T13:48:08.983Z" itemprop="datePublished">2022-11-06</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="练习一-喜玛拉广告去除"><a href="#练习一-喜玛拉广告去除" class="headerlink" title="练习一 喜玛拉广告去除"></a>练习一 喜玛拉广告去除</h1><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
-<li><code>Revel</code>中查看广告的图层信息，通过Cycript<code>[#0x12333 removeFromSuperlayer]</code>只能暂时将广告屏蔽</li>
-<li>用<code>CLutch</code>脱壳应用，<code>class-dump</code>指令拿到头文件信息，查看相关视图图层的信息，通过hook的方式去去除广告<h1 id="练习二，桌面更新数字去除"><a href="#练习二，桌面更新数字去除" class="headerlink" title="练习二，桌面更新数字去除"></a>练习二，桌面更新数字去除</h1></li>
-</ol>
-<ul>
-<li>iOS桌面为<code>springboard</code>，位置在<code>/System/Library/CoreServices/SpringBoard.app</code></li>
-<li><code>springboard</code>无法通过<code>revel</code>的方式查看，需要用<code>cycript</code>的方式查看</li>
-</ul>
  
       <!-- reward -->
       

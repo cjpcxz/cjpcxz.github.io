@@ -142,6 +142,70 @@
     
     
     <article
+  id="post-零碎知识点/碰到的一些问题"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/07/10/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%B0%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/"
+    >碰到的一些问题</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/07/10/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%B0%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2021-07-10T09:45:59.000Z" itemprop="datePublished">2021-07-10</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/">零碎知识点</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="场景图片的问题"><a href="#场景图片的问题" class="headerlink" title="场景图片的问题"></a>场景图片的问题</h3><ol>
+<li>从相册中导出全场景图片存在的问题<ol>
+<li>压缩图片的质量</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[[PHCachingImageManager defaultManager]</span><br><span class="line">        requestImageDataForAsset:mAsset</span><br><span class="line">                         options:nil</span><br><span class="line">                   resultHandler:^(NSData *_Nullable imageData, NSString *_Nullable dataUTI, UIImageOrientation orientation, NSDictionary *_Nullable info) &#123;</span><br><span class="line">                     UIImage *resultImage = [UIImage imageWithData:imageData];</span><br><span class="line">                     //获得的image要转换为正确的方向</span><br><span class="line">                    // 然后将该image导入到本地文件中</span><br><span class="line">                     //注意要用jpg的形式导入本地，否则，图片文件的大小会激增，有4M多变成90Mb（原因未知）</span><br><span class="line">                      BOOL result = [UIImageJPEGRepresentation(image, 0.5) writeToFile:filePath atomically:YES];</span><br><span class="line">                     //采用png的形式保存场景图片，会出现存储图片内存激增</span><br><span class="line">                     BOOL result = [UIImagePNGRepresentation(image) writeToFile:filePath atomically:YES];</span><br><span class="line">                   &#125;];</span><br></pre></td></tr></table></figure>
+
+<p>​        2. 全场景图片一般为十几万✖️几千的分辨率，上述压缩的方式可以使全场景图片在iphone6plus上显示，没有卡顿现象，但是这样的图片在iphone6上仍有有明显的卡顿，</p>
+<h3 id="单例block引用导致内存泄漏的问题"><a href="#单例block引用导致内存泄漏的问题" class="headerlink" title="单例block引用导致内存泄漏的问题"></a>单例block引用导致内存泄漏的问题</h3><ol>
+<li>注意如果block为单例的属性，那么在该block中要注意内存泄露的问题，因为单例会一直无法释放，会一直持有属性，而属性会一直持有block中的对象，那么就会导致block中捕获的对象，造成对象无法释放</li>
+<li>如果是方法中的block，那么方法在执行完毕之后，便会释放block，不会一直持有，不用担心内存泄露的问题</li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-iOS动画学习/iOS视图控制器转场详解"
   class="article article-type-post"
   itemscope
