@@ -142,447 +142,6 @@
     
     
     <article
-  id="post-iOS学习/其他/16673137289641"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/11/01/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16673137289641/" class="article-date">
-  <time datetime="2022-11-01T14:42:08.964Z" itemprop="datePublished">2022-11-01</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="Hopper"><a href="#Hopper" class="headerlink" title="Hopper"></a>Hopper</h1><h2 id="Mach-o"><a href="#Mach-o" class="headerlink" title="Mach-o"></a>Mach-o</h2><ul>
-<li>机器码可以反编译成汇编，但是汇编很难反编译成OC<h2 id="ios系统Mach-o文件在手机上"><a href="#ios系统Mach-o文件在手机上" class="headerlink" title="ios系统Mach-o文件在手机上"></a>ios系统Mach-o文件在手机上</h2></li>
-<li>从iOS3.1开始，为了提高性能，绝大部分的系统动态库文件都打包存放到了一个缓存文件中（<code>dyld shared cache</code>）<ol>
-<li>缓存文件路径：<code>/System/Library/Caches/com.apple.dyld/dyld_shared_cache_armX</code></li>
-<li>绝大部分的系统动态库都放在共享缓存中，一个文件中，（多个动态库<code>mach</code>会有多个描述信息，因此降低内存，放到了一个文件中，也就是mach文件中<code>dlyld</code>(命令在/usr/lib中)加载指令(通过这个指令去加载动态库)，只会加载到一处）</li>
-<li>用<code>[[NSBundle bundleWithPath:&quot;/System/Library/Frameworks/UIKit.framework&quot;] load]</code>去加载动态库，实际上是调用2.中<code>dlyld</code>去判断是否在缓存中，有则去1.位置处的共享缓存去加载<code>UIKit.framework</code></li>
-<li><a target="_blank" rel="noopener" href="https://opensource.apple.com/tarballs/dyld/">dyld源码 </a></li>
-<li><code>dlyld</code>中的<code>dsc_extractor</code>文件可以，将1中缓存文件抽取出压缩在里面的库<ol>
-<li>先用<code>clang++</code>编译,`clang++ -o dsc_extractor dsc_extractor.cpp</li>
-<li><code>/dsc_extractor dyld_shared_cache_armv7s armv7s</code>所有动态库在呵rmv7s文件夹中<br>`</li>
-</ol>
-</li>
-</ol>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/其他/16672327206592"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/11/01/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16672327206592/" class="article-date">
-  <time datetime="2022-10-31T16:12:00.659Z" itemprop="datePublished">2022-11-01</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="class-dump"><a href="#class-dump" class="headerlink" title="class-dump"></a>class-dump</h1><pre><code>-它的作用就是把Mach-O文件的class信息给dump出来（把类信息给导出来），生成对应的.h头文件
-</code></pre>
-<hr>
-<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><ul>
-<li>将命令放大/usr/local/bin目录下(mac下不能放到/usr/bin下)</li>
-<li><code>class-dump  -H  Mach-O文件路径  -o  头文件存放目录</code></li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/其他/16670400106477"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/10/29/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16670400106477/" class="article-date">
-  <time datetime="2022-10-29T10:40:10.648Z" itemprop="datePublished">2022-10-29</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
-<li>ssh <a href="mailto:&#114;&#x6f;&#111;&#x74;&#x40;&#49;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#x2e;&#49;&#46;&#x31;&#52;">&#114;&#x6f;&#111;&#x74;&#x40;&#49;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#x2e;&#49;&#46;&#x31;&#52;</a>,跳转到指定ip的命令</li>
-<li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
-</ul>
-<ol>
-<li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
-<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#111;&#x6f;&#x74;&#64;&#49;&#x39;&#50;&#46;&#x31;&#54;&#56;&#46;&#x31;&#x2e;&#49;&#x34;">&#x72;&#111;&#x6f;&#x74;&#64;&#49;&#x39;&#50;&#46;&#x31;&#54;&#56;&#46;&#x31;&#x2e;&#49;&#x34;</a>，追加到当前ip服务器授权文件的尾部</li>
-</ul>
-</li>
-<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#114;&#111;&#x6f;&#116;&#64;&#x31;&#57;&#50;&#x2e;&#x31;&#x36;&#x38;&#46;&#x31;&#46;&#49;&#x34;">&#114;&#111;&#x6f;&#116;&#64;&#x31;&#57;&#50;&#x2e;&#x31;&#x36;&#x38;&#46;&#x31;&#46;&#49;&#x34;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
-<li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
-</ul>
-</li>
-</ol>
-<ul>
-<li>chmod 755 ~/.ssh 给文件夹赋予权限，755含义<ul>
-<li>读（r=4），写（w=2），执行（x=1）</li>
-<li>文件所有者可读可写可执行                                   –7</li>
-<li>与文件所有者同属一个用户组的其他用户可读可执行                 –5 </li>
-<li>其它用户组可读可执行                                       –5<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2></li>
-</ul>
-</li>
-<li>每个端口都有个端口号，（范围是0～65535，公2^16）</li>
-<li>21端口，FTP服务</li>
-<li>80端口，http服务</li>
-<li>22端口，ssh服务<h2 id="通过USB进行SSH登录"><a href="#通过USB进行SSH登录" class="headerlink" title="通过USB进行SSH登录"></a>通过USB进行SSH登录</h2></li>
-<li>默认会用网络登录，USB登录的方式是，先用SSH登录MAC上的10010端口(非保留端口均可)，在通过usbmuxd连接22端口</li>
-<li>将iPhone的22端口（SSH端口）映射到Mac本地的10010端口</li>
-<li>用python脚本，将mac上10010映射到22，python3 tcprelay.py -t 22:10010</li>
-<li>ssh root@localhost -p 10010,直接连接本地的10010接口</li>
-<li>scp -P 10010 <del>/.ssh/id_rsa.pub root@localhost:</del>,拷贝的方法</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/其他/16629071383706"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/09/11/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16629071383706/" class="article-date">
-  <time datetime="2022-09-11T14:38:58.371Z" itemprop="datePublished">2022-09-11</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h1><ul>
-<li>flutter run –no-sound-null-safety  解决flutter插件旧版本兼容问题</li>
-<li>flutter create –template=package hello 创建pakcage</li>
-<li>flutter create -t module flutter_module 创建fluttermodule</li>
-<li>flutter create example 创建flutter项目<h1 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h1></li>
-<li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
-<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h1 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h1></li>
-<li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/iOS动画学习/详解iOS的presentViewController"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/07/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E8%AF%A6%E8%A7%A3iOS%E7%9A%84presentViewController/"
-    >详解iOS的presentViewController</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/07/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E8%AF%A6%E8%A7%A3iOS%E7%9A%84presentViewController/" class="article-date">
-  <time datetime="2021-07-23T15:11:44.000Z" itemprop="datePublished">2021-07-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>iOS中显示ViewController的方式有两种push和modal，modal也叫模态，模态显示VC是iOS的重要特性之一，其主要用于有以下场景：</p>
-<ol>
-<li>收集用户输入信息 </li>
-<li> 临时呈现一些内容 </li>
-<li>临时改变工作模式 </li>
-<li>相应设备方向变化（用于针对不同方向分别是想两个ViewController的情况）</li>
-<li> 显示一个新的view层级</li>
-</ol>
-<p>这些场景都会暂时中断APP的正常执行流程，主要作用是收集信息以及显示一些重要的提示等。当VCA模态的弹出了VCB，那么VCA就是<code>presenting view controller</code>，VCB就是<code>presented view controller</code></p>
-</blockquote>
-<h3 id="ModalPresentationStyle-amp-Presentation-Context"><a href="#ModalPresentationStyle-amp-Presentation-Context" class="headerlink" title="ModalPresentationStyle &amp; Presentation Context"></a>ModalPresentationStyle &amp; Presentation Context</h3><h4 id="ModalPresentationStyle"><a href="#ModalPresentationStyle" class="headerlink" title="ModalPresentationStyle"></a>ModalPresentationStyle</h4><p>​        <code>presented VC </code>的<code>modalPresentationStyle</code>属性决定了此次<code>presentation</code>的行为方式及UIKit寻找<code>presentation context</code>的方法，iOS提供了以下几种常用的<code>presentation style</code></p>
-<ol>
-<li><p><strong>UIModalPresentationFullScreen</strong></p>
-<p>UIKit默认的<code>presentation style</code>。 使用这种模式时，<code>presented VC</code>的宽高与屏幕相同，并且UIKit会直接使用<code>rootViewController</code>做为<code>presentation context</code>，在此次presentation完成之后，UIKit会将<code>presentation context及其子VC</code>都移出UI栈，这时候观察VC的层级关系，会发现UIWindow下只有<code>presented VC</code>（视图层级下UIWindow上只有presented VC）.</p>
-</li>
-<li><p><strong>UIModalPresentationCurrentContext</strong></p>
-<p>使用这种方式<code>present VC</code>时，<code>presented VC</code>的宽高取决于<code>presentation context</code>的宽高，并且UIKit会寻找属性<code>definesPresentationContext</code>为YES的VC作为<code>presentation context</code> 。当此次<code>presentation</code>完成之后，<code>presentation context</code>及其子VC都将被暂时移出当前的UI栈。</p>
-</li>
-<li><p><strong>UIModalPresentationCustom</strong></p>
-<p>自定义模式，需要实现UIViewControllerTransitioningDelegate的相关方法，并将presented VC的transitioningDelegate 设置为实现了UIViewControllerTransitioningDelegate协议的对象。</p>
-</li>
-<li><p><strong>UIModalPresentationOverFullScreen</strong></p>
-<p>与<code>UIModalPresentationFullScreen</code>的唯一<strong>区别</strong>在于，UIWindow下除了<code>presented VC</code>，还有其他正常的VC层级关系。也就是说该模式下，UIKit以<code>rootViewController</code>为<code>presentation context</code>，但presentation完成之后不会将<code>rootViewController移出当前的UI栈</code>。</p>
-</li>
-<li><p><strong>UIModalPresentationOverCurrentContext</strong></p>
-<p>寻找<code>presentation context</code>的方式与<code>UIModalPresentationCurrentContext</code>相同，所不同的是<code>presentation</code>完成之后，不会将<code>context及其子VC移出当前UI栈</code>。但是，这种方式只<strong>适用于transition style为UIModalTransitionStyleCoverVertical的情况</strong>(UIKit默认就是这种transition style)。其他transition style下使用这种方式将会触发异常。</p>
-</li>
-<li><p><strong>UIModalPresentationBlurOverFullScreen</strong></p>
-<p><code>presentation</code>完成之后，如果<code>presented VC</code>的背景有透明部分，会看到presented VC下面的VC会变得模糊，其他与<code>UIModalPresentationOverFullScreen</code>模式没有区别。</p>
-</li>
-<li><p><strong>UIModalPresentationPageSheet</strong></p>
-<p>在常规型设备（大屏手机，例如plus系列以及iPad系列）的水平方向，<code>presented VC</code>的高为当前屏幕的高度，宽为该设备竖直方向屏幕的宽度，其余部分用透明背景做填充。对于紧凑型设备（小屏手机）的水平方向及所有设备的竖直方向，其显示效果与<code>UIModalPresentationFullScreen</code>相同。</p>
-</li>
-<li><p><strong>UIModalPresentationFormSheet</strong></p>
-<p>在常规型设备的水平方向，<code>presented VC</code>的宽高均小于屏幕尺寸，其余部分用透明背景填充。对于紧凑型设备的水平方向及所有设备的竖直方向，其显示效果与<code>UIModalPresentationFullScreen</code>相同</p>
-</li>
-</ol>
-<p><code>UIModalPresentationFullScreen</code>、<code>UIModalPresentationCurrentContext</code>在转场完成后会将<code>context及其子VC移出当前UI栈</code>,因此转场结束后是无法看到presenting的视图的，而其他情况下的style是可以看到的</p>
-<h4 id="presentation-context"><a href="#presentation-context" class="headerlink" title="presentation context"></a>presentation context</h4><blockquote>
-<p><code>presentation context</code>是指为本次<code>present</code>提供上下文环境的类，需要指出的是，<code>presenting VC</code>通常并不是<code>presentation context</code></p>
-</blockquote>
-<p>​        当我们需要<code>present VC</code>的时候，除非我们指定了<code>context</code>，否则UIKit会优先选择<code>presenting VC</code>所属的容器类做为<code>presentation context</code>，如果没有容器类，那么会选择<code>rootViewController</code>。但是，UIKit搜索context的方式还与<code>presented VC</code>的<code>modalPresentationStyle</code>属性有关，当<code>modalPresentationStyle</code>为<code>UIModalPresentationFullScreen</code>、<code>UIModalPresentationOverFullScreen</code>等模式时，UIKit会直接选择<code>rootViewController</code>做为<code>context</code>。当<code>modalPresentationStyle</code>为<code>UIModalPresentationOverCurrentContext</code>、<code>UIModalPresentationCurrentContext</code>模式时，UIKit搜索<code>context</code>的方式如下：</p>
-<ul>
-<li><p><code>UIModalPresentationOverCurrentContext</code>、<code>UIModalPresentationCurrentContext</code>模式下，一个VC能否成为<code>presentation context</code> 是由VC的<code>definesPresentationContext</code>属性决定的，这是一个<code>BOOL</code>值，默认<code>UIViewController的definesPresentationContext</code>属性值是<code>NO</code>，而<strong>container view controller</strong>（容器控制器）的<code>definesPresentationContext</code>默认值是<code>YES</code>，这也是上文中，UIKit总是将<code>container view controller</code>做为<code>presentation context</code>的原因。如果我们想指定<code>presenting VC</code>做为<code>context</code>，只需要在<code>presenting VC</code>的<code>viewDidLoad</code>方法里添加如下代码即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.definesPresentationContext = YES</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>UIKit搜索<code>presentation context</code>的顺序为： </p>
-<ol>
-<li><code>presenting VC</code> </li>
-<li><code>presenting VC</code> 的<code>父VC </code></li>
-<li><code>presenting VC</code> 所属的<code>container VC </code></li>
-<li><code>rootViewController</code></li>
-</ol>
-<h3 id="层级关系"><a href="#层级关系" class="headerlink" title="层级关系"></a>层级关系</h3><blockquote>
-<p><strong>presented VC 总是与 presentation context 处于同一层级，而与presenting VC所在的层级无关，且同一个presentation context同时只能有一个presented VC。</strong></p>
-</blockquote>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Swift笔记/协议需要注意的点"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/07/10/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%8D%8F%E8%AE%AE%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/"
-    >协议注意的点</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/07/10/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%8D%8F%E8%AE%AE%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/" class="article-date">
-  <time datetime="2021-07-10T09:45:59.000Z" itemprop="datePublished">2021-07-10</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="协议注意的点"><a href="#协议注意的点" class="headerlink" title="协议注意的点"></a>协议注意的点</h1><h2 id="已重写的限制条件会在某些泛型上下文中失效"><a href="#已重写的限制条件会在某些泛型上下文中失效" class="headerlink" title="已重写的限制条件会在某些泛型上下文中失效"></a>已重写的限制条件会在某些泛型上下文中失效</h2><p>对于一些通过条件遵循获得了特定行为的类型，在某些泛型上下文中，并不能够确保能够使用协议限制中的特定实现。为了说明这个行为，下面的例子中定义了两个协议以及一个有条件地遵循两个协议的泛型类型。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">protocol Loggable &#123;</span><br><span class="line">    func log()</span><br><span class="line">&#125;</span><br><span class="line">extension Loggable &#123;</span><br><span class="line">    func log() &#123;</span><br><span class="line">        print(self)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol TitledLoggable: Loggable &#123;</span><br><span class="line">    static var logTitle: String &#123; get &#125;</span><br><span class="line">&#125;</span><br><span class="line">extension TitledLoggable &#123;</span><br><span class="line">    func log() &#123;</span><br><span class="line">        print(&quot;\(Self.logTitle): \(self)&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Pair&lt;T&gt;: CustomStringConvertible &#123;</span><br><span class="line">    let first: T</span><br><span class="line">    let second: T</span><br><span class="line">    var description: String &#123;</span><br><span class="line">        return &quot;(\(first), \(second))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Pair: Loggable where T: Loggable &#123; &#125;</span><br><span class="line">extension Pair: TitledLoggable where T: TitledLoggable &#123;</span><br><span class="line">    static var logTitle: String &#123;</span><br><span class="line">        return &quot;Pair of &#x27;\(T.logTitle)&#x27;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension String: TitledLoggable &#123;</span><br><span class="line">    static var logTitle: String &#123;</span><br><span class="line">        return &quot;String&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当其泛型类型遵循<code>Loggable</code> 协议以及 <code>TitleLoggale</code> 协议时，结构体 <code>Pair</code> 遵循 <code>Loggable</code> 协议以及 <code>TitleLoggale</code> 协议。下面的例子中，<code>oneAndTwo</code> 是 <code>Pair&lt;String&gt; </code>的一个实例。因为 <code>String</code> 遵循 <code>TitleLoggable</code>，因此 <code>oneAndTwo</code> 也遵循此协议。当 <code>log()</code> 方法被 <code>oneAndTwo</code> 直接调用时，此方法使用的是包含标题的特定版本。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let oneAndTwo = Pair(first: &quot;one&quot;, second: &quot;two&quot;)</span><br><span class="line">oneAndTwo.log()</span><br><span class="line">// Prints &quot;Pair of &#x27;String&#x27;: (one, two)&quot;</span><br></pre></td></tr></table></figure>
-<p>虽然如此，当<code>oneAndTwo</code> 在泛型上下文中使用，或者它是 <code>Loggable/TitledLoggable</code> 类型的实例时，包含标题的特定版本 <code>log()</code> 方法不会被使用。<strong>Swift 只会根据这样的规则来选择 log() 的实现版本—— <code>Pair 遵循 Loggable 所需要的最少的限制条件</code>。因此 Loggable 所提供的默认实现版本会被使用</strong>。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let oneAndTwo:Loggable = Pair(first: &quot;one&quot;, second: &quot;two&quot;)</span><br><span class="line">oneAndTwo.log()</span><br><span class="line">// Prints &quot;(one, two)&quot;</span><br><span class="line">let oneAndTwo:TitledLoggable = Pair(first: &quot;one&quot;, second: &quot;two&quot;)</span><br><span class="line">oneAndTwo.log()</span><br><span class="line">// Prints &quot;(one, two)&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="协议的动态派发"><a href="#协议的动态派发" class="headerlink" title="协议的动态派发"></a>协议的动态派发</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">protocol Chef &#123;</span><br><span class="line">    func makeFood()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Chef &#123;</span><br><span class="line">    func makeFood() &#123;</span><br><span class="line">        print(&quot;makeFood&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct SeafoodChef: chef &#123;</span><br><span class="line">    func makeFood() &#123;</span><br><span class="line">        print(&quot;Cook Seafood&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol Chef &#123;</span><br><span class="line">    func makeFood()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Chef &#123;</span><br><span class="line">    func makeFood() &#123;</span><br><span class="line">        print(&quot;makeFood&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct SeafoodChef: Chef &#123;</span><br><span class="line">    func makeFood() &#123;</span><br><span class="line">        print(&quot;Cook Seafood&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let chefone:Chef = SeafoodChef()</span><br><span class="line">let cheftwo:SeafoodChef =  SeafoodChef()</span><br><span class="line">chefone.makeFood() //Cook Seafood</span><br><span class="line">cheftwo.makeFood() //Cook Seafood</span><br></pre></td></tr></table></figure>
-<ul>
-<li>上述的结果均为<code>Cook Seafood</code>，因为协议中是动态派发、扩展中是静态派发，如果是协议的方法会根据对象的实际类型进行调用</li>
-<li>如果将协议中的<code>makeFood()</code>方法去掉，则会打印<code>makeFood Cook Seafood</code>,如果没有协议方法，则会根据声明类型进行调用。</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/零碎知识点/碰到的一些问题"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/07/10/iOS%E5%AD%A6%E4%B9%A0/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%B0%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/"
-    >碰到的一些问题</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/07/10/iOS%E5%AD%A6%E4%B9%A0/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%B0%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2021-07-10T09:45:59.000Z" itemprop="datePublished">2021-07-10</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/">零碎知识点</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="场景图片的问题"><a href="#场景图片的问题" class="headerlink" title="场景图片的问题"></a>场景图片的问题</h3><ol>
-<li>从相册中导出全场景图片存在的问题<ol>
-<li>压缩图片的质量</li>
-</ol>
-</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[[PHCachingImageManager defaultManager]</span><br><span class="line">        requestImageDataForAsset:mAsset</span><br><span class="line">                         options:nil</span><br><span class="line">                   resultHandler:^(NSData *_Nullable imageData, NSString *_Nullable dataUTI, UIImageOrientation orientation, NSDictionary *_Nullable info) &#123;</span><br><span class="line">                     UIImage *resultImage = [UIImage imageWithData:imageData];</span><br><span class="line">                     //获得的image要转换为正确的方向</span><br><span class="line">                    // 然后将该image导入到本地文件中</span><br><span class="line">                     //注意要用jpg的形式导入本地，否则，图片文件的大小会激增，有4M多变成90Mb（原因未知）</span><br><span class="line">                      BOOL result = [UIImageJPEGRepresentation(image, 0.5) writeToFile:filePath atomically:YES];</span><br><span class="line">                     //采用png的形式保存场景图片，会出现存储图片内存激增</span><br><span class="line">                     BOOL result = [UIImagePNGRepresentation(image) writeToFile:filePath atomically:YES];</span><br><span class="line">                   &#125;];</span><br></pre></td></tr></table></figure>
-
-<p>​        2. 全场景图片一般为十几万✖️几千的分辨率，上述压缩的方式可以使全场景图片在iphone6plus上显示，没有卡顿现象，但是这样的图片在iphone6上仍有有明显的卡顿，</p>
-<h3 id="单例block引用导致内存泄漏的问题"><a href="#单例block引用导致内存泄漏的问题" class="headerlink" title="单例block引用导致内存泄漏的问题"></a>单例block引用导致内存泄漏的问题</h3><ol>
-<li>注意如果block为单例的属性，那么在该block中要注意内存泄露的问题，因为单例会一直无法释放，会一直持有属性，而属性会一直持有block中的对象，那么就会导致block中捕获的对象，造成对象无法释放</li>
-<li>如果是方法中的block，那么方法在执行完毕之后，便会释放block，不会一直持有，不用担心内存泄露的问题</li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
   id="post-iOS学习/iOS动画学习/iOS视图控制器转场详解"
   class="article article-type-post"
   itemscope
@@ -762,13 +321,494 @@
 </article>
 
     
+    <article
+  id="post-iOS学习/音视频学习/iOS视频采集的格式类型"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/"
+    >iOS视频采集的格式类型</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/" class="article-date">
+  <time datetime="2021-06-23T08:55:28.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>iOS定义了很多的视频格式，这里简单介绍一下它的命名规则，具体还需要看开发文档。</p>
+</blockquote> 
+      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/音视频学习/iOS拍摄流程"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/"
+    >iOS拍摄流程</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/" class="article-date">
+  <time datetime="2021-06-23T08:55:17.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>iOS相机拍摄所需框架为&lt;ACFoundation/AVFoundation.h&gt;，该框架中基本上包含了视频中所需的全部方法。</p>
+</blockquote> 
+      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/iOS动画学习/图层几何学"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E5%87%A0%E4%BD%95%E5%AD%A6/"
+    >图层几何学</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E5%87%A0%E4%BD%95%E5%AD%A6/" class="article-date">
+  <time datetime="2021-06-23T08:43:16.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="图层布局"><a href="#图层布局" class="headerlink" title="图层布局"></a>图层布局</h2><blockquote>
+<p>UIView有三个比较重要的布局属性：<code>frame</code>，<code>bounds</code>和<code>center</code>，CALayer对应地叫做<code>frame</code>，<code>bounds</code>和<code>position</code>。<code>frame</code>代表了图层的外部坐标（也就是在父图层上占据的空间），<code>bounds</code>是内部坐标（{0, 0}通常是图层的左上角），<code>center</code>和<code>position</code>都代表了相对于父图层<code>anchorPoint</code>（也可以理解为中心）所在的位置。</p>
+</blockquote> 
+      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E5%87%A0%E4%BD%95%E5%AD%A6/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/iOS动画学习/iOS核心动画技巧"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E6%8A%80%E5%B7%A7/"
+    >iOS核心动画技巧</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time datetime="2021-06-23T08:38:53.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="CALayer和UIView的区别"><a href="#CALayer和UIView的区别" class="headerlink" title="CALayer和UIView的区别"></a>CALayer和UIView的区别</h2><blockquote>
+<p><code>CALayer</code>类在概念上和<code>UIView</code>类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色），管理子图层的位置。它们有一些方法和属性用来做动画和变换。和<code>UIView</code>最大的不同是<code>CALayer</code>不处理用户的交互。<code>CALayer</code>并不清楚具体的<em>响应链</em>（iOS通过视图层级关系用来传送触摸事件的机制），于是它并不能够响应事件，即使它提供了一些方法来判断是否一个触点在图层的范围之内。</p>
+</blockquote> 
+      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E6%8A%80%E5%B7%A7/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/底层原理/Block的类型"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Block%E7%9A%84%E7%B1%BB%E5%9E%8B/"
+    >Block的类型</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Block%E7%9A%84%E7%B1%BB%E5%9E%8B/" class="article-date">
+  <time datetime="2021-06-23T08:35:53.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Block的类型"><a href="#Block的类型" class="headerlink" title="Block的类型"></a>Block的类型</h1><table>
+<thead>
+<tr>
+<th>block类型</th>
+<th>环境</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>NSGlobalBlock</em></td>
+<td>没有访问auto变量</td>
+</tr>
+<tr>
+<td><em>NSStackBlock</em></td>
+<td>访问了auto变量</td>
+</tr>
+<tr>
+<td><em>NSMallocBlock</em></td>
+<td>_NSStackBlock_调用了copy</td>
+</tr>
+</tbody></table>
+<ul>
+<li>注意在非ARC环境下是准确的，如果在ARC环境下,编译器会根据情况，将栈上的block,变成<code>NSMalloCBlock</code></li>
+<li>每一种block调用copy后的结果如图所示</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>block的类</th>
+<th>副本源的配置存储域</th>
+<th>赋值效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>_NSConcreteStackBlock</td>
+<td>栈</td>
+<td>从栈复制到堆</td>
+</tr>
+<tr>
+<td>_NSConcreteGlobalBlock</td>
+<td>程序的数据区域</td>
+<td>什么也不做</td>
+</tr>
+<tr>
+<td>_NSConcreteMallocBlock</td>
+<td>堆</td>
+<td>引用计数增加</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>在ARC环境下，编译器会根据情况，将栈上的block,拷贝到堆上,有以下情况</p>
+<ol>
+<li><code>block</code>作为函数的返回值时</li>
+<li>将<code>block</code>赋值给<code>__strong</code>引指针</li>
+<li><code>block</code>作为<code>Cocoa api</code>名含有<code>usingBlock</code>的方法参数输入时</li>
+<li><code>block</code>作为<code>GCD API</code>的方法参数时</li>
+</ol>
+</li>
+<li><p>在将有_weak的方法，使用clang转换OC为C++代码时，注意支持ARC、以及指定运行时系统版本</p>
+<ul>
+<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc -fobjc-arc -fobjc-runtime=ios-16.0.0 main.m -o main.cpp</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="当block内部访问了对象类型的auto变量时"><a href="#当block内部访问了对象类型的auto变量时" class="headerlink" title="当block内部访问了对象类型的auto变量时"></a>当block内部访问了对象类型的auto变量时</h2><ul>
+<li><p>如果block是在栈上，将不会对auto变量产生强引用</p>
+</li>
+<li><p>如果block是在堆上</p>
+<ul>
+<li>会调用block内部的copy函数</li>
+<li>copy函数内部会调用_Block_objc_assign函数</li>
+<li>_Block_objc_assign函数会根据auto变量的修饰符（_string、_weak、_unsafe_unretained）做出相应的操作，类似于retain（形成强引用、弱引用）<h2 id="block的内存管理"><a href="#block的内存管理" class="headerlink" title="block的内存管理"></a>block的内存管理</h2></li>
+</ul>
+</li>
+<li><p><strong>当block在栈上</strong>时，并不会对<code>__block</code>变量，以及<code>auto</code>的对象产生强引用</p>
+</li>
+<li><p>当block被copy到堆时</p>
+<ul>
+<li>会调用block内部的copy函数</li>
+<li>copy函数内部会调用_Block_object_assign函数</li>
+<li>_Block_object_assign函数会对_block变量形成强引用,会区分是auto对象（会区分是_weak还是_strong），还是_block对象（强引用）</li>
+</ul>
+</li>
+<li><p>当block从堆移除</p>
+<ul>
+<li>会调用block内部的dispose函数</li>
+<li>dispose函数内部会调用_Block_object_dispose函数</li>
+<li>_Block_object_dispose函数会自动释放引用的_block变量</li>
+</ul>
+</li>
+<li><ul>
+<li>当<code>__block</code>修饰对象时，其构建的_block变量内，也会有copy方法和dispose方法<ul>
+<li>其内copy方法，同样也有<code>_Block_object_assign</code>,以及<code>_Block_object_dispose</code>,对其内修饰的对象进行内存管理（跟外围是_strong还是_weak有一定关系）<ul>
+<li> <strong>但是注意，该内存管理只会在ARC下生效，如果在MRC下，在_block不会增加其内对象的引用，属于unowned关系</strong></li>
+<li> <strong>如果不是__block,而是直接引用了auto对象，则和此前一样，block直接引用对象(mrc下，copy时，内部也会对auto增加引用)，而非通过__block间接引用</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>_block的生成的对象，通过fowarding去指向的原因</p>
+<ul>
+<li>在栈上的时候，指针指向自己</li>
+<li>而赋值到堆上时，栈上的指向堆上复制的，栈上赋值时，其值是保存堆上的值，从而保证了，无论是在栈上还是堆上修改，最后值都会保存的堆上。最终使用的是堆上的block</li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Block/" rel="tag">Block</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/零碎知识点/碎片化笔记"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%8E%E7%89%87%E5%8C%96%E7%AC%94%E8%AE%B0/"
+    >碎片化笔记</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%8E%E7%89%87%E5%8C%96%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2021-06-23T08:15:27.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/">零碎知识点</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>记录偶尔发现有用的知识点</p>
+</blockquote> 
+      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%8E%E7%89%87%E5%8C%96%E7%AC%94%E8%AE%B0/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/性能优化/卡顿优化/LXDAppFluecyMonitor-master/LXDAppFluecyMonitor/Assets.xcassets/AppIcon.appiconset/Contents"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2017/03/23/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/LXDAppFluecyMonitor-master/LXDAppFluecyMonitor/Assets.xcassets/AppIcon.appiconset/Contents/" class="article-date">
+  <time datetime="2017-03-23T11:13:30.000Z" itemprop="datePublished">2017-03-23</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  {"images":[{"idiom":"iphone","size":"29x29","scale":"2x"},{"idiom":"iphone","size":"29x29","scale":"3x"},{"idiom":"iphone","size":"40x40","scale":"2x"},{"idiom":"iphone","size":"40x40","scale":"3x"},{"idiom":"iphone","size":"60x60","scale":"2x"},{"idiom":"iphone","size":"60x60","scale":"3x"}],"info":{"version":1,"author":"xcode"}} 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
   </article>
   
 
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
   </nav>
   
 </section>

@@ -101,7 +101,8 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><ul>
+  <span id="more"></span>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><ul>
 <li>方法中子类调用<code>[super class]</code>实际输出还是子类的对象，和一般语言中的有所不同<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@interface Student:Person</span><br><span class="line">@implementation Student</span><br><span class="line">- (instancetype)init</span><br><span class="line">&#123;</span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        NSLog(@&quot;[self class] = %@&quot;, [self class]); // Student</span><br><span class="line">        NSLog(@&quot;[self superclass] = %@&quot;, [self superclass]); // Person</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;[super class] = %@&quot;, [super class]); // 实际输出 Student</span><br><span class="line">        NSLog(@&quot;[super superclass] = %@&quot;, [super superclass]); // MJPerson</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 <h2 id="原因解答"><a href="#原因解答" class="headerlink" title="原因解答"></a>原因解答</h2></li>
 <li>调用super方法，其实际会调用,方法<ul>

@@ -101,7 +101,9 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h1><ul>
+  <span id="more"></span>
+
+<h1 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h1><ul>
 <li>从64bit开始，isa需要进行一次位运算，才能计算出真实地址,<code>isa &amp; ISA_MASK</code>即为实际的isas地址<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># if __arm64__</span><br><span class="line">#     define ISA_MASK   0x0000000ffffffff8ULL</span><br><span class="line">elif __x86_64__</span><br><span class="line"># define ISA_MASK        0x00007ffffffffff8ULL</span><br></pre></td></tr></table></figure></li>
 <li>Class中的isa指针没有暴露出来，可以通过构建一个相同的结构体，通过桥接得到<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct objc_class &#123;</span><br><span class="line">    Class isa;</span><br><span class="line">    Class superclass;</span><br><span class="line">&#125;;</span><br><span class="line">struct objc_class *personClass = (__bridge struct objc_class *)([Person class]);</span><br></pre></td></tr></table></figure></li>
 <li>superclass直接指向父类，不需要转换</li>

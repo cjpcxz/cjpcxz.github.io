@@ -112,6 +112,7 @@
 </li>
 </ul>
 </blockquote>
+<span id="more"></span>
 <h2 id="objc-msgSend源码866执行流程"><a href="#objc-msgSend源码866执行流程" class="headerlink" title="objc_msgSend源码866执行流程"></a>objc_msgSend源码866执行流程</h2><h3 id="objc-msg-arm64-s"><a href="#objc-msg-arm64-s" class="headerlink" title="objc-msg-arm64.s"></a>objc-msg-arm64.s</h3><ul>
 <li>objc-msg-arm64.s<ol>
 <li>MSG_ENTRY _objc_msgSend <ul>
@@ -132,11 +133,13 @@
 </li>
 <li>缓存未命中，__objc_msgLookup_uncached<ul>
 <li>没找到方法，则会调用<code>MethodTableLookup</code>去查找，MethodTableLookup</li>
-<li>最终调用的是C函数的方法是<code>lookUpImpOrForward(obj, sel, cls, LOOKUP_INITIALIZE | LOOKUP_RESOLVER)</code>（注意汇编中的比C函数方法多一个<code>_</code>）<h3 id="第一阶段，消息发送"><a href="#第一阶段，消息发送" class="headerlink" title="第一阶段，消息发送"></a>第一阶段，消息发送</h3></li>
+<li>最终调用的是C函数的方法是<code>lookUpImpOrForward(obj, sel, cls, LOOKUP_INITIALIZE | LOOKUP_RESOLVER)</code>（注意汇编中的比C函数方法多一个<code>_</code>）</li>
 </ul>
 </li>
 </ol>
 </li>
+</ul>
+<h3 id="第一阶段，消息发送"><a href="#第一阶段，消息发送" class="headerlink" title="第一阶段，消息发送"></a>第一阶段，消息发送</h3><ul>
 <li>在<code>objc-runtime-new.mm</code>文件中，<code>第一个阶段</code>，查找方法<ol>
 <li><code>lookUpImpOrForward</code>,未从缓存中查找的逻辑</li>
 <li><code>realizeAndInitializeIfNeeded_locked</code><ul>
@@ -178,7 +181,9 @@
 </li>
 </ol>
 </li>
-<li>消息发送流程<br><img src="1.png"><h3 id="第二阶段，动态方法解析"><a href="#第二阶段，动态方法解析" class="headerlink" title="第二阶段，动态方法解析"></a>第二阶段，动态方法解析</h3></li>
+<li>消息发送流程<br><img src="1.png"></li>
+</ul>
+<h3 id="第二阶段，动态方法解析"><a href="#第二阶段，动态方法解析" class="headerlink" title="第二阶段，动态方法解析"></a>第二阶段，动态方法解析</h3><ul>
 <li>log_and_fill_cache，<code>第二个阶段</code>，动态方法解析<ul>
 <li><code>(behavior &amp; LOOKUP_RESOLVER) == 0</code>由最开始汇编中，传入，需要进行方法解析，则进入方法解析流程<ol>
 <li> <code>behavior ^= LOOKUP_RESOLVER</code>,解析之后，就不需要了</li>
@@ -208,7 +213,9 @@
 </ul>
 </li>
 <li>实现代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void c_other(id self, SEL _cmd)</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;c_other - %@ - %@&quot;, self, NSStringFromSelector(_cmd));</span><br><span class="line">&#125;</span><br><span class="line">- (void)other &#123;</span><br><span class="line"> NSLog(@&quot;other - %@ - %s&quot;, self, __func__);</span><br><span class="line">&#125;</span><br><span class="line">+ (BOOL)resolveClassMethod:(SEL)sel</span><br><span class="line">&#123;</span><br><span class="line">    if (sel == @selector(test)) &#123;</span><br><span class="line">        // 第一个参数是object_getClass(self)</span><br><span class="line">       // c函数 class_addMethod(object_getClass(self), sel, (IMP)c_other, &quot;v16@0:8&quot;);</span><br><span class="line">       Method method = class_getInstanceMethod(self, @selector(other));</span><br><span class="line">        class_addMethod(</span><br><span class="line">        object_getClass(self), </span><br><span class="line">        sel,</span><br><span class="line">        method_getImplementation(method), </span><br><span class="line">        method_getTypeEncoding(method));</span><br><span class="line">        return YES;</span><br><span class="line">    &#125;</span><br><span class="line">    return [super resolveClassMethod:sel];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>动态解析流程<br><img src="2.png"><h3 id="第三阶段，消息转发"><a href="#第三阶段，消息转发" class="headerlink" title="第三阶段，消息转发"></a>第三阶段，消息转发</h3></li>
+<li>动态解析流程<br><img src="2.png"></li>
+</ul>
+<h3 id="第三阶段，消息转发"><a href="#第三阶段，消息转发" class="headerlink" title="第三阶段，消息转发"></a>第三阶段，消息转发</h3><ul>
 <li>在<code>第二阶段</code>中，最终会用<code>lookUpImpOrForwardTryCache</code>,再去查找一次方法，这次，如果动态解析方法添加到了，则直接返回，否则不会再走解析流程，其中设置imp为<code>_objc_msgForward_impcache</code>,会跳转到该方法的实现上，该方法在<code>objc-msg-arm64.s</code>文件内，属于汇编<ul>
 <li>ENTRY __objc_msgForward</li>
 <li>Core Foundation</li>

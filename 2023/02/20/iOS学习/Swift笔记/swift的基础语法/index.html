@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">645</span>
+            <span class="post-count">646</span>
         </span>
     </span>
 
@@ -109,18 +109,21 @@
 <li>只能赋值1次</li>
 <li>它的值不要求在编泽时期确定，但使用之前必须赋值1次<h4 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h4></li>
 <li>标识符（比如常量名、变量名、函数名）几乎可以使用任何字符</li>
-<li>标识符不能以数字开头，不能包含空白字符、制表符、節头等特殊字符<h4 id="常用数据类型"><a href="#常用数据类型" class="headerlink" title="常用数据类型"></a>常用数据类型</h4><blockquote>
+<li>标识符不能以数字开头，不能包含空白字符、制表符、節头等特殊字符</li>
+</ul>
+<h4 id="常用数据类型"><a href="#常用数据类型" class="headerlink" title="常用数据类型"></a>常用数据类型</h4><blockquote>
 <p>只有值类型和引用类型，以前语言中的<code>Int</code>，<code>Bool</code>均为<em>结构体</em>，而非<em>基础数据类型</em></p>
 </blockquote>
-</li>
-</ul>
 <p><img src="1.png"></p>
 <ul>
 <li>整数类型：Int8、 Int16、 Int32、Int64、UInt8、 UInt16、 UInt32、UInt64</li>
 <li>在32bit平台，Int等价于Int32；在64bit平台，Int等价于Int64</li>
 <li>整数的最值：UInt8.max、 Int16. min</li>
 <li>目一般情况下，都是直接使用Int即可</li>
-<li>浮点类型：Float ，32位，精度只有6位；Double，64位，精度至少15位<h4 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//整数</span><br><span class="line">let intDecimal = 17//十进制</span><br><span class="line">let intBinary = 0b10001 // 二进制</span><br><span class="line">let intoctal = 0o21 //八进制</span><br><span class="line">llet intHexadecimal = 9x11//十六进制</span><br><span class="line"></span><br><span class="line">//浮点数</span><br><span class="line">let doubleDecimal = 125.0 //十进制，等价于1.25e2，日.0125等价于1.25e-2</span><br><span class="line">//只有十六进制可以这么写</span><br><span class="line">let doubleHexadecimal1= 0xFp2 //十六进制，意味着15x2^2，相当于十进制的68.0</span><br><span class="line">let doubleHe xadecima12 =日xFp-2 // 十六进制，意味着15x2^-2，相当于十进制的3.75</span><br></pre></td></tr></table></figure></li>
+<li>浮点类型：Float ，32位，精度只有6位；Double，64位，精度至少15位</li>
+</ul>
+<h4 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//整数</span><br><span class="line">let intDecimal = 17//十进制</span><br><span class="line">let intBinary = 0b10001 // 二进制</span><br><span class="line">let intoctal = 0o21 //八进制</span><br><span class="line">llet intHexadecimal = 9x11//十六进制</span><br><span class="line"></span><br><span class="line">//浮点数</span><br><span class="line">let doubleDecimal = 125.0 //十进制，等价于1.25e2，日.0125等价于1.25e-2</span><br><span class="line">//只有十六进制可以这么写</span><br><span class="line">let doubleHexadecimal1= 0xFp2 //十六进制，意味着15x2^2，相当于十进制的68.0</span><br><span class="line">let doubleHe xadecima12 =日xFp-2 // 十六进制，意味着15x2^-2，相当于十进制的3.75</span><br></pre></td></tr></table></figure>
+<ul>
 <li>类型转换<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//字面量可以直接相加，因为数字字面量本身没有明确的类型</span><br><span class="line">let result = 3 + 0.14156 //不会报错</span><br></pre></td></tr></table></figure>
 <h3 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h3><h4 id="for"><a href="#for" class="headerlink" title="for"></a>for</h4></li>
 <li>for遍历值作为变量 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//i默认是let，有需要时可以声明为var，但是该变量只能单个for中变化,下一次又会重新赋值</span><br><span class="line">for var i in 1...3 &#123;</span><br><span class="line">    print(i)</span><br><span class="line">    i += 5</span><br><span class="line">&#125;</span><br><span class="line">//输出 1、2、3</span><br></pre></td></tr></table></figure></li>
@@ -207,19 +210,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2023/02/22/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%87%BD%E6%95%B0/" class="article-nav-link">
+      <a href="/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            swift的函数
+            枚举内存分析
           
         </div>
       </a>
     
     
-      <a href="/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E7%BC%96%E8%AF%91/" class="article-nav-link">
+      <a href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%AE%89%E8%A3%85%E5%8C%85%E7%98%A6%E8%BA%AB/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">swift的编译</div>
+        <div class="article-nav-title">安装包瘦身</div>
       </a>
     
   </nav>

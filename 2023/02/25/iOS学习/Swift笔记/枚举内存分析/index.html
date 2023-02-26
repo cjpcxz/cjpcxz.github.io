@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">968</span>
+            <span class="post-count">970</span>
         </span>
     </span>
 
@@ -132,13 +132,9 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//实际占用25字节</span><br><span class="line">enum TestNum2 &#123;</span><br><span class="line">    case test4(Bool) </span><br><span class="line">    case test5 </span><br><span class="line">    case test1(Int,Int,Int,Bool)</span><br><span class="line">    case test2(Int,Int)</span><br><span class="line">    case test3(Int)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//实际占用32字节</span><br><span class="line">enum TestNum2 &#123;</span><br><span class="line">    case test4(Bool) </span><br><span class="line">    case test5 </span><br><span class="line">    case test1(Int,Int,Bool,Int)</span><br><span class="line">    case test2(Int,Int)</span><br><span class="line">    case test3(Int)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
 </ul>
 <h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
-<li>注意如果只有一个项的关联值，其内存不会算上枚举自身的1字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">enum TestNUm &#123;</span><br><span class="line">    case test1(Int,Int,Int)</span><br><span class="line">&#125;</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.size) //24</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.stride) //24</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.alignment) //24</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### switch匹配</span><br></pre></td></tr></table></figure>
-enum TestNum {<br>  case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool),test5,test6<br>}</li>
+<li>注意如果只有一个项的关联值，其内存不会算上枚举自身的1字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">enum TestNUm &#123;</span><br><span class="line">    case test1(Int,Int,Int)</span><br><span class="line">&#125;</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.size) //24</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.stride) //24</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.alignment) //24</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p>//实际大小是25<br>var e = TestEnum.test1(10,20,30)<br>//取出第25个字节去判断<br>switch e {<br>    case let .test1(v1,v2,v3): //判断25位是0，取出前24个字节进行赋值<br>        print(v1,v2,v3)<br>     case let .test2(v1,v2): //判断25位是1，取出前16个字节进行赋值<br>        print(v1,v2,v3)<br>    default:break<br>}</p>
-<pre><code>
-</code></pre>
+<h4 id="switch匹配"><a href="#switch匹配" class="headerlink" title="switch匹配"></a>switch匹配</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum &#123; </span><br><span class="line">    case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool),test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//实际大小是25</span><br><span class="line">var e = TestEnum.test1(10,20,30)</span><br><span class="line">//取出第25个字节去判断</span><br><span class="line">switch e &#123;</span><br><span class="line">    case let .test1(v1,v2,v3): //判断25位是0，取出前24个字节进行赋值</span><br><span class="line">        print(v1,v2,v3)</span><br><span class="line">     case let .test2(v1,v2): //判断25位是1，取出前16个字节进行赋值</span><br><span class="line">        print(v1,v2,v3)</span><br><span class="line">    default:break</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       
@@ -214,19 +210,19 @@ enum TestNum {<br>  case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool
    
   <nav class="article-nav">
     
-      <a href="/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/assembler01/" class="article-nav-link">
+      <a href="/2023/02/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/class/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            assembler01
+            结构体与类
           
         </div>
       </a>
     
     
-      <a href="/2023/02/23/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E6%9E%9A%E4%B8%BE%E3%80%81%E5%8F%AF%E9%80%89%E9%A1%B9/" class="article-nav-link">
+      <a href="/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">swift的枚举、可选项</div>
+        <div class="article-nav-title">swift的基础语法</div>
       </a>
     
   </nav>
