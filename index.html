@@ -142,7 +142,7 @@
     
     
     <article
-  id="post-Runtime知识/objc-msgSend"
+  id="post-iOS学习/Swift笔记/闭包"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -153,8 +153,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/01/02/Runtime%E7%9F%A5%E8%AF%86/objc-msgSend/"
-    >objc_msgSend</a> 
+  <a class="article-title" href="/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/"
+    >闭包</a> 
 </h2>
  
 
@@ -162,138 +162,103 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/01/02/Runtime%E7%9F%A5%E8%AF%86/objc-msgSend/" class="article-date">
-  <time datetime="2023-01-02T10:48:31.000Z" itemprop="datePublished">2023-01-02</time>
+      <a href="/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/" class="article-date">
+  <time datetime="2023-02-26T16:28:40.000Z" itemprop="datePublished">2023-02-27</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="objc-msgSend"><a href="#objc-msgSend" class="headerlink" title="objc_msgSend"></a>objc_msgSend</h1><blockquote>
+  <blockquote>
+<p>一个函数和它所捕获的变量\常量环境组合起来，称为闭包</p>
 <ul>
-<li>OC中的方法调用，其实都是转换为objc_msgSend函数的调用</li>
-<li>objc_msgSend的执行流程可以分为3大阶段<ul>
-<li>消息发送</li>
-<li>动态方法解析</li>
-<li>消息转发</li>
-</ul>
-</li>
+<li>一般指定义在函数内部的函数</li>
+<li>一般它捕获的是外层西数的局部变量\常量</li>
 </ul>
 </blockquote>
-<h2 id="objc-msgSend源码866执行流程"><a href="#objc-msgSend源码866执行流程" class="headerlink" title="objc_msgSend源码866执行流程"></a>objc_msgSend源码866执行流程</h2><h3 id="objc-msg-arm64-s"><a href="#objc-msg-arm64-s" class="headerlink" title="objc-msg-arm64.s"></a>objc-msg-arm64.s</h3><ul>
-<li>objc-msg-arm64.s<ol>
-<li>MSG_ENTRY _objc_msgSend <ul>
-<li>到 END_ENTRY _objc_msgSend，objc_msgSend的定义</li>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Swift笔记/结构体与类"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E7%B1%BB/"
+    >结构体与类</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E7%B1%BB/" class="article-date">
+  <time datetime="2023-02-26T09:38:45.000Z" itemprop="datePublished">2023-02-26</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="结构体是值类型（枚举也是值类型），类是引用类型（指针类型）"><a href="#结构体是值类型（枚举也是值类型），类是引用类型（指针类型）" class="headerlink" title="结构体是值类型（枚举也是值类型），类是引用类型（指针类型）"></a>结构体是值类型（枚举也是值类型），类是引用类型（指针类型）</h3><ul>
+<li>例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Size &#123;</span><br><span class="line">    var width = 1</span><br><span class="line">    var height = 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Point &#123;</span><br><span class="line">    var x = 3</span><br><span class="line">    var y = 4</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func test() &#123;</span><br><span class="line">    var size = Size()</span><br><span class="line">    var point = Point()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>执行test()方法，时的内存地址,(64位)<br><img src="1.png"><ul>
+<li>内存地址由高到低在栈中赋值，结构体直接存储在栈上，类在栈上存的是8字节的指针地址</li>
+<li>堆空间的Size对象占32位，其中16位存width，height数据，8位存引用计数，8位类型信息的地址</li>
 </ul>
 </li>
-<li>b.le    LNilOrTagged<ul>
-<li>首先会判断是否时nil，为nil，则会跳转到LReturnZero直接返回，</li>
+<li>注意，类的指针和结构体存的地方不一定在栈，<ul>
+<li>如果在全局区生成，则类的指针和结构体在全局区，</li>
+<li>如果结构体变量为类的属性，则会和该类一起在堆区生成</li>
+<li>如果在函数内生成，则类的指针和结构体在栈区<h3 id="类和结构体的大小"><a href="#类和结构体的大小" class="headerlink" title="类和结构体的大小"></a>类和结构体的大小</h3></li>
 </ul>
 </li>
-<li>CacheLookup NORMAL<ul>
-<li>不是nil,去查找缓存</li>
+<li>类中用MemoryLayout获取的大小，实际是指针大小始终位8<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(MemoryLayout&lt;Size&gt;.stride) // 8,Size指针变量因此是8</span><br><span class="line">print(MemoryLayout&lt;Point&gt;.stride) // 16，</span><br></pre></td></tr></table></figure></li>
+<li>获取类内存中的指针数据<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var size = Size()</span><br><span class="line">let sizePoint = UnsafeRawPointer(bitPattern: unsafeBitCast(size, to: UInt.self))! //存放在堆中的引用地址</span><br><span class="line">malloc_size(sizePoint) //32 获取堆中的内存数据大小</span><br></pre></td></tr></table></figure>
+<h3 id="值类型赋值"><a href="#值类型赋值" class="headerlink" title="值类型赋值"></a>值类型赋值</h3></li>
+<li>值类型赋值给<code>var</code>、<code>let</code>或者给函数传参，是直接将所有内容拷贝一份</li>
+<li>类似于对文件进行copy、paste操作，产生了全新的文件副本。属于深拷贝 ( deep copy )<h4 id="结构体的Copy-on-Write"><a href="#结构体的Copy-on-Write" class="headerlink" title="结构体的Copy on Write"></a>结构体的Copy on Write</h4></li>
+<li>在swift标准库中，为了提升性能，<code>String</code>、<code>Array</code>、<code>Dictionary</code>、<code>set</code>采取了<code>Copy On Write</code>的技术<ul>
+<li>比如仅当有“写〞操作时 ，才会真正执行拷贝操作</li>
+<li>对于标准库值类型的赋值操作 ，<code>Swift</code> 能确保最佳性能，所有没必要为了保证最佳性能来避免赋值<ul>
+<li>如果是非标准库的结构体，时不会有写时拷贝的操作<h3 id="引用类型赋值"><a href="#引用类型赋值" class="headerlink" title="引用类型赋值"></a>引用类型赋值</h3></li>
 </ul>
-</li>
-<li>.macro <code>CacheLookup</code><ul>
-<li>缓存命中CacheHit，直接返回IMP</li>
-</ul>
-</li>
-<li>缓存未命中，__objc_msgLookup_uncached<ul>
-<li>没找到方法，则会调用<code>MethodTableLookup</code>去查找，MethodTableLookup</li>
-<li>最终调用的是C函数的方法是<code>lookUpImpOrForward(obj, sel, cls, LOOKUP_INITIALIZE | LOOKUP_RESOLVER)</code>（注意汇编中的比C函数方法多一个<code>_</code>）<h3 id="第一阶段，消息发送"><a href="#第一阶段，消息发送" class="headerlink" title="第一阶段，消息发送"></a>第一阶段，消息发送</h3></li>
-</ul>
-</li>
-</ol>
-</li>
-<li>在<code>objc-runtime-new.mm</code>文件中，<code>第一个阶段</code>，查找方法<ol>
-<li><code>lookUpImpOrForward</code>,未从缓存中查找的逻辑</li>
-<li><code>realizeAndInitializeIfNeeded_locked</code><ul>
-<li>确保类已经<code>realize</code>了</li>
-</ul>
-</li>
-<li>for循环进行遍历查找类<code>cls</code>中方法，有个最大的数进行记录，防止陷入死循环<ol>
-<li>先去<code>cache_getImp</code>从缓存中获取<ul>
-<li>在查找中间的方法过程中，可能会有新方法在中间添加进来，会先加到缓存中</li>
-</ul>
-</li>
-<li><code>getMethodNoSuper_nolock</code>、<code>search_method_list_inline</code>、<code>log_and_fill_cache</code><ol>
-<li>从<code>class_rw_t的methods</code>中找到所有类和分类的方法，遍历<code>method_list_t</code>查找，因此需要类先realize</li>
-<li>是排好序列的，<code>findMethodInSortedMethodList</code>中去查找方法,根据方法名查找，已经排序，<code>二分查找</code>的方式<ul>
-<li>如果有相同的有很多，会倒序查找，找到排序的第一个方法</li>
-<li>排序，会在<code>prepareMethodLists</code>中调用<code>fixupMethodList</code>方法<ul>
-<li>method_t中方法类型有big、small、bigSigned<ul>
-<li>big是默认的，大方法，其值为指针，其类型包括<code>SEL name;const char *types;MethodListIMP imp;</code></li>
-<li>small，小方法，其值表示为相对每个字段的额外地址，其结构是<code>RelativePointer&lt;const void *&gt; name;RelativePointer&lt;const char *&gt; types;RelativePointer&lt;IMP, /*isNullable*/false&gt; imp;</code>,其引用的选择器在(共享缓存)或者是在磁盘上，考虑<code>相关动态库的系统方法</code>,该方法是只读内存，因此small的是无法修改的。其是否是small方法，是由编译器决定，进行设置的</li>
-<li>bigSigned,和big相同，但是其name已经签名，该方法是由运行时添加的，类似<code>class_addMethod</code>方法添加的</li>
-</ul>
-</li>
-<li>对方法排序，只会对非small的方法进行排序,排序是根据方法名<code>SEL</code>的地址由低到高排序的</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>不是排好序的<code>findMethodInUnsortedMethodList</code>，<code>线性遍历查找</code>，找到第一个方法名相同的，后，返回</li>
-<li><code>log_and_fill_cache(cls, imp, sel, inst, curClass)</code>,查找到方法后，调用void cache_t::insert,去插入到缓存中,保存的类是最开始查找的类方法<code>cls</code>中,而并非当前的类。</li>
-<li>当前<code>curClass</code>中没有找到，则会去父类遍历查找<code>curClass = curClass-&gt;getSuperclass()) == nil</code><ul>
-<li>如果找到最后的父类，都没有找到方法，则会设置当前<code>imp = _objc_msgForward_impcache</code></li>
-<li>或者从缓存中取到的方法，等于<code>_objc_msgForward_impcache</code>,则会跳出循环</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>消息发送流程<br><img src="1.png"><h3 id="第二阶段，动态方法解析"><a href="#第二阶段，动态方法解析" class="headerlink" title="第二阶段，动态方法解析"></a>第二阶段，动态方法解析</h3></li>
-<li>log_and_fill_cache，<code>第二个阶段</code>，动态方法解析<ul>
-<li><code>(behavior &amp; LOOKUP_RESOLVER) == 0</code>由最开始汇编中，传入，需要进行方法解析，则进入方法解析流程<ol>
-<li> <code>behavior ^= LOOKUP_RESOLVER</code>,解析之后，就不需要了</li>
-<li> <code>resolveMethod_locked(inst, sel, cls, behavior)</code>,进入方法解析流程</li>
-<li>不是元类，则走<code>resolveInstanceMethod</code>方法<ol>
-<li>会先去找<code>resolveInstanceMethod</code>,<code>_lookUpImpOrNilTryCache(cls, resolve_sel, cls-&gt;ISA(true))</code>先去,其isa，也就是其类类对象，缓存中找，找不到，则走<code>阶段一</code>的方法查找，这次的<code>behavior</code>不包含<code>LOOKUP_RESOLVER</code>,不会去走动态方法解析<ul>
-<li> 其中NSObject中<code>+(BOOL)resolveInstanceMethod</code>会有基础实现</li>
-<li> 因为后续会同步再去查询方法，因此是否返回true，不影响实际结果，但是安规范，实现了返回true</li>
-</ul>
-</li>
-<li> 会用<code>objc_msgSend</code>调用方法</li>
-<li>会再调用<code>lookUpImpOrNilTryCache(inst, sel, cls)</code>,去查找，一开始寻找的方法</li>
-<li>方法的返回，最后通过调用<code>lookUpImpOrForwardTryCache</code>去查找<ul>
-<li><strong>注意</strong>，用<code>lookUpImpOrNilTryCache</code>传入的<code>behavior</code>包括<code>LOOKUP_NIL</code>，即没有搜索到，会返回nil,不会出现找不到方法的异常</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>是元类，则会查找<code>resolveClassMethod</code>，同时，如果调用<code>lookUpImpOrNilTryCache</code>,没有找到，也会去走<code>resolveInstanceMethod</code>方法，即上面的流程(注意，此时他回去元类的isa指针，找方法，而元类的isa指针，实际上是基元类，也就是NSObjec类方法中)，解析类的方法和实例方法流程一样<ol>
-<li>同样会先去找方法<code>resolveClassMethod</code>，其在NSObject中也已实现</li>
-<li>会用<code>objc_msgSend</code>的方式调用</li>
-<li>最终用<code>lookUpImpOrForwardTryCache</code>去查找方法</li>
-</ol>
-</li>
-</ol>
 </li>
 </ul>
 </li>
-<li>实现代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void c_other(id self, SEL _cmd)</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;c_other - %@ - %@&quot;, self, NSStringFromSelector(_cmd));</span><br><span class="line">&#125;</span><br><span class="line">- (void)other &#123;</span><br><span class="line"> NSLog(@&quot;other - %@ - %s&quot;, self, __func__);</span><br><span class="line">&#125;</span><br><span class="line">+ (BOOL)resolveClassMethod:(SEL)sel</span><br><span class="line">&#123;</span><br><span class="line">    if (sel == @selector(test)) &#123;</span><br><span class="line">        // 第一个参数是object_getClass(self)</span><br><span class="line">       // c函数 class_addMethod(object_getClass(self), sel, (IMP)c_other, &quot;v16@0:8&quot;);</span><br><span class="line">       Method method = class_getInstanceMethod(self, @selector(other));</span><br><span class="line">        class_addMethod(</span><br><span class="line">        object_getClass(self), </span><br><span class="line">        sel,</span><br><span class="line">        method_getImplementation(method), </span><br><span class="line">        method_getTypeEncoding(method));</span><br><span class="line">        return YES;</span><br><span class="line">    &#125;</span><br><span class="line">    return [super resolveClassMethod:sel];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>动态解析流程<br><img src="2.png"><h3 id="第三阶段，消息转发"><a href="#第三阶段，消息转发" class="headerlink" title="第三阶段，消息转发"></a>第三阶段，消息转发</h3></li>
-<li>在<code>第二阶段</code>中，最终会用<code>lookUpImpOrForwardTryCache</code>,再去查找一次方法，这次，如果动态解析方法添加到了，则直接返回，否则不会再走解析流程，其中设置imp为<code>_objc_msgForward_impcache</code>,会跳转到该方法的实现上，该方法在<code>objc-msg-arm64.s</code>文件内，属于汇编<ul>
-<li>ENTRY __objc_msgForward</li>
-<li>Core Foundation</li>
-<li>__forwarding__（不开源）,<a href="media/__forwarding__.c">伪代码</a></li>
-</ul>
-</li>
-<li>实际实现<ol>
-<li><code>-(id)forwardingTargetForSelector:</code>返回可以转发该方法的对象</li>
-<li>1中返回的是该对象本身，则会调用<code>- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector</code>,先获取方法签名</li>
-<li>2中获取了方法签名之后，再会调用<code>forwardInvocation:(NSInvocation *)anInvocation</code>方法</li>
-<li>如果最后还是没有实现该方法，则会走<code>doesNotRecognizeSelector</code>方法，发出未找到方法的错误<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    if (aSelector == @selector(text)) &#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    return  [super methodSignatureForSelector: aSelector];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation &#123;</span><br><span class="line">    [anInvocation invokeWithTarget:[[LGPersonText alloc] init]];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-<li>方法转发流程<br><img src="2.png"></li>
+<li>引用赋值给var、 let或者给函数传参，是将内存地址拷贝一份</li>
+<li>类似于制作一个文件的替身（快捷方式、链接），指向的是同一个文件。属于浅拷贝 (shallow copy)</li>
 </ul>
  
       <!-- reward -->
@@ -315,7 +280,7 @@
 
     
     <article
-  id="post-Runtime知识/objc-class"
+  id="post-iOS学习/汇编/LLDB常用指令"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -326,8 +291,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/objc-class/"
-    >objc_class</a> 
+  <a class="article-title" href="/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/LLDB%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"
+    >汇编基本认识</a> 
 </h2>
  
 
@@ -335,62 +300,703 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/objc-class/" class="article-date">
-  <time datetime="2023-01-01T13:53:01.000Z" itemprop="datePublished">2023-01-01</time>
+      <a href="/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/LLDB%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="article-date">
+  <time datetime="2023-02-25T13:57:24.000Z" itemprop="datePublished">2023-02-25</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+    <a class="article-category-link" href="/categories/%E6%B1%87%E7%BC%96/">汇编</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="Class的结构"><a href="#Class的结构" class="headerlink" title="Class的结构"></a>Class的结构</h2><p><img src="1.png"></p>
-<h3 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h3><blockquote>
-<p>class_rw_t里面的methods、properties、protocols是二维数组，是可读可写的，包含了类的初始内容、分类的内容</p>
+  <ul>
+<li>软件、程序的执行过程<br><img src="1.png"></li>
+<li>通常，cpu会将内存中的数据存储到寄存器中，然后再对寄存器中的数据进行计算</li>
+<li>假设内存中有块<code>红色内存空间</code>的值是3，现在想把它的值加1，并将结果存储到<code>蓝色内存空间</code><ul>
+<li>CPU首先会将<code>红色内存空间</code>的值放到<code>rax寄存器</code>中: <code>movq</code> <code>红色内存空间</code>, <code>%rax</code></li>
+<li>然后让rax寄存器与1相加，送回到rax中：<code>addq</code> <code>$0x1</code>,<code>%rax</code>,</li>
+<li>最后将值赋值给内存空间：<code>movq</code> <code>%rax</code>，<code>蓝色内存空间</code></li>
+</ul>
+</li>
+<li>CPU不支持内存之间的改变，因此要通过寄存器，并且寄存器内操作，速度要快些<h3 id="语言发展"><a href="#语言发展" class="headerlink" title="语言发展"></a>语言发展</h3></li>
+</ul>
+<ol>
+<li>机器语言<ul>
+<li>由0和1组成</li>
+</ul>
+</li>
+<li>汇编语言( Assembly Language )<ul>
+<li>用符号代替了O和1，比机器语言便于阅读和记忆</li>
+</ul>
+</li>
+<li>高级语言<ul>
+<li>C\C++\java\javaScript\Python等，更接近人类自然语言</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>例如，将寄存器BX的内容送入奇存器AX<ul>
+<li>机器语言：1000100111011000</li>
+<li>汇编语言：movw %bx, %ax</li>
+<li>高级语言：ax = bx;</li>
+</ul>
+</li>
+<li>汇编语言与机器语言一一对应，但是高级语言和汇编语言不是一一对应的</li>
+<li>汇编语言可以通过编译得到机器语言，机器语言可以通过反汇编得到汇编语言</li>
+<li>高级语言可以通过编译得到;汇编语言\机器语言 ，但汇编语言\机器语言几乎不可能还原成高级语言</li>
+<li>iOS中，主要的汇编语言是<ul>
+<li>AT&amp;T汇编 -＞ ioS模拟器</li>
+<li>ARM汇编 -＞ ioS真机设备<h3 id="常见的"><a href="#常见的" class="headerlink" title="常见的"></a>常见的</h3></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th align="left">AT&amp;T</th>
+<th>Intel</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>寄存器命名</td>
+<td align="left">%rax</td>
+<td>rax</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>操作数顺序</td>
+<td align="left">movq %rax, %rdx</td>
+<td>mov rdx, rax</td>
+<td align="left">将rax的值赋值给rdx</td>
+</tr>
+<tr>
+<td>常数\立即数</td>
+<td align="left">movq $3, %rax              movq $0x10, %rax</td>
+<td>mov rax, 3                        mov rax, 0x10</td>
+<td align="left">将3赋值给rax;  将Ox10赋值给rax</td>
+</tr>
+<tr>
+<td>内存赋值</td>
+<td align="left">movq $0xa, 0x1ff7(%rip)</td>
+<td>mov qword ptr [rip+0x1ff7],     0xa</td>
+<td align="left">将0xa赋值给地址为rip +0x1ff7的内存空间</td>
+</tr>
+<tr>
+<td>取内存地址</td>
+<td align="left">leaq -0x18(%rbp), %rax</td>
+<td>lea rax, [rbp - 0x181]</td>
+<td align="left">将rbp-0x18这个地址值赋值给rax</td>
+</tr>
+<tr>
+<td>jmp指令</td>
+<td align="left">jmp *%rdx; jmp 0×4001002; jmp *(%rax)</td>
+<td>jmp rdx ;jmp 0×4001002;jmp [rax]</td>
+<td align="left">jmp 0×4001002 ，跳到指定内存地址，去执行代码。  jmp *%rdx  间接跳转rdx的地址</td>
+</tr>
+<tr>
+<td>call 指令</td>
+<td align="left">call 0x19001632               call *%rdx</td>
+<td>callq 0x19001632              call   %rdx</td>
+<td align="left">跳转到函数地址进行执行，会和retq(会返回当初callq调用的下一个指令)配和使用，和jmp不同</td>
+</tr>
+<tr>
+<td>操作数长度</td>
+<td align="left">movl %eax, %edx; movb $0x10, %al; leaw 0x10(%d×), %ax</td>
+<td>mov edx, eax;mov al, 0x10;lea ax, [dx + 0x10]</td>
+<td align="left">b = byte (8-bit) ;s = short (16-bit integer or 32-bit floating point) ;W = word (16-bit);I = long (32-bit integer or 64-bit floating point);q = quad (64 bit);t = ten bytes (80-bit floating point)</td>
+</tr>
+</tbody></table>
+<ul>
+<li>操作数长度，代表要覆盖的长度，列如<code>movq 0xa, (0x110)</code>,将0xa存放在0x110地址中(考虑大小端存放)，占8字节（q为64位），而<code>movw 0xa, (0x110)</code>,表示占2字节（w为16位）<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3></li>
+<li>寄存器命名特点<ul>
+<li>r开头：64bit,8字节</li>
+<li>e开头: 32bit,4字节</li>
+<li>ax,bx,cx: 2字节</li>
+<li>ah al:8bit 1字节</li>
+</ul>
+</li>
+<li>iOS中为64位寄存器，但是也有其他地位寄存器，会拿出一半来做4字节及一下的寄存器，其内存是共用的<br><img src="2.png"></li>
+<li>寄存器只能存储8个字节的，像对象都是存在堆中的 </li>
+<li>常用有16个常用寄存器<ul>
+<li>rax、rbx rex、rdx. rsi rdi rbp.rsp</li>
+<li>r8.r9. r10.r11、 r12、r13、rl4、r15</li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/汇编/汇编基本认识"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%86/"
+    >汇编基本认识</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%86/" class="article-date">
+  <time datetime="2023-02-25T13:57:24.000Z" itemprop="datePublished">2023-02-25</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B1%87%E7%BC%96/">汇编</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <ul>
+<li>软件、程序的执行过程<br><img src="1.png"></li>
+<li>通常，cpu会将内存中的数据存储到寄存器中，然后再对寄存器中的数据进行计算</li>
+<li>假设内存中有块<code>红色内存空间</code>的值是3，现在想把它的值加1，并将结果存储到<code>蓝色内存空间</code><ul>
+<li>CPU首先会将<code>红色内存空间</code>的值放到<code>rax寄存器</code>中: <code>movq</code> <code>红色内存空间</code>, <code>%rax</code></li>
+<li>然后让rax寄存器与1相加，送回到rax中：<code>addq</code> <code>$0x1</code>,<code>%rax</code>,</li>
+<li>最后将值赋值给内存空间：<code>movq</code> <code>%rax</code>，<code>蓝色内存空间</code></li>
+</ul>
+</li>
+<li>CPU不支持内存之间的改变，因此要通过寄存器，并且寄存器内操作，速度要快些<h3 id="语言发展"><a href="#语言发展" class="headerlink" title="语言发展"></a>语言发展</h3></li>
+</ul>
+<ol>
+<li>机器语言<ul>
+<li>由0和1组成</li>
+</ul>
+</li>
+<li>汇编语言( Assembly Language )<ul>
+<li>用符号代替了O和1，比机器语言便于阅读和记忆</li>
+</ul>
+</li>
+<li>高级语言<ul>
+<li>C\C++\java\javaScript\Python等，更接近人类自然语言</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>例如，将寄存器BX的内容送入奇存器AX<ul>
+<li>机器语言：1000100111011000</li>
+<li>汇编语言：movw %bx, %ax</li>
+<li>高级语言：ax = bx;</li>
+</ul>
+</li>
+<li>汇编语言与机器语言一一对应，但是高级语言和汇编语言不是一一对应的</li>
+<li>汇编语言可以通过编译得到机器语言，机器语言可以通过反汇编得到汇编语言</li>
+<li>高级语言可以通过编译得到;汇编语言\机器语言 ，但汇编语言\机器语言几乎不可能还原成高级语言</li>
+<li>iOS中，主要的汇编语言是<ul>
+<li>AT&amp;T汇编 -＞ ioS模拟器</li>
+<li>ARM汇编 -＞ ioS真机设备<h3 id="常见的"><a href="#常见的" class="headerlink" title="常见的"></a>常见的</h3></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th align="left">AT&amp;T</th>
+<th>Intel</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>寄存器命名</td>
+<td align="left">%rax</td>
+<td>rax</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>操作数顺序</td>
+<td align="left">movq %rax, %rdx</td>
+<td>mov rdx, rax</td>
+<td align="left">将rax的值赋值给rdx</td>
+</tr>
+<tr>
+<td>常数\立即数</td>
+<td align="left">movq <code>$3</code>, <code>%rax</code> ;movq <code>$0x10</code>, %rax</td>
+<td>mov rax, 3   ;  mov rax, 0x10</td>
+<td align="left">将3赋值给rax;  将Ox10赋值给rax,(带$富豪的都是立即数，即常数)</td>
+</tr>
+<tr>
+<td>内存赋值</td>
+<td align="left">movq $0xa, 0x1ff7(%rip)</td>
+<td>mov qword ptr [rip+0x1ff7],     0xa</td>
+<td align="left">将0xa赋值给地址为rip +0x1ff7的内存空间（注意执行指令，<code>rip</code>中存放了下一条指令的地址,因此此时相加的是与下一条指令相加的地址）</td>
+</tr>
+<tr>
+<td>取内存地址</td>
+<td align="left">leaq -0x18(%rbp), %rax</td>
+<td>lea rax, [rbp - 0x181]</td>
+<td align="left">将rbp-0x18这个地址值赋值给rax</td>
+</tr>
+<tr>
+<td>jmp指令</td>
+<td align="left">jmp *%rdx; jmp 0×4001002; jmp *(%rax)</td>
+<td>jmp rdx ;jmp 0×4001002;jmp [rax]</td>
+<td align="left">jmp 0×4001002 ，跳到指定内存地址，去执行代码。  jmp *%rdx  间接跳转rdx的地址</td>
+</tr>
+<tr>
+<td>call 指令</td>
+<td align="left">call 0x19001632               call *%rdx</td>
+<td>callq 0x19001632              call   %rdx</td>
+<td align="left">跳转到函数地址进行执行，会和retq(会返回当初callq调用的下一个指令)配和使用，和jmp不同</td>
+</tr>
+<tr>
+<td>操作数长度</td>
+<td align="left">movl %eax, %edx; movb $0x10, %al; leaw 0x10(%d×), %ax</td>
+<td>mov edx, eax;mov al, 0x10;lea ax, [dx + 0x10]</td>
+<td align="left">b = byte (8-bit) ;s = short (16-bit integer or 32-bit floating point) ;W = word (16-bit);I = long (32-bit integer or 64-bit floating point);q = quad (64 bit);t = ten bytes (80-bit floating point)</td>
+</tr>
+</tbody></table>
+<ul>
+<li>操作数长度，代表要覆盖的长度，列如<code>movq 0xa, (0x110)</code>,将0xa存放在0x110地址中(考虑大小端存放)，占8字节（q为64位），而<code>movw 0xa, (0x110)</code>,表示占2字节（w为16位）<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3></li>
+<li>寄存器命名特点<ul>
+<li>r开头：64bit,8字节</li>
+<li>e开头: 32bit,4字节</li>
+<li>ax,bx,cx: 2字节</li>
+<li>ah al:8bit 1字节</li>
+</ul>
+</li>
+<li>iOS中为64位寄存器，但是也有其他低位寄存器，会拿出一半来做4字节及一下的寄存器，其内存是共用的<br><img src="2.png"></li>
+<li>寄存器只能存储8个字节的，像对象都是存在堆中的 </li>
+<li>常用有16个常用寄存器<ul>
+<li>rax、rbx rex、rdx、rsi、rdi、rbp、 rsp</li>
+<li>r8.r9. r10.r11、 r12、r13、rl4、r15</li>
+</ul>
+</li>
+<li>寄存器的具体用途<ol>
+<li><code>rax</code>、<code>rdx</code>常作为函数返回值使用</li>
+<li><code>rdi</code>、<code>rsi</code>、<code>rdx</code>、<code>rcx</code>、<code>r8</code>、<code>r9</code>等奇存器常用于存放函数参数，参数过多，寄存器不够，则会放到栈中</li>
+<li><code>rsp</code>、<code>rbp</code>用于栈操作,用来存在栈空间的地址值<ul>
+<li>函数中，一般<code>rbp</code>和<code>rsp</code>之间用来存局部变量的，其他地方（<code>rbp</code>上方x或<code>rsp</code>下方）存放函数参数(在2中寄存器不够了，就会放到栈中)</li>
+</ul>
+</li>
+<li><code>rip</code>作为指令指针<ul>
+<li>存储着<code>CPU</code>下一条要执行的指令的地址</li>
+<li>，一旦<code>CPU</code>读取一条指令，<code>rip</code>会自动指向下一条指令（存储下一条指令的地址）<h4 id="规律"><a href="#规律" class="headerlink" title="规律"></a>规律</h4></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>内存地址格式为：<code>0x4bdc(%rip)</code>，一般是全局变量 ，全局区（数据段）</li>
+<li>内存地址格式为：<code>-0x78（%rbp</code>），一般是局部变量，栈空间</li>
+<li>内存地址格式为：<code>0x10（%rax)</code>，一般是堆空间<h3 id="lldb常用指令"><a href="#lldb常用指令" class="headerlink" title="lldb常用指令"></a>lldb常用指令</h3></li>
+<li>读取寄存器的值<ul>
+<li>register read rbp ,读取rbp中的值（lldb可以不用加%）</li>
+<li>register read/o rbp,读取值，以8进制显示，默认16进制</li>
+<li>register read,获取当前所有的寄存器的值</li>
+</ul>
+</li>
+<li>修改寄存器的值<ul>
+<li>register write 寄存器名称 数值</li>
+<li>register write rax O</li>
+</ul>
+</li>
+<li>读取内存中的值<ul>
+<li>x/数量-格式-字节大小 内存地址</li>
+<li>x/3xw 0x000010,显示内存中的数据，3组数据，每组4个字节以16进制显示</li>
+<li>格式<ul>
+<li>x是16进制，</li>
+<li>f是浮点，</li>
+<li>d是十进制</li>
+</ul>
+</li>
+<li>字节大小<ul>
+<li>b-byte 1字节</li>
+<li>h-half word 2字节</li>
+<li>W-word 4字节</li>
+<li>g- giant word 8字节</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>修改内存中的值<ul>
+<li>memory write 内存地址 数值</li>
+<li>memory write 0x0000010 10</li>
+</ul>
+</li>
+<li>expression 表达式,可以简写：expr 表达式<ul>
+<li>expression Srax</li>
+<li>expression $rax = 1</li>
+</ul>
+</li>
+<li>po 表达式<ul>
+<li>print 表达式</li>
+<li>po/x $rax</li>
+<li>po (int)$rax<h3 id="断点调试"><a href="#断点调试" class="headerlink" title="断点调试"></a>断点调试</h3></li>
+</ul>
+</li>
+<li>thread step-over、 next、n（全称和简写）<ul>
+<li>单步运行，把子函数当做整体一步执行（源码级别）</li>
+</ul>
+</li>
+<li>thread step-in、 step、s<ul>
+<li>单步运行，遇到子函数会进入子函数（源码级别），与si不同，可能会跳过好几句汇编代码</li>
+</ul>
+</li>
+<li>thread step-inst-over、 nexti.ni<ul>
+<li>单步运行，把子函数当做整体一步执行（汇编级别）</li>
+</ul>
+</li>
+<li>thread step-inst, stepi. si<ul>
+<li>单步运行，遇到子函数会进入子函数（汇编级别）</li>
+</ul>
+</li>
+<li>thread step-out, finish<ul>
+<li>直接执行完当前函数的所有代码，返回到上一个函数（遇到断点会卡住）</li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Swift笔记/枚举内存分析"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/"
+    >枚举内存分析</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2023-02-25T10:25:03.000Z" itemprop="datePublished">2023-02-25</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="内存查看"><a href="#内存查看" class="headerlink" title="内存查看"></a>内存查看</h3><blockquote>
+<p><code>view Memory</code>功能，查看地址中存放的内存</p>
 </blockquote>
-<p><img src="2.png"></p>
-<h3 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h3><blockquote>
-<p>class_ro_t里面的baseMethodList、baseProtocols、ivars、baseProperties是一维数组，是只读的，包含了类的初始内容</p>
+<ul>
+<li><p>查看效果<br><img src="1.png"></p>
+</li>
+<li><p>地址内存查看方式，iOS是小端模式，高高低低，高地址存高位，低地址存地位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">上面8个字节实际上是</span><br><span class="line">0x00 00 00 00 00 00 00 05</span><br></pre></td></tr></table></figure></li>
+<li><p>获取枚举的地址方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var t = TestNum.test1 </span><br><span class="line">let nums = withUnsafePointer(to: &amp;t) &#123; UnsafeRawPointer($0) &#125; //内存地址 0x000000010000c0b0</span><br></pre></td></tr></table></figure>
+<h4 id="普通枚举"><a href="#普通枚举" class="headerlink" title="普通枚举"></a>普通枚举</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum &#123; </span><br><span class="line">    case test1,test2,test3,test4,test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.size) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.stride) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.alignment) // 1</span><br><span class="line"></span><br><span class="line">var t = TestNum.test1</span><br><span class="line">t = .test5</span><br><span class="line">t = .test6</span><br></pre></td></tr></table></figure></li>
+<li><p>内存情况,1字节内存,第一个枚举是00,后面依次增加，其内存最大是<code>0xFF</code>预计最大可以有枚举数256个（这么大的数量无需用枚举了）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var t = TestNum.test1 // 0x00</span><br><span class="line">t = .test5  // 0x04</span><br><span class="line">t = .test6  // 0x05</span><br></pre></td></tr></table></figure>
+<h4 id="带原始值的枚举"><a href="#带原始值的枚举" class="headerlink" title="带原始值的枚举"></a>带原始值的枚举</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum:Int &#123; </span><br><span class="line">    case test1 = 10,test2,test3,test4,test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.size) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.stride) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.alignment) // 1</span><br></pre></td></tr></table></figure></li>
+<li><p>内存情况,带有1字节内存。其内存情况和普通枚举类型一样的，其原始值不占有内存空间，类似计算属性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var t = TestNum.test1 // 0x00</span><br><span class="line">t = .test5  // 0x04</span><br><span class="line">t = .test6  // 0x05</span><br></pre></td></tr></table></figure>
+<h4 id="带关联值的枚举"><a href="#带关联值的枚举" class="headerlink" title="带关联值的枚举"></a>带关联值的枚举</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum &#123; </span><br><span class="line">    case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool),test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.size) // 25</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.stride) // 32</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.alignment) // 8</span><br></pre></td></tr></table></figure></li>
+<li><p>内存情况,实际占用25个字节，内存对齐是32个字节。对于存储情况，以最大存储3个Int，位24字节，前面的24个字节均用来存储关联值的（不管当前实际关联值大小是1个字节，还是16个字节），最高位用来存储枚举的类型（普通枚举不一样）。</p>
+<ul>
+<li>内存从左到右，从上到下，内存地址增加</li>
+<li>关联值和非关联值，枚举标志位存放的位置是不一样的，类似共用体<ul>
+<li>非关联值在最高位，普通枚举在最低位<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//占用内存情况</span><br><span class="line">//10 00 00 00 00 00 00 00  //实际为 0x10</span><br><span class="line">//02 00 00 00 00 00 00 00  //实际为 0x02</span><br><span class="line">//03 00 00 00 00 00 00 00  //实际为 0x03</span><br><span class="line">//00 </span><br><span class="line">var t = TestNum.test1(16,2,3) </span><br><span class="line">//占用内存情况</span><br><span class="line">//04 00 00 00 00 00 00 00  //实际为 0x04</span><br><span class="line">//05 00 00 00 00 00 00 00  //实际为 0x05</span><br><span class="line">//00 00 00 00 00 00 00 00  </span><br><span class="line">//01                       //实际为 0x01</span><br><span class="line">t = .test2(4, 5) </span><br><span class="line"> //占用内存情况</span><br><span class="line">//01 00 00 00 00 00 00 00  //实际为 0x01</span><br><span class="line">//00 00 00 00 00 00 00 00</span><br><span class="line">//00 00 00 00 00 00 00 00  </span><br><span class="line">//03                       //实际为 0x03</span><br><span class="line">t = .test4(true)</span><br><span class="line">//占用内存情况</span><br><span class="line">//10 00 00 00 00 00 00 00  //第一位标识位是1，表明第二个普通的枚举</span><br><span class="line">//00 00 00 00 00 00 00 00</span><br><span class="line">//00 00 00 00 00 00 00 00  </span><br><span class="line">//04                      //实际为 0x04, 这表明总共有4个关联枚举？</span><br><span class="line">t = .test6</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>最后一个值为bool类型，则实际尺寸仍然是<code>25</code>字节，bool和枚举标识位混用，并且有关联类型的标识符和普通的标识符号顺序不同。但是中间有bool，实际占用是32字节。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//实际占用25字节</span><br><span class="line">enum TestNum2 &#123;</span><br><span class="line">    case test4(Bool) </span><br><span class="line">    case test5 </span><br><span class="line">    case test1(Int,Int,Int,Bool)</span><br><span class="line">    case test2(Int,Int)</span><br><span class="line">    case test3(Int)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//实际占用32字节</span><br><span class="line">enum TestNum2 &#123;</span><br><span class="line">    case test4(Bool) </span><br><span class="line">    case test5 </span><br><span class="line">    case test1(Int,Int,Bool,Int)</span><br><span class="line">    case test2(Int,Int)</span><br><span class="line">    case test3(Int)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
+<li>注意如果只有一个项的关联值，其内存不会算上枚举自身的1字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">enum TestNUm &#123;</span><br><span class="line">    case test1(Int,Int,Int)</span><br><span class="line">&#125;</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.size) //24</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.stride) //24</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.alignment) //24</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### switch匹配</span><br></pre></td></tr></table></figure>
+enum TestNum {<br>  case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool),test5,test6<br>}</li>
+</ul>
+<p>//实际大小是25<br>var e = TestEnum.test1(10,20,30)<br>//取出第25个字节去判断<br>switch e {<br>    case let .test1(v1,v2,v3): //判断25位是0，取出前24个字节进行赋值<br>        print(v1,v2,v3)<br>     case let .test2(v1,v2): //判断25位是1，取出前16个字节进行赋值<br>        print(v1,v2,v3)<br>    default:break<br>}</p>
+<pre><code>
+</code></pre>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Swift笔记/swift的枚举、可选项"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/23/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E6%9E%9A%E4%B8%BE%E3%80%81%E5%8F%AF%E9%80%89%E9%A1%B9/"
+    >swift的枚举、可选项</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/23/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E6%9E%9A%E4%B8%BE%E3%80%81%E5%8F%AF%E9%80%89%E9%A1%B9/" class="article-date">
+  <time datetime="2023-02-23T14:59:11.000Z" itemprop="datePublished">2023-02-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="递归枚举"><a href="#递归枚举" class="headerlink" title="递归枚举"></a>递归枚举</h3><ul>
+<li>递归枚举，必须用<code>indirect</code>修饰<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">enum ArithExpr&#123;</span><br><span class="line">    case number(Int)</span><br><span class="line">    indirect case sum(ArithExpr,ArithExpr)</span><br><span class="line">    indirect case difference(ArithExpr,ArithExpr)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="关联值和原始值的内存"><a href="#关联值和原始值的内存" class="headerlink" title="关联值和原始值的内存"></a>关联值和原始值的内存</h3></li>
+<li>原始值所分配的空间只有1个字节，不管他有无原始值。原始值一开始是决定好的，无法更改，因此没必要存储到内存中。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">enum Season1 &#123;</span><br><span class="line">    case spring,summer,autumn,winter</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MemoryLayout&lt;Season1&gt;.stride //1  分配占用的空间大小</span><br><span class="line">MemoryLayout&lt;Season1&gt;.size   // 1 实际用到的空间大小</span><br><span class="line">MemoryLayout&lt;Season1&gt;.alignment  // 1 对齐的参数</span><br><span class="line"></span><br><span class="line">enum Season:Int &#123;</span><br><span class="line">    case spring = 100,summer = 200,autumn = 300,winter = 400</span><br><span class="line">&#125;</span><br><span class="line">MemoryLayout&lt;Season&gt;.stride //1  分配占用的空间大小</span><br><span class="line">MemoryLayout&lt;Season&gt;.size   // 1 实际用到的空间大小</span><br><span class="line">MemoryLayout&lt;Season&gt;.alignment  // 1 对齐的参数</span><br></pre></td></tr></table></figure></li>
+<li>关联值中，以所占最大的关联值的内存为准。由于将来需要将关联值存储到枚举的<code>内存</code>内，因此需要分配内存。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">enum Password &#123;</span><br><span class="line">    case number(Int,Int,Int,Int) // Int 4字节，加上枚举1个字节，实际33</span><br><span class="line">    case other</span><br><span class="line">    case bigNumer(Int,Int,Int)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MemoryLayout&lt;Password&gt;.size // 33</span><br><span class="line">MemoryLayout&lt;Password&gt;.alignment // 8</span><br><span class="line">MemoryLayout&lt;Password&gt;.stride // 40</span><br></pre></td></tr></table></figure>
+<h3 id="多重可选项"><a href="#多重可选项" class="headerlink" title="多重可选项"></a>多重可选项</h3></li>
+<li>示意图1<br><img src="1.png"><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var num1:Int? = 10</span><br><span class="line">var num2: Int?? = num4</span><br><span class="line">var num3: Int?? = 10</span><br><span class="line">print(num2 == num3) //true</span><br><span class="line">print(num1 == num2) //true</span><br><span class="line">print(num2 == 10) //true 解包到nil或着值为止</span><br><span class="line">//双重强制解包</span><br><span class="line">num3!! // 10</span><br></pre></td></tr></table></figure></li>
+<li>示意图2<br><img src="2.png"><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var num1:Int? = nil </span><br><span class="line">var num2: Int?? = num1</span><br><span class="line">var num3: Int?? = nil</span><br><span class="line">var num4: Int??? = num2</span><br><span class="line">print(num2 == num3) //false</span><br><span class="line">print(num1 == num2) //true ==会对num1解包的到值后判断</span><br><span class="line">print(num1 == num3) //true 解包到nil或着值为止</span><br><span class="line">(num2 ?? 1) ?? 2 //2  num2解出来不为nil，是num1;num1解出来为nil，赋值2</span><br><span class="line">(num3 ?? 1) ?? 2 //1  num3解出来为nil，则赋值1</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>可以使用lldb指令<code>frame variable -R</code>或者<code>fr v -R</code>查看结构</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Swift笔记/swift的函数"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/22/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%87%BD%E6%95%B0/"
+    >swift的函数</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/22/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%87%BD%E6%95%B0/" class="article-date">
+  <time datetime="2023-02-21T17:24:58.000Z" itemprop="datePublished">2023-02-22</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="inout"><a href="#inout" class="headerlink" title="inout"></a>inout</h2><h3 id="inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）"><a href="#inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）" class="headerlink" title="inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）"></a>inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）</h3><ul>
+<li>汇编验证<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> func test(_ num: Int) &#123;</span><br><span class="line"> </span><br><span class="line"> &#125;</span><br><span class="line"> // movq 值传递 %rbp - 0x20的地址中取值,传给方法</span><br><span class="line">0x100003f70 &lt;+64&gt;: movq   -0x20(%rbp), %rdi</span><br><span class="line">0x100003f74 &lt;+68&gt;: callq  0x100003f90               ;  SwiftDText.test(Swift.Int) -&gt; () at main.swift:11</span><br><span class="line">0x100003f79 &lt;+73&gt;: xorl   %eax, %eax</span><br><span class="line">0x100003f7b &lt;+75&gt;: addq   $0x20, %rsp</span><br><span class="line">0x100003f7f &lt;+79&gt;: popq   %rbp</span><br><span class="line">0x100003f80 &lt;+80&gt;: retq </span><br><span class="line"> </span><br><span class="line"> func test(_ num: inout Int) &#123;</span><br><span class="line"> </span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> // leaq 地址传递 %rbp - 0x20的地址传到 %rdi,且在callq后面，并没有movq赋值操作</span><br><span class="line"> 0x100003f6c &lt;+44&gt;: leaq   0x408d(%rip), %rdi        ; SwiftDText.num : Swift.Int</span><br><span class="line"> 0x100003f73 &lt;+51&gt;: callq  0x100003f90               ; SwiftDText.test(inout Swift.Int) -&gt; () at main.swift:11</span><br><span class="line">0x100003f78 &lt;+56&gt;: leaq   -0x18(%rbp), %rdi</span><br><span class="line">0x100003f7c &lt;+60&gt;: callq  0x100003fa8               ; symbol stub for: swift_endAccess</span><br><span class="line">0x100003f81 &lt;+65&gt;: xorl   %eax, %eax</span><br><span class="line">0x100003f83 &lt;+67&gt;: addq   $0x20, %rsp</span><br><span class="line">0x100003f87 &lt;+71&gt;: popq   %rbp</span><br><span class="line">0x100003f88 &lt;+72&gt;: retq  </span><br><span class="line"> */</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="inout-函数存在的独占访问权限"><a href="#inout-函数存在的独占访问权限" class="headerlink" title="inout 函数存在的独占访问权限"></a>inout 函数存在的独占访问权限</h3></li>
+<li>下面均会出现<code>imultaneous accesses to 0x100008178, but modification requires exclusive access</code>崩溃异常<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--第一种--&gt;</span><br><span class="line">var num = 3</span><br><span class="line">func test(nu: inout Int) &#123;</span><br><span class="line">    nu += 3</span><br><span class="line">    print(num) // 读同一个地址的num会崩溃</span><br><span class="line">    //num += 10 // 写同一个地址的num也会崩溃</span><br><span class="line">&#125;</span><br><span class="line">test(nu: &amp;num)</span><br><span class="line">&lt;!--第二种--&gt;</span><br><span class="line">class TestNum &#123;</span><br><span class="line">    var i:Int = 0 </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let testNum = TestNum()</span><br><span class="line">func test(i: inout Int) &#123; </span><br><span class="line">    i += 3</span><br><span class="line">    print(testNum.i) // 读同一个地址的num会崩溃</span><br><span class="line">    //testNum.i += 10 // 写同一个地址的num也会崩溃</span><br><span class="line">&#125;</span><br><span class="line">test(i: &amp;testNum.i)</span><br></pre></td></tr></table></figure></li>
+<li>当一个变量访问同一块内存时，会产生独占内存访问权限冲突<h3 id="计算型属性或者一个具有属性观察器的属性调用inout时"><a href="#计算型属性或者一个具有属性观察器的属性调用inout时" class="headerlink" title="计算型属性或者一个具有属性观察器的属性调用inout时"></a>计算型属性或者一个具有属性观察器的属性调用inout时</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">class TestNum &#123;</span><br><span class="line">    var j:Int = 0</span><br><span class="line">    var i:Int &#123;</span><br><span class="line">        get &#123;</span><br><span class="line">            print(&quot;get&quot;)</span><br><span class="line">            return j</span><br><span class="line">        &#125;</span><br><span class="line">        set &#123;</span><br><span class="line">            print(&quot;set&quot;)</span><br><span class="line">            j = newValue</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func test(i:inout Int) &#123;</span><br><span class="line">    print(&quot;开始&quot;)</span><br><span class="line">    i += 3</span><br><span class="line">    actNum.i += 10</span><br><span class="line">    print(actNum.i)</span><br><span class="line">    print(&quot;结束&quot;)</span><br><span class="line">&#125;</span><br><span class="line">test(i: &amp;actNum.i)</span><br><span class="line">print(actNum.i)</span><br><span class="line">/* 输出：</span><br><span class="line">get</span><br><span class="line">开始</span><br><span class="line">get</span><br><span class="line">set</span><br><span class="line">get</span><br><span class="line">10</span><br><span class="line">结束</span><br><span class="line">set</span><br><span class="line">get</span><br><span class="line">3</span><br><span class="line">*/</span><br></pre></td></tr></table></figure></li>
+<li>在<code>test</code>方法内部同时使用<code>&amp;actNum.i</code>和<code>actNum.i</code>并未出现<code>独占内存访问权限冲突</code>,并且在方法内部设置的值10，最后输出的时候，仍为3。<ul>
+<li>表明方法内部的<code>i</code>,和<code>actNum.i</code>并非同一个，因此没有出现独占内存。并且在方法结束后，会重新赋值给<code>actNum.i</code>这种行为叫做<code>拷入拷出</code>或者<code>值结果调用</code></li>
+<li><code>拷入拷出</code>遵循如下规则：<ol>
+<li>函数调用时，参数的值被拷贝。</li>
+<li>函数体内部，拷贝后的值被修改。</li>
+<li>函数返回后，拷贝后的值被赋值给原参数。</li>
+</ol>
+</li>
+<li>可以认为在调用函数前，先创建了一个值x，并将调用<code>get</code>方法将<code>actNum.i</code>赋值给x，这是在函数中进行的<code>inout</code>操作是x，在函数结束后，调用<code>set</code>方法，将x的值赋予给<code>actNum.i</code><h2 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a>函数重载</h2></li>
+</ul>
+</li>
+<li>规则<ul>
+<li>函数名相同</li>
+<li>参数个数不同 || 参数类型不同 || 参数标签不同</li>
+</ul>
+</li>
+<li><em>注意</em>,重载和返回值类型无关<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func test(_ num: inout Int) &#123;</span><br><span class="line">    num = 20</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//会报错</span><br><span class="line">func test(_ num: inout Int) -&gt; Int &#123;</span><br><span class="line">    num = 40</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><em>注意</em>，默认参数和函数重载一起使用产生二义性时，编译器不会报错（在C++中会报错）<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func test(_ num: inout Int,type;Bool = false) &#123;</span><br><span class="line">    num = 20</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func test(_ num: inout Int) -&gt; Int &#123;</span><br><span class="line">    num = 40</span><br><span class="line">&#125;</span><br><span class="line">var num = 0</span><br><span class="line">//会调用test(_ num: inout Int)</span><br><span class="line">test(&amp;num) // num = 40</span><br></pre></td></tr></table></figure></li>
+<li><em>注意</em>,可变参数、省略参数标签、函数重载一起使用参数二义性时，编译器有可能会报错（避免这种情况）<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//第一</span><br><span class="line">func test(_ num: Int,num2:Int = 10) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">//第二</span><br><span class="line">func test(_ num: Int,_ num2:Int) &#123;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br><span class="line">//第三</span><br><span class="line">func test(_ num:Int...) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">//编译起报错，但是屏蔽第一个代码，就不会报错了</span><br><span class="line">test(10)</span><br></pre></td></tr></table></figure>
+<h2 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h2></li>
+<li>如果开启了编译器优化（<code>Release</code>模式默认会开启优化）(<code>buildSetting</code>中的<code>optimization</code>)，编译器会自动将某些函数变成内联函数<ul>
+<li>将函数调用展开成函数体</li>
+</ul>
+</li>
+<li>哪些函数不会被自动内联<ul>
+<li>函数体比较长</li>
+<li>包含递归调用</li>
+<li>包含动态派发（无法在编译的时候确定是谁调用的）</li>
+</ul>
+</li>
+<li><code>@inline</code>,内联注解， Apple 的文档中是找不到，不建议使用<ul>
+<li><code>@inline(__always) func test(i:Int) &#123;  &#125;</code>,开启编译优化后，即使代码很长也会被内联（递归调用,动态派发除外）</li>
+<li><code>@inline(never) func test(i:Int) &#123;  &#125;</code>,永远不会被内联，即使开启了编译器优化（有时不起作用,还是会转为内联）</li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Swift笔记/swift的基础语法"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
+    >swift的基础语法</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="article-date">
+  <time datetime="2023-02-20T14:59:11.000Z" itemprop="datePublished">2023-02-20</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>记录下swfit的基础不同的语法</p>
 </blockquote>
-<p><img src="3.png"></p>
-<h3 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h3><blockquote>
-<p>method_t是对方法\函数的封装</p>
-</blockquote>
-<p><img src="4.png"></p>
-<ul>
-<li>IMP代表函数的具体实现<ul>
-<li><code>typedef id _Nullable (*IMP)(id _Nonnull,SEL _Nonnull,...)</code></li>
-</ul>
-</li>
-<li>SEL代表方法\函数名，一般叫做选择器，底层结构跟char *类似 <ul>
-<li>可以通过@selector()和sel_registerName()获得</li>
-<li>可以通过sel_getName()和NSStringFromSelector()转成字符串</li>
-<li>不同类中相同名字的方法，所对应的方法选择器是相同的 </li>
-</ul>
-</li>
-<li>types包含了函数返回值、参数编码的字符串<ul>
-<li>方法位objc_msgSend(id self,SEL,…)</li>
-<li>i-&gt;int,@-&gt;id,@-&gt;SEL,f-&gt;float</li>
-<li>24参数总字节，0从0字节开始，8从第8字节开始…<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">types:i24@0:8i16f20</span><br><span class="line"> i 24 @ 0 : 8 i 16 f 20</span><br><span class="line">- (int)test:(int)age height:(float)height;</span><br></pre></td></tr></table></figure>
-<h3 id="方法缓存"><a href="#方法缓存" class="headerlink" title="方法缓存"></a>方法缓存</h3><blockquote>
-<p>Class内部结构中有个方法缓存（cache_t），用散列表（哈希表）来缓存曾经调用过的方法，可以提高方法的查找速度</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><ul>
+<li>只能赋值1次</li>
+<li>它的值不要求在编泽时期确定，但使用之前必须赋值1次<h4 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h4></li>
+<li>标识符（比如常量名、变量名、函数名）几乎可以使用任何字符</li>
+<li>标识符不能以数字开头，不能包含空白字符、制表符、節头等特殊字符<h4 id="常用数据类型"><a href="#常用数据类型" class="headerlink" title="常用数据类型"></a>常用数据类型</h4><blockquote>
+<p>只有值类型和引用类型，以前语言中的<code>Int</code>，<code>Bool</code>均为<em>结构体</em>，而非<em>基础数据类型</em></p>
 </blockquote>
 </li>
 </ul>
-</li>
-<li>mask存储的是散列表的长度减1<br><img src="5.png"></li>
-<li>缓存查找<ul>
-<li><code>objc-cache.mm</code></li>
-<li><code>void cache_t::insert(SEL sel, IMP imp, id receiver)</code></li>
+<p><img src="1.png"></p>
+<ul>
+<li>整数类型：Int8、 Int16、 Int32、Int64、UInt8、 UInt16、 UInt32、UInt64</li>
+<li>在32bit平台，Int等价于Int32；在64bit平台，Int等价于Int64</li>
+<li>整数的最值：UInt8.max、 Int16. min</li>
+<li>目一般情况下，都是直接使用Int即可</li>
+<li>浮点类型：Float ，32位，精度只有6位；Double，64位，精度至少15位<h4 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//整数</span><br><span class="line">let intDecimal = 17//十进制</span><br><span class="line">let intBinary = 0b10001 // 二进制</span><br><span class="line">let intoctal = 0o21 //八进制</span><br><span class="line">llet intHexadecimal = 9x11//十六进制</span><br><span class="line"></span><br><span class="line">//浮点数</span><br><span class="line">let doubleDecimal = 125.0 //十进制，等价于1.25e2，日.0125等价于1.25e-2</span><br><span class="line">//只有十六进制可以这么写</span><br><span class="line">let doubleHexadecimal1= 0xFp2 //十六进制，意味着15x2^2，相当于十进制的68.0</span><br><span class="line">let doubleHe xadecima12 =日xFp-2 // 十六进制，意味着15x2^-2，相当于十进制的3.75</span><br></pre></td></tr></table></figure></li>
+<li>类型转换<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//字面量可以直接相加，因为数字字面量本身没有明确的类型</span><br><span class="line">let result = 3 + 0.14156 //不会报错</span><br></pre></td></tr></table></figure>
+<h3 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h3><h4 id="for"><a href="#for" class="headerlink" title="for"></a>for</h4></li>
+<li>for遍历值作为变量 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//i默认是let，有需要时可以声明为var，但是该变量只能单个for中变化,下一次又会重新赋值</span><br><span class="line">for var i in 1...3 &#123;</span><br><span class="line">    print(i)</span><br><span class="line">    i += 5</span><br><span class="line">&#125;</span><br><span class="line">//输出 1、2、3</span><br></pre></td></tr></table></figure></li>
+<li>区间运算<ul>
+<li>区间运算<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let names = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;]</span><br><span class="line">for n in names[2...3] &#123;</span><br><span class="line">    print(n)</span><br><span class="line">&#125;</span><br><span class="line">//输出 c d</span><br></pre></td></tr></table></figure></li>
+<li>单侧区间:让区间朝一个方向尽可能远<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">for n in names[1...] &#123;</span><br><span class="line">    print(n)</span><br><span class="line">&#125;</span><br><span class="line">//输出 c d</span><br><span class="line"></span><br><span class="line">for n in names[..&lt;2] &#123;</span><br><span class="line">    print(n)</span><br><span class="line">&#125;</span><br><span class="line">//输出 a b</span><br><span class="line">//3到正无穷，但是...3不能用for</span><br><span class="line">for i in 3... &#123;</span><br><span class="line">    print(i)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let rang:PartialRangeThrough&lt;Int&gt; = ...3 //负无穷到3，不能用于for</span><br></pre></td></tr></table></figure></li>
+<li>字符串、字符也能包含区间，但是不能用于for<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let stringRang = &quot;cc&quot;...&quot;ff&quot;</span><br><span class="line">stringRang.contains(&quot;dz&quot;) //true</span><br><span class="line">str.contains(&quot;fg&quot;) //false</span><br></pre></td></tr></table></figure></li>
+<li>带间隔的区间值<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//从4开始，累加2，&lt;=12</span><br><span class="line">for tickMark in stride(from: 4, through: 12, by: 2) &#123;</span><br><span class="line">    print(&quot;1&quot;,tickMark)</span><br><span class="line">&#125;</span><br><span class="line">//输出 4 6 8 10 12</span><br><span class="line">//从4开始，累加2，&lt;12</span><br><span class="line">for tickMark in stride(from: 4, to: 12, by: 2) &#123;</span><br><span class="line">    print(&quot;1&quot;,tickMark)</span><br><span class="line">&#125;</span><br><span class="line">//输出 4 6 8 10</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li>插入之前，会先判断是否需要扩容，扩容为条件为，大于之前的3/4倍,扩容为2倍扩容，不超过最大缓存尺寸<br><img src="8.png"></li>
-<li>当扩容时，会清除之前缓存的方法，也就是说，之前缓存的方法，不过传给新的扩容缓存，会全部释放。新缓存又重新开始计数<br><img src="9.png"></li>
-<li>向缓存中插入方法<br><img src="6.png"></li>
-<li>hash的方式，直接用SEL &amp; mask得到key的方式,会存在，冲突，根据取到的sel判断是不是同一方法<br><img src="10.png"><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bucket_t *buckets = cache._buckets;</span><br><span class="line">bucket_t bucket = buckets[(long long)@selector(studentTest) &amp; cache._mask];</span><br><span class="line">//即可拿到缓存中的选择器，和实现，可能会有hash冲突，源码中会根据拿到的sel看是不是一致的</span><br><span class="line">NSLog(@&quot;%s %p&quot;, bucket._key, bucket._imp);</span><br></pre></td></tr></table></figure></li>
-<li>解决hash冲突的方式，开放地址法，线性探测<br><img src="7.png"></li>
 </ul>
  
       <!-- reward -->
@@ -412,7 +1018,7 @@
 
     
     <article
-  id="post-Runtime知识/Runtime"
+  id="post-iOS学习/Swift笔记/swift的编译"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -423,8 +1029,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/Runtime/"
-    >isa</a> 
+  <a class="article-title" href="/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E7%BC%96%E8%AF%91/"
+    >swift的编译</a> 
 </h2>
  
 
@@ -432,138 +1038,95 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/Runtime/" class="article-date">
-  <time datetime="2023-01-01T08:21:47.000Z" itemprop="datePublished">2023-01-01</time>
+      <a href="/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E7%BC%96%E8%AF%91/" class="article-date">
+  <time datetime="2023-02-20T14:59:11.000Z" itemprop="datePublished">2023-02-20</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h2><blockquote>
+  <h3 id="swift的编译"><a href="#swift的编译" class="headerlink" title="swift的编译"></a>swift的编译</h3><p><img src="2.png"><br><img src="1.png"></p>
 <ul>
-<li>objective-C的动态性是由runtime API来支撑的</li>
-<li>runtime API提供的接口基本都是C语言的，源码又C\C++\汇编语言编写</li>
+<li>OC前端采用<code>Clang</code>，<code>swift</code>的前端采用的是<code>swiftc</code>,swift编译时会生成swift的中间代码<code>IL</code>，对代码进行优化之后，在转换成<code>IR</code>,它们的后端均为<code>LLVM</code><h3 id="swiftc"><a href="#swiftc" class="headerlink" title="swiftc"></a>swiftc</h3></li>
+<li>一些操作<ul>
+<li>生成语法树：<code>swiftc -dump-ast main.swift</code></li>
+<li>生成最简洁的SIL代码：<code>swiftc -emit-sil main.swift</code></li>
+<li>生成LLVM IR代码：<code>swiftc -emit-ir main.swift -o main.ll</code></li>
+<li>口生成汇编代码：<code>swiftc -emit-assembly main.swift -o main.s</code></li>
 </ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/性能优化/安装包瘦身"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%AE%89%E8%A3%85%E5%8C%85%E7%98%A6%E8%BA%AB/"
+    >安装包瘦身</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%AE%89%E8%A3%85%E5%8C%85%E7%98%A6%E8%BA%AB/" class="article-date">
+  <time datetime="2023-02-19T15:22:49.000Z" itemprop="datePublished">2023-02-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>安装包（IPA）主要由可执行文件、资源组成</p>
 </blockquote>
-<h2 id="isa"><a href="#isa" class="headerlink" title="isa"></a>isa</h2><blockquote>
 <ul>
-<li>在arm64架构之前，isa就是一个普通的指针，存储着Class、Meta-Class对象的内存地址</li>
-<li>从arm64架构开始，对isa进行了优化，变成了一个共用体（<code>union</code>）(结构体和数据共用的一个内存地址，实际共用体中的结构体，只做展示作用)结构，使用位域来存储更多信息</li>
-</ul>
-</blockquote>
-<h3 id="isa结构"><a href="#isa结构" class="headerlink" title="isa结构"></a>isa结构</h3><ol>
-<li>共用体（<code>union</code>）结构(结构体和数据共用的一个内存地址，实际数据存储在bits中，共用体中的结构体，只做展示作用)<br><img src="1.png"><img src="2.png"><h3 id="从内存地址，从上往下，即地址从右边，往左"><a href="#从内存地址，从上往下，即地址从右边，往左" class="headerlink" title="从内存地址，从上往下，即地址从右边，往左"></a>从内存地址，从上往下，即地址从右边，往左</h3></li>
-</ol>
-<ul>
-<li>nonpointer<ul>
-<li>0,代表普通的指针，存储着Class、Meta—Class对象的内存地址</li>
-<li>1,代表优化过，使用位域存储更多的信息</li>
+<li>资源（图片、音频、视频等）<ul>
+<li>采取无损压缩</li>
+<li>去除没有用到的资源： <a target="_blank" rel="noopener" href="https://github.com/tinymind/LSUnusedResources">地址</a></li>
 </ul>
 </li>
-<li>has_assoc<ul>
-<li>是否又设置过关联对象，如果没有，释放会更快</li>
+<li>可执行文件瘦身<ul>
+<li><code>Strip Linked Product</code>、<code>Make Strings Read-Only</code>、<code>Symbols Hidden by Default</code>设置为<code>YES</code></li>
+<li>去掉异常支持，<code>Enable C++ Exceptions</code>、<code>Enable Objective-C Exceptions</code>设置为<code>NO</code>， <code>Other C Flags</code>添加<code>-fno-exceptions</code></li>
 </ul>
 </li>
-<li>has_cxx_dtor<ul>
-<li>是否有C++的析构函数（.cxx_destruct),如果没有，释放会更快</li>
-</ul>
-</li>
-<li>shiftcls<ul>
-<li>存储着Class、Meta-Class对象的内存地址信息</li>
-<li>ios中mask为<code>0x0000000ffffffff8</code>,因此，很多类以及元类的地址是以8和0结尾的，因为最后三位均是000.</li>
-</ul>
-</li>
-<li>magic<ul>
-<li>用于在调试时分辨对象是否未完成初始化</li>
-</ul>
-</li>
-<li>weakly_referenced<ul>
-<li>是否有被弱引用指向过，如果没有,释放时会更快</li>
-</ul>
-</li>
-<li>deallocating/unused(818版本之后)<ul>
-<li>对象是否正在释放</li>
-</ul>
-</li>
-<li>extra_rc<ul>
-<li>里面存储的值是引用计数器减1</li>
-</ul>
-</li>
-<li>has_sidetable_rc<ul>
-<li>引用计数器是否过大无法存储在isa中，如果为1，那么引用计数会存储在一个叫<code>SideTable</code>的类的属性中</li>
-</ul>
-</li>
-</ul>
-<p>注意，这里的都是是否有设置过，就像关联对象，就算最后将所有的关联对象删除，仍是1，如果有这些，在销毁的时候，会做额外工作<br><img src="16725690610032.png"></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-底层原理/initialize"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/"
-    >initialize</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/" class="article-date">
-  <time datetime="2022-12-27T10:40:00.000Z" itemprop="datePublished">2022-12-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="initialize"><a href="#initialize" class="headerlink" title="initialize"></a>initialize</h1><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><ol>
-<li>在查找方法前，进行initialize的调用<br><img src="16721352310424.png"><img src="16721353684859.png"></li>
-</ol>
-<ul>
-<li>类没有初始化，则去调用初始化<br><img src="16721354586849.png"></li>
-<li>先查看有没有父类，且父类，没有初始化，则先初始化父类的initial<br><img src="16721355384202.png"></li>
-<li>采用的是objc_msSend去调用initialize方法<br><img src="16721356497584.png"></li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li>initialize和load的很大区别是，initize是通过objc_msgSend进行调用的。而load是拿到函数地址后直接调用的<ul>
-<li>如果子类没有实现initialize，会调用父类的initialize（所以父类的initialize可能会调用多次）</li>
-<li>如果分类实现了initialize，就会覆盖本身的initialize调用</li>
-</ul>
-</li>
+<li>利用<a target="_blank" rel="noopener" href="https://www.jetbrains.com/objc/">AppCode</a>检测未使用的代码：<code>菜单栏 -&gt; Code -&gt; Inspect Code</code></li>
+<li>编写<code>LLVM插件</code>检测出重复代码、未被调用的代码</li>
 </ul>
  
       <!-- reward -->
@@ -575,521 +1138,6 @@
     
     <footer class="article-footer">
        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/load%E3%80%81initialize/" rel="tag">load、initialize</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-底层原理/分类"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/"
-    >分类</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/" class="article-date">
-  <time datetime="2022-12-26T16:00:00.000Z" itemprop="datePublished">2022-12-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><ol>
-<li>通过runtime动态将分类的方法合并到类对象、元类对象中，并非编译</li>
-<li>一个分类文件的编译后的结构体实际为<br><img src="16719733229400.png"><ul>
-<li>由runtime在运行时，将分类的方法合并到类对象、元类对象中</li>
-<li>编译成cpp，MJPerson(Eat)生成的 <code>_category_t</code>的静态结构体变量，其是单独的静态变量，编译时并未合入到类对象中<br><img src="16719737845768.png"></li>
-</ul>
-</li>
-</ol>
-<h1 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h1><ul>
-<li><p>objc4源码解读过程：objc-os.mm</p>
-<ol>
-<li><p>_objc_init</p>
-</li>
-<li><p>load_images</p>
-</li>
-<li><p>prepare_load_methods</p>
-<ul>
-<li>schedule_class_load</li>
-<li>add_class_to_loadable_list</li>
-<li>add_category_to_loadable_list</li>
-</ul>
-</li>
-<li><p>call_load_methods</p>
-<ul>
-<li>call_class_loads</li>
-<li>call_category_loads</li>
-<li>(*load_method)(cls, SEL_load)</li>
-</ul>
-</li>
-</ol>
-</li>
-<li><p>load方法是根据方法地址直接调用，并不是经过objc_msgSend函数调用</p>
-<h3 id="在runtime运行后，添加到class-rw-t的method-array-t二维方法数组中"><a href="#在runtime运行后，添加到class-rw-t的method-array-t二维方法数组中" class="headerlink" title="在runtime运行后，添加到class_rw_t的method_array_t二维方法数组中"></a>在runtime运行后，添加到class_rw_t的method_array_t二维方法数组中</h3></li>
-<li><p>类的realize方法，可以看到class_rw_t实际上是在现在创建的，此前类中的bits中保存的是class_ro_t相关数据，才在这里realize，创建class_rw_t数据，并将其赋给bits中<br><img src="2.png" alt="截屏2023-01-01 23.10.16"></p>
-</li>
-<li><p>加载分类的方法，保证类realize完成后，再去加载分类<br><img src="1.png" alt="截屏2023-01-01 23.10.16"></p>
-</li>
-<li><p>核心添加方法 <code>attachLists</code></p>
-</li>
-<li><p>objc838版本，在构建分类大数组是，最后编译的分类，放到最前面，将所有的分类方法、属性、协议数据合并到一个大数组中<br><img src="16720409049409.png"></p>
-</li>
-<li><p>构建一个新数组，由后往前添加<br><img src="16720258260842.png"></p>
-</li>
-<li><p>objc750方法，</p>
-</li>
-<li><p>最后编译的分类，放到最前面，最终所有的分类方法、属性、协议数据合并到一个大数组中</p>
-</li>
-<li><p><img src="16720410519764.png"> </p>
-</li>
-<li><p>会通过memmove（内存挪动）(会根据方向挪动位置，保证数据完整性)将原来的方法列表，往后移动相应增加分类容量的位置。前面空出来的位置，用memcpy（内存拷贝）（只会从小地址，开始拷贝），添加在方法列表前面。也就是分类的方法，会在原方法的前面<br><img src="16720259301593.png"></p>
-</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>为什么两个版本的，方法数组的组合方式会不一样</li>
-<li>Category的实现原理<ul>
-<li>Category编译之后的底层结构是struct category_t,里面吗存储着分类的对象方法、类方法、属性、协议信息</li>
-<li>在程序运行的时候，runtime会将Category的数据，合并到类信息中（类对象、元类对象中）</li>
-</ul>
-</li>
-<li>Category和Class EXtension的区别是什么<ul>
-<li>Class Extension在编译的时候，他的数据已经包含在类信息中</li>
-<li>Category是在运行时，才会将数据合并到类信息中</li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E7%B1%BB/" rel="tag">分类</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-底层原理/Load"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/26/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/"
-    >Load</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/26/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/" class="article-date">
-  <time datetime="2022-12-26T10:40:00.000Z" itemprop="datePublished">2022-12-26</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="Load方法"><a href="#Load方法" class="headerlink" title="Load方法"></a>Load方法</h1><ul>
-<li>+load方法会在runtime加载类、分类时调用</li>
-<li>每个类、分类的+load，在程序运行过程中只调用一次<ul>
-<li>flags标识位保证类只会加载一次</li>
-<li>这里有递归，首选会先将父类添加到数组，后将自己加进去数组，因此最后，先父类，再执行子类的load方法</li>
-<li>最开始的关系时按照编译的顺序来的<br><img src="16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
-</ul>
-</li>
-</ul>
-<ol>
-<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="16720646359112.png"></p>
-</li>
-<li><p>构建有类load方法的数组，以及有分类load方法的数组，整个添加顺序是</p>
-<ol>
-<li>类先按编译的顺序进行添加，其中父类会比子类先添加到数组中</li>
-<li>分类按编译的顺序进行添加的<br><img src="16720651219179.png"></li>
-</ol>
-</li>
-<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="16720639325952.png"></p>
-</li>
-<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="16720641861246.png"></p>
-</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>调用顺序</li>
-</ul>
-<ol>
-<li><p>先带哦用类的+load</p>
-<ol>
-<li>按照编译先后顺序调用，先编译，先调用</li>
-<li>调用子类的+load之前会先调用父类的+load</li>
-</ol>
-</li>
-<li><p>再调用分类的+load</p>
-<ol>
-<li>按照编译先后顺序调用，先编译，先调用</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li></li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/load%E3%80%81initialize/" rel="tag">load、initialize</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-底层原理/KVC"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/"
-    >KVC</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/" class="article-date">
-  <time datetime="2022-12-24T16:00:00.000Z" itemprop="datePublished">2022-12-25</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h1><ol>
-<li>通过KVC修改属性会触发KVO，例如age属性,<ul>
-<li>注意，就是age属性没有实现set的方法，只有成员变量，通过KVC设置，同样会触发KVO</li>
-<li>表明KVC内部实际上有调用willchangForkey、以及didChangeForKey:方法<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><img src="16719622557599.png"></li>
-</ul>
-</li>
-<li>根据setAge:,_setAge:的顺序找到，找到则调用,设置</li>
-<li>如果1没找到，查看<code>accessInstanceVariablesDirectly</code>（是否可直接查找成员变量）是否返回true，为No，直接报没找到key的异常</li>
-<li>如果为true，则按照_age,_isAge,age,isAge的顺序查找成员变量，找到直接赋值<h2 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h2><img src="%E6%88%AA%E5%B1%8F2022-12-25%2020.15.39.png" alt="截屏2022-12-25 20.15.39"></li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KVC/" rel="tag">KVC</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-底层原理/KVO"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVO/"
-    >KVO</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVO/" class="article-date">
-  <time datetime="2022-12-24T16:00:00.000Z" itemprop="datePublished">2022-12-25</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h1><h3 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h3><ul>
-<li>未使用KVO监听，其isa指针指向的是其class对象，（isa指针、superclass指针、实例方法、协议列表、属性列表、成员变量）</li>
-<li>使用KVO监听，其isa指向为<code>NSKVONotifying_class</code>一个全新的class对象,有<code>runtime</code>运行时，动态创建的类,<ul>
-<li>该类实现为其class对象的子类，其内部实现了class、delloc、_isKVOA，以及重新了相关的set方法</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[self.person1 addObserver:self forKeyPath:@&quot;height&quot; options:options context:@&quot;456&quot;];</span><br><span class="line">    int num;</span><br><span class="line">    //=注意，这里如果用[self.person1 class]拿不到，被重写了，不会拿到实际的类</span><br><span class="line">    Method * list = class_copyMethodList(object_getClass(self.person1), &amp;num);</span><br><span class="line">    for(int i = 0;i &lt; num;i++) &#123;</span><br><span class="line">        Method method = list[i];</span><br><span class="line">        NSLog(@&quot;%@&quot;,NSStringFromSelector(method_getName(method)));</span><br><span class="line">    &#125;</span><br><span class="line">    free(list);</span><br><span class="line">    /*</span><br><span class="line">    输出setHeight:、setAge:、class、dealloc、_isKVOA</span><br><span class="line">    */</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在调用set方法后实际调用了<code>_NSSetIntValueAndNotify();</code>(整型所以是int，如果是double则是<code>_NSSetDoubleValueAndNotify()</code>)</li>
-<li><code>_NSSetIntValueAndNotify()</code>内，类似实现,伪代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSKVONotifying_MJPerson中</span><br><span class="line">- (void)setAge:(int)age &#123;</span><br><span class="line">    _NSSetIntValueAndNotify()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void _NSSetIntValueAndNotify() &#123;</span><br><span class="line">    [self willChangeValueForKey:&quot;age&quot;]</span><br><span class="line">    [super setAge:age]</span><br><span class="line">    [self didChangeValueForKey:&quot;age&quot;] //里面调用监听器的方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void) didChangeValueForKey:(NSString *)key &#123;</span><br><span class="line">    [observer observeValueForKeyPath:key ofObject: change: content:]//通知观察者</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>如果内存中有个<code>NSKVONotifying_xxx</code>类，则相应的kvo无法实现</li>
-<li>通过<code>[self.person1 methodForSelector:@selector(setAge:)]</code>找到对应方法的实现，在lldb中根据内存，用<code>p (IMP)0x7ff800bde9cb</code>即可找到实际实现的方法<code>Foundation _NSSetIntValueAndNotify</code></li>
-<li>被kvo的对象，其元类对象也是不同的`</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
-<li>KVO的本质是什么</li>
-</ol>
-<ul>
-<li>利用RuntimeAPI动态生成一个子类，并且让instance对象的isa指向这个全新的子类</li>
-<li>当修改instance对象的属性时，会调用Foundation的_NSSetxxxValueAndNotif函数<ul>
-<li>willchangValueForKey</li>
-<li>父类原来的setter</li>
-<li>didChangeValueForKey<ul>
-<li>其内部会触发监听器Obserser的监听方法（observeValueForKeyPath:ofObject:change:）</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ol start="2">
-<li>KVO的本质是什么</li>
-</ol>
-<ul>
-<li>设置方法时，自动触发</li>
-<li>手动调用willChangeForKey：和didChangeForKey： </li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KVO/" rel="tag">KVO</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-底层原理/load、initialize方法的区别"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/23/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/"
-    >load、initialize方法的区别</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/23/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/" class="article-date">
-  <time datetime="2022-12-23T08:35:53.000Z" itemprop="datePublished">2022-12-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="load、initialize方法的区别"><a href="#load、initialize方法的区别" class="headerlink" title="load、initialize方法的区别"></a>load、initialize方法的区别</h1><ol>
-<li><p>调用方式</p>
-<ul>
-<li> load是根据函数地址直接调用</li>
-<li> initialize是通过objc_msgSend调用</li>
-</ul>
-</li>
-<li><p>调用时刻</p>
-<ul>
-<li>load是runtime加载类、分类的时候调用（只会调用1次）</li>
-<li>initialize是累第一次接收到消息的时候调用，每个类只会initialize一次（父类的initialize方法可能会被调用多次）</li>
-</ul>
-</li>
-<li><p>load、initialize的调用顺序</p>
-<ol>
-<li>load<ul>
-<li>先调用类的load<ul>
-<li>先编译的类，优先调用load</li>
-<li>调用子类的load之前，会先调用父类的load</li>
-</ul>
-</li>
-<li>再调用分类的load<ul>
-<li>先编译的分类，优先调用load</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>initialize<ul>
-<li>在，第一次使用的时候调用，先初始化父类，</li>
-<li>再初始化子类（可能最终调用的是父类的）</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/load%E3%80%81initialize/" rel="tag">load、initialize</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-底层原理/objc_class的结构"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/21/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/"
-    >objc_class的结构</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/21/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/" class="article-date">
-  <time datetime="2022-12-20T16:00:00.000Z" itemprop="datePublished">2022-12-21</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="objc-class的结构"><a href="#objc-class的结构" class="headerlink" title="objc_class的结构"></a>objc_class的结构</h1><p><img src="16715558479895.png"></p>
-<ul>
-<li>如何去查看<code>objc_class</code>的源码在真实项目中用，吧objc_class结构体，在函数类直接写出来，用桥接的方式实现<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">#ifndef MJClassInfo_h</span><br><span class="line">#define MJClassInfo_h</span><br><span class="line"></span><br><span class="line"># if __arm64__</span><br><span class="line">#   define ISA_MASK        0x0000000ffffffff8ULL</span><br><span class="line"># elif __x86_64__</span><br><span class="line">#   define ISA_MASK        0x00007ffffffffff8ULL</span><br><span class="line"># endif</span><br><span class="line"></span><br><span class="line">#if __LP64__</span><br><span class="line">typedef uint32_t mask_t;</span><br><span class="line">#else</span><br><span class="line">typedef uint16_t mask_t;</span><br><span class="line">#endif</span><br><span class="line">typedef uintptr_t cache_key_t;</span><br><span class="line"></span><br><span class="line">struct bucket_t &#123;</span><br><span class="line">    cache_key_t _key;</span><br><span class="line">    IMP _imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct cache_t &#123;</span><br><span class="line">    bucket_t *_buckets;</span><br><span class="line">    mask_t _mask;</span><br><span class="line">    mask_t _occupied;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct entsize_list_tt &#123;</span><br><span class="line">    uint32_t entsizeAndFlags;</span><br><span class="line">    uint32_t count;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_t &#123;</span><br><span class="line">    SEL name;</span><br><span class="line">    const char *types;</span><br><span class="line">    IMP imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_list_t : entsize_list_tt &#123;</span><br><span class="line">    method_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_t &#123;</span><br><span class="line">    int32_t *offset;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *type;</span><br><span class="line">    uint32_t alignment_raw;</span><br><span class="line">    uint32_t size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_list_t : entsize_list_tt &#123;</span><br><span class="line">    ivar_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_t &#123;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *attributes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_list_t : entsize_list_tt &#123;</span><br><span class="line">    property_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct chained_property_list &#123;</span><br><span class="line">    chained_property_list *next;</span><br><span class="line">    uint32_t count;</span><br><span class="line">    property_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef uintptr_t protocol_ref_t;</span><br><span class="line">struct protocol_list_t &#123;</span><br><span class="line">    uintptr_t count;</span><br><span class="line">    protocol_ref_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_ro_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t instanceStart;</span><br><span class="line">    uint32_t instanceSize;  // instance对象占用的内存空间</span><br><span class="line">#ifdef __LP64__</span><br><span class="line">    uint32_t reserved;</span><br><span class="line">#endif</span><br><span class="line">    const uint8_t * ivarLayout;</span><br><span class="line">    const char * name;  // 类名</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;  // 成员变量列表</span><br><span class="line">    const uint8_t * weakIvarLayout;</span><br><span class="line">    property_list_t *baseProperties;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line">    method_list_t * methods;    // 方法列表</span><br><span class="line">    property_list_t *properties;    // 属性列表</span><br><span class="line">    const protocol_list_t * protocols;  // 协议列表</span><br><span class="line">    Class firstSubclass;</span><br><span class="line">    Class nextSiblingClass;</span><br><span class="line">    char *demangledName;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#define FAST_DATA_MASK          0x00007ffffffffff8UL</span><br><span class="line">struct class_data_bits_t &#123;</span><br><span class="line">    uintptr_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* OC对象 */</span><br><span class="line">struct mj_objc_object &#123;</span><br><span class="line">    void *isa;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* 类对象 */</span><br><span class="line">struct mj_objc_class : mj_objc_object &#123;</span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;</span><br><span class="line">    class_data_bits_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return bits.data();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mj_objc_class* metaClass() &#123;</span><br><span class="line">        return (mj_objc_class *)((long long)isa &amp; ISA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#endif /* MJClassInfo_h */</span><br></pre></td></tr></table></figure></li>
-<li>实际使用,即可查看相关类<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        MJStudent *stu = [[MJStudent alloc] init];</span><br><span class="line">        stu-&gt;_weight = 10;</span><br><span class="line">        </span><br><span class="line">        mj_objc_class *studentClass = (__bridge mj_objc_class *)([MJStudent class]);</span><br><span class="line">        mj_objc_class *personClass = (__bridge mj_objc_class *)([MJPerson class]);</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentClassData = studentClass-&gt;data();</span><br><span class="line">        class_rw_t *personClassData = personClass-&gt;data();</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentMetaClassData = studentClass-&gt;metaClass()-&gt;data();</span><br><span class="line">        class_rw_t *personMetaClassData = personClass-&gt;metaClass()-&gt;data();</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;1111&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
-
     </footer>
   </div>
 
@@ -1105,7 +1153,7 @@
   
   <nav class="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
   </nav>
   
 </section>

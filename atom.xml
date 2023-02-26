@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-01-05T14:53:56.229Z</updated>
+  <updated>2023-02-26T16:30:29.314Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>objc_msgSend</title>
-    <link href="http://example.com/2023/01/02/Runtime%E7%9F%A5%E8%AF%86/objc-msgSend/"/>
-    <id>http://example.com/2023/01/02/Runtime%E7%9F%A5%E8%AF%86/objc-msgSend/</id>
-    <published>2023-01-02T10:48:31.000Z</published>
-    <updated>2023-01-05T14:53:56.229Z</updated>
+    <title>闭包</title>
+    <link href="http://example.com/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/"/>
+    <id>http://example.com/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/</id>
+    <published>2023-02-26T16:28:40.000Z</published>
+    <updated>2023-02-26T16:30:29.314Z</updated>
     
     
       
@@ -34,17 +34,17 @@
     
     
     
-    <category term="Runtime" scheme="http://example.com/categories/Runtime/"/>
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
     
     
   </entry>
   
   <entry>
-    <title>objc_class</title>
-    <link href="http://example.com/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/objc-class/"/>
-    <id>http://example.com/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/objc-class/</id>
-    <published>2023-01-01T13:53:01.000Z</published>
-    <updated>2023-01-02T09:51:00.141Z</updated>
+    <title>结构体与类</title>
+    <link href="http://example.com/2023/02/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E7%B1%BB/"/>
+    <id>http://example.com/2023/02/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E7%B1%BB/</id>
+    <published>2023-02-26T09:38:45.000Z</published>
+    <updated>2023-02-26T11:57:54.872Z</updated>
     
     
       
@@ -57,17 +57,17 @@
     
     
     
-    <category term="Runtime" scheme="http://example.com/categories/Runtime/"/>
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
     
     
   </entry>
   
   <entry>
-    <title>isa</title>
-    <link href="http://example.com/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/Runtime/"/>
-    <id>http://example.com/2023/01/01/Runtime%E7%9F%A5%E8%AF%86/Runtime/</id>
-    <published>2023-01-01T08:21:47.000Z</published>
-    <updated>2023-01-01T10:31:51.041Z</updated>
+    <title>汇编基本认识</title>
+    <link href="http://example.com/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/LLDB%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"/>
+    <id>http://example.com/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/LLDB%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</id>
+    <published>2023-02-25T13:57:24.000Z</published>
+    <updated>2023-02-25T15:35:18.944Z</updated>
     
     
       
@@ -80,17 +80,17 @@
     
     
     
-    <category term="Runtime" scheme="http://example.com/categories/Runtime/"/>
+    <category term="汇编" scheme="http://example.com/categories/%E6%B1%87%E7%BC%96/"/>
     
     
   </entry>
   
   <entry>
-    <title>initialize</title>
-    <link href="http://example.com/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/"/>
-    <id>http://example.com/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/</id>
-    <published>2022-12-27T10:40:00.000Z</published>
-    <updated>2022-12-30T16:25:26.411Z</updated>
+    <title>汇编基本认识</title>
+    <link href="http://example.com/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%86/"/>
+    <id>http://example.com/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%86/</id>
+    <published>2023-02-25T13:57:24.000Z</published>
+    <updated>2023-02-26T12:19:51.873Z</updated>
     
     
       
@@ -103,265 +103,17 @@
     
     
     
-    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    
-    
-    <category term="load、initialize" scheme="http://example.com/tags/load%E3%80%81initialize/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>分类</title>
-    <link href="http://example.com/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/"/>
-    <id>http://example.com/2022/12/27/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/</id>
-    <published>2022-12-26T16:00:00.000Z</published>
-    <updated>2023-01-01T15:18:32.494Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    
-    
-    <category term="分类" scheme="http://example.com/tags/%E5%88%86%E7%B1%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Load</title>
-    <link href="http://example.com/2022/12/26/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/"/>
-    <id>http://example.com/2022/12/26/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/</id>
-    <published>2022-12-26T10:40:00.000Z</published>
-    <updated>2022-12-30T16:25:26.405Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    
-    
-    <category term="load、initialize" scheme="http://example.com/tags/load%E3%80%81initialize/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>KVC</title>
-    <link href="http://example.com/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/"/>
-    <id>http://example.com/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/</id>
-    <published>2022-12-24T16:00:00.000Z</published>
-    <updated>2022-12-30T16:30:19.403Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    
-    
-    <category term="KVC" scheme="http://example.com/tags/KVC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>KVO</title>
-    <link href="http://example.com/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVO/"/>
-    <id>http://example.com/2022/12/25/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVO/</id>
-    <published>2022-12-24T16:00:00.000Z</published>
-    <updated>2022-12-30T16:30:42.405Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    
-    
-    <category term="KVO" scheme="http://example.com/tags/KVO/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>load、initialize方法的区别</title>
-    <link href="http://example.com/2022/12/23/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
-    <id>http://example.com/2022/12/23/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
-    <published>2022-12-23T08:35:53.000Z</published>
-    <updated>2022-12-30T16:25:26.397Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    
-    
-    <category term="load、initialize" scheme="http://example.com/tags/load%E3%80%81initialize/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>objc_class的结构</title>
-    <link href="http://example.com/2022/12/21/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/"/>
-    <id>http://example.com/2022/12/21/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/</id>
-    <published>2022-12-20T16:00:00.000Z</published>
-    <updated>2022-12-30T16:45:30.258Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    
-    
-    <category term="类的结构" scheme="http://example.com/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>isa指针</title>
-    <link href="http://example.com/2022/12/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/"/>
-    <id>http://example.com/2022/12/19/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/</id>
-    <published>2022-12-18T16:00:00.000Z</published>
-    <updated>2022-12-30T16:46:29.262Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    
-    
-    <category term="类的结构" scheme="http://example.com/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OC对象的分类</title>
-    <link href="http://example.com/2022/12/18/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/"/>
-    <id>http://example.com/2022/12/18/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/</id>
-    <published>2022-12-17T16:00:00.000Z</published>
-    <updated>2022-12-30T16:47:01.527Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    
-    
-    <category term="类的结构" scheme="http://example.com/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>NSObject</title>
-    <link href="http://example.com/2022/12/17/%E5%85%B6%E4%BB%96/16708614441261/"/>
-    <id>http://example.com/2022/12/17/%E5%85%B6%E4%BB%96/16708614441261/</id>
-    <published>2022-12-16T16:00:00.000Z</published>
-    <updated>2022-12-30T16:47:01.519Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="底层原理" scheme="http://example.com/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    
-    
-    <category term="类的结构" scheme="http://example.com/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title></title>
-    <link href="http://example.com/2022/12/15/%E5%85%B6%E4%BB%96/16710932427871/"/>
-    <id>http://example.com/2022/12/15/%E5%85%B6%E4%BB%96/16710932427871/</id>
-    <published>2022-12-15T08:34:02.787Z</published>
-    <updated>2022-12-15T08:38:55.992Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
+    <category term="汇编" scheme="http://example.com/categories/%E6%B1%87%E7%BC%96/"/>
     
     
   </entry>
   
   <entry>
-    <title></title>
-    <link href="http://example.com/2022/12/09/%E5%85%B6%E4%BB%96/16706010476870/"/>
-    <id>http://example.com/2022/12/09/%E5%85%B6%E4%BB%96/16706010476870/</id>
-    <published>2022-12-09T15:50:47.687Z</published>
-    <updated>2022-12-10T08:44:50.347Z</updated>
+    <title>枚举内存分析</title>
+    <link href="http://example.com/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/"/>
+    <id>http://example.com/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/</id>
+    <published>2023-02-25T10:25:03.000Z</published>
+    <updated>2023-02-25T18:44:51.040Z</updated>
     
     
       
@@ -373,16 +125,18 @@
       
     
     
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
     
     
   </entry>
   
   <entry>
-    <title></title>
-    <link href="http://example.com/2022/12/06/%E5%85%B6%E4%BB%96/16703379364755/"/>
-    <id>http://example.com/2022/12/06/%E5%85%B6%E4%BB%96/16703379364755/</id>
-    <published>2022-12-06T14:45:36.476Z</published>
-    <updated>2022-12-06T15:17:32.605Z</updated>
+    <title>swift的枚举、可选项</title>
+    <link href="http://example.com/2023/02/23/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E6%9E%9A%E4%B8%BE%E3%80%81%E5%8F%AF%E9%80%89%E9%A1%B9/"/>
+    <id>http://example.com/2023/02/23/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E6%9E%9A%E4%B8%BE%E3%80%81%E5%8F%AF%E9%80%89%E9%A1%B9/</id>
+    <published>2023-02-23T14:59:11.000Z</published>
+    <updated>2023-02-24T17:20:42.212Z</updated>
     
     
       
@@ -394,16 +148,18 @@
       
     
     
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
     
     
   </entry>
   
   <entry>
-    <title></title>
-    <link href="http://example.com/2022/11/25/%E5%85%B6%E4%BB%96/16693590363882/"/>
-    <id>http://example.com/2022/11/25/%E5%85%B6%E4%BB%96/16693590363882/</id>
-    <published>2022-11-25T06:50:36.388Z</published>
-    <updated>2022-11-25T06:50:36.388Z</updated>
+    <title>swift的函数</title>
+    <link href="http://example.com/2023/02/22/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%87%BD%E6%95%B0/"/>
+    <id>http://example.com/2023/02/22/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%87%BD%E6%95%B0/</id>
+    <published>2023-02-21T17:24:58.000Z</published>
+    <updated>2023-02-24T16:28:09.954Z</updated>
     
     
       
@@ -415,16 +171,18 @@
       
     
     
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
     
     
   </entry>
   
   <entry>
-    <title></title>
-    <link href="http://example.com/2022/11/25/%E5%85%B6%E4%BB%96/16693590004039/"/>
-    <id>http://example.com/2022/11/25/%E5%85%B6%E4%BB%96/16693590004039/</id>
-    <published>2022-11-25T06:50:00.404Z</published>
-    <updated>2022-11-25T06:50:00.404Z</updated>
+    <title>swift的基础语法</title>
+    <link href="http://example.com/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"/>
+    <id>http://example.com/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</id>
+    <published>2023-02-20T14:59:11.000Z</published>
+    <updated>2023-02-22T16:59:26.678Z</updated>
     
     
       
@@ -436,16 +194,18 @@
       
     
     
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
     
     
   </entry>
   
   <entry>
-    <title></title>
-    <link href="http://example.com/2022/11/22/%E5%85%B6%E4%BB%96/16690972051464/"/>
-    <id>http://example.com/2022/11/22/%E5%85%B6%E4%BB%96/16690972051464/</id>
-    <published>2022-11-22T06:06:45.146Z</published>
-    <updated>2022-11-22T06:15:16.087Z</updated>
+    <title>swift的编译</title>
+    <link href="http://example.com/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E7%BC%96%E8%AF%91/"/>
+    <id>http://example.com/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E7%BC%96%E8%AF%91/</id>
+    <published>2023-02-20T14:59:11.000Z</published>
+    <updated>2023-02-20T16:18:43.331Z</updated>
     
     
       
@@ -457,16 +217,18 @@
       
     
     
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
     
     
   </entry>
   
   <entry>
-    <title></title>
-    <link href="http://example.com/2022/11/22/%E5%85%B6%E4%BB%96/16690971923137/"/>
-    <id>http://example.com/2022/11/22/%E5%85%B6%E4%BB%96/16690971923137/</id>
-    <published>2022-11-22T06:06:32.314Z</published>
-    <updated>2022-11-25T06:50:36.402Z</updated>
+    <title>安装包瘦身</title>
+    <link href="http://example.com/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%AE%89%E8%A3%85%E5%8C%85%E7%98%A6%E8%BA%AB/"/>
+    <id>http://example.com/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%AE%89%E8%A3%85%E5%8C%85%E7%98%A6%E8%BA%AB/</id>
+    <published>2023-02-19T15:22:49.000Z</published>
+    <updated>2023-02-19T15:28:25.091Z</updated>
     
     
       
@@ -478,6 +240,234 @@
       
     
     
+    
+    <category term="性能优化" scheme="http://example.com/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>启动优化</title>
+    <link href="http://example.com/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96/"/>
+    <id>http://example.com/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96/</id>
+    <published>2023-02-19T13:30:06.000Z</published>
+    <updated>2023-02-20T13:29:29.729Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="性能优化" scheme="http://example.com/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>耗电优化</title>
+    <link href="http://example.com/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E8%80%97%E7%94%B5%E4%BC%98%E5%8C%96/"/>
+    <id>http://example.com/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E8%80%97%E7%94%B5%E4%BC%98%E5%8C%96/</id>
+    <published>2023-02-19T13:02:08.000Z</published>
+    <updated>2023-02-19T13:25:33.765Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="性能优化" scheme="http://example.com/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>卡顿优化</title>
+    <link href="http://example.com/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/"/>
+    <id>http://example.com/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/</id>
+    <published>2023-02-19T09:06:19.000Z</published>
+    <updated>2023-02-19T10:09:24.090Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="性能优化" scheme="http://example.com/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>自动释放池</title>
+    <link href="http://example.com/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E8%87%AA%E5%8A%A8%E9%87%8A%E6%94%BE%E6%B1%A0/"/>
+    <id>http://example.com/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E8%87%AA%E5%8A%A8%E9%87%8A%E6%94%BE%E6%B1%A0/</id>
+    <published>2023-02-18T11:33:56.000Z</published>
+    <updated>2023-02-19T07:20:22.840Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="内存管理" scheme="http://example.com/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>dealloc</title>
+    <link href="http://example.com/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/dealloc/"/>
+    <id>http://example.com/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/dealloc/</id>
+    <published>2023-02-18T10:31:44.000Z</published>
+    <updated>2023-02-18T11:33:32.878Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="内存管理" scheme="http://example.com/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>js的基础学习（二）</title>
+    <link href="http://example.com/2023/02/18/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
+    <id>http://example.com/2023/02/18/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/</id>
+    <published>2023-02-18T06:47:32.000Z</published>
+    <updated>2023-02-18T07:35:17.588Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="JavaScript" scheme="http://example.com/categories/JavaScript/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>js的基础学习（一）</title>
+    <link href="http://example.com/2023/02/15/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>http://example.com/2023/02/15/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/</id>
+    <published>2023-02-15T13:39:52.000Z</published>
+    <updated>2023-02-18T06:48:10.750Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;只记录js中特殊的写法&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="JavaScript" scheme="http://example.com/categories/JavaScript/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Pointer</title>
+    <link href="http://example.com/2023/02/15/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/TaggedPointer/"/>
+    <id>http://example.com/2023/02/15/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/TaggedPointer/</id>
+    <published>2023-02-14T16:36:47.000Z</published>
+    <updated>2023-02-23T16:57:21.793Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="内存管理" scheme="http://example.com/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>swift类的动态性</title>
+    <link href="http://example.com/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%B1%BB%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7/"/>
+    <id>http://example.com/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%B1%BB%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7/</id>
+    <published>2023-02-12T15:59:55.000Z</published>
+    <updated>2023-02-12T16:51:57.396Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>定时器</title>
+    <link href="http://example.com/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E5%AE%9A%E6%97%B6%E5%99%A8/"/>
+    <id>http://example.com/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E5%AE%9A%E6%97%B6%E5%99%A8/</id>
+    <published>2023-02-12T15:00:11.000Z</published>
+    <updated>2023-02-13T15:32:02.057Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="内存管理" scheme="http://example.com/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
     
     
   </entry>

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>iOS拍摄流程 |  ayer</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
+      
+    <link rel="alternate" href="/atom.xml" title="ayer" type="application/atom+xml">
+</head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-iOS学习/音视频学习/iOS拍摄流程"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  iOS拍摄流程
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/" class="article-date">
+  <time datetime="2021-06-23T08:55:17.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">3.2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">13 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>iOS相机拍摄所需框架为&lt;ACFoundation/AVFoundation.h&gt;，该框架中基本上包含了视频中所需的全部方法。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="拍摄的流程"><a href="#拍摄的流程" class="headerlink" title="拍摄的流程"></a>拍摄的流程</h2><h3 id="session-初始化"><a href="#session-初始化" class="headerlink" title="session 初始化"></a>session 初始化</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[AVCaptureSession alloc] init]</span><br></pre></td></tr></table></figure>
+
+<h3 id="Input初始化"><a href="#Input初始化" class="headerlink" title="Input初始化"></a>Input初始化</h3><ol>
+<li>device初始化</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//音频设备初始化，AVMediaTypeAudio替换为AVMediaTypeVideo即为视频，默认为后置摄像头</span><br><span class="line">[AVCaptureDeviceInput deviceInputWithDevice:[AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio] error:&amp;error];</span><br><span class="line">//视频设置初始化，详细版</span><br><span class="line">AVCaptureDeviceDiscoverySession *captureDeviceDiscoverySession =</span><br><span class="line">            [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[ AVCaptureDeviceTypeBuiltInWideAngleCamera ] mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];//发现所有后置视频设备的会话</span><br><span class="line">[[AVCaptureDeviceDiscoverySession devices] enumeratObjectsUsingBlock:^(AVCaptureDevice *camera, NSUInteger idx, BOOL *_Nonnull stop) &#123;</span><br><span class="line">            if (camera.position == AVCaptureDevicePositionBack) &#123;</span><br><span class="line">                backCamera = camera;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;];//遍历会话获取后置设备，可以对设备进行一些属性设置，例如曝光模式，但是，要调用lockForConfiguration:调用完之后使用unlockForConfiguration方法解锁，</span><br><span class="line">[AVCaptureDeviceInput deviceInputWithDevice:backCamera error:nil];//同样的方式初始化设备输入</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>然后通过<code>canAddInput</code>来判断是否能在会话中，通过<code>addInput</code>将input添加到会话中，视频要添加2个会话，视频输入以及语音输入</li>
+<li>如果要切换摄像头<ol>
+<li>在<code>session</code>的<code>beginConfiguration</code>和<code>commitConfiguration</code>之间重新设置摄像头，</li>
+<li><code>removeInput</code>删除原来的媒体设备输入</li>
+<li>获取后置的摄像头的设备<code>AVCaptureDevice</code></li>
+<li><code>[AVCaptureDeviceInput deviceInputWithDevice:swithToDevice error:**nil**];</code>重新设置摄像头，并将其添加到<code>session</code>中</li>
+<li><strong>注意</strong>，如果为前置摄像头，遍历会话中的<code>outputs</code>，将其输入和输出的连接会话<code>AVCaptureConnection</code>的视频镜像属性<code>videoMirrored</code>，设为<code>YES</code></li>
+</ol>
+</li>
+</ol>
+<h3 id="output初始化"><a href="#output初始化" class="headerlink" title="output初始化"></a>output初始化</h3><ol>
+<li><p><code>AVCaptureMovieFileOutput</code> 输出视频，</p>
+<ol>
+<li><p>只用初始化<code>AVCaptureMovieFileOutput</code>，将视频输出加到会话当中</p>
+</li>
+<li><p>调用<code>startRecordingToOutputFileURl:recordingDelegate:</code>处理输出的视频，通过调用<code>stopRecod</code>停止录屏</p>
+</li>
+<li><p>实现<code>AVCaptureFileOutputRecordingDelegate</code></p>
+<ol>
+<li><code>captureOutput:didStartRecordingToOutputFileAtURL:fromConnections:</code>开始写入视频文件时调用</li>
+<li><code>captureOutput:didFinishRecordingToOutputFileAtURL:fromConnections:error:</code>写入完成时调用</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>AVAssetWriter</code>输出数据，见第2节</p>
+</li>
+</ol>
+<h3 id="初始化预览层AVCaptureVideoPreviewLayer"><a href="#初始化预览层AVCaptureVideoPreviewLayer" class="headerlink" title="初始化预览层AVCaptureVideoPreviewLayer"></a>初始化预览层AVCaptureVideoPreviewLayer</h3><ol>
+<li>根据媒体会话初始化视图层，也就是预览层，该属性可以添加到相应图层的子层中</li>
+<li><code>[AVCaptureVideoPreviewLayer layerWithSession:self.captureSession];</code>获取一个预览图层</li>
+<li><code>addSublayer</code>加到要显示的视图图层内</li>
+</ol>
+<h3 id="开始录制"><a href="#开始录制" class="headerlink" title="开始录制"></a>开始录制</h3><ol>
+<li><code>[session StartRunning]</code>，会话开始，开始录制（每次录制都需要<code>StartRunning</code>）</li>
+</ol>
+<h2 id="AVAssetWriter实现拍摄"><a href="#AVAssetWriter实现拍摄" class="headerlink" title="AVAssetWriter实现拍摄"></a>AVAssetWriter实现拍摄</h2><h3 id="初始化视频-音频数据输出"><a href="#初始化视频-音频数据输出" class="headerlink" title="初始化视频/音频数据输出"></a>初始化视频/音频数据输出</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSDictionary *videoSetting = @&#123;(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)&#125;;//32BGRA像素格式，和后面要取的视频帧数据对应</span><br><span class="line">self.videoPutData = [[AVCaptureVideoDataOutput alloc] init];</span><br><span class="line">self.videoPutData.videoSettings = videoSetting;</span><br><span class="line"></span><br><span class="line">[[AVCaptureAudioDataOutput alloc] init];</span><br></pre></td></tr></table></figure>
+
+<p>在<code>canAddOutput</code>判断后，通过<code>addOutput</code>添加到session中</p>
+<h3 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h3><p>通过<code>setSampleBufferDelegate:queue: </code>设置应该调用回调的缓冲区委托和队列,获取视频流</p>
+<h3 id="配置AVAssetWriter"><a href="#配置AVAssetWriter" class="headerlink" title="配置AVAssetWriter"></a>配置AVAssetWriter</h3><ol>
+<li><p>配置并发队列，<code>dispatch_async</code>异步执行</p>
+</li>
+<li><p>在队列中配置<code>AVAssetWriter</code>，用<code>[AVAsswtWriter assWriterWithURL:文件输出地址 fileType:AVFileTypeMPEG4 error:&amp;error]</code>初始化<code>AVAssetWriter</code>;</p>
+</li>
+<li><p>配置详细参数，视频硬编码参数</p>
+<ol>
+<li><p>码率和帧率的设置</p>
+<ol>
+<li><p><code>AVVideoAverageBitRateKey</code>：指单位时间内处理的数据位数，单位是 b/s 。码率=视频文件大小/视频时长。数值越大，显示越精细</p>
+</li>
+<li><p><code>AVVideoMaxKeyFrameIntervalKey</code>：关键帧最大间隔，1为每个都是关键帧，数值越大压缩率越高，也就是文件越大（如果画面包含大量场景变换或迅速移动的动作或动画，那么减少关键帧距离将会提高图像的整体品质。一个较小的关键帧距离对应于一个较大的输出文件。注意减少了关键帧间距，注意增大比特率也就是码率，保证视频质量）</p>
+</li>
+<li><p><code>AVVideoProfileLevelKey</code>：H.264专用参数，代表画质级别，从低到高分贝为BP、EP、MP、HP</p>
+<ol>
+<li><p>而H264最大的优势就是低码率情况下提供高质量的视频图像，总的来说编码流程可以分为五部分：帧间和帧内预测（Estimation）、变换（Transform）和反变换、量化（Quantization）和反量化、环路滤波（Loop Filter）、熵编码（Entropy Coding）</p>
+</li>
+<li><p>H264为了满足不同设备不同场景的需要（比如直播注重实时性，存储注重压缩比）定义了多种编码层次也就是Profile，具体如下</p>
+<ol>
+<li><p><code>BaslineProfile</code>：支持I/P 帧，只支持无交错（Progressive）和CAVLC</p>
+</li>
+<li><p><code>Extended Profile</code>：支持I/P/B/SP/SI 帧，只支持无交错（Progressive）和CAVLC</p>
+</li>
+<li><p><code>MainProfile</code>：提供I/P/B 帧，支持无交错（Progressive）和交错（Interlaced），也支持CAVLC 和CABAC</p>
+</li>
+<li><p><code>High Profile</code>：在mainProfile 的基础上增加了8x8内部预测、自定义量化、 无损视频编码和更多的YUV 格式；</p>
+</li>
+<li><p>视频压缩很重要的一个就是帧间预测，也就是视频相邻的几帧有很大的相关性，变化不会太大，所以存在很多冗余信息，压缩要做的就是去除这些冗余信息。帧类型主要有以下几种</p>
+<ol>
+<li>I帧表示关键帧，这一帧保留完整的画面数据，解码时只需要本帧数据就可以完成</li>
+<li>P帧，前向预测帧，表示的是这一帧跟之前的一个关键帧（或P帧）的差别，解码时需要用之前的画面叠加上本帧定义的差别，生成最终画面。</li>
+<li>B帧是双向预测帧，也就是B帧记录的是本帧与前后帧的差别，要解码B帧，不仅要取得之前的画面，还要解码之后的画面，通过前后画面的与本帧数据的叠加取得最终的画面。B帧压缩率高，但是解码时比较耗费CPU 。</li>
+</ol>
+</li>
+<li><p><code>Profile</code> 越高，压缩比就越高，但是编码、解码时要求的设备性能也就越高，编码、解码的效率也就越低。</p>
+</li>
+<li><p>这里的<code>level</code>就是对每个<code>profile</code>的能力细分。</p>
+<ol>
+<li>实时直播</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">COPY低清Baseline Level 1.3</span><br><span class="line">标清Baseline Level 3</span><br><span class="line">半高清Baseline Level 3.1</span><br><span class="line">全高清Baseline Level 4.1</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>存储媒体</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">低清 Main Level 1.3</span><br><span class="line">标清 Main Level 3</span><br><span class="line">半高清 Main Level 3.1</span><br><span class="line">全高清 Main Level 4.1</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>高清存储</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">半高清 High Level 3.1</span><br><span class="line">全高清 High Level 4.1</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>iPad 支持：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Baseline Level 1-3.1</span><br><span class="line">Main Level 1-3.1</span><br><span class="line">High Level 1-3.1</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><code>AVVideoExpectedSourceFrameRateKey</code>：预期的源帧速率，不用于控制帧速率，作为提示提供给视频编码器的，如果使用率自动级别的AVVideoProfileLevelKey，或者源内容的帧率高于30fps，则应设置此项。如果没有指定的话，编码器可能必须丢弃帧以满足位流要求</p>
+</li>
+</ol>
+</li>
+<li><p>视频属性设置</p>
+<ol>
+<li><code>AVVideoCodecKey</code>:用于压缩视频的编码器的名称，这里用的是硬编码AVVideoCodecTypeH264</li>
+<li><code>AVVideoWidthKey</code>、AVVideoHeightKey：设定视频的宽高</li>
+<li><code>AVVideoScalingModeKey</code>：视频压缩填充的方式，AVVideoScalingModeResizeAspectFill</li>
+<li><code>AVVideoCompressionPropertiesKey</code>：视频压缩编码器，压缩的属性字典，即1中码率和帧率的设置</li>
+</ol>
+</li>
+<li><p>音频设置</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSDictionary *audioSetting =</span><br><span class="line">                @&#123;AVEncoderBitRatePerChannelKey : @(28000),//声道采样率</span><br><span class="line">                  AVFormatIDKey : @(kAudioFormatMPEG4AAC),//音频格式，在视频中也是mp4格式</span><br><span class="line">                  AVNumberOfChannelsKey : @(1),//声道数</span><br><span class="line">                  AVSampleRateKey : @(22050)&#125;;//采样率</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>初始化视频采集<code>AVAssetWriterInput</code>，采用方法<code>[AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSetting:视频设置]</code>，也用同样方式设置音频采集<code>AVAssetWriterInput</code></li>
+<li>对于视频采集，可以通过视频采集的transform来调整视频流的方向，横屏还是竖屏，拍摄完默认是横的，要调整transform属性，<code>self.writerVideoInput.transform = CGAffineTransformMakeRotation(-M_PI / 2.0);</code></li>
+<li>最后将视频采集和声音采集，通过<code>canAddInput</code>判断，<code>addInput</code>添加到创建的写入<code>AVAssetWrite</code>中</li>
+</ol>
+</li>
+</ol>
+<h3 id="代理实现"><a href="#代理实现" class="headerlink" title="代理实现"></a>代理实现</h3><p>实现<code>AVCaptureAudioDataOutSampleBufferDelegate</code>、<code>AVCaptureVideoDataOutSampleBufferDelegate</code>，具体是在<code>captureOutput:didOutputSampleBuffer:fromConnection:</code>方法中实现（每当输出捕获和输出新视频帧时，委托将接收此消息，并按照其<code>videoSetting</code>属性指定对其进行解码或重新编码，该方法在输出的<code>sampleBufferCallbackQueue</code>属性指定的调度队列上调用，为周期性的调用）</p>
+<ol>
+<li><p><code>CMSampleBufferRef</code>，是相关媒体流数据，可以获取媒体流的类型为语音还是视频流以及资源的时间戳</p>
+</li>
+<li><p>在媒体流属性为视频里(确保写入的第一帧为视频图像，保证不会出现有声音但无画面的情况)，调用（AVAssetWriter）的<code>startWriting</code>方法开始写入，从视频流中获取最早时间戳，调用<code>startSessionAtSourceTime</code>，开始写入</p>
+<ol>
+<li>视频和音频开始写入的判断<code>canWritting</code>（Bool）放在<code>startSessionAtSourceTime</code>下，会导致视频前几帧相同，因为调用<code>startSessionAtSourceTime````就开始录制了，所以要放在startsessionAtSourceTime</code>的上面</li>
+</ol>
+</li>
+<li><p>配置中初始化的视频采集以及声音采集<code>AVAssetWriterInput</code>，在其属性<code>readyForMoreMediaData</code>（输入准备好接收更多数据），调用apppendSampleBuffer:方法，将<code>CMSampleBufferRef</code>添加进去</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate method</span><br><span class="line">- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection &#123;</span><br><span class="line">    if (!self.videoRecording) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    CMFormatDescriptionRef desMedia = CMSampleBufferGetFormatDescription(sampleBuffer);</span><br><span class="line">    CMMediaType mediaType = CMFormatDescriptionGetMediaType(desMedia);</span><br><span class="line"></span><br><span class="line">    if (mediaType == kCMMediaType_Video) &#123;</span><br><span class="line">        if (!self.canWritting) &#123;</span><br><span class="line">            [self.writer startWriting];</span><br><span class="line"></span><br><span class="line">            CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);</span><br><span class="line"></span><br><span class="line">            self.canWritting = YES;</span><br><span class="line">            [self.writer startSessionAtSourceTime:timestamp];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    if (self.canWritting) &#123;</span><br><span class="line">        if (mediaType == kCMMediaType_Video) &#123;</span><br><span class="line">            if (self.writerVideoInput.readyForMoreMediaData) &#123;</span><br><span class="line">                BOOL success = [self.writerVideoInput appendSampleBuffer:sampleBuffer];</span><br><span class="line">                if (!success) &#123;</span><br><span class="line">                    LOG_DEBUG(@&quot;video write failed&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; else if (mediaType == kCMMediaType_Audio &amp;&amp; self.canWritting) &#123;</span><br><span class="line">            if (self.writerAudioInput.readyForMoreMediaData) &#123;</span><br><span class="line">                BOOL success = [self.writerAudioInput appendSampleBuffer:sampleBuffer];</span><br><span class="line">                if (!success) &#123;</span><br><span class="line">                    LOG_DEBUG(@&quot;audio write failed&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="录制完成"><a href="#录制完成" class="headerlink" title="录制完成"></a>录制完成</h3><p>AVCaptureSession的startRunning方法是个耗时操作，如果在主线程调用的话会卡UI。完成写入，AVAssetWriter的状态为正在写入，则调用<code>finishWritingWithCompletionHandler:</code>完成数据的写入</p>
+<h2 id="AVAssetWriter实现视频压缩"><a href="#AVAssetWriter实现视频压缩" class="headerlink" title="AVAssetWriter实现视频压缩"></a>AVAssetWriter实现视频压缩</h2><h3 id="传统视频压缩的方式"><a href="#传统视频压缩的方式" class="headerlink" title="传统视频压缩的方式"></a>传统视频压缩的方式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:inputURL options:nil];</span><br><span class="line">AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetMediumQuality];//视频压缩的类型，还有AVAssetExportPresset960x540具体压缩的分辨率</span><br><span class="line">   exportSession.outputURL = outputURL;</span><br><span class="line">   exportSession.outputFileType = AVFileTypeMPEG4;</span><br><span class="line">   exportSession.shouldOptimizeForNetworkUse = YES;</span><br><span class="line">   [exportSession exportAsynchronouslyWithCompletionHandler:^(void) &#123;</span><br><span class="line">       switch(exportSession.status) &#123;</span><br><span class="line">         case AVAssetExportSessionStatusCompleted://压缩完成</span><br><span class="line">         case AVAssetExportSessionStatusFailed://压缩失败</span><br><span class="line">         default:</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;];</span><br></pre></td></tr></table></figure>
+
+<p>绝大多数的情况下可以通过传统的压缩方式对视频进行压缩。为了获得最大的视频压缩率(最低的码率)最好的方式是</p>
+<ol>
+<li>指定high的<code>profile</code></li>
+<li>降低帧率</li>
+<li>适当降低分辨率</li>
+</ol>
+<p>但是传统的压缩方式不支持指定profile，帧率和码率，所以只有通过其他方式来实现。可以在相机录像时需要将拍摄的每一帧<code>sampleBuffer</code>（音频或者视频）传给<code>AVassetWriter</code>，并制定压缩参数。</p>
+<h3 id="AVAassetWriter实现视频压缩"><a href="#AVAassetWriter实现视频压缩" class="headerlink" title="AVAassetWriter实现视频压缩"></a>AVAassetWriter实现视频压缩</h3><h4 id="流程图："><a href="#流程图：" class="headerlink" title="流程图："></a>流程图：</h4><p><img src="1.png" alt="img"></p>
+<h4 id="代码的实现"><a href="#代码的实现" class="headerlink" title="代码的实现"></a>代码的实现</h4><ol>
+<li>初始化<code>reader</code>，<code>writer</code>，<code>video/audio track</code>, <code>video/audio input</code>, <code>video/audio output</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">- (void)comppressVideoUrl:(NSURL *) videoUrl withOutputUrl:(NSURL *)outputUrl &#123;</span><br><span class="line">    AVAsset *asset = [AVAsset assetWithURL:videoUrl];</span><br><span class="line">    AVAssetReader *reader = [AVAssetReader assetReaderWithAsset:asset error:nil];</span><br><span class="line">    AVAssetWriter *writer = [AVAssetWriter assetWriterWithURL:outputUrl fileType:AVFileTypeMPEG4 error:nil];</span><br><span class="line">    </span><br><span class="line">    AVAssetTrack *videoTrack = [[asset tracksWithMediaType:AVMediaTypeVideo] firstObject];//获取轨道，一般视频至少两个轨道，一个播放声音的一个播放画面的</span><br><span class="line">    </span><br><span class="line">    //视频输出源</span><br><span class="line">    NSDictionary *videoOuptSetting = @&#123;(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)&#125;;</span><br><span class="line">    AVAssetReaderTrackOutput *videoOutput = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:videoTrack outputSettings:videoOuptSetting];</span><br><span class="line">    </span><br><span class="line">    //视频采集输入设置，</span><br><span class="line">    // 码率和帧率设置</span><br><span class="line">    NSDictionary *compressionProperties = @&#123;</span><br><span class="line">        AVVideoAverageBitRateKey : @(DSScreenWidth() * DSScreenHeight()*12),</span><br><span class="line">        AVVideoExpectedSourceFrameRateKey : @(15),</span><br><span class="line">        AVVideoMaxKeyFrameIntervalKey : @(10),</span><br><span class="line">        AVVideoProfileLevelKey : AVVideoProfileLevelH264BaselineAutoLevel</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    //视频属性</span><br><span class="line">    NSDictionary *videoSetting = @&#123;</span><br><span class="line">        AVVideoCodecKey : AVVideoCodecTypeH264,</span><br><span class="line">        AVVideoWidthKey : @(DSScreenHeight() * 2),</span><br><span class="line">        AVVideoHeightKey : @(DSScreenWidth() * 2),</span><br><span class="line">        AVVideoScalingModeKey : AVVideoScalingModeResizeAspectFill,</span><br><span class="line">        AVVideoCompressionPropertiesKey : compressionProperties</span><br><span class="line">    &#125;;</span><br><span class="line">    AVAssetWriterInput *videoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:videoSetting];</span><br><span class="line">  //注意要设置视频的方向，每个视频都有方向，这里先获取视频的方向</span><br><span class="line">  int degress = [self degressFromVideoFileWithAsset:asset];</span><br><span class="line">    videoInput.transform = CGAffineTransformMakeRotation(M_PI * (degress / 180.0));</span><br><span class="line">    if([reader canAddOutput:videoOutput])&#123;</span><br><span class="line">        [reader addOutput:videoOutput];</span><br><span class="line">    &#125;</span><br><span class="line">    if ([writer canAddInput:videoInput]) &#123;</span><br><span class="line">        [writer addInput:videoInput];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //音频部分</span><br><span class="line">  //音频输出设置，和视频拍摄不一样，视频拍摄时，指点了缓存流的格式，而文件压缩的时候则没有因此视频和音频一定要设置输出格式</span><br><span class="line">  NSDictionary *readerOutputSettings = @&#123;AVFormatIDKey: @(kAudioFormatLinearPCM)&#125;;</span><br><span class="line">    AVAssetTrack *audioTrack = [[asset tracksWithMediaType:AVMediaTypeAudio] firstObject];</span><br><span class="line">    AVAssetReaderTrackOutput *audioOutput = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:audioTrack outputSettings:readerOutputSettings];</span><br><span class="line">    //声音采集设置</span><br><span class="line">    NSDictionary *audioSetting =</span><br><span class="line">        @&#123;AVEncoderBitRatePerChannelKey : @(28000),</span><br><span class="line">          AVFormatIDKey : @(kAudioFormatMPEG4AAC),</span><br><span class="line">          AVNumberOfChannelsKey : @(1),</span><br><span class="line">          AVSampleRateKey : @(22050)&#125;;</span><br><span class="line">    AVAssetWriterInput *audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioSetting];</span><br><span class="line">    if ([reader canAddOutput:audioOutput]) &#123;</span><br><span class="line">        [reader addOutput:audioOutput];</span><br><span class="line">    &#125;</span><br><span class="line">    if ([writer canAddInput:audioInput]) &#123;</span><br><span class="line">        [writer addInput:audioInput];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>获取视频的方向</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/// 获取视频的方向</span><br><span class="line">+ (int)degressFromVideoFileWithAsset:(AVAsset *)asset &#123;</span><br><span class="line">    int degress = 0;</span><br><span class="line">    NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];</span><br><span class="line">    if ([tracks count] &gt; 0) &#123;</span><br><span class="line">        AVAssetTrack *videoTrack = [tracks objectAtIndex:0];</span><br><span class="line">        CGAffineTransform t = videoTrack.preferredTransform;</span><br><span class="line">        if (t.a == 0 &amp;&amp; t.b == 1.0 &amp;&amp; t.c == -1.0 &amp;&amp; t.d == 0) &#123;</span><br><span class="line">            // Portrait</span><br><span class="line">            degress = 90;</span><br><span class="line">        &#125; else if (t.a == 0 &amp;&amp; t.b == -1.0 &amp;&amp; t.c == 1.0 &amp;&amp; t.d == 0) &#123;</span><br><span class="line">            // PortraitUpsideDown</span><br><span class="line">            degress = 270;</span><br><span class="line">        &#125; else if (t.a == 1.0 &amp;&amp; t.b == 0 &amp;&amp; t.c == 0 &amp;&amp; t.d == 1.0) &#123;</span><br><span class="line">            // LandscapeRight</span><br><span class="line">            degress = 0;</span><br><span class="line">        &#125; else if (t.a == -1.0 &amp;&amp; t.b == 0 &amp;&amp; t.c == 0 &amp;&amp; t.d == -1.0) &#123;</span><br><span class="line">            // LandscapeLeft</span><br><span class="line">            degress = 180;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return degress;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>开始读写</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">COPY[reader startReading];</span><br><span class="line">[writer startWriting];</span><br><span class="line">[writer startSessionAtSourceTime:KCMTimeZero];</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>设置写入的队列，注意音频、视频写入的队列要一样的，并且是FIFO队列。因为是写入同一个writer，如果用并发，会出现reader的状态不对，导致崩溃</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dispatch_queue_t writeQueueCreate = dispatch_queue_create(&quot;writeQueueCreate&quot;, DISPATCH_QUEUE_SERIAL);</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>视频逐帧写入</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">dispatch_group_t group = dispatch_group_create();</span><br><span class="line">dispatch_group_enter(group);</span><br><span class="line">[videoInout requestMediaDataWhenReadyOnQueue:  usingBlock:^&#123;</span><br><span class="line">  while ([videoInput isReadyForMoreMediaData]) &#123;</span><br><span class="line">    CMSampleBufferRef sampleBuffer;</span><br><span class="line">    if ([reader status] == AVAssetReaderStatusReading &amp;&amp; (sampleBuffer = [videoOutput copyNextSampleBuffer]))&#123;</span><br><span class="line">      BOOL result = [videoInput appendSampleBuffer:sampleBuffer];</span><br><span class="line">      CFRelease(sampleBuffer);</span><br><span class="line">      if (!result) &#123;</span><br><span class="line">        [reader cancelReading];</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    [videoInput markAsFinished];</span><br><span class="line">    dispatch_group_leave(group);</span><br><span class="line">    break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>音频逐帧写入</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">dispatch_group_enter(group);</span><br><span class="line">[audioInout requestMediaDataWhenReadyOnQueue:  usingBlock:^&#123;</span><br><span class="line">  while ([audioInput isReadyForMoreMediaData]) &#123;</span><br><span class="line">    CMSampleBufferRef sampleBuffer;</span><br><span class="line">    if ([reader status] == AVAssetReaderStatusReading &amp;&amp; (sampleBuffer = [audioOutput copyNextSampleBuffer]))&#123;</span><br><span class="line">      BOOL result = [audioInput appendSampleBuffer:sampleBuffer];</span><br><span class="line">      CFRelease(sampleBuffer);</span><br><span class="line">      if (!result) &#123;</span><br><span class="line">        [reader cancelReading];</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    [audioInput markAsFinished];</span><br><span class="line">    dispatch_group_leave(group);</span><br><span class="line">    break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>完成压缩</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">dispatch_group_notify(group,dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAYLT,0),^&#123;</span><br><span class="line">  if ([reader status] == AVAssetReaderStatusReading)&#123;</span><br><span class="line">    [reader cancelReading];</span><br><span class="line">  &#125;</span><br><span class="line">  switch (writer.status) &#123;</span><br><span class="line">    case AVAssetWriterStatusWriting:</span><br><span class="line">      &#123;</span><br><span class="line">        [writer finishWritingWithCompletionHandler:^&#123;</span><br><span class="line">          </span><br><span class="line">        &#125;];</span><br><span class="line">        break;</span><br><span class="line">      &#125;</span><br><span class="line">    default:</span><br><span class="line">      break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            iOS视频采集的格式类型
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E5%87%A0%E4%BD%95%E5%AD%A6/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">图层几何学</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2021-2023
+        <i class="ri-heart-fill heart_icon"></i> jingbo
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="ayer"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/photos">相册</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+ 
+<script src="/js/clickLove.js"></script>
+ 
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+ 
+<script src="/js/dz.js"></script>
+ 
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707022&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"show":true,"jsonPath":"ak12_3302"},"display":{"position":"right","width":150,"height":300,"vOffset":100},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+
+</html>

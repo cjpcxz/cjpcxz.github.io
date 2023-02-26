@@ -142,460 +142,7 @@
     
     
     <article
-  id="post-其他/16677424889825"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/11/06/%E5%85%B6%E4%BB%96/16677424889825/" class="article-date">
-  <time datetime="2022-11-06T13:48:08.983Z" itemprop="datePublished">2022-11-06</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="练习一-喜玛拉广告去除"><a href="#练习一-喜玛拉广告去除" class="headerlink" title="练习一 喜玛拉广告去除"></a>练习一 喜玛拉广告去除</h1><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
-<li><code>Revel</code>中查看广告的图层信息，通过Cycript<code>[#0x12333 removeFromSuperlayer]</code>只能暂时将广告屏蔽</li>
-<li>用<code>CLutch</code>脱壳应用，<code>class-dump</code>指令拿到头文件信息，查看相关视图图层的信息，通过hook的方式去去除广告<h1 id="练习二，桌面更新数字去除"><a href="#练习二，桌面更新数字去除" class="headerlink" title="练习二，桌面更新数字去除"></a>练习二，桌面更新数字去除</h1></li>
-</ol>
-<ul>
-<li>iOS桌面为<code>springboard</code>，位置在<code>/System/Library/CoreServices/SpringBoard.app</code></li>
-<li><code>springboard</code>无法通过<code>revel</code>的方式查看，需要用<code>cycript</code>的方式查看</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-其他/16676513774655"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/11/05/%E5%85%B6%E4%BB%96/16676513774655/" class="article-date">
-  <time datetime="2022-11-05T12:29:37.466Z" itemprop="datePublished">2022-11-05</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="用theos去hook"><a href="#用theos去hook" class="headerlink" title="用theos去hook"></a>用theos去hook</h1><ol>
-<li>安装threos<a href="media/16676513774655/07-theos%E7%9A%84%E5%89%AF%E6%9C%AC.pdf">theos安装教程</a></li>
-<li><code>nic.pl</code>指令选择创建<code>iphone/tweak</code>项目,（自己的bundId，和越狱app的bundId）<ol>
-<li>在生成的Makefile文件内，增加端口信息<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export THEOS_DEVICE_IP = localhost</span><br><span class="line">export THEOS_DEVICE_PORT = 100010</span><br><span class="line">include $(THEOS)/makefiles/common.mk</span><br><span class="line">TWEAK_NAME = tingweak</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>THES_DEVICE_IP</code>,<code>THEOS_DEVICE_PORT</code>可以配置到.bash_profile的文件下,全局配置</li>
-</ul>
-</li>
-<li>实际在Tweak.x文件内进行hook，找到相应的view，然后写hook后的方法.<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  #import &lt;UIKit/UIView.h&gt;</span><br><span class="line"> %hook XMNowPlayingADView</span><br><span class="line">   - (id)initWithFrame:(struct CGRect)arg1 &#123;</span><br><span class="line">       return nil;</span><br><span class="line">   &#125;</span><br><span class="line"> %end</span><br><span class="line"> ///%orig(arg1,arg2);调用原始方法</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><code>make</code> 自动编译makefile中的文件</li>
-<li><code>make package</code>打包成越狱插件</li>
-<li><code>make install</code>默认安装到手机上</li>
-<li>手机重启，则会看到修改后的程序，注入的包位置在<code>/library/MobileSubstrate/DynamicLibraries</code>位置，删除，则无效果了（Cydia中也有该插件）<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2></li>
-</ol>
-</li>
-<li>在生成的Tweak.x文件中的方法，一般均会被认为是要hook替换的，如果没有的话，则不会生效。如果是新方法的话，需要在方法前加<code>%new</code></li>
-<li><code>%orig</code>为原始方法</li>
-<li>资源文件，<ol>
-<li>内部图片，则放到<code>对应应用内</code>,</li>
-<li>如果加载自己的，则用<code>imageWithContentsOfFile:</code>加载图片路径，例如，<code>/text.png</code>则在文件根目录</li>
-<li>在theos中直接打包资源文件，在中，构建一个<code>layout</code>文件夹(实际放在<code>根目录</code>下)，将资源放进去，一般会放到<code>layout/Library/PreferenceLoader/Preferences</code>目录下（偏好设置），其他的可以放到<code>layout/Library/Caches</code>文件中</li>
-</ol>
-</li>
-<li>注意<code>theos</code>将其他类型认为是id，因此直接用<code>self.view</code>是会报错的，要用<code>[self view]</code></li>
-<li>可以像OC项目一样,多文件开发，建立相关的.h和.m文件，然后在<code>Tweak.x</code>文件中按正常的#import导入(注意文件夹)即可，此外在<code>Makefile</code>中要指定编译的文件<code>tweaksp_FILES = xxx/Tweak.x xxx/xxxx.m</code>，也可以通过<code>tweaksp_FILES = xxx/*.x</code>导入，但是无法用<code>xxx/**/*.x</code>的方式,必须指定文件夹</li>
-<li>生成<code>Realease</code>版本，<code>make package debug=0</code></li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-其他/16675799552760"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/11/05/%E5%85%B6%E4%BB%96/16675799552760/" class="article-date">
-  <time datetime="2022-11-04T16:39:15.276Z" itemprop="datePublished">2022-11-05</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id><a href="#" class="headerlink" title></a></h1> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-底层原理/Mach-o文件"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/11/03/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Mach-o%E6%96%87%E4%BB%B6/" class="article-date">
-  <time datetime="2022-11-03T14:41:23.893Z" itemprop="datePublished">2022-11-03</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="Mach-o文件"><a href="#Mach-o文件" class="headerlink" title="Mach-o文件"></a>Mach-o文件</h1><ul>
-<li>一个Mach-O文件包含3个主要区域<ul>
-<li>Header <ul>
-<li>文件类型、目标架构类型等</li>
-</ul>
-</li>
-<li>Load commands<ul>
-<li>描述文件在虚拟内存中的逻辑结构、布局</li>
-</ul>
-</li>
-<li>Raw segment data<ul>
-<li>在Load commands中定义的Segment的原始数据<br><img src="16674864838934/16674865436160.jpg"><h2 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h2><h3 id="file："><a href="#file：" class="headerlink" title="file："></a>file：</h3></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>查看Mach-O的文件类型</li>
-<li><code>file  文件路径</code><h3 id="otool："><a href="#otool：" class="headerlink" title="otool："></a>otool：</h3></li>
-<li>查看Mach-O特定部分和段的内容<ul>
-<li><code>otool -L 文件路径</code>查看依赖的库</li>
-<li><code>otool -h 文件路径</code>mach中head的信息</li>
-<li><code>otool -l 文件路径</code>mach中loadcommand的信息<h3 id="dyld"><a href="#dyld" class="headerlink" title="dyld"></a>dyld</h3></li>
-</ul>
-</li>
-<li><code>dyld</code>是mach-o文件（MH_DYLINKER），但是它也能加载mach-o文件，但是能加载<ul>
-<li><code>MH_EXEUTE</code>，可执行文件</li>
-<li><code>MH_DYLIB</code>,动态库</li>
-<li><code>MH_BUNDLE</code></li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-其他/16673137289641"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/11/01/%E5%85%B6%E4%BB%96/16673137289641/" class="article-date">
-  <time datetime="2022-11-01T14:42:08.964Z" itemprop="datePublished">2022-11-01</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="Hopper"><a href="#Hopper" class="headerlink" title="Hopper"></a>Hopper</h1><h2 id="Mach-o"><a href="#Mach-o" class="headerlink" title="Mach-o"></a>Mach-o</h2><ul>
-<li>机器码可以反编译成汇编，但是汇编很难反编译成OC<h2 id="ios系统Mach-o文件在手机上"><a href="#ios系统Mach-o文件在手机上" class="headerlink" title="ios系统Mach-o文件在手机上"></a>ios系统Mach-o文件在手机上</h2></li>
-<li>从iOS3.1开始，为了提高性能，绝大部分的系统动态库文件都打包存放到了一个缓存文件中（<code>dyld shared cache</code>）<ol>
-<li>缓存文件路径：<code>/System/Library/Caches/com.apple.dyld/dyld_shared_cache_armX</code></li>
-<li>绝大部分的系统动态库都放在共享缓存中，一个文件中，（多个动态库<code>mach</code>会有多个描述信息，因此降低内存，放到了一个文件中，也就是mach文件中<code>dlyld</code>(命令在/usr/lib中)加载指令(通过这个指令去加载动态库)，只会加载到一处）</li>
-<li>用<code>[[NSBundle bundleWithPath:&quot;/System/Library/Frameworks/UIKit.framework&quot;] load]</code>去加载动态库，实际上是调用2.中<code>dlyld</code>去判断是否在缓存中，有则去1.位置处的共享缓存去加载<code>UIKit.framework</code></li>
-<li><a target="_blank" rel="noopener" href="https://opensource.apple.com/tarballs/dyld/">dyld源码 </a></li>
-<li><code>dlyld</code>中的<code>dsc_extractor</code>文件可以，将1中缓存文件抽取出压缩在里面的库<ol>
-<li>先用<code>clang++</code>编译,`clang++ -o dsc_extractor dsc_extractor.cpp</li>
-<li><code>/dsc_extractor dyld_shared_cache_armv7s armv7s</code>所有动态库在呵rmv7s文件夹中<br>`</li>
-</ol>
-</li>
-</ol>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-其他/16672327206592"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/11/01/%E5%85%B6%E4%BB%96/16672327206592/" class="article-date">
-  <time datetime="2022-10-31T16:12:00.659Z" itemprop="datePublished">2022-11-01</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="class-dump"><a href="#class-dump" class="headerlink" title="class-dump"></a>class-dump</h1><pre><code>-它的作用就是把Mach-O文件的class信息给dump出来（把类信息给导出来），生成对应的.h头文件
-</code></pre>
-<hr>
-<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><ul>
-<li>将命令放大/usr/local/bin目录下(mac下不能放到/usr/bin下)</li>
-<li><code>class-dump  -H  Mach-O文件路径  -o  头文件存放目录</code></li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-其他/16670594766148"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/10/30/%E5%85%B6%E4%BB%96/16670594766148/" class="article-date">
-  <time datetime="2022-10-29T16:04:36.615Z" itemprop="datePublished">2022-10-30</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id><a href="#" class="headerlink" title></a></h1> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-其他/16670400106477"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/10/29/%E5%85%B6%E4%BB%96/16670400106477/" class="article-date">
-  <time datetime="2022-10-29T10:40:10.648Z" itemprop="datePublished">2022-10-29</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
-<li>ssh <a href="mailto:&#x72;&#111;&#x6f;&#x74;&#64;&#49;&#57;&#x32;&#46;&#x31;&#x36;&#56;&#x2e;&#x31;&#46;&#x31;&#52;">&#x72;&#111;&#x6f;&#x74;&#64;&#49;&#57;&#x32;&#46;&#x31;&#x36;&#56;&#x2e;&#x31;&#46;&#x31;&#52;</a>,跳转到指定ip的命令</li>
-<li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
-</ul>
-<ol>
-<li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
-<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#111;&#x6f;&#x74;&#x40;&#49;&#x39;&#50;&#46;&#49;&#x36;&#56;&#x2e;&#x31;&#x2e;&#49;&#x34;">&#x72;&#111;&#x6f;&#x74;&#x40;&#49;&#x39;&#50;&#46;&#49;&#x36;&#56;&#x2e;&#x31;&#x2e;&#49;&#x34;</a>，追加到当前ip服务器授权文件的尾部</li>
-</ul>
-</li>
-<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#114;&#x6f;&#111;&#x74;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#46;&#x31;&#x2e;&#49;&#x34;">&#114;&#x6f;&#111;&#x74;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#46;&#x31;&#x2e;&#49;&#x34;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
-<li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
-</ul>
-</li>
-</ol>
-<ul>
-<li>chmod 755 ~/.ssh 给文件夹赋予权限，755含义<ul>
-<li>读（r=4），写（w=2），执行（x=1）</li>
-<li>文件所有者可读可写可执行                                   –7</li>
-<li>与文件所有者同属一个用户组的其他用户可读可执行                 –5 </li>
-<li>其它用户组可读可执行                                       –5<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2></li>
-</ul>
-</li>
-<li>每个端口都有个端口号，（范围是0～65535，公2^16）</li>
-<li>21端口，FTP服务</li>
-<li>80端口，http服务</li>
-<li>22端口，ssh服务<h2 id="通过USB进行SSH登录"><a href="#通过USB进行SSH登录" class="headerlink" title="通过USB进行SSH登录"></a>通过USB进行SSH登录</h2></li>
-<li>默认会用网络登录，USB登录的方式是，先用SSH登录MAC上的10010端口(非保留端口均可)，在通过usbmuxd连接22端口</li>
-<li>将iPhone的22端口（SSH端口）映射到Mac本地的10010端口</li>
-<li>用python脚本，将mac上10010映射到22，python3 tcprelay.py -t 22:10010</li>
-<li>ssh root@localhost -p 10010,直接连接本地的10010接口</li>
-<li>scp -P 10010 <del>/.ssh/id_rsa.pub root@localhost:</del>,拷贝的方法</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-其他/16629071383706"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/09/11/%E5%85%B6%E4%BB%96/16629071383706/" class="article-date">
-  <time datetime="2022-09-11T14:38:58.371Z" itemprop="datePublished">2022-09-11</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h1><ul>
-<li>flutter run –no-sound-null-safety  解决flutter插件旧版本兼容问题</li>
-<li>flutter create –template=package hello 创建pakcage</li>
-<li>flutter create -t module flutter_module 创建fluttermodule</li>
-<li>flutter create example 创建flutter项目<h1 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h1></li>
-<li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
-<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h1 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h1></li>
-<li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS动画学习/详解iOS的presentViewController"
+  id="post-iOS学习/多线程/读写锁"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -606,8 +153,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2021/07/23/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E8%AF%A6%E8%A7%A3iOS%E7%9A%84presentViewController/"
-    >详解iOS的presentViewController</a> 
+  <a class="article-title" href="/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E8%AF%BB%E5%86%99%E9%94%81/"
+    >读写锁</a> 
 </h2>
  
 
@@ -615,11 +162,11 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2021/07/23/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E8%AF%A6%E8%A7%A3iOS%E7%9A%84presentViewController/" class="article-date">
-  <time datetime="2021-07-23T15:11:44.000Z" itemprop="datePublished">2021-07-23</time>
+      <a href="/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E8%AF%BB%E5%86%99%E9%94%81/" class="article-date">
+  <time datetime="2023-02-12T09:28:35.000Z" itemprop="datePublished">2023-02-12</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
+    <a class="article-category-link" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
   </div>
    
     </div>
@@ -627,62 +174,1075 @@
     <div class="article-entry" itemprop="articleBody">
        
   <blockquote>
-<p>iOS中显示ViewController的方式有两种push和modal，modal也叫模态，模态显示VC是iOS的重要特性之一，其主要用于有以下场景：</p>
-<ol>
-<li>收集用户输入信息 </li>
-<li> 临时呈现一些内容 </li>
-<li>临时改变工作模式 </li>
-<li>相应设备方向变化（用于针对不同方向分别是想两个ViewController的情况）</li>
-<li> 显示一个新的view层级</li>
-</ol>
-<p>这些场景都会暂时中断APP的正常执行流程，主要作用是收集信息以及显示一些重要的提示等。当VCA模态的弹出了VCB，那么VCA就是<code>presenting view controller</code>，VCB就是<code>presented view controller</code></p>
-</blockquote>
-<h3 id="ModalPresentationStyle-amp-Presentation-Context"><a href="#ModalPresentationStyle-amp-Presentation-Context" class="headerlink" title="ModalPresentationStyle &amp; Presentation Context"></a>ModalPresentationStyle &amp; Presentation Context</h3><h4 id="ModalPresentationStyle"><a href="#ModalPresentationStyle" class="headerlink" title="ModalPresentationStyle"></a>ModalPresentationStyle</h4><p>​        <code>presented VC </code>的<code>modalPresentationStyle</code>属性决定了此次<code>presentation</code>的行为方式及UIKit寻找<code>presentation context</code>的方法，iOS提供了以下几种常用的<code>presentation style</code></p>
-<ol>
-<li><p><strong>UIModalPresentationFullScreen</strong></p>
-<p>UIKit默认的<code>presentation style</code>。 使用这种模式时，<code>presented VC</code>的宽高与屏幕相同，并且UIKit会直接使用<code>rootViewController</code>做为<code>presentation context</code>，在此次presentation完成之后，UIKit会将<code>presentation context及其子VC</code>都移出UI栈，这时候观察VC的层级关系，会发现UIWindow下只有<code>presented VC</code>（视图层级下UIWindow上只有presented VC）.</p>
-</li>
-<li><p><strong>UIModalPresentationCurrentContext</strong></p>
-<p>使用这种方式<code>present VC</code>时，<code>presented VC</code>的宽高取决于<code>presentation context</code>的宽高，并且UIKit会寻找属性<code>definesPresentationContext</code>为YES的VC作为<code>presentation context</code> 。当此次<code>presentation</code>完成之后，<code>presentation context</code>及其子VC都将被暂时移出当前的UI栈。</p>
-</li>
-<li><p><strong>UIModalPresentationCustom</strong></p>
-<p>自定义模式，需要实现UIViewControllerTransitioningDelegate的相关方法，并将presented VC的transitioningDelegate 设置为实现了UIViewControllerTransitioningDelegate协议的对象。</p>
-</li>
-<li><p><strong>UIModalPresentationOverFullScreen</strong></p>
-<p>与<code>UIModalPresentationFullScreen</code>的唯一<strong>区别</strong>在于，UIWindow下除了<code>presented VC</code>，还有其他正常的VC层级关系。也就是说该模式下，UIKit以<code>rootViewController</code>为<code>presentation context</code>，但presentation完成之后不会将<code>rootViewController移出当前的UI栈</code>。</p>
-</li>
-<li><p><strong>UIModalPresentationOverCurrentContext</strong></p>
-<p>寻找<code>presentation context</code>的方式与<code>UIModalPresentationCurrentContext</code>相同，所不同的是<code>presentation</code>完成之后，不会将<code>context及其子VC移出当前UI栈</code>。但是，这种方式只<strong>适用于transition style为UIModalTransitionStyleCoverVertical的情况</strong>(UIKit默认就是这种transition style)。其他transition style下使用这种方式将会触发异常。</p>
-</li>
-<li><p><strong>UIModalPresentationBlurOverFullScreen</strong></p>
-<p><code>presentation</code>完成之后，如果<code>presented VC</code>的背景有透明部分，会看到presented VC下面的VC会变得模糊，其他与<code>UIModalPresentationOverFullScreen</code>模式没有区别。</p>
-</li>
-<li><p><strong>UIModalPresentationPageSheet</strong></p>
-<p>在常规型设备（大屏手机，例如plus系列以及iPad系列）的水平方向，<code>presented VC</code>的高为当前屏幕的高度，宽为该设备竖直方向屏幕的宽度，其余部分用透明背景做填充。对于紧凑型设备（小屏手机）的水平方向及所有设备的竖直方向，其显示效果与<code>UIModalPresentationFullScreen</code>相同。</p>
-</li>
-<li><p><strong>UIModalPresentationFormSheet</strong></p>
-<p>在常规型设备的水平方向，<code>presented VC</code>的宽高均小于屏幕尺寸，其余部分用透明背景填充。对于紧凑型设备的水平方向及所有设备的竖直方向，其显示效果与<code>UIModalPresentationFullScreen</code>相同</p>
-</li>
-</ol>
-<p><code>UIModalPresentationFullScreen</code>、<code>UIModalPresentationCurrentContext</code>在转场完成后会将<code>context及其子VC移出当前UI栈</code>,因此转场结束后是无法看到presenting的视图的，而其他情况下的style是可以看到的</p>
-<h4 id="presentation-context"><a href="#presentation-context" class="headerlink" title="presentation context"></a>presentation context</h4><blockquote>
-<p><code>presentation context</code>是指为本次<code>present</code>提供上下文环境的类，需要指出的是，<code>presenting VC</code>通常并不是<code>presentation context</code></p>
-</blockquote>
-<p>​        当我们需要<code>present VC</code>的时候，除非我们指定了<code>context</code>，否则UIKit会优先选择<code>presenting VC</code>所属的容器类做为<code>presentation context</code>，如果没有容器类，那么会选择<code>rootViewController</code>。但是，UIKit搜索context的方式还与<code>presented VC</code>的<code>modalPresentationStyle</code>属性有关，当<code>modalPresentationStyle</code>为<code>UIModalPresentationFullScreen</code>、<code>UIModalPresentationOverFullScreen</code>等模式时，UIKit会直接选择<code>rootViewController</code>做为<code>context</code>。当<code>modalPresentationStyle</code>为<code>UIModalPresentationOverCurrentContext</code>、<code>UIModalPresentationCurrentContext</code>模式时，UIKit搜索<code>context</code>的方式如下：</p>
 <ul>
-<li><p><code>UIModalPresentationOverCurrentContext</code>、<code>UIModalPresentationCurrentContext</code>模式下，一个VC能否成为<code>presentation context</code> 是由VC的<code>definesPresentationContext</code>属性决定的，这是一个<code>BOOL</code>值，默认<code>UIViewController的definesPresentationContext</code>属性值是<code>NO</code>，而<strong>container view controller</strong>（容器控制器）的<code>definesPresentationContext</code>默认值是<code>YES</code>，这也是上文中，UIKit总是将<code>container view controller</code>做为<code>presentation context</code>的原因。如果我们想指定<code>presenting VC</code>做为<code>context</code>，只需要在<code>presenting VC</code>的<code>viewDidLoad</code>方法里添加如下代码即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.definesPresentationContext = YES</span><br></pre></td></tr></table></figure></li>
+<li>读写锁的应用场景<ul>
+<li>同一时间，只能有1个线程进行写的操作</li>
+<li>同一时间，允许有多个线程进行读的操作</li>
+<li>同一时间，不允许既有写的操作，又有读的操作</li>
 </ul>
-<p>UIKit搜索<code>presentation context</code>的顺序为： </p>
-<ol>
-<li><code>presenting VC</code> </li>
-<li><code>presenting VC</code> 的<code>父VC </code></li>
-<li><code>presenting VC</code> 所属的<code>container VC </code></li>
-<li><code>rootViewController</code></li>
-</ol>
-<h3 id="层级关系"><a href="#层级关系" class="headerlink" title="层级关系"></a>层级关系</h3><blockquote>
-<p><strong>presented VC 总是与 presentation context 处于同一层级，而与presenting VC所在的层级无关，且同一个presentation context同时只能有一个presented VC。</strong></p>
+</li>
+</ul>
 </blockquote>
+<h3 id="读写锁的方案"><a href="#读写锁的方案" class="headerlink" title="读写锁的方案"></a>读写锁的方案</h3><ul>
+<li>pthread_rwlock：读写锁</li>
+<li>dispatch_barrier_async：异步栅栏调用<h3 id="pthread-rwlock"><a href="#pthread-rwlock" class="headerlink" title="pthread_rwlock"></a>pthread_rwlock</h3><h4 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h4><blockquote>
+<p>读用pthread_rwlock_rdlock，写用pthread_rwlock_wrlock，运行读同时并发进行，写必须按顺序进行</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">pthread_rwlock_t _lock;</span><br><span class="line">pthread_rwlock_init(&amp;_lock, NULL);</span><br><span class="line"></span><br><span class="line">- (void)read &#123;</span><br><span class="line">    pthread_rwlock_rdlock(&amp;_lock);</span><br><span class="line">    //读加锁    </span><br><span class="line">    pthread_rwlock_unlock(&amp;_lock);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)write</span><br><span class="line">&#123;</span><br><span class="line">    pthread_rwlock_wrlock(&amp;_lock);</span><br><span class="line">    </span><br><span class="line">     //写加锁    </span><br><span class="line">    pthread_rwlock_unlock(&amp;_lock);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dealloc</span><br><span class="line">&#123;</span><br><span class="line">    pthread_rwlock_destroy(&amp;_lock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="dispatch-barrier-async"><a href="#dispatch-barrier-async" class="headerlink" title="dispatch_barrier_async"></a>dispatch_barrier_async</h3><h4 id="使用方法-1"><a href="#使用方法-1" class="headerlink" title="使用方法"></a>使用方法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">self.queue = dispatch_queue_create(&quot;rw_queue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">dispatch_async(self.queue, ^&#123;</span><br><span class="line">    //读操作</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//使用栅栏添加到队列的任务，会等之前的读任务执行完，再执行该任务，并且之后添加到该队列的读任务，必须等到该任务执行完，才能执行。</span><br><span class="line">dispatch_barrier_async(self.queue, ^&#123;</span><br><span class="line">    //写操作</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4></li>
+<li><strong>注意</strong>，<code>dispatch_barrier_async</code>传入的并发队列必须是自己通过<code>dispatch_queue_cretate</code> 创建的如果传入的是一个<code>串行</code>或是一个<code>全局的并发队列</code>，那这个函数便等同于<code>dispatch_async</code>函数的效果.</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/多线程/多线程和锁"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/02/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E9%94%81/"
+    >多线程和锁</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/02/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E9%94%81/" class="article-date">
+  <time datetime="2023-02-02T15:53:50.000Z" itemprop="datePublished">2023-02-02</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="多线程的安全隐患"><a href="#多线程的安全隐患" class="headerlink" title="多线程的安全隐患"></a>多线程的安全隐患</h2><ul>
+<li>资源共享<ul>
+<li>1块资源可能会被多个线程共享，也就是多个线程可能会访问同一块资源</li>
+<li>比如多个线程访问同一个对象、同一个变量、同一个文件</li>
+</ul>
+</li>
+<li>当多个线程访问同一块资源时，很容易引发数据错乱和数据安全问题<h2 id="OS中的线程同步方案"><a href="#OS中的线程同步方案" class="headerlink" title="OS中的线程同步方案"></a>OS中的线程同步方案</h2></li>
+</ul>
+<ol>
+<li>OSSpinLock</li>
+<li>os_unfair_lock</li>
+<li>pthread_mutex</li>
+<li>dispatch_semaphore</li>
+<li>dispatch_queue(DISPATCH_QUEUE_SERIAL)</li>
+<li>NSLock</li>
+<li>NSRecursiveLock</li>
+<li>NSCondition</li>
+<li>NSConditionLock</li>
+<li>@synchronized<h3 id="OSSpinLock"><a href="#OSSpinLock" class="headerlink" title="OSSpinLock"></a>OSSpinLock</h3><blockquote>
+<p>OSSpinLock叫做”自旋锁”，等待锁的线程会处于忙等（busy-wait）状态，一直占用着CPU资源</p>
+<ul>
+<li>目前已经不再安全，可能会出现优先级反转问题<ul>
+<li>如果等待锁的线程优先级较高，它会一直占用着CPU资源；获得锁的优先级低的线程，没有CPU资源，分配不到时间片，无法执行完，就无法释放锁<ul>
+<li>多线程原理是，操作系统通过<code>时间片轮转算法</code>，每次给一个线程一个时间片，让其可以执行,(如果所给的时间片足够短，则看起来是同时执行的</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="使用教程"><a href="#使用教程" class="headerlink" title="使用教程"></a>使用教程</h4><blockquote>
+<p>iOS10以上由于优先级反转的问题，导致被废弃，系统建议使用os_unfair_lock</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;libkern/OSAtomic.h&gt;</span><br><span class="line"></span><br><span class="line">OSSpinLock _lock = OS_SPINLOCK_INIT;//多个线程持有同一个锁</span><br><span class="line"></span><br><span class="line">OSSpinLockLock(&amp;_lock);</span><br><span class="line">//需要同步的代码</span><br><span class="line">OSSpinLockUnlock(&amp;_lock)</span><br></pre></td></tr></table></figure>
+<h4 id="自旋锁逻辑查看"><a href="#自旋锁逻辑查看" class="headerlink" title="自旋锁逻辑查看"></a>自旋锁逻辑查看</h4></li>
+</ol>
+<ul>
+<li>汇编源码查看线程等待锁时，所做的事，通过lldb的<code>s</code>是代码级别的,<code>si</code>(stepi)是汇编级别的，一步步查看汇编执行，<code>ni</code>(next)指令遇到函数级别的调用会跳过<ul>
+<li>如果可以获取到锁，则不会走<code>_OSSPinLockLockSlow</code>,直接执行同步代码<br><img src="2.png"></li>
+<li>如果没有无法获取到锁，则会走<code>_OSSPinLockLockSlow</code>方法中，类似while循环调用，线程不会休眠<br><img src="1.png"></li>
+</ul>
+</li>
+</ul>
+<h3 id="pthread-mutex"><a href="#pthread-mutex" class="headerlink" title="pthread_mutex"></a>pthread_mutex</h3><blockquote>
+<ul>
+<li>mutex叫做”互斥锁”，等待锁的线程会处于休眠状态<ul>
+<li>pthread_mutex可以在多个平台上使用(window、linux、macos)都可以使用</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="使用教程-1"><a href="#使用教程-1" class="headerlink" title="使用教程"></a>使用教程</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;pthread/pthread.h&gt;</span><br><span class="line"></span><br><span class="line">pthread_mutex_t _pthreadMutex;</span><br><span class="line">//初始化属性</span><br><span class="line">pthread_mutexattr_t attr;</span><br><span class="line">pthread_mutexattr_init(&amp;attr);</span><br><span class="line">pthread_mutexattr_settype(&amp;attr, PTHREAD_MUTEX_NORMAL);</span><br><span class="line">//初始化锁</span><br><span class="line">pthread_mutex_init(&amp;_pthreadMutex, &amp;attr);</span><br><span class="line">//pthread_mutex_init(&amp;_pthreadMutex, NULL);传null为DEFALT，即NORMAL</span><br><span class="line">//销毁属性</span><br><span class="line">pthread_mutexattr_destroy(&amp;attr);</span><br><span class="line">//不用锁之后需要销毁</span><br><span class="line">pthread_mutex_destroy(&amp;_pthreadMutex);</span><br></pre></td></tr></table></figure>
+<h4 id="属性类型"><a href="#属性类型" class="headerlink" title="属性类型"></a>属性类型</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#define PTHREAD_MUTEX_NORMAL		0</span><br><span class="line">#define PTHREAD_MUTEX_ERRORCHECK	1</span><br><span class="line">#define PTHREAD_MUTEX_RECURSIVE	  2</span><br></pre></td></tr></table></figure>
+<h4 id="递归锁，"><a href="#递归锁，" class="headerlink" title="递归锁，"></a>递归锁，</h4><blockquote>
+<p>允许<code>**同一个线程**</code>对<code>**一把锁**</code>重复多次加锁，而不会造成死锁,<br>    - 注意，多个线程访问的话，一个线程持有之后，另一个线程访问，同样会被阻塞，休眠，直到递归锁被释放。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pthread_mutexattr_settype(&amp;attr, PTHREAD_MUTEX_RECURSIVE);</span><br><span class="line">//初始化递归锁</span><br><span class="line">pthread_mutex_init(&amp;_pthreadMutex, &amp;attr);</span><br></pre></td></tr></table></figure>
+<h4 id="条件锁"><a href="#条件锁" class="headerlink" title="条件锁"></a>条件锁</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">// 初始化条件</span><br><span class="line">pthread_cond_t _cond;</span><br><span class="line">pthread_cond_init(&amp;_cond, NULL);</span><br><span class="line">//销毁</span><br><span class="line">pthread_cond_destroy(&amp;_cond);</span><br><span class="line"></span><br><span class="line">//执行</span><br><span class="line">[[[NSThread alloc] initWithTarget:self selector:@selector(__remove) object:nil] start];</span><br><span class="line">[[[NSThread alloc] initWithTarget:self selector:@selector(__add) object:nil] start];</span><br><span class="line">//删除方法</span><br><span class="line">- (void)__remove &#123;</span><br><span class="line">    pthread_mutex_lock(&amp;_mutex);</span><br><span class="line">    if (self.data.count == 0) &#123;</span><br><span class="line">      // 等待，线程进行休眠，并且会释放该锁</span><br><span class="line">     pthread_cond_wait(&amp;_cond, &amp;_mutex);</span><br><span class="line">     //当被signal唤醒之后，继续加锁，然后由后面unlock进行解锁</span><br><span class="line">    &#125;</span><br><span class="line">    [self.data removeLastObject];</span><br><span class="line">     pthread_mutex_unlock(&amp;_mutex); </span><br><span class="line">&#125;</span><br><span class="line">- (void)__add &#123;</span><br><span class="line">    //添加方法</span><br><span class="line">    pthread_mutex_lock(&amp;_mutex);</span><br><span class="line">    [self.data addObject:@&quot;Test&quot;]; </span><br><span class="line">    // 信号，会唤醒一个等待的线程，让删除方法的线程继续执行</span><br><span class="line">    pthread_cond_signal(&amp;_cond);//放在unlock前面，则wait会先唤醒，并且在等待锁释放</span><br><span class="line">    // 广播，唤醒所有等待的线程</span><br><span class="line">    //pthread_cond_broadcast(&amp;_cond);</span><br><span class="line">    pthread_mutex_unlock(&amp;_mutex);</span><br><span class="line">    //pthread_cond_signal(&amp;_cond);//放在unlock后面，则wait唤醒之后，可以立刻获取锁</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<h4 id="互斥锁逻辑查看"><a href="#互斥锁逻辑查看" class="headerlink" title="互斥锁逻辑查看"></a>互斥锁逻辑查看</h4><ul>
+<li>汇编源码查看线程等待锁时，所做的事<ol>
+<li>在<code>pthread_mutex_lock</code>方法中,如果可以获取到锁，则会直接retq返回，没有则会执行<code>_pthread_mutex_firstfit_lock_slow</code>方法<br> <img src="6.png"></li>
+<li>在这个方法中最总会执行到<code>_pthread_mutex_firstfit_lock_wait</code>方法中<br> <img src="3.png"></li>
+<li>调用__psynch_mutexwait方法<br><img src="4.png"></li>
+<li>在该方法中，最后会走到<code>**syscall**</code>方法，系统调用方法，<code>si</code>执行终止，由系统调用让线程进入了休眠的状态。<br><img src="5.png"></li>
+</ol>
+</li>
+</ul>
+<h3 id="os-unfair-lock"><a href="#os-unfair-lock" class="headerlink" title="os_unfair_lock"></a>os_unfair_lock</h3><blockquote>
+<ul>
+<li>os_unfair_lock用于取代不安全的OSSpinLock ，从iOS10开始才支持<ul>
+<li>从底层调用看，等待os_unfair_lock锁的线程会处于休眠状态，并非忙等</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>使用教程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;os/lock.h&gt;</span><br><span class="line"></span><br><span class="line">os_unfair_lock _lock = OS_UNFAIR_LOCK_INIT;</span><br><span class="line"></span><br><span class="line">os_unfair_lock_lock(&amp;_lock);</span><br><span class="line"> //需要同步的代码</span><br><span class="line"> os_unfair_lock_unlock(&amp;_lock);</span><br></pre></td></tr></table></figure></li>
+<li>汇编发现是一种互斥锁,和<code>pthread_mutex</code>一样，等待锁会走到<code>**syscall**</code>方法,系统调用使得线程进入休眠状态<br><img src="7.png"><h3 id="NSLOCK、NSRecursiveLock"><a href="#NSLOCK、NSRecursiveLock" class="headerlink" title="NSLOCK、NSRecursiveLock"></a>NSLOCK、NSRecursiveLock</h3><blockquote>
+<p>NSLock是对mutex普通锁的封装<br>NSRecursiveLock也是对mutex递归锁的封装，API跟NSLock基本一致</p>
+</blockquote>
+</li>
+<li>使用教程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NSLock *_lock = [[NSLock alloc] init];</span><br><span class="line">//NSRecursiveLock *_lock = [[NSRecursiveLock alloc] init];</span><br><span class="line">//均实现了&lt;NSLocking&gt;协议</span><br><span class="line">[_lock lock]</span><br><span class="line">//[_lock tryLock]</span><br><span class="line">[_lock unlock]</span><br></pre></td></tr></table></figure>
+<h3 id="NSCondition"><a href="#NSCondition" class="headerlink" title="NSCondition"></a>NSCondition</h3><blockquote>
+<p>NSCondition是对mutex和cond的封装</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@interface NSCondition : NSObject &lt;NSLocking&gt;</span><br><span class="line">- (void)wait</span><br><span class="line">- (BOOL)waitUntilDate:(NSDate *)limit N</span><br><span class="line">- (void)signal </span><br><span class="line">- (void)broadcast;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h3 id="NSConditionLock"><a href="#NSConditionLock" class="headerlink" title="NSConditionLock"></a>NSConditionLock</h3><blockquote>
+<p>NSConditionLock是对NSCondition的进一步封装，可以设置具体的条件值.</p>
+<ul>
+<li><code>lockWhenCondition:</code>只有满足具体条件值的才能获取到锁，<code>unlockWithCondition:</code>解锁可以重新设定(如果不传值，初始化，默认是0)</li>
+<li><code>lock</code>和之前一样直接加锁，不会根据条件值来判断</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p><img src="8.png"></p>
+<h3 id="dispatch-queue-DISPATCH-QUEUE-SERIAL"><a href="#dispatch-queue-DISPATCH-QUEUE-SERIAL" class="headerlink" title="dispatch_queue(DISPATCH_QUEUE_SERIAL)"></a>dispatch_queue(DISPATCH_QUEUE_SERIAL)</h3><blockquote>
+<p>直接使用GCD的串行队列，也是可以实现线程同步的</p>
+</blockquote>
+<p><img src="9.png"></p>
+<h3 id="dispatch-semaphore"><a href="#dispatch-semaphore" class="headerlink" title="dispatch_semaphore"></a>dispatch_semaphore</h3><blockquote>
+<ul>
+<li>semaphore叫做”信号量”<ul>
+<li>信号量的初始值，可以用来控制线程并发访问的最大数量</li>
+<li>信号量的初始值为1，代表同时只允许1条线程访问资源，保证线程同步</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><img src="10.png"></p>
+<h3 id="synchronized"><a href="#synchronized" class="headerlink" title="@synchronized"></a>@synchronized</h3><blockquote>
+<p>@synchronized是对mutex递归锁的封装,在最新版本中，锁已经改为os_unfair_lock了，但仍可实现递归，（os_unfair_lock是不支持递归的，代码做了优化，未开源）<br>源码查看：objc4中的objc-sync.mm文件<br>@synchronized(obj)内部会生成obj对应的递归锁，然后进行加锁、解锁操作</p>
+</blockquote>
+<ul>
+<li>使用<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@synchronized (self) &#123;</span><br><span class="line">       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>重要数据结构<br><img src="11.png"></li>
+<li>723以及之前的版本，用的是<code>pthread_mutex_t</code><br><img src="14.png"></li>
+<li>723之后的版本，用的是<code>os_unfair_lock</code><br><img src="12.png"><br><img src="13.png"></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/多线程/多线程"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/31/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"
+    >多线程的问题</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/31/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="article-date">
+  <time datetime="2023-01-31T15:54:11.000Z" itemprop="datePublished">2023-01-31</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>多线程原理是，操作系统通过<code>时间片轮转算法</code>，每次给一个线程一个时间片，让其可以执行,(如果所给的时间片足够短，则看起来是同时执行的)，进程也是这种方式</p>
+</blockquote>
+<h2 id="常见多线程方案"><a href="#常见多线程方案" class="headerlink" title="常见多线程方案"></a>常见多线程方案</h2><table>
+<thead>
+<tr>
+<th align="center">技术方案</th>
+<th align="left">简介</th>
+<th align="center">语言</th>
+<th align="center">线程生命周期</th>
+<th align="center">使用频率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">pthread</td>
+<td align="left">一套通用的多线程API、适用于Unix\Linux\Windows等系统、跨平台\可移植、使用难度大</td>
+<td align="center">c</td>
+<td align="center">手动管理</td>
+<td align="center">几乎不用</td>
+</tr>
+<tr>
+<td align="center">NSThread</td>
+<td align="left">使用更加面向对象、简单易用，可直接操作线程对象</td>
+<td align="center">OC</td>
+<td align="center">手动管理</td>
+<td align="center">偶尔使用</td>
+</tr>
+<tr>
+<td align="center">GCD</td>
+<td align="left">旨在替代NSThread等线程技术、充分利用设备的多核</td>
+<td align="center">c</td>
+<td align="center">自动管理</td>
+<td align="center">经常使用</td>
+</tr>
+<tr>
+<td align="center">NSOperation</td>
+<td align="left">基于GCD（底层是GCD）、比GCD多了一些更简单实用的功能、使用更加面向对象</td>
+<td align="center">OC</td>
+<td align="center">自动管理</td>
+<td align="center">经常使用</td>
+</tr>
+</tbody></table>
+<h2 id="常见的死锁问题"><a href="#常见的死锁问题" class="headerlink" title="常见的死锁问题"></a>常见的死锁问题</h2><ol>
+<li>主队列中，用<code>dispatch_sync</code>同步在主队列中执行任务会有死锁，<ul>
+<li>原因是<code>sync</code>同步执行会立刻执行<code>任务二</code>，但是在主队列中，已经添加了<code>任务三</code>，必须等<code>任务3</code>(<code>viewDidLoad</code>方法)执行完之后，才能执行<code>任务二</code>,因此造成死锁</li>
+<li>改为<code>dispatch_async</code>,则不会出现死锁，会先执行<code>任务三</code>，再执行<code>任务二</code>,按主队列任务添加顺序执行<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;任务一&quot;);</span><br><span class="line">    dispatch_queue_t queue = dispatch_get_main_queue();</span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;任务二&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;任务三&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>串行队列,和1相同，任务三的执行要求任务四持行完成，而sync要求立刻执行任务三，因此出现死锁<ul>
+<li>将任务三放到另一个队列，或者采用<code>async</code>则可以避免<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;任务一&quot;);</span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;queue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;任务二&quot;);</span><br><span class="line">        dispatch_sync(queue, ^&#123;</span><br><span class="line">            NSLog(@&quot;任务三&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">        NSLog(@&quot;任务四&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;任务五&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>如果是并发队列，则不会产生死锁<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NSLog(@&quot;任务一&quot;);</span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;queue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;任务二&quot;);</span><br><span class="line">        dispatch_sync(queue, ^&#123;</span><br><span class="line">            NSLog(@&quot;任务三&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">        NSLog(@&quot;任务四&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;任务五&quot;);</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
+<p>使用<code>sync</code>函数往当前串行队列中添加任务，会卡住当前的串行队列（产生死锁）</p>
+</blockquote>
+<h2 id="多线程的其他问题"><a href="#多线程的其他问题" class="headerlink" title="多线程的其他问题"></a>多线程的其他问题</h2></li>
+<li>下面打印结果实际为，<code>1-&gt;3</code>,其中<code>2</code>并<strong>未打印</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dispatch_async(dispatch_get_global_queue(0, 0), ^&#123;</span><br><span class="line">  NSLog(@&quot;1&quot;);</span><br><span class="line">  [self performSelector:@selector(test) withObject:nil afterDelay:0.0];</span><br><span class="line">  NSLog(@&quot;3&quot;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">- (void)test</span><br><span class="line">&#123;</span><br><span class="line">  NSLog(@&quot;2&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>直接用<code>[self performSelector:@selector(test) withObject:nil];</code>会打印<code>1-&gt;2-&gt;3</code>,因为其源码本质是通过<code>objc_msgSend</code>调用的<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (id)performSelector:(SEL)sel withObject:(id)obj &#123;</span><br><span class="line">         if (!sel) [self doesNotRecognizeSelector:sel];</span><br><span class="line">      return ((id(*)(id, SEL, id))objc_msgSend)(self, sel, obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>如果在主线程中调用,会打印出<code>1-&gt;3-&gt;2</code></li>
+<li><strong>原因</strong>:<code>[self performSelector:@selector(test) withObject:nil afterDelay:0.0];</code>的源码是在<code>Runloop</code>相关源码中定义的，其本质是添加了一个<code>Timer</code>到<code>Runloop</code>中的。而在1中通过<code>dispatch_async</code>开了一个子线程，但是实际上，子线程是没有启动<code>runloop</code>的，因此添加到的任务是无效的，因此不会打印<ul>
+<li>解决方法,增加runloop，再启动runloop后，则会打印出<code>1-&gt;3-&gt;2</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dispatch_async(dispatch_get_global_queue(0, 0), ^&#123;</span><br><span class="line">NSLog(@&quot;1&quot;);</span><br><span class="line">[self performSelector:@selector(test) withObject:nil afterDelay:0.0];</span><br><span class="line">NSLog(@&quot;3&quot;);</span><br><span class="line">[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>源码，<code>NSRunloop</code>不开源，但是可以通过<a target="_blank" rel="noopener" href="http://www.gnustep.org/resources/downloads.php%0D">GNU</a>大致了解下源码,虽然GNUstep不是苹果官方源码，但还是具有一定的参考价值</li>
+</ul>
+<ol start="2">
+<li>与1类似的问题,waitUntilDone为YES会崩溃，因为在当执行输出<code>1</code>后，线程已经退出了，不能在线程中执行，如果waitUntilDone为NO，则不会崩溃，但是不会执行<code>test</code>方法<ul>
+<li>和1类似，要在里面启动<code>Runloop</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSThread *thread = [[NSThread alloc] initWithBlock:^&#123;</span><br><span class="line">    NSLog(@&quot;1&quot;);</span><br><span class="line">    //解决问题</span><br><span class="line">    //[[NSRunLoop currentRunLoop] addPort:[[NSPort alloc] init] forMode:NSDefaultRunLoopMode];</span><br><span class="line">    //[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];</span><br><span class="line">&#125;];</span><br><span class="line">[thread start];</span><br><span class="line">[self performSelector:@selector(test) onThread:thread withObject:nil waitUntilDone:YES];</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Runloop知识/runloop的运行逻辑"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/20/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9A%84%E8%BF%90%E8%A1%8C%E9%80%BB%E8%BE%91/"
+    >runloop的运行逻辑</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/20/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9A%84%E8%BF%90%E8%A1%8C%E9%80%BB%E8%BE%91/" class="article-date">
+  <time datetime="2023-01-20T11:39:49.000Z" itemprop="datePublished">2023-01-20</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/runloop/">runloop</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="运行流程"><a href="#运行流程" class="headerlink" title="运行流程"></a>运行流程</h3><ol>
+<li>通知<code>Observers</code>：进入<code>Loop</code></li>
+<li>通知<code>Observers</code>：即将处理<code>Timers</code></li>
+<li>通知<code>Observers</code>：即将处理<code>Sources</code><ul>
+<li><code>Observers</code>内，实际调用，<code>__CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__</code></li>
+</ul>
+</li>
+<li>处理<code>Blocks</code><ul>
+<li>处理通过<code>CFRunLoopPerformBlock(CFRunLoopRef rl, CFTypeRef mode, void (^block)(void))</code>添加到<code>runloop</code>的block</li>
+<li>实际调用：<code>_CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__</code></li>
+</ul>
+</li>
+<li>处理<code>Source0</code>（如果返回结果是true，可能会再次处理<code>Blocks</code>）<ul>
+<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__</code></li>
+</ul>
+</li>
+<li>如果存在<code>Source1</code>，就跳转到第8步<ul>
+<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__</code></li>
+</ul>
+</li>
+<li>通知<code>Observers</code>：开始休眠（等待消息唤醒）<ul>
+<li><code>__CFRunLoopServiceMachPort</code>内，用户态会下发<code>mach_msg</code>给内核态（只有内核可以真正的休眠线程（而非阻塞线程,忙等），节省CPU），切换到内核态，当内核收到消息后，再唤醒线程，节省CPU资源</li>
+</ul>
+</li>
+<li>通知<code>Observers</code>：结束休眠（被某个消息唤醒）<ol>
+<li>处理<code>Timer</code><ul>
+<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_TIMER_CALLBACK_FUNCTION__</code></li>
+</ul>
+</li>
+<li>处理<code>GCD Async To Main Queue</code>,GCD异步回到主队列的任务<ul>
+<li>实际调用：<code>__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__</code>，注意只有通过<code>dispatch_async(dispatch_get_main_queue(),block);</code>，GCD异步回到主队列，才会有runloop的协助</li>
+</ul>
+</li>
+<li>处理<code>Source1</code><ul>
+<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>处理<code>Blocks</code></li>
+<li>根据前面的执行结果，决定如何操作<ol>
+<li>回到第02步</li>
+<li>退出<code>Loop</code></li>
+</ol>
+</li>
+<li>通知Observers：退出Loop<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3></li>
+</ol>
+<ul>
+<li><code>CFRunLoopRunSpecific</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">   //通知Observers：进入runLoop</span><br><span class="line">if (currentMode-&gt;_observerMask &amp; kCFRunLoopEntry ) __CFRunLoopDoObservers(rl, currentMode, kCFRunLoopEntry);</span><br><span class="line">   //具体要做的事</span><br><span class="line">result = __CFRunLoopRun(rl, currentMode, seconds, returnAfterSourceHandled, previousMode);</span><br><span class="line">   //通知Observers：退出unLoop</span><br><span class="line">if (currentMode-&gt;_observerMask &amp; kCFRunLoopExit ) __CFRunLoopDoObservers(rl, currentMode, kCFRunLoopExit);</span><br></pre></td></tr></table></figure></li>
+<li><code>CFRunLoopRun</code><h3 id="runloop执行方法需要注意的地方"><a href="#runloop执行方法需要注意的地方" class="headerlink" title="runloop执行方法需要注意的地方"></a>runloop执行方法需要注意的地方</h3></li>
+</ul>
+<ol>
+<li><code>- (void)run</code><ul>
+<li><code>[[NSRunloop currentRunloop] run]</code>实际上是在一个<code>while(1)</code>中重复调用<code>-(BOOL)runMode:(NSRunLoopMode)mode beforeDate:(NSDate *)limitDate</code>方法,因此通过<code>CFRunLoopStop(CFRunLoopGetCurrent())</code>只能取消一次<code>runMode:(NSRunLoopMode)mode beforeDate:</code>的调用，</li>
+<li>但是在<code>run</code>方法中，还是会循环调用，是无法取消<code>run</code>方法的循环调用的</li>
+</ul>
+</li>
+<li><code>-(BOOL)runMode:(NSRunLoopMode)mode beforeDate:(NSDate *)limitDate</code><ul>
+<li> 注意，该方法，在执行完一次runloop的循环之后，则会退出，例如执行一次<code>performSelector:</code>方法便会释放</li>
+</ul>
+</li>
+<li>注意在启动<code>runloop</code>后，要注意<code>_strong typeof(weakSelf) strongSelf = weakSelf</code>的写法，列入通过<code>initWithBlock:</code>设置线程,在runloop运行期间，一直会有一个局部强引用持有<code>self</code>，除非将当前的<code>runloop</code>结束</li>
+<li>同时，注意,通过<code>CFRunLoopStop(CFRunLoopGetCurrent())</code>停止<code>runloop</code>之后,不要在使用，<code>performSelector:onThread:withObject:waitUntilDone:</code>在线程中执行，因为线程和runloop的生命周期是一一对应的，在waitUntilDone为<code>true</code>,不异步执行时，会出现野指针的错误，为<code>false</code>时，异步时可能内部做了处理，不会出现野指针</li>
+<li><code>CFRunLoopRunInMode(CFRunLoopMode mode, CFTimeInterval seconds, Boolean returnAfterSourceHandled)</code>,<code>returnAfterSourceHandled</code>为true代表执行完source之后，就退出runloop，类似2中的用法,设置为false则，执行一次source是不会退出的<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3></li>
+<li>runloop是怎么响应用户操作的，具体流程是什么样的？<ul>
+<li>由source1将系统事件捕获，（例如点击屏幕的事件），source1将事件包装成EventQueue，放到source0中处理</li>
+</ul>
+</li>
+<li><code>NSDefaultRunLoopMode</code>、<code>UITrackingRunLoopMode</code>才是真正存在的模式<code>NSRunLoopCommonModes</code>并不是一个真的模式，它只是一个标记</li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Runloop知识/runloop相关的类"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/"
+    >runloop相关的类</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/" class="article-date">
+  <time datetime="2023-01-12T14:29:38.000Z" itemprop="datePublished">2023-01-12</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/runloop/">runloop</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="runloop的结构"><a href="#runloop的结构" class="headerlink" title="runloop的结构"></a>runloop的结构</h2><blockquote>
+<ul>
+<li>Core Foundation中关于RunLoop的5个类<ul>
+<li>CFRunLoopRef</li>
+<li>CFRunLoopModeRef</li>
+<li>CFRunLoopSourceRef</li>
+<li>CFRunLoopTimerRef</li>
+<li>CFRunLoopObserverRef</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><h3 id="CFRunLoop"><a href="#CFRunLoop" class="headerlink" title="__CFRunLoop"></a>__CFRunLoop</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">struct __CFRunLoop &#123;</span><br><span class="line">    CFRuntimeBase _base;</span><br><span class="line">    pthread_mutex_t _lock;			/* locked for accessing mode list */</span><br><span class="line">    __CFPort _wakeUpPort;			// used for CFRunLoopWakeUp </span><br><span class="line">    Boolean _unused;</span><br><span class="line">    volatile _per_run_data *_perRunData;              // reset for runs of the run loop</span><br><span class="line">    pthread_t _pthread; //相对应地线程</span><br><span class="line">    uint32_t _winthread;</span><br><span class="line">    CFMutableSetRef _commonModes; // </span><br><span class="line">    CFMutableSetRef _commonModeItems;</span><br><span class="line">    CFRunLoopModeRef _currentMode; //Mode</span><br><span class="line">    CFMutableSetRef _modes;</span><br><span class="line">    struct _block_item *_blocks_head;</span><br><span class="line">    struct _block_item *_blocks_tail;</span><br><span class="line">    CFAbsoluteTime _runTime;</span><br><span class="line">    CFAbsoluteTime _sleepTime;</span><br><span class="line">    CFTypeRef _counterpart;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>简化版<br><img src="1.png"></li>
+</ul>
+<h3 id="CFRunLoopModeRef"><a href="#CFRunLoopModeRef" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">typedef struct __CFRunLoopMode *CFRunLoopModeRef;</span><br><span class="line"></span><br><span class="line">struct __CFRunLoopMode &#123;</span><br><span class="line">    CFRuntimeBase _base;</span><br><span class="line">    pthread_mutex_t _lock;	/* must have the run loop locked before locking this */</span><br><span class="line">    CFStringRef _name;</span><br><span class="line">    Boolean _stopped;</span><br><span class="line">    char _padding[3];</span><br><span class="line">    CFMutableSetRef _sources0; </span><br><span class="line">    CFMutableSetRef _sources1;</span><br><span class="line">    CFMutableArrayRef _observers;</span><br><span class="line">    CFMutableArrayRef _timers;</span><br><span class="line">    CFMutableDictionaryRef _portToV1SourceMap;</span><br><span class="line">    __CFPortSet _portSet;</span><br><span class="line">    CFIndex _observerMask;</span><br><span class="line">#if USE_DISPATCH_SOURCE_FOR_TIMERS</span><br><span class="line">    dispatch_source_t _timerSource;</span><br><span class="line">    dispatch_queue_t _queue;</span><br><span class="line">    Boolean _timerFired; // set to true by the source when a timer has fired</span><br><span class="line">    Boolean _dispatchTimerArmed;</span><br><span class="line">#endif</span><br><span class="line">#if USE_MK_TIMER_TOO</span><br><span class="line">    mach_port_t _timerPort;</span><br><span class="line">    Boolean _mkTimerArmed;</span><br><span class="line">#endif</span><br><span class="line">#if DEPLOYMENT_TARGET_WINDOWS</span><br><span class="line">    DWORD _msgQMask;</span><br><span class="line">    void (*_msgPump)(void);</span><br><span class="line">#endif</span><br><span class="line">    uint64_t _timerSoftDeadline; /* TSR */</span><br><span class="line">    uint64_t _timerHardDeadline; /* TSR */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>简化版<br><img src="2.png"><h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3></li>
+<li>一个runLoop中有很多模式，存在modes中，但是每次只会选择一种模式,作为当前模式<br><img src="3.png"></li>
+<li>CFRunLoopModeRef代表RunLoop的运行模式</li>
+<li>一个RunLoop包含若干个Mode，每个Mode又包含若干个Source0/Source1/Timer/Observer</li>
+<li>RunLoop启动时只能选择其中一个Mode，作为currentMode</li>
+<li>如果需要切换Mode，只能退出当前Loop，再重新选择一个Mode进入<ul>
+<li>不同组的Source0/Source1/Timer/Observer能分隔开来，互不影响</li>
+</ul>
+</li>
+<li>如果Mode里没有任何Source0/Source1/Timer/Observer，RunLoop会立马退出<h2 id="CFRunLoopModeRef-1"><a href="#CFRunLoopModeRef-1" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h2></li>
+</ul>
+<ol>
+<li><code>Source0</code><ul>
+<li>触摸事件处理<br><img src="4.png"></li>
+<li><code>performSelector:onThread:</code>,线程之前的通信</li>
+</ul>
+</li>
+<li><code>Source1</code><ul>
+<li>基于<code>Port</code>的线程间通信,</li>
+<li>系统事件捕捉，例如，屏幕点击，最开始是source1</li>
+</ul>
+</li>
+<li><code>Timers</code><ul>
+<li><code>NSTimer</code></li>
+<li><code>performSelector:withObject:afterDelay:</code>,本质会加到runloop的timer</li>
+</ul>
+</li>
+<li><code>Observers</code><ul>
+<li>用于监听<code>RunLoop</code>的状态</li>
+<li><code>UI</code>刷新（<code>BeforeWaiting</code>）,在线程休眠之前，设置UI</li>
+<li><code>Autorelease pool</code>（<code>BeforeWaiting</code>）,在休眠之前释放自动释放池对象，唤醒后新建新的自动释放池<h2 id="CFRunLoopObserverRef"><a href="#CFRunLoopObserverRef" class="headerlink" title="CFRunLoopObserverRef"></a>CFRunLoopObserverRef</h2></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><code>RunLoop</code>的状态改变流程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/* Run Loop Observer Activities */</span><br><span class="line">typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) &#123;</span><br><span class="line">    kCFRunLoopEntry = (1UL &lt;&lt; 0),</span><br><span class="line">    kCFRunLoopBeforeTimers = (1UL &lt;&lt; 1),</span><br><span class="line">    kCFRunLoopBeforeSources = (1UL &lt;&lt; 2),</span><br><span class="line">    kCFRunLoopBeforeWaiting = (1UL &lt;&lt; 5),</span><br><span class="line">    kCFRunLoopAfterWaiting = (1UL &lt;&lt; 6),</span><br><span class="line">    kCFRunLoopExit = (1UL &lt;&lt; 7),</span><br><span class="line">    kCFRunLoopAllActivities = 0x0FFFFFFFU</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>监听RunLoop的状态<ul>
+<li>切换mode之后，会先<code>kCFRunLoopExit - kCFRunLoopDefaultMode</code>，之后再<code>kCFRunLoopEntry - UITrackingRunLoopMode</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity) &#123;</span><br><span class="line">    switch (activity) &#123;</span><br><span class="line">       case kCFRunLoopEntry:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopEntry&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeTimers:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeTimers&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeSources:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeSources&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeWaiting:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeWaiting&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopAfterWaiting:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopAfterWaiting&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopExit:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopExit&quot;);</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    // 添加Observer到RunLoop中</span><br><span class="line">CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);</span><br><span class="line">    // 释放</span><br><span class="line">CFRelease(observer);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Runloop知识/runloop"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/10/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop/"
+    >runloop</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/10/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop/" class="article-date">
+  <time datetime="2023-01-10T15:09:41.000Z" itemprop="datePublished">2023-01-10</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/runloop/">runloop</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="什么是RunLoop"><a href="#什么是RunLoop" class="headerlink" title="什么是RunLoop"></a>什么是RunLoop</h2><ul>
+<li>顾名思义<ul>
+<li>运行循环</li>
+<li>在程序运行过程中循环做一些事情</li>
+</ul>
+</li>
+<li>基本作用<ul>
+<li>保持程序的持续运行</li>
+<li>处理App中的各种事件（比如触摸事件、定时器事件等）</li>
+<li>节省CPU资源，提高程序性能：该做事时做事，该休息时休息</li>
+</ul>
+</li>
+<li>应用范畴<ul>
+<li>定时器（Timer）、PerformSelector</li>
+<li>GCD Async Main Queue</li>
+<li>事件响应、手势识别、界面刷新</li>
+<li>网络请求</li>
+<li><code>AutoreleasePool</code></li>
+</ul>
+</li>
+<li><code>RunLoop</code>与线程<ul>
+<li>每条线程都有唯一的一个与之对应的RunLoop对象<ul>
+<li><code>CFRunLoopGetCurrent()</code>和<code>[NSRunLoop currentRunLoop]</code>,在当前线程中获取runloop</li>
+<li>从字典中获取，如果没有的话，则会创建，并存放在字典中，key是线程的指针地址<br><img src="1.png"></li>
+</ul>
+</li>
+<li>RunLoop保存在一个全局的Dictionary里，线程作为key，RunLoop作为value</li>
+<li>线程刚创建时并没有RunLoop对象，RunLoop会在第一次获取它时创建</li>
+<li>RunLoop会在线程结束时销毁</li>
+<li>主线程的RunLoop已经自动获取（创建），子线程默认没有开启RunLoop</li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Runtime知识/中间代码"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/"
+    >中间代码（IR）</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/" class="article-date">
+  <time datetime="2023-01-09T14:29:54.000Z" itemprop="datePublished">2023-01-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>Objective-C在变为机器代码之前，会被LLVM编译器转换为中间代码（Intermediate Representation）,ir中间代码代码相比于转成C++更接近底层（但是肯定无法和汇编相比）</p>
+</blockquote>
+<ul>
+<li>可以使用以下命令行指令生成中间代码<ul>
+<li><code>clang -emit-llvm -S main.m</code></li>
+</ul>
+</li>
+<li>语法简介<ul>
+<li><code>@</code> - 全局变量</li>
+<li><code>%</code> - 局部变量</li>
+<li><code>alloca</code> - 在当前执行的函数的堆栈帧中分配内存，当该函数返回到其调用者时，将自动释放内存</li>
+<li><code>i32</code> - 32位4字节的整数</li>
+<li><code>align</code> - 对齐</li>
+<li><code>load</code> - 读出，<code>store</code> 写入</li>
+<li><code>icmp</code> - 两个整数值比较，返回布尔值</li>
+<li><code>br</code> - 选择分支，根据条件来转向<code>label</code>，不根据条件跳转的话类似 <code>goto</code></li>
+<li><code>label</code> - 代码标签</li>
+<li><code>call</code> - 调用函数</li>
+</ul>
+</li>
+<li>示例<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">main.m</span><br><span class="line">int a = 10;</span><br><span class="line">int b = 20;</span><br><span class="line">int c = a + b;</span><br><span class="line">test(c);</span><br><span class="line">//转成main.ll</span><br><span class="line">  store i32 10, i32* %8, align 4  //将10存储到局部变量 %8</span><br><span class="line">  store i32 20, i32* %9, align 4  //将20存储到局部变量 %9</span><br><span class="line">  %19 = load i32, i32* %8, align 4 //将%8加载到%19</span><br><span class="line">  %20 = load i32, i32* %9, align 4 //将%9加载到%20</span><br><span class="line">  %21 = add nsw i32 %19, %20    // %19和%20的值相加</span><br><span class="line">  store i32 %21, i32* %10, align 4 //将%21的值存储到%10</span><br><span class="line">  %22 = load i32, i32* %10, align 4  //将 %10的值加载到%22</span><br><span class="line">  call void @test(i32 %22) //调用函数，参数是 %22</span><br></pre></td></tr></table></figure></li>
+<li><a target="_blank" rel="noopener" href="https://llvm.org/docs/LangRef.html">具体文档</a></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Runtime知识/runtime特殊问题"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/"
+    >runtime特殊问题</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2023-01-08T14:41:07.000Z" itemprop="datePublished">2023-01-08</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="第一个问题"><a href="#第一个问题" class="headerlink" title="第一个问题"></a>第一个问题</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">@interface Person:NSObject</span><br><span class="line">@property (copy, nonatomic) NSString *name;</span><br><span class="line">- (void)print;</span><br><span class="line">@end</span><br><span class="line">@implementation Person</span><br><span class="line">- (void)print</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;my name is %@&quot;, self-&gt;_name);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//ViewController中</span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    //NSString *test = @&quot;123&quot;;如果，前面有这个text对象，则实际会输出my name is 123</span><br><span class="line">    id cls = [Person class];</span><br><span class="line"></span><br><span class="line">    void *obj = &amp;cls;</span><br><span class="line"></span><br><span class="line">    [(__bridge id)obj print];</span><br><span class="line">    //实际输出my name is &lt;ViewController: 0x104b08020&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="print为什么能够调用成功？"><a href="#print为什么能够调用成功？" class="headerlink" title="print为什么能够调用成功？"></a><code>print</code>为什么能够调用成功？</h3><ul>
+<li><p>示意图<br><img src="1.jpg"></p>
+</li>
+<li><p>将<code>[Person class]</code>的类对象cls的地址赋值给obj之后，在obj地址上的<code>前8个字节</code>的东西是cls的类对象的地址。这和正常实例化后的对象person一样，person所指向的地址在内存上前8个字节的地址是isa(类对象的地址)</p>
+</li>
+<li><p>在调用<code>print</code>方法的时候，就会去obj内存的前8个字节，取出该内存上的对象（正常结构体，则是其内存上前8个字节的isa指针），刚好是类对象，因此最终和调用实例对象方法一样可以调用成功。</p>
+</li>
+<li><p>在（__bridge id）的时候，实际上讲objc指针，转换成了<code>objc_object</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct objc_object &#123;</span><br><span class="line">    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">&#125;;</span><br><span class="line">typedef struct objc_object *id;</span><br></pre></td></tr></table></figure>
+<h3 id="为什么self-name变成了ViewController等其他内容"><a href="#为什么self-name变成了ViewController等其他内容" class="headerlink" title="为什么self.name变成了ViewController等其他内容"></a>为什么self.name变成了ViewController等其他内容</h3></li>
+<li><p>栈上分配的临时对象的地址，是有高向低进行分配的,下面字符串的指针均指向常量区，其指针均相同，但是，栈给对象分配的指针地址，是不同的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 0x0000000100998070 @&quot;123&quot;</span><br><span class="line">NSString *test = @&quot;123&quot;; //&amp;test 0x000000016f46cc20</span><br><span class="line">NSString *test1 = @&quot;123&quot;; // &amp;test1 0x000000016f46cc18</span><br><span class="line">NSString *test2 = @&quot;123&quot;; // &amp;test2 0x000000016f46cc10</span><br></pre></td></tr></table></figure></li>
+<li><p>实际分配的示意图<br><img src="2.jpg"></p>
+</li>
+<li><p><code>Person</code>结构体的类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct MJPerson_IMPL</span><br><span class="line"> &#123;</span><br><span class="line">    Class isa;</span><br><span class="line">     NSString *_name;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>NSLog(@&quot;my name is %@&quot;, self-&gt;_name);</code>调用该方法的本质，实际<code>person</code>的前8个字节是<code>cls</code>,而在<code>isa上加8个字节</code>后去取_name变量(结构体越往后面的地址会越高)，则根据分配的原则，会取到<code>test</code>,因此加test后，则会输出<code>my name is 123</code></p>
+</li>
+<li><p>不加局部对象，则会输出<code>my name is &lt;ViewController: 0x104b08020&gt;</code>,是由于<code>[super viewDidLoad]</code>造成的，因此在没有<code>test</code>局部变量后，实际上<code>isa上加8个字节</code>后，取到的是<code>self</code>的地址。最终则会输出<code>my name is &lt;ViewController: 0x104b08020&gt;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> //[super viewDidLoad] ,源码实际</span><br><span class="line"> struct abc = &#123;</span><br><span class="line">       self,</span><br><span class="line">       [ViewController class]</span><br><span class="line">   &#125;;</span><br><span class="line">//注意这里调用的是objc_msgSendSuper2，并非objc_msgSendSuper(这个要传入父类对象)</span><br><span class="line">objc_msgSendSuper2(abc, sel_registerName(&quot;viewDidLoad&quot;));</span><br><span class="line">//因此会隐式的生成abc结构体变量，其低地址是self，高地址是[ViewController class]</span><br></pre></td></tr></table></figure></li>
+<li><p>注意，如果将<code>[super viewDidLoad]</code>屏蔽，则由于<code>isa地址加8字节后</code>，找不到任何东西，则会出现野指针的错误</p>
+</li>
+<li><p><code>objc_msgSendSuper2</code>可以通过调试发现,(x/4g,打出$1地址上每8个字节存的东西，打印4个),通过调试发现，后续的内存中,第一个是self，第二个是[ViewController class]，而非父类。</p>
+<ul>
+<li>但实际在源码中，<code>objc_msgSendSuper2</code>最终还是会取父类去调用</li>
+<li>调试汇编<br><img src="5.png"></li>
+<li>源码中，还是会取父类去调用<br><img src="4.png"></li>
+<li>实际调试代码，确定是用objc_msgSendSuper2<br><img src="3.png"><h2 id="第二个问题"><a href="#第二个问题" class="headerlink" title="第二个问题"></a>第二个问题</h2><blockquote>
+<p><code>&lt;objc/runtime.h&gt;</code>的APi</p>
+</blockquote>
+<h3 id="类相关"><a href="#类相关" class="headerlink" title="类相关"></a>类相关</h3></li>
+<li>Class object_getClass(id obj)<ul>
+<li>获取isa指向的Class</li>
+</ul>
+</li>
+<li>Class object_setClass(id obj, Class cls)<ul>
+<li>设置isa指向的Class,<strong>可以更改当前对象指向的isa</strong></li>
+</ul>
+</li>
+<li>BOOL object_isClass(id obj)<ul>
+<li>判断一个OC对象是否为Class</li>
+</ul>
+</li>
+<li>BOOL class_isMetaClass(Class cls)<ul>
+<li>判断一个Class是否为元类</li>
+</ul>
+</li>
+<li>Class class_getSuperclass(Class cls)<ul>
+<li>获取父类<h3 id="动态创建类"><a href="#动态创建类" class="headerlink" title="动态创建类"></a>动态创建类</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Class objc_allocateClassPair(Class superclass, const char *name, size_t extraBytes)</code></p>
+<ul>
+<li>动态创建一个类（参数：父类，类名，额外的内存空间）</li>
+</ul>
+</li>
+<li><p><code>void objc_registerClassPair(Class cls)</code></p>
+<ul>
+<li>注册一个类（要在类注册之前添加成员变量），在你需要动态创建的类中，加入方法，协议，成员变量后，再去注册</li>
+<li>注意，类注册完之后，类的成员变量会在<code>class_ro_t</code>中是不可变的，而方法，协议是在<code>class_rw_t</code>中，任何时候都是可以添加的<h4 id="成员变量"><a href="#成员变量" class="headerlink" title="成员变量"></a>成员变量</h4></li>
+</ul>
+</li>
+<li><p><code>BOOL class_addIvar(Class cls, const char * name, size_t size, uint8_t alignment, const char * types)</code></p>
+<ul>
+<li>动态添加成员变量（<strong>已经注册的类是不能动态添加成员变量的</strong>）</li>
+<li>例如<code>class_addIvar(newCls, &quot;_age&quot;, 4, 1, @encode(int));</code>添加一个age的成员变量,设置和取值，可以通过kvc实现<code>[dog setValue:@10 forKey:@&quot;_age&quot;];</code><h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4></li>
+</ul>
+</li>
+<li><p><code>BOOL class_addProperty(Class cls, const char *name, const objc_property_attribute_t *attributes,unsigned int attributeCount)</code></p>
+<ul>
+<li>动态添加属性</li>
+</ul>
+</li>
+<li><p><code>void class_replaceProperty(Class cls, const char *name, const objc_property_attribute_t *attributes,unsigned int attributeCount)</code></p>
+<ul>
+<li>动态替换属性<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4></li>
+</ul>
+</li>
+<li><p><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types)</code></p>
+<ul>
+<li>动态添加方法</li>
+</ul>
+</li>
+<li><p><code>IMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types)</code></p>
+<ul>
+<li>动态替换方法<h3 id="成员变量相关"><a href="#成员变量相关" class="headerlink" title="成员变量相关"></a>成员变量相关</h3></li>
+</ul>
+</li>
+<li><p><code>Ivar class_getInstanceVariable(Class cls, const char *name)</code></p>
+<ul>
+<li>获取一个实例变量信息</li>
+<li>获取成员变量的相关信息<ul>
+<li><code>const char *ivar_getName(Ivar v)</code></li>
+<li><code>const char *ivar_getTypeEncoding(Ivar v)</code></li>
+</ul>
+</li>
+<li>设置和获取成员变量的值<ul>
+<li><code>void object_setIvar(id obj, Ivar ivar, id value)</code><ul>
+<li>如果设置基本变量,<code>object_setIvar(person, weightVar, (__bridge id)(void *)20)</code>将基本类型转成对象</li>
+</ul>
+</li>
+<li><code>id object_getIvar(id obj, Ivar ivar)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Ivar *class_copyIvarList(Class cls, unsigned int *outCount)</code></p>
+<ul>
+<li>拷贝实例变量列表（最后需要调用free释放）<h3 id="属性相关"><a href="#属性相关" class="headerlink" title="属性相关"></a>属性相关</h3></li>
+</ul>
+</li>
+<li><p><code>objc_property_t class_getProperty(Class cls, const char *name)</code></p>
+<ul>
+<li>获取一个属性</li>
+<li>获取属性的一些信息<ul>
+<li><code>const char *property_getName(objc_property_t property)</code></li>
+<li><code>const char *property_getAttributes(objc_property_t property)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>objc_property_t *class_copyPropertyList(Class cls, unsigned int *outCount)</code></p>
+<ul>
+<li>拷贝属性列表（最后需要调用free释放）<h3 id="方法相关"><a href="#方法相关" class="headerlink" title="方法相关"></a>方法相关</h3></li>
+</ul>
+</li>
+<li><p>获得一个实例方法、类方法</p>
+<ul>
+<li><code>Method class_getInstanceMethod(Class cls, SEL name)</code></li>
+<li><code>Method class_getClassMethod(Class cls, SEL name)</code></li>
+<li>获取方法的相关信息（带有copy的需要调用free去释放）<ul>
+<li><code>SEL method_getName(Method m)</code></li>
+<li><code>IMP method_getImplementation(Method m)</code></li>
+<li><code>const char *method_getTypeEncoding(Method m)</code></li>
+<li><code>unsigned int method_getNumberOfArguments(Method m)</code></li>
+<li><code>char *method_copyReturnType(Method m)</code></li>
+<li><code>char *method_copyArgumentType(Method m, unsigned int index)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>方法实现相关操作</p>
+<ul>
+<li><code>IMP class_getMethodImplementation(Class cls, SEL name) </code></li>
+<li><code>IMP method_setImplementation(Method m, IMP imp)</code></li>
+<li><code>void method_exchangeImplementations(Method m1, Method m2) </code><ul>
+<li>源码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">void method_exchangeImplementations(Method m1Signed, Method m2Signed)</span><br><span class="line">&#123;</span><br><span class="line"> if (!m1Signed  ||  !m2Signed) return;</span><br><span class="line"></span><br><span class="line">method_t *m1 = _method_auth(m1Signed);</span><br><span class="line"> method_t *m2 = _method_auth(m2Signed);</span><br><span class="line"></span><br><span class="line">mutex_locker_t lock(runtimeLock);</span><br><span class="line"></span><br><span class="line">//进行imp的交换</span><br><span class="line">IMP imp1 = m1-&gt;imp(false);</span><br><span class="line">IMP imp2 = m2-&gt;imp(false);</span><br><span class="line">SEL sel1 = m1-&gt;name();</span><br><span class="line">SEL sel2 = m2-&gt;name();</span><br><span class="line"></span><br><span class="line">m1-&gt;setImp(imp2);</span><br><span class="line">m2-&gt;setImp(imp1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// RR/AWZ updates are slow because class is unknown</span><br><span class="line">// Cache updates are slow because class is unknown</span><br><span class="line">// fixme build list of classes whose Methods are known externally?</span><br><span class="line">//这里会清除方法内的所有缓存</span><br><span class="line">flushCaches(nil, __func__, [sel1, sel2, imp1, imp2](Class c)&#123;</span><br><span class="line">  return c-&gt;cache.shouldFlush(sel1, imp1) || c-         &gt;cache.shouldFlush(sel2, imp2);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">adjustCustomFlagsForMethodChange(nil, m1);</span><br><span class="line">adjustCustomFlagsForMethodChange(nil, m2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>拷贝方法列表（最后需要调用free释放）</p>
+</li>
+<li><p><code>Method *class_copyMethodList(Class cls, unsigned int *outCount)</code></p>
+</li>
+<li><p>选择器相关</p>
+<ul>
+<li><code>const char *sel_getName(SEL sel)</code></li>
+<li><code>SEL sel_registerName(const char *str)</code></li>
+</ul>
+</li>
+<li><p>用block作为方法实现</p>
+<ul>
+<li><code>IMP imp_implementationWithBlock(id block)</code></li>
+<li><code>id imp_getBlock(IMP anImp)</code></li>
+<li><code>BOOL imp_removeBlock(IMP anImp)</code><h3 id="runtime面试题"><a href="#runtime面试题" class="headerlink" title="runtime面试题"></a>runtime面试题</h3></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>什么是Runtime<ul>
+<li>OC是一门动态性比较强的编程语言，允许很多操作推迟到程序运行时再进行OC的动态性就是由Runtime来支撑和实现的，<code>Runtime</code>是一套C语言的API，封装了很多动态性相关的函数平时编写的OC代码，底层都是转换成了<code>Runtime API</code>进行调用</li>
+</ul>
+</li>
+<li>具体应用<ol>
+<li>利用关联对象（AssociatedObject）给分类添加属性</li>
+<li>遍历类的所有成员变量（利用kvc修改私有属性，字典转模型，自动归档接档）</li>
+<li>交换方法实现（交换系统的方法）</li>
+<li>利用消息转发机制解决方法找不到的异常问题，(重写<code>forwardInvocation:</code>实现)</li>
+</ol>
+</li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Runtime知识/isKindofclass和isMemberofClass"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/isKindofclass%E5%92%8CisMemberofClass/"
+    >isKindofClass和isMemberofClass</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/isKindofclass%E5%92%8CisMemberofClass/" class="article-date">
+  <time datetime="2023-01-08T11:49:59.000Z" itemprop="datePublished">2023-01-08</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<ul>
+<li>isKindofClass是判断是否是当前类,或者其子类</li>
+<li>isMemberOfClass是否是当前类</li>
+</ul>
+</blockquote>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">//判断是否是元类成员</span><br><span class="line">+ (BOOL)isMemberOfClass:(Class)cls &#123;</span><br><span class="line">    //取出元类</span><br><span class="line">    return self-&gt;ISA() == cls;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)isMemberOfClass:(Class)cls &#123;</span><br><span class="line">    return [self class] == cls;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//判断元类</span><br><span class="line">// [LGPerson isKindOfClass:object_getClass([LGPerson class])] 返回true</span><br><span class="line">+ (BOOL)isKindOfClass:(Class)cls &#123;</span><br><span class="line">    //取出元类，取出元类</span><br><span class="line">    for (Class tcls = self-&gt;ISA(); tcls; tcls = tcls-&gt;getSuperclass()) &#123;</span><br><span class="line">        if (tcls == cls) return YES;</span><br><span class="line">    &#125;</span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// [[LGPerson new] isKindOfClass:[LGPerson class]] 返回true</span><br><span class="line">- (BOOL)isKindOfClass:(Class)cls &#123;</span><br><span class="line">    for (Class tcls = [self class]; tcls; tcls = tcls-&gt;getSuperclass()) &#123;</span><br><span class="line">        if (tcls == cls) return YES;</span><br><span class="line">    &#125;</span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@interface Person:NSObject</span><br><span class="line">@end</span><br><span class="line">@interface Student:Person</span><br><span class="line">@end</span><br><span class="line">[Student isKindofClass:[Person class]] //false,类对象是元类的类型（isa指向），并不是类的类型</span><br><span class="line">[Student isKindofClass:object_class([Person class])] // true,类对象是元类(类的类)的类型</span><br><span class="line">[[Student new] isKindofClass:[Person class]] //true，实例对象的父类是，Person</span><br><span class="line">//不管方法调用者，不管是实例对象还是类对象，都是返回true，（只要是NSObject体系下的）</span><br><span class="line">[Student isKindofClass:[NSObject class]] //true，基元类的父类是NSObject，所以是成立的</span><br><span class="line"></span><br><span class="line">[Person isMemberOfClass:[NSObject class]] //false，是直接判断isa指针的</span><br><span class="line">[Person isMemberOfClass:object_class([Sturdent class])] //false</span><br><span class="line">[Person isMemberOfClass:object_class([Person class])] //true</span><br><span class="line">[[Person new] isMemberOfClass:[Person class]] //true</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Runtime知识/super"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/06/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/super/"
+    >super</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/06/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/super/" class="article-date">
+  <time datetime="2023-01-05T16:49:17.000Z" itemprop="datePublished">2023-01-06</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><ul>
+<li>方法中子类调用<code>[super class]</code>实际输出还是子类的对象，和一般语言中的有所不同<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@interface Student:Person</span><br><span class="line">@implementation Student</span><br><span class="line">- (instancetype)init</span><br><span class="line">&#123;</span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        NSLog(@&quot;[self class] = %@&quot;, [self class]); // Student</span><br><span class="line">        NSLog(@&quot;[self superclass] = %@&quot;, [self superclass]); // Person</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;[super class] = %@&quot;, [super class]); // 实际输出 Student</span><br><span class="line">        NSLog(@&quot;[super superclass] = %@&quot;, [super superclass]); // MJPerson</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h2 id="原因解答"><a href="#原因解答" class="headerlink" title="原因解答"></a>原因解答</h2></li>
+<li>调用super方法，其实际会调用,方法<ul>
+<li>实际调用的方法,<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/** </span><br><span class="line"> * Sends a message with a simple return value to the superclass of an instance of a class.</span><br><span class="line"> * </span><br><span class="line"> * @param super A pointer to an \c objc_super data structure. Pass values identifying the</span><br><span class="line"> *  context the message was sent to, including the instance of the class that is to receive the</span><br><span class="line"> *  message and the superclass at which to start searching for the method implementation.</span><br><span class="line"> * @param op A pointer of type SEL. Pass the selector of the method that will handle the message.</span><br><span class="line"> * @param ...</span><br><span class="line"> *   A variable argument list containing the arguments to the method.</span><br><span class="line"> * </span><br><span class="line"> * @return The return value of the method identified by \e op.</span><br><span class="line"> * </span><br><span class="line"> * @see objc_msgSend</span><br><span class="line"> */</span><br><span class="line">objc_msgSendSuper(struct objc_super * _Nonnull super, SEL _Nonnull op, ...)</span><br></pre></td></tr></table></figure></li>
+<li>objc_super的结构体是<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct objc_super &#123;</span><br><span class="line">/// Specifies an instance of a class.</span><br><span class="line">__unsafe_unretained _Nonnull id receiver;</span><br><span class="line"></span><br><span class="line">/// Specifies the particular superclass of the instance to message. </span><br><span class="line">__unsafe_unretained _Nonnull Class super_class;</span><br><span class="line"></span><br><span class="line">/* super_class is the first class to search */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>编译后的代码,其方法的实际<code>receiver</code>，实际上仍然是self<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSendSuper((__rw_objc_super)&#123;(id)self, (id)class_getSuperclass(objc_getClass(&quot;Student&quot;))&#125;, sel_registerName(&quot;class&quot;)));</span><br></pre></td></tr></table></figure></li>
+<li>也就是[super message]的底层实现<ol>
+<li>其消息接收者仍然是子类对象，</li>
+<li>是从父类开始查找方法的实现</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><code>- (Class)class</code>方法是在<code>NSObject</code>上实现的，因此不管是<code>[self class]</code>,还是<code>[super class]</code>从父类开始查找方法，实际上都是在<code>NSObject</code>上实现的，因此最终和<code>[self class]</code>一样，还是会返回<code>Student</code></li>
+<li>注意在查看汇编时，实际调用的是<code>objc_msgSendSuper2</code>,其第二个参数是当前类对象，而非父类对象，但是在实际源码中<code>objc_msgSendSuper2</code>内，最终还是会取父类去调用。因此最终和编译后的<code>objc_msgSendSuper</code>实现实际是一样的<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct abc = &#123;</span><br><span class="line">      self,</span><br><span class="line">      [ViewController class]</span><br><span class="line">  &#125;;</span><br><span class="line">objc_msgSendSuper2(abc, sel_registerName(&quot;viewDidLoad&quot;));</span><br></pre></td></tr></table></figure></li>
+</ul>
  
       <!-- reward -->
       
@@ -708,7 +1268,7 @@
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
   </nav>
   
 </section>
