@@ -101,7 +101,8 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="结构体是值类型（枚举也是值类型），类是引用类型（指针类型）"><a href="#结构体是值类型（枚举也是值类型），类是引用类型（指针类型）" class="headerlink" title="结构体是值类型（枚举也是值类型），类是引用类型（指针类型）"></a>结构体是值类型（枚举也是值类型），类是引用类型（指针类型）</h3><ul>
+  <h3 id="结构体是值类型（枚举也是值类型），类是引用类型（指针类型）"><a href="#结构体是值类型（枚举也是值类型），类是引用类型（指针类型）" class="headerlink" title="结构体是值类型（枚举也是值类型），类是引用类型（指针类型）"></a>结构体是值类型（枚举也是值类型），类是引用类型（指针类型）</h3><span id="more"></span>
+<ul>
 <li>例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Size &#123;</span><br><span class="line">    var width = 1</span><br><span class="line">    var height = 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Point &#123;</span><br><span class="line">    var x = 3</span><br><span class="line">    var y = 4</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func test() &#123;</span><br><span class="line">    var size = Size()</span><br><span class="line">    var point = Point()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 <li>执行test()方法，时的内存地址,(64位)<br><img src="1.png"><ul>
 <li>内存地址由高到低在栈中赋值，结构体直接存储在栈上，类在栈上存的是8字节的指针地址</li>
@@ -122,11 +123,13 @@
 <li>在swift标准库中，为了提升性能，<code>String</code>、<code>Array</code>、<code>Dictionary</code>、<code>set</code>采取了<code>Copy On Write</code>的技术<ul>
 <li>比如仅当有“写〞操作时 ，才会真正执行拷贝操作</li>
 <li>对于标准库值类型的赋值操作 ，<code>Swift</code> 能确保最佳性能，所有没必要为了保证最佳性能来避免赋值<ul>
-<li>如果是非标准库的结构体，时不会有写时拷贝的操作<h3 id="引用类型赋值"><a href="#引用类型赋值" class="headerlink" title="引用类型赋值"></a>引用类型赋值</h3></li>
+<li>如果是非标准库的结构体，时不会有写时拷贝的操作</li>
 </ul>
 </li>
 </ul>
 </li>
+</ul>
+<h3 id="引用类型赋值"><a href="#引用类型赋值" class="headerlink" title="引用类型赋值"></a>引用类型赋值</h3><ul>
 <li>引用赋值给var、 let或者给函数传参，是将内存地址拷贝一份</li>
 <li>类似于制作一个文件的替身（快捷方式、链接），指向的是同一个文件。属于浅拷贝 (shallow copy)</li>
 </ul>

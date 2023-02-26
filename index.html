@@ -231,36 +231,11 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="结构体是值类型（枚举也是值类型），类是引用类型（指针类型）"><a href="#结构体是值类型（枚举也是值类型），类是引用类型（指针类型）" class="headerlink" title="结构体是值类型（枚举也是值类型），类是引用类型（指针类型）"></a>结构体是值类型（枚举也是值类型），类是引用类型（指针类型）</h3><ul>
-<li>例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Size &#123;</span><br><span class="line">    var width = 1</span><br><span class="line">    var height = 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Point &#123;</span><br><span class="line">    var x = 3</span><br><span class="line">    var y = 4</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func test() &#123;</span><br><span class="line">    var size = Size()</span><br><span class="line">    var point = Point()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>执行test()方法，时的内存地址,(64位)<br><img src="1.png"><ul>
-<li>内存地址由高到低在栈中赋值，结构体直接存储在栈上，类在栈上存的是8字节的指针地址</li>
-<li>堆空间的Size对象占32位，其中16位存width，height数据，8位存引用计数，8位类型信息的地址</li>
-</ul>
-</li>
-<li>注意，类的指针和结构体存的地方不一定在栈，<ul>
-<li>如果在全局区生成，则类的指针和结构体在全局区，</li>
-<li>如果结构体变量为类的属性，则会和该类一起在堆区生成</li>
-<li>如果在函数内生成，则类的指针和结构体在栈区<h3 id="类和结构体的大小"><a href="#类和结构体的大小" class="headerlink" title="类和结构体的大小"></a>类和结构体的大小</h3></li>
-</ul>
-</li>
-<li>类中用MemoryLayout获取的大小，实际是指针大小始终位8<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(MemoryLayout&lt;Size&gt;.stride) // 8,Size指针变量因此是8</span><br><span class="line">print(MemoryLayout&lt;Point&gt;.stride) // 16，</span><br></pre></td></tr></table></figure></li>
-<li>获取类内存中的指针数据<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var size = Size()</span><br><span class="line">let sizePoint = UnsafeRawPointer(bitPattern: unsafeBitCast(size, to: UInt.self))! //存放在堆中的引用地址</span><br><span class="line">malloc_size(sizePoint) //32 获取堆中的内存数据大小</span><br></pre></td></tr></table></figure>
-<h3 id="值类型赋值"><a href="#值类型赋值" class="headerlink" title="值类型赋值"></a>值类型赋值</h3></li>
-<li>值类型赋值给<code>var</code>、<code>let</code>或者给函数传参，是直接将所有内容拷贝一份</li>
-<li>类似于对文件进行copy、paste操作，产生了全新的文件副本。属于深拷贝 ( deep copy )<h4 id="结构体的Copy-on-Write"><a href="#结构体的Copy-on-Write" class="headerlink" title="结构体的Copy on Write"></a>结构体的Copy on Write</h4></li>
-<li>在swift标准库中，为了提升性能，<code>String</code>、<code>Array</code>、<code>Dictionary</code>、<code>set</code>采取了<code>Copy On Write</code>的技术<ul>
-<li>比如仅当有“写〞操作时 ，才会真正执行拷贝操作</li>
-<li>对于标准库值类型的赋值操作 ，<code>Swift</code> 能确保最佳性能，所有没必要为了保证最佳性能来避免赋值<ul>
-<li>如果是非标准库的结构体，时不会有写时拷贝的操作<h3 id="引用类型赋值"><a href="#引用类型赋值" class="headerlink" title="引用类型赋值"></a>引用类型赋值</h3></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>引用赋值给var、 let或者给函数传参，是将内存地址拷贝一份</li>
-<li>类似于制作一个文件的替身（快捷方式、链接），指向的是同一个文件。属于浅拷贝 (shallow copy)</li>
-</ul>
- 
+  <h3 id="结构体是值类型（枚举也是值类型），类是引用类型（指针类型）"><a href="#结构体是值类型（枚举也是值类型），类是引用类型（指针类型）" class="headerlink" title="结构体是值类型（枚举也是值类型），类是引用类型（指针类型）"></a>结构体是值类型（枚举也是值类型），类是引用类型（指针类型）</h3> 
+      <a class="article-more-link" href="/2023/02/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E7%B1%BB/"
+        >阅读更多...</a
+      >
+       
       <!-- reward -->
       
     </div>
@@ -727,7 +702,8 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="内存查看"><a href="#内存查看" class="headerlink" title="内存查看"></a>内存查看</h3><blockquote>
+  <span id="more"></span>
+<h3 id="内存查看"><a href="#内存查看" class="headerlink" title="内存查看"></a>内存查看</h3><blockquote>
 <p><code>view Memory</code>功能，查看地址中存放的内存</p>
 </blockquote>
 <ul>
@@ -876,7 +852,8 @@ enum TestNum {<br>  case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="inout"><a href="#inout" class="headerlink" title="inout"></a>inout</h2><h3 id="inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）"><a href="#inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）" class="headerlink" title="inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）"></a>inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）</h3><ul>
+  <span id="more"></span>
+<h2 id="inout"><a href="#inout" class="headerlink" title="inout"></a>inout</h2><h3 id="inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）"><a href="#inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）" class="headerlink" title="inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）"></a>inout的函数，是地址传递，而非在是值传递（在函数体内改变之后，在赋值给原来的值）</h3><ul>
 <li>汇编验证<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> func test(_ num: Int) &#123;</span><br><span class="line"> </span><br><span class="line"> &#125;</span><br><span class="line"> // movq 值传递 %rbp - 0x20的地址中取值,传给方法</span><br><span class="line">0x100003f70 &lt;+64&gt;: movq   -0x20(%rbp), %rdi</span><br><span class="line">0x100003f74 &lt;+68&gt;: callq  0x100003f90               ;  SwiftDText.test(Swift.Int) -&gt; () at main.swift:11</span><br><span class="line">0x100003f79 &lt;+73&gt;: xorl   %eax, %eax</span><br><span class="line">0x100003f7b &lt;+75&gt;: addq   $0x20, %rsp</span><br><span class="line">0x100003f7f &lt;+79&gt;: popq   %rbp</span><br><span class="line">0x100003f80 &lt;+80&gt;: retq </span><br><span class="line"> </span><br><span class="line"> func test(_ num: inout Int) &#123;</span><br><span class="line"> </span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> // leaq 地址传递 %rbp - 0x20的地址传到 %rdi,且在callq后面，并没有movq赋值操作</span><br><span class="line"> 0x100003f6c &lt;+44&gt;: leaq   0x408d(%rip), %rdi        ; SwiftDText.num : Swift.Int</span><br><span class="line"> 0x100003f73 &lt;+51&gt;: callq  0x100003f90               ; SwiftDText.test(inout Swift.Int) -&gt; () at main.swift:11</span><br><span class="line">0x100003f78 &lt;+56&gt;: leaq   -0x18(%rbp), %rdi</span><br><span class="line">0x100003f7c &lt;+60&gt;: callq  0x100003fa8               ; symbol stub for: swift_endAccess</span><br><span class="line">0x100003f81 &lt;+65&gt;: xorl   %eax, %eax</span><br><span class="line">0x100003f83 &lt;+67&gt;: addq   $0x20, %rsp</span><br><span class="line">0x100003f87 &lt;+71&gt;: popq   %rbp</span><br><span class="line">0x100003f88 &lt;+72&gt;: retq  </span><br><span class="line"> */</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="inout-函数存在的独占访问权限"><a href="#inout-函数存在的独占访问权限" class="headerlink" title="inout 函数存在的独占访问权限"></a>inout 函数存在的独占访问权限</h3></li>
 <li>下面均会出现<code>imultaneous accesses to 0x100008178, but modification requires exclusive access</code>崩溃异常<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--第一种--&gt;</span><br><span class="line">var num = 3</span><br><span class="line">func test(nu: inout Int) &#123;</span><br><span class="line">    nu += 3</span><br><span class="line">    print(num) // 读同一个地址的num会崩溃</span><br><span class="line">    //num += 10 // 写同一个地址的num也会崩溃</span><br><span class="line">&#125;</span><br><span class="line">test(nu: &amp;num)</span><br><span class="line">&lt;!--第二种--&gt;</span><br><span class="line">class TestNum &#123;</span><br><span class="line">    var i:Int = 0 </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let testNum = TestNum()</span><br><span class="line">func test(i: inout Int) &#123; </span><br><span class="line">    i += 3</span><br><span class="line">    print(testNum.i) // 读同一个地址的num会崩溃</span><br><span class="line">    //testNum.i += 10 // 写同一个地址的num也会崩溃</span><br><span class="line">&#125;</span><br><span class="line">test(i: &amp;testNum.i)</span><br></pre></td></tr></table></figure></li>
@@ -970,35 +947,11 @@ enum TestNum {<br>  case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool
        
   <blockquote>
 <p>记录下swfit的基础不同的语法</p>
-</blockquote>
-<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><ul>
-<li>只能赋值1次</li>
-<li>它的值不要求在编泽时期确定，但使用之前必须赋值1次<h4 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h4></li>
-<li>标识符（比如常量名、变量名、函数名）几乎可以使用任何字符</li>
-<li>标识符不能以数字开头，不能包含空白字符、制表符、節头等特殊字符<h4 id="常用数据类型"><a href="#常用数据类型" class="headerlink" title="常用数据类型"></a>常用数据类型</h4><blockquote>
-<p>只有值类型和引用类型，以前语言中的<code>Int</code>，<code>Bool</code>均为<em>结构体</em>，而非<em>基础数据类型</em></p>
-</blockquote>
-</li>
-</ul>
-<p><img src="1.png"></p>
-<ul>
-<li>整数类型：Int8、 Int16、 Int32、Int64、UInt8、 UInt16、 UInt32、UInt64</li>
-<li>在32bit平台，Int等价于Int32；在64bit平台，Int等价于Int64</li>
-<li>整数的最值：UInt8.max、 Int16. min</li>
-<li>目一般情况下，都是直接使用Int即可</li>
-<li>浮点类型：Float ，32位，精度只有6位；Double，64位，精度至少15位<h4 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//整数</span><br><span class="line">let intDecimal = 17//十进制</span><br><span class="line">let intBinary = 0b10001 // 二进制</span><br><span class="line">let intoctal = 0o21 //八进制</span><br><span class="line">llet intHexadecimal = 9x11//十六进制</span><br><span class="line"></span><br><span class="line">//浮点数</span><br><span class="line">let doubleDecimal = 125.0 //十进制，等价于1.25e2，日.0125等价于1.25e-2</span><br><span class="line">//只有十六进制可以这么写</span><br><span class="line">let doubleHexadecimal1= 0xFp2 //十六进制，意味着15x2^2，相当于十进制的68.0</span><br><span class="line">let doubleHe xadecima12 =日xFp-2 // 十六进制，意味着15x2^-2，相当于十进制的3.75</span><br></pre></td></tr></table></figure></li>
-<li>类型转换<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//字面量可以直接相加，因为数字字面量本身没有明确的类型</span><br><span class="line">let result = 3 + 0.14156 //不会报错</span><br></pre></td></tr></table></figure>
-<h3 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h3><h4 id="for"><a href="#for" class="headerlink" title="for"></a>for</h4></li>
-<li>for遍历值作为变量 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//i默认是let，有需要时可以声明为var，但是该变量只能单个for中变化,下一次又会重新赋值</span><br><span class="line">for var i in 1...3 &#123;</span><br><span class="line">    print(i)</span><br><span class="line">    i += 5</span><br><span class="line">&#125;</span><br><span class="line">//输出 1、2、3</span><br></pre></td></tr></table></figure></li>
-<li>区间运算<ul>
-<li>区间运算<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let names = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;]</span><br><span class="line">for n in names[2...3] &#123;</span><br><span class="line">    print(n)</span><br><span class="line">&#125;</span><br><span class="line">//输出 c d</span><br></pre></td></tr></table></figure></li>
-<li>单侧区间:让区间朝一个方向尽可能远<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">for n in names[1...] &#123;</span><br><span class="line">    print(n)</span><br><span class="line">&#125;</span><br><span class="line">//输出 c d</span><br><span class="line"></span><br><span class="line">for n in names[..&lt;2] &#123;</span><br><span class="line">    print(n)</span><br><span class="line">&#125;</span><br><span class="line">//输出 a b</span><br><span class="line">//3到正无穷，但是...3不能用for</span><br><span class="line">for i in 3... &#123;</span><br><span class="line">    print(i)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let rang:PartialRangeThrough&lt;Int&gt; = ...3 //负无穷到3，不能用于for</span><br></pre></td></tr></table></figure></li>
-<li>字符串、字符也能包含区间，但是不能用于for<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let stringRang = &quot;cc&quot;...&quot;ff&quot;</span><br><span class="line">stringRang.contains(&quot;dz&quot;) //true</span><br><span class="line">str.contains(&quot;fg&quot;) //false</span><br></pre></td></tr></table></figure></li>
-<li>带间隔的区间值<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//从4开始，累加2，&lt;=12</span><br><span class="line">for tickMark in stride(from: 4, through: 12, by: 2) &#123;</span><br><span class="line">    print(&quot;1&quot;,tickMark)</span><br><span class="line">&#125;</span><br><span class="line">//输出 4 6 8 10 12</span><br><span class="line">//从4开始，累加2，&lt;12</span><br><span class="line">for tickMark in stride(from: 4, to: 12, by: 2) &#123;</span><br><span class="line">    print(&quot;1&quot;,tickMark)</span><br><span class="line">&#125;</span><br><span class="line">//输出 4 6 8 10</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
- 
+</blockquote> 
+      <a class="article-more-link" href="/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
+        >阅读更多...</a
+      >
+       
       <!-- reward -->
       
     </div>
