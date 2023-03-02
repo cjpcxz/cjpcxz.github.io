@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-02-26T16:30:29.314Z</updated>
+  <updated>2023-03-02T11:12:29.377Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>闭包</title>
-    <link href="http://example.com/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/"/>
-    <id>http://example.com/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/</id>
-    <published>2023-02-26T16:28:40.000Z</published>
-    <updated>2023-02-26T16:30:29.314Z</updated>
+    <title>SSH常用指令</title>
+    <link href="http://example.com/2023/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/"/>
+    <id>http://example.com/2023/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/</id>
+    <published>2023-10-29T09:28:35.000Z</published>
+    <updated>2023-03-02T11:12:29.377Z</updated>
     
     
       
@@ -31,6 +31,52 @@
     <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
         
       
+    
+    
+    
+    <category term="iOS越狱" scheme="http://example.com/categories/iOS%E8%B6%8A%E7%8B%B1/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>属性</title>
+    <link href="http://example.com/2023/03/01/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%B1%9E%E6%80%A7/"/>
+    <id>http://example.com/2023/03/01/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%B1%9E%E6%80%A7/</id>
+    <published>2023-03-01T15:42:56.000Z</published>
+    <updated>2023-03-01T16:50:01.674Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>闭包</title>
+    <link href="http://example.com/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/"/>
+    <id>http://example.com/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/</id>
+    <published>2023-02-26T16:28:40.000Z</published>
+    <updated>2023-02-28T16:43:57.239Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;一个函数和它所捕获的变量\常量环境组合起来，称为闭包&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一般指定义在函数内部的函数&lt;/li&gt;
+&lt;li&gt;一般它捕获的是外层西数的局部变量\常量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;</summary>
     
     
     
@@ -218,7 +264,7 @@
     <link href="http://example.com/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/dealloc/"/>
     <id>http://example.com/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/dealloc/</id>
     <published>2023-02-18T10:31:44.000Z</published>
-    <updated>2023-02-18T11:33:32.878Z</updated>
+    <updated>2023-03-02T02:56:23.523Z</updated>
     
     
       
@@ -241,7 +287,7 @@
     <link href="http://example.com/2023/02/18/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://example.com/2023/02/18/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/</id>
     <published>2023-02-18T06:47:32.000Z</published>
-    <updated>2023-02-18T07:35:17.588Z</updated>
+    <updated>2023-02-27T14:12:31.260Z</updated>
     
     
       
@@ -279,11 +325,11 @@
   </entry>
   
   <entry>
-    <title>Pointer</title>
+    <title>Tagged Pointer</title>
     <link href="http://example.com/2023/02/15/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/TaggedPointer/"/>
     <id>http://example.com/2023/02/15/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/TaggedPointer/</id>
     <published>2023-02-14T16:36:47.000Z</published>
-    <updated>2023-02-23T16:57:21.793Z</updated>
+    <updated>2023-03-02T02:37:09.342Z</updated>
     
     
       
@@ -399,52 +445,6 @@
     <id>http://example.com/2023/01/20/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9A%84%E8%BF%90%E8%A1%8C%E9%80%BB%E8%BE%91/</id>
     <published>2023-01-20T11:39:49.000Z</published>
     <updated>2023-02-04T10:48:09.978Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="runloop" scheme="http://example.com/categories/runloop/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>runloop相关的类</title>
-    <link href="http://example.com/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/"/>
-    <id>http://example.com/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/</id>
-    <published>2023-01-12T14:29:38.000Z</published>
-    <updated>2023-02-05T16:17:42.900Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="runloop" scheme="http://example.com/categories/runloop/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>runloop</title>
-    <link href="http://example.com/2023/01/10/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop/"/>
-    <id>http://example.com/2023/01/10/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop/</id>
-    <published>2023-01-10T15:09:41.000Z</published>
-    <updated>2023-01-10T16:04:45.661Z</updated>
     
     
       

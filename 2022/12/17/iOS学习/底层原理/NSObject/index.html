@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">630</span>
+            <span class="post-count">632</span>
         </span>
     </span>
 
@@ -101,37 +101,37 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h1><h3 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><ul>
-<li>系统分配了16个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
-<li>但<code>NSObject</code>对象内部只使用了8个字节（<code>isa</code>指针）的空间（64bit环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
+  <h3 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><h4 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h4><ul>
+<li>系统分配了<code>16</code>个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
+<li>但<code>NSObject</code>对象内部只使用了<code>8</code>个字节（<code>isa</code>指针）的空间（<code>64bit</code>环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
 <li>用<code>clang -rewrite-objc main.m -o main.cpp</code>编译成<code>C++</code>文件（全平台），</li>
 <li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m -o main.cpp</code>(推荐)编译成指定平台的</li>
-<li>16字节而不是8字节的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小16字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>16字节</code>而不是<code>8字节</code>的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小<code>16字节</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 </li>
-<li>扩展例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> @interface student: NSObject &#123;</span><br><span class="line"> int _no;</span><br><span class="line"> int _age;</span><br><span class="line"> int _height; </span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">int _no; //4字节</span><br><span class="line">int _age; //4 字节</span><br><span class="line">int _height; // 4 字节</span><br><span class="line">&#125;</span><br><span class="line">内存对齐: 结构体的大小必须是最大成员大小的倍数,实际为24字节，但是用`malloc_size`计算分配是32</span><br></pre></td></tr></table></figure></li>
-<li>注意，ios操作系统的内存对齐，是按16倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)<strong>24位大小，但是用<code>malloc_size</code>计算</strong>实际</strong>分配的确实32位 </li>
-<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为8，实际不知道内存中的大小<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3></li>
+<li>扩展的例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> @interface Student: NSObject &#123;</span><br><span class="line">    int _no;</span><br><span class="line">    int _age;</span><br><span class="line">    int _height; </span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> // 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">    Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">    int _no; //4字节</span><br><span class="line">    int _age; //4 字节</span><br><span class="line">    int _height; // 4 字节</span><br><span class="line">&#125;</span><br><span class="line">// 内存对齐: 结构体的大小必须是最大成员大小的倍数,实际为24字节，但是用`malloc_size`计算分配是32</span><br></pre></td></tr></table></figure></li>
+<li>注意，<code>ios</code>操作系统的内存对齐，是按<code>16</code>倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)</strong><code>24</code>位大小，但是用<code>malloc_size</code>计算<strong>实际</strong>分配的确是<code>32</code>位 </li>
+<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为<code>8</code>，实际不知道内存中的大小</li>
 </ul>
-<ol>
+<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3><ol>
 <li><code>print、p</code>：打印</li>
 <li><code>po</code>: 打印对象</li>
 <li>读取内存<ol>
-<li><code>memory red/数量格式字节数 内存地址</code>:`memory red/3xw 0x10010</li>
-<li><code>x/数量格式字节数 内存地址</code>: x/3xw 0x10010</li>
-<li>格式: x-16进制，d是10进制</li>
-<li>字节大小:b 1字节，h 2字节，w 4字节，g 8字节</li>
+<li><code>memory red/数量格式字节数 内存地址</code>:<code>memory red/3xw 0x10010</code></li>
+<li><code>x/数量格式字节数 内存地址</code>: <code>x/3xw 0x10010</code></li>
+<li>格式: <code>x</code>-16进制，<code>d</code>是10进制</li>
+<li>字节大小:<code>b 1字节</code>，<code>h 2字节</code>，<code>w 4字节</code>，<code>g 8字节</code></li>
 </ol>
 </li>
-<li>修改内存中的值，<code>memory write 内存地址 数值</code>：memory write 0x0000010 10</li>
+<li>修改内存中的值，<code>memory write 内存地址 数值</code>：<code>memory write 0x0000010 10</code></li>
 </ol>
 <h3 id="对象的isa指针指向哪里"><a href="#对象的isa指针指向哪里" class="headerlink" title="对象的isa指针指向哪里"></a>对象的isa指针指向哪里</h3><ul>
-<li>instance对象的isa指针指向类对象</li>
-<li>类对象的isa指针指向元类对象</li>
-<li>元类对象的isa指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
+<li><code>instance</code>对象的<code>isa</code>指针指向类对象</li>
+<li>类对象的<code>isa</code>指针指向元类对象</li>
+<li>元类对象的<code>isa</code>指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
 <li>对象的方法、属性、协议信息、成员变量，存放在类对象</li>
 <li>类方法存放在元类对象</li>
-<li>成员变量的具体值，存放在instance</li>
+<li>成员变量的具体值，存放在<code>instance</code></li>
 </ul>
  
       <!-- reward -->
@@ -210,19 +210,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16708614441261/" class="article-nav-link">
+      <a href="/2022/12/18/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            NSObject
+            OC对象的分类
           
         </div>
       </a>
     
     
-      <a href="/2022/12/09/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16706010476870/" class="article-nav-link">
+      <a href="/2022/12/10/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/FishHook/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title"></div>
+        <div class="article-nav-title">FishHook</div>
       </a>
     
   </nav>

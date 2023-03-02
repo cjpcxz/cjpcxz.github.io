@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>Pointer |  ayer</title>
+      <title>Tagged Pointer |  ayer</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -46,8 +46,8 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="Tagged Pointer-iOS学习/内存管理/TaggedPointer"
-  class="article article-type-Tagged Pointer"
+  id="post-iOS学习/内存管理/TaggedPointer"
+  class="article article-type-post"
   itemscope
   itemprop="blogPost"
   data-scroll-reveal
@@ -57,7 +57,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Pointer
+  Tagged Pointer
 </h1>
  
 
@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">750</span>
+            <span class="post-count">807</span>
         </span>
     </span>
 
@@ -117,7 +117,7 @@
 </ul>
 <h2 id="Tagged-Pointer存储地方思考"><a href="#Tagged-Pointer存储地方思考" class="headerlink" title="Tagged Pointer存储地方思考"></a>Tagged Pointer存储地方思考</h2><ul>
 <li>解码<code>extern</code>调用私有函数<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">extern uintptr_t objc_debug_taggedpointer_obfuscator;</span><br><span class="line">uintptr_t _objc_decodeTaggedPointer_(const void * _Nullable  ptr) &#123;</span><br><span class="line">    return (uintptr_t)ptr ^ objc_debug_taggedpointer_obfuscator;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">NSNumber *number1 = @4;</span><br><span class="line">NSNumber *number2 = @5;</span><br><span class="line">NSNumber *number3 = @100;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%p  %p  %p&quot;,number1,number2,number3);</span><br><span class="line">///0xc96fede699842146  0xc96fede699842786  0xc96fede699861216</span><br><span class="line">NSLog(@&quot;0x%lx   0x%lx   0x%lx&quot;,_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number1)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number2)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number3)));</span><br><span class="line">///0xb000000000000042   0xb000000000000052   0xb000000000000642</span><br><span class="line"></span><br><span class="line">NSString *str1 = [NSString stringWithFormat:@&quot;sd&quot;];</span><br><span class="line">NSString *str2 = [NSString stringWithFormat:@&quot;sdadad&quot;];</span><br><span class="line">NSLog(@&quot;%p  %p&quot;,str1,str2);</span><br><span class="line">//0xbaf35d65b6463f52  0xbaf51b73f0563f56</span><br><span class="line">NSLog(@&quot;0x%lx 0x%lx&quot;,_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(str1)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(str2)));</span><br><span class="line">//0xa000000000064732   0xa006461646164736</span><br></pre></td></tr></table></figure></li>
-<li>分析<ul>
+<li>分析,注意上面的数据是在<code>x86</code>模拟器上的数据<ul>
 <li>前面的0xb明显是tag,为<code>0xb -&gt; 1011</code>, <code>0xa -&gt; 1010</code>,<ul>
 <li>在iOS中最高位为1表明是<code>Tagged Pointer</code></li>
 <li>后三位代表数据类型，<code>011</code>代表int（如果是带小数点的无法不会转出tag），<code>010</code>代表字符串</li>
@@ -128,6 +128,10 @@
 <li>后4位代表数据长度(一般是字符串长度)，后四位<code>sd -&gt; 0010</code>长度2、<code>sdadad -&gt; 0110</code>长度6</li>
 </ul>
 </li>
+</ul>
+</li>
+<li>如果是iOS，<code>arm64</code>下，数据格式不同,需要注意<ul>
+<li><code>@5 -&gt; 0x8000000000000291</code>,<code>@8 -&gt; 0x8000000000000411</code>,最高位1是标识，低7位是标识和数据长度</li>
 </ul>
 </li>
 <li>在iOS中，<code>Tagged Pointer</code>中间56位用来存东西，前4位是tag，后4位是数据长度<h2 id="Tagged-Pointer的题目思考"><a href="#Tagged-Pointer的题目思考" class="headerlink" title="Tagged Pointer的题目思考"></a>Tagged Pointer的题目思考</h2><h3 id="关于野指针的问题"><a href="#关于野指针的问题" class="headerlink" title="关于野指针的问题"></a>关于野指针的问题</h3></li>

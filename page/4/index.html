@@ -142,161 +142,6 @@
     
     
     <article
-  id="post-iOS学习/Runtime知识/KVC"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/KVC/"
-    >KVC</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/KVC/" class="article-date">
-  <time datetime="2022-12-24T16:00:00.000Z" itemprop="datePublished">2022-12-25</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h1><ol>
-<li>通过KVC修改属性会触发KVO，例如age属性,<ul>
-<li>注意，就是age属性没有实现set的方法，只有<code>成员变量</code>，通过<code>KVC</code>设置，同样会触发KVO</li>
-<li>表明KVC内部实际上有调用willchangForkey、以及didChangeForKey:方法<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><img src="16719622557599.png"></li>
-</ul>
-</li>
-<li>根据setAge:,_setAge:的顺序找到，找到则调用,设置</li>
-<li>如果1没找到，查看<code>accessInstanceVariablesDirectly</code>（是否可直接查找成员变量）是否返回true，为No，直接报没找到key的异常</li>
-<li>如果为true，则按照_age,_isAge,age,isAge的顺序查找成员变量，找到直接赋值<h2 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h2><img src="%E6%88%AA%E5%B1%8F2022-12-25%2020.15.39.png" alt="截屏2022-12-25 20.15.39"></li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KVC/" rel="tag">KVC</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runtime知识/KVO"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/KVO/"
-    >KVO</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/KVO/" class="article-date">
-  <time datetime="2022-12-24T16:00:00.000Z" itemprop="datePublished">2022-12-25</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <span id="more"></span>
-<h1 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h1><h3 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h3><ul>
-<li>未使用<code>KVO</code>监听，其<code>isa</code>指针指向的是其<code>class</code>对象，（<code>isa</code>指针、<code>superclass</code>指针、实例方法、协议列表、属性列表、成员变量）</li>
-<li>使用KVO监听，其isa指向为<code>NSKVONotifying_class</code>一个全新的class对象,有<code>runtime</code>运行时，动态创建的类,<ul>
-<li>该类实现为其<code>class对象</code>的子类，其内部实现了<code>class</code>、<code>delloc</code>、<code>_isKVOA</code>，以及重新了相关的set方法</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[self.person1 addObserver:self forKeyPath:@&quot;height&quot; options:options context:@&quot;456&quot;];</span><br><span class="line">    int num;</span><br><span class="line">    //=注意，这里如果用[self.person1 class]拿不到，被重写了，不会拿到实际的类</span><br><span class="line">    Method * list = class_copyMethodList(object_getClass(self.person1), &amp;num);</span><br><span class="line">    for(int i = 0;i &lt; num;i++) &#123;</span><br><span class="line">        Method method = list[i];</span><br><span class="line">        NSLog(@&quot;%@&quot;,NSStringFromSelector(method_getName(method)));</span><br><span class="line">    &#125;</span><br><span class="line">    free(list);</span><br><span class="line">    /*</span><br><span class="line">    输出setHeight:、setAge:、class、dealloc、_isKVOA</span><br><span class="line">    */</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在调用set方法后实际调用了<code>_NSSetIntValueAndNotify();</code>(整型所以是int，如果是double则是<code>_NSSetDoubleValueAndNotify()</code>)</li>
-<li><code>_NSSetIntValueAndNotify()</code>内，类似实现,伪代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSKVONotifying_MJPerson中</span><br><span class="line">- (void)setAge:(int)age &#123;</span><br><span class="line">    _NSSetIntValueAndNotify()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void _NSSetIntValueAndNotify() &#123;</span><br><span class="line">    [self willChangeValueForKey:&quot;age&quot;]</span><br><span class="line">    [super setAge:age]</span><br><span class="line">    [self didChangeValueForKey:&quot;age&quot;] //里面调用监听器的方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void) didChangeValueForKey:(NSString *)key &#123;</span><br><span class="line">    [observer observeValueForKeyPath:key ofObject: change: content:]//通知观察者</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>如果内存中有个<code>NSKVONotifying_xxx</code>类，则相应的kvo无法实现</li>
-<li>通过<code>[self.person1 methodForSelector:@selector(setAge:)]</code>找到对应方法的实现，在lldb中根据内存，用<code>p (IMP)0x7ff800bde9cb</code>即可找到实际实现的方法<code>Foundation _NSSetIntValueAndNotify</code></li>
-<li>被kvo的对象，其元类对象也是不同的</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
-<li><p>KVO的本质是什么</p>
-<ul>
-<li>利用RuntimeAPI动态生成一个子类，并且让instance对象的isa指向这个全新的子类</li>
-<li>当修改instance对象的属性时，会调用Foundation的_NSSetxxxValueAndNotif函数<ul>
-<li>willchangValueForKey</li>
-<li>父类原来的setter</li>
-<li>didChangeValueForKey<ul>
-<li>其内部会触发监听器Obserser的监听方法（observeValueForKeyPath:ofObject:change:）</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>KVO的本质是什么</p>
-<ul>
-<li>设置方法时，自动触发</li>
-<li>手动调用willChangeForKey：和didChangeForKey： </li>
-</ul>
-</li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KVO/" rel="tag">KVO</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
   id="post-iOS学习/底层原理/load、initialize方法的区别"
   class="article article-type-post"
   itemscope
@@ -308,7 +153,7 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2022/12/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/"
+  <a class="article-title" href="/2022/12/28/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/"
     >load、initialize方法的区别</a> 
 </h2>
  
@@ -317,8 +162,8 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2022/12/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/" class="article-date">
-  <time datetime="2022-12-23T08:35:53.000Z" itemprop="datePublished">2022-12-23</time>
+      <a href="/2022/12/28/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/" class="article-date">
+  <time datetime="2022-12-28T08:35:53.000Z" itemprop="datePublished">2022-12-28</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
@@ -385,6 +230,404 @@
 
     
     <article
+  id="post-iOS学习/底层原理/initialize"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/27/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/"
+    >initialize</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/27/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/" class="article-date">
+  <time datetime="2022-12-27T10:40:00.000Z" itemprop="datePublished">2022-12-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <span id="more"></span>
+<h1 id="initialize"><a href="#initialize" class="headerlink" title="initialize"></a>initialize</h1><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><ol>
+<li>在查找方法前，进行initialize的调用<br><img src="16721352310424.png"><img src="16721353684859.png"></li>
+</ol>
+<ul>
+<li>类没有初始化，则去调用初始化<br><img src="16721354586849.png"></li>
+<li>先查看有没有父类，且父类，没有初始化，则先初始化父类的initial<br><img src="16721355384202.png"></li>
+<li>采用的是objc_msSend去调用initialize方法<br><img src="16721356497584.png"></li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>initialize和load的很大区别是，initize是通过objc_msgSend进行调用的。而load是拿到函数地址后直接调用的<ul>
+<li>如果子类没有实现initialize，会调用父类的initialize（所以父类的initialize可能会调用多次）</li>
+<li>如果分类实现了initialize，就会覆盖本身的initialize调用</li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/load%E3%80%81initialize/" rel="tag">load、initialize</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/底层原理/Load"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/"
+    >Load</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/" class="article-date">
+  <time datetime="2022-12-26T10:40:00.000Z" itemprop="datePublished">2022-12-26</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Load方法"><a href="#Load方法" class="headerlink" title="Load方法"></a>Load方法</h1><ul>
+<li>+load方法会在runtime加载类、分类时调用</li>
+<li>每个类、分类的+load，在程序运行过程中只调用一次<ul>
+<li>flags标识位保证类只会加载一次</li>
+<li>这里有递归，首选会先将父类添加到数组，后将自己加进去数组，因此最后，先父类，再执行子类的load方法</li>
+<li>最开始的关系时按照编译的顺序来</li>
+</ul>
+</li>
+<li>尽管load中方法在源码中只会调用一次，但实际上主动<code>[Class load]</code>也会触发load,因此在调用<code>method_exchangeImplementations</code>做hook时，会加上<code>dispatch_once</code>，保证只会执行一次。<br><img src="16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
+</ul>
+<ol>
+<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="16720646359112.png"></p>
+</li>
+<li><p>构建有类load方法的数组，以及有分类load方法的数组，整个添加顺序是</p>
+<ol>
+<li>类先按编译的顺序进行添加，其中父类会比子类先添加到数组中</li>
+<li>分类按编译的顺序进行添加的<br><img src="16720651219179.png"></li>
+</ol>
+</li>
+<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="16720639325952.png"></p>
+</li>
+<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="16720641861246.png"></p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>调用顺序</li>
+</ul>
+<ol>
+<li><p>先带哦用类的+load</p>
+<ol>
+<li>按照编译先后顺序调用，先编译，先调用</li>
+<li>调用子类的+load之前会先调用父类的+load</li>
+</ol>
+</li>
+<li><p>再调用分类的+load</p>
+<ol>
+<li>按照编译先后顺序调用，先编译，先调用</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/load%E3%80%81initialize/" rel="tag">load、initialize</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/底层原理/分类"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/"
+    >分类</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/" class="article-date">
+  <time datetime="2022-12-24T16:00:00.000Z" itemprop="datePublished">2022-12-25</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><ol>
+<li>通过runtime动态将分类的方法合并到类对象、元类对象中，并非编译</li>
+<li>一个分类文件的编译后的结构体实际为</li></ol> 
+      <a class="article-more-link" href="/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E7%B1%BB/" rel="tag">分类</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/底层原理/KVC"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/"
+    >KVC</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/" class="article-date">
+  <time datetime="2022-12-22T16:00:00.000Z" itemprop="datePublished">2022-12-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h1><ol>
+<li>通过KVC修改属性会触发KVO，例如age属性,<ul>
+<li>注意，就是age属性没有实现set的方法，只有<code>成员变量</code>，通过<code>KVC</code>设置，同样会触发KVO</li>
+<li>表明KVC内部实际上有调用willchangForkey、以及didChangeForKey:方法<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><img src="16719622557599.png"></li>
+</ul>
+</li>
+<li>根据setAge:,_setAge:的顺序找到，找到则调用,设置</li>
+<li>如果1没找到，查看<code>accessInstanceVariablesDirectly</code>（是否可直接查找成员变量）是否返回true，为No，直接报没找到key的异常</li>
+<li>如果为true，则按照_age,_isAge,age,isAge的顺序查找成员变量，找到直接赋值<h2 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h2><img src="%E6%88%AA%E5%B1%8F2022-12-25%2020.15.39.png" alt="截屏2022-12-25 20.15.39"></li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KVC/" rel="tag">KVC</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/底层原理/KVO"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/22/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVO/"
+    >KVO</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/22/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVO/" class="article-date">
+  <time datetime="2022-12-21T16:00:00.000Z" itemprop="datePublished">2022-12-22</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <span id="more"></span>
+<h1 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h1><h3 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h3><ul>
+<li><p>未使用<code>KVO</code>监听，其<code>isa</code>指针指向的是其<code>class</code>对象。</p>
+<ul>
+<li><code>class对象</code>包含：（<code>isa</code>指针、<code>superclass</code>指针、实例方法、协议列表、属性列表、成员变量）</li>
+</ul>
+</li>
+<li><p>使用KVO监听，其isa指向为<code>NSKVONotifying_class</code>，一个全新的<code>class对</code>象,</p>
+<ul>
+<li>由<code>runtime</code>运行时，动态创建的类,</li>
+<li>该类实现为其<code>class对象</code>的子类，其内部实现了<code>class</code>、<code>delloc</code>、<code>_isKVOA</code>，以及重写了相关的<code>set</code>方法</li>
+<li>通过runtime输出方法，示例代码如下</li>
+</ul>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[self.person1 addObserver:self forKeyPath:@&quot;height&quot; options:options    context:@&quot;456&quot;];</span><br><span class="line"> int num;</span><br><span class="line"> //=注意，这里如果用[self.person1 class]拿不到，被重写了，不会拿到实际的类</span><br><span class="line">   Method * list = class_copyMethodList(object_getClass(self.person1),     &amp;num);</span><br><span class="line">  for(int i = 0;i &lt; num;i++) &#123;</span><br><span class="line">      Method method = list[i];</span><br><span class="line">       NSLog(@&quot;%@&quot;,NSStringFromSelector(method_getName(method)));</span><br><span class="line">&#125;</span><br><span class="line"> free(list);</span><br><span class="line"> /*</span><br><span class="line"> 输出setHeight:、setAge:、class、dealloc、_isKVOA</span><br><span class="line"> */</span><br></pre></td></tr></table></figure></li>
+<li><p>在调用<code>set</code>方法后实际调用了<code>_NSSetIntValueAndNotify();</code></p>
+<ul>
+<li>(整型所以是<code>int</code>，如果是<code>double</code>则是<code>_NSSetDoubleValueAndNotify()</code>)</li>
+</ul>
+</li>
+<li><p><code>_NSSetIntValueAndNotify()</code>内，类似实现的伪代码如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSKVONotifying_MJPerson中</span><br><span class="line">- (void)setAge:(int)age &#123;</span><br><span class="line">    _NSSetIntValueAndNotify()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void _NSSetIntValueAndNotify() &#123;</span><br><span class="line">    [self willChangeValueForKey:&quot;age&quot;]</span><br><span class="line">    [super setAge:age]</span><br><span class="line">    [self didChangeValueForKey:&quot;age&quot;] //里面调用监听器的方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void) didChangeValueForKey:(NSString *)key &#123;</span><br><span class="line">    [observer observeValueForKeyPath:key ofObject: change: content:]//通知观察者</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>注意</strong>，如果内存中有个<code>NSKVONotifying_xxx</code>类，则相应的<code>kvo</code>无法实现</p>
+</li>
+<li><p>通过<code>[self.person1 methodForSelector:@selector(setAge:)]</code>找到对应方法的实现。</p>
+<ul>
+<li>在<code>lldb</code>中根据内存，用<code>p (IMP)0x7ff800bde9cb</code>即可找到实际实现的方法<code>Foundation _NSSetIntValueAndNotify</code></li>
+</ul>
+</li>
+<li><p>此外，被<code>kvo</code>的对象，其元类对象也是不同的。</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li><p><code>KVO</code>的本质是什么</p>
+<ul>
+<li>利用<code>RuntimeAPI</code>动态生成一个子类，并且让<code>instance</code>对象的<code>isa</code>指向这个全新的子类</li>
+<li>当修改<code>instance</code>对象的属性时，会调用<code>Foundation</code>的<code>_NSSetxxxValueAndNotif</code>函数。内部实际调用:<ul>
+<li><code>willchangValueForKey</code></li>
+<li>父类原来的<code>setter</code></li>
+<li><code>didChangeValueForKey</code><ul>
+<li>其内部会触发监听器<code>Obserser</code>的监听方法<code>（observeValueForKeyPath:ofObject:change:）</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如何触发<code>KVO</code></p>
+<ul>
+<li>设置方法时，自动触发</li>
+<li>手动调用<code>willChangeForKey：</code>和<code>didChangeForKey：</code> </li>
+</ul>
+</li>
+<li><p>直接修改成员变量会触发KVO么？</p>
+<ul>
+<li>不会触发<code>KVO</code>,除非手动调用<code>willChangeForKey：</code>和<code>didChangeForKey：</code> </li>
+</ul>
+</li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KVO/" rel="tag">KVO</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-iOS学习/底层原理/objc_class的结构"
   class="article article-type-post"
   itemscope
@@ -418,7 +661,7 @@
        
   <h1 id="objc-class的结构"><a href="#objc-class的结构" class="headerlink" title="objc_class的结构"></a>objc_class的结构</h1><p><img src="16715558479895.png"></p>
 <ul>
-<li>如何去查看<code>objc_class</code>的源码在真实项目中用，吧objc_class结构体，在函数类直接写出来，用桥接的方式实现<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">#ifndef MJClassInfo_h</span><br><span class="line">#define MJClassInfo_h</span><br><span class="line"></span><br><span class="line"># if __arm64__</span><br><span class="line">#   define ISA_MASK        0x0000000ffffffff8ULL</span><br><span class="line"># elif __x86_64__</span><br><span class="line">#   define ISA_MASK        0x00007ffffffffff8ULL</span><br><span class="line"># endif</span><br><span class="line"></span><br><span class="line">#if __LP64__</span><br><span class="line">typedef uint32_t mask_t;</span><br><span class="line">#else</span><br><span class="line">typedef uint16_t mask_t;</span><br><span class="line">#endif</span><br><span class="line">typedef uintptr_t cache_key_t;</span><br><span class="line"></span><br><span class="line">struct bucket_t &#123;</span><br><span class="line">    cache_key_t _key;</span><br><span class="line">    IMP _imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct cache_t &#123;</span><br><span class="line">    bucket_t *_buckets;</span><br><span class="line">    mask_t _mask;</span><br><span class="line">    mask_t _occupied;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct entsize_list_tt &#123;</span><br><span class="line">    uint32_t entsizeAndFlags;</span><br><span class="line">    uint32_t count;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_t &#123;</span><br><span class="line">    SEL name;</span><br><span class="line">    const char *types;</span><br><span class="line">    IMP imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_list_t : entsize_list_tt &#123;</span><br><span class="line">    method_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_t &#123;</span><br><span class="line">    int32_t *offset;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *type;</span><br><span class="line">    uint32_t alignment_raw;</span><br><span class="line">    uint32_t size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_list_t : entsize_list_tt &#123;</span><br><span class="line">    ivar_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_t &#123;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *attributes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_list_t : entsize_list_tt &#123;</span><br><span class="line">    property_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct chained_property_list &#123;</span><br><span class="line">    chained_property_list *next;</span><br><span class="line">    uint32_t count;</span><br><span class="line">    property_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef uintptr_t protocol_ref_t;</span><br><span class="line">struct protocol_list_t &#123;</span><br><span class="line">    uintptr_t count;</span><br><span class="line">    protocol_ref_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_ro_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t instanceStart;</span><br><span class="line">    uint32_t instanceSize;  // instance对象占用的内存空间</span><br><span class="line">#ifdef __LP64__</span><br><span class="line">    uint32_t reserved;</span><br><span class="line">#endif</span><br><span class="line">    const uint8_t * ivarLayout;</span><br><span class="line">    const char * name;  // 类名</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;  // 成员变量列表</span><br><span class="line">    const uint8_t * weakIvarLayout;</span><br><span class="line">    property_list_t *baseProperties;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line">    method_list_t * methods;    // 方法列表</span><br><span class="line">    property_list_t *properties;    // 属性列表</span><br><span class="line">    const protocol_list_t * protocols;  // 协议列表</span><br><span class="line">    Class firstSubclass;</span><br><span class="line">    Class nextSiblingClass;</span><br><span class="line">    char *demangledName;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#define FAST_DATA_MASK          0x00007ffffffffff8UL</span><br><span class="line">struct class_data_bits_t &#123;</span><br><span class="line">    uintptr_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* OC对象 */</span><br><span class="line">struct mj_objc_object &#123;</span><br><span class="line">    void *isa;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* 类对象 */</span><br><span class="line">struct mj_objc_class : mj_objc_object &#123;</span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;</span><br><span class="line">    class_data_bits_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return bits.data();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mj_objc_class* metaClass() &#123;</span><br><span class="line">        return (mj_objc_class *)((long long)isa &amp; ISA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#endif /* MJClassInfo_h */</span><br></pre></td></tr></table></figure></li>
+<li>如何去查看<code>objc_class</code>的源码在真实项目中用，吧<code>objc_class</code>结构体，在函数类直接写出来，用桥接的方式实现<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">#ifndef MJClassInfo_h</span><br><span class="line">#define MJClassInfo_h</span><br><span class="line"></span><br><span class="line"># if __arm64__</span><br><span class="line">#   define ISA_MASK        0x0000000ffffffff8ULL</span><br><span class="line"># elif __x86_64__</span><br><span class="line">#   define ISA_MASK        0x00007ffffffffff8ULL</span><br><span class="line"># endif</span><br><span class="line"></span><br><span class="line">#if __LP64__</span><br><span class="line">typedef uint32_t mask_t;</span><br><span class="line">#else</span><br><span class="line">typedef uint16_t mask_t;</span><br><span class="line">#endif</span><br><span class="line">typedef uintptr_t cache_key_t;</span><br><span class="line"></span><br><span class="line">struct bucket_t &#123;</span><br><span class="line">    cache_key_t _key;</span><br><span class="line">    IMP _imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct cache_t &#123;</span><br><span class="line">    bucket_t *_buckets;</span><br><span class="line">    mask_t _mask;</span><br><span class="line">    mask_t _occupied;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct entsize_list_tt &#123;</span><br><span class="line">    uint32_t entsizeAndFlags;</span><br><span class="line">    uint32_t count;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_t &#123;</span><br><span class="line">    SEL name;</span><br><span class="line">    const char *types;</span><br><span class="line">    IMP imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_list_t : entsize_list_tt &#123;</span><br><span class="line">    method_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_t &#123;</span><br><span class="line">    int32_t *offset;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *type;</span><br><span class="line">    uint32_t alignment_raw;</span><br><span class="line">    uint32_t size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_list_t : entsize_list_tt &#123;</span><br><span class="line">    ivar_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_t &#123;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *attributes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_list_t : entsize_list_tt &#123;</span><br><span class="line">    property_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct chained_property_list &#123;</span><br><span class="line">    chained_property_list *next;</span><br><span class="line">    uint32_t count;</span><br><span class="line">    property_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef uintptr_t protocol_ref_t;</span><br><span class="line">struct protocol_list_t &#123;</span><br><span class="line">    uintptr_t count;</span><br><span class="line">    protocol_ref_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_ro_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t instanceStart;</span><br><span class="line">    uint32_t instanceSize;  // instance对象占用的内存空间</span><br><span class="line">#ifdef __LP64__</span><br><span class="line">    uint32_t reserved;</span><br><span class="line">#endif</span><br><span class="line">    const uint8_t * ivarLayout;</span><br><span class="line">    const char * name;  // 类名</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;  // 成员变量列表</span><br><span class="line">    const uint8_t * weakIvarLayout;</span><br><span class="line">    property_list_t *baseProperties;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line">    method_list_t * methods;    // 方法列表</span><br><span class="line">    property_list_t *properties;    // 属性列表</span><br><span class="line">    const protocol_list_t * protocols;  // 协议列表</span><br><span class="line">    Class firstSubclass;</span><br><span class="line">    Class nextSiblingClass;</span><br><span class="line">    char *demangledName;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#define FAST_DATA_MASK          0x00007ffffffffff8UL</span><br><span class="line">struct class_data_bits_t &#123;</span><br><span class="line">    uintptr_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* OC对象 */</span><br><span class="line">struct mj_objc_object &#123;</span><br><span class="line">    void *isa;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* 类对象 */</span><br><span class="line">struct mj_objc_class : mj_objc_object &#123;</span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;</span><br><span class="line">    class_data_bits_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return bits.data();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mj_objc_class* metaClass() &#123;</span><br><span class="line">        return (mj_objc_class *)((long long)isa &amp; ISA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#endif /* MJClassInfo_h */</span><br></pre></td></tr></table></figure></li>
 <li>实际使用,即可查看相关类<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        MJStudent *stu = [[MJStudent alloc] init];</span><br><span class="line">        stu-&gt;_weight = 10;</span><br><span class="line">        </span><br><span class="line">        mj_objc_class *studentClass = (__bridge mj_objc_class *)([MJStudent class]);</span><br><span class="line">        mj_objc_class *personClass = (__bridge mj_objc_class *)([MJPerson class]);</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentClassData = studentClass-&gt;data();</span><br><span class="line">        class_rw_t *personClassData = personClass-&gt;data();</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentMetaClassData = studentClass-&gt;metaClass()-&gt;data();</span><br><span class="line">        class_rw_t *personMetaClassData = personClass-&gt;metaClass()-&gt;data();</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;1111&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
  
@@ -455,7 +698,7 @@
        
 <h2 itemprop="name">
   <a class="article-title" href="/2022/12/19/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/"
-    >isa指针</a> 
+    >isa指针简介</a> 
 </h2>
  
 
@@ -534,129 +777,49 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="OC对象的分类"><a href="#OC对象的分类" class="headerlink" title="OC对象的分类"></a>OC对象的分类</h1><p>主要分为3种</p>
+  <span id="more"></span>
+<h2 id="OC对象的分类"><a href="#OC对象的分类" class="headerlink" title="OC对象的分类"></a>OC对象的分类</h2><p>主要分为3种</p>
 <ol>
 <li><code>instance</code>对象，实例对象 </li>
 <li><code>class</code>对象，类对象</li>
-<li><code>meta-class</code>对象，元类对象<h2 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h2>通过类alloc出来的对象，instance对象在内存种存储的信息（只有成员变量）包括</li>
+<li><code>meta-class</code>对象，元类对象<h3 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h3>通过类<code>alloc</code>出来的对象，<code>instance</code>对象在内存种存储的信息（只有成员变量）包括</li>
 </ol>
 <ul>
-<li>isa指针</li>
-<li>其他成员变量</li>
-</ul>
-<p>isa指针始终在对象结构体的前面，因此，isa指针的地址即实例对象的地址</p>
-<h2 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h2><ul>
+<li><code>isa</code>指针</li>
+<li>其他成员变量<br><code>isa</code>指针始终在对象结构体的前面，因此，<code>isa</code>指针的地址即实例对象的地址<h3 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h3></li>
 <li><code>[objec class]</code>、<code>[NSObject class]</code>、<code>object_getClass(object)</code>都是获取<code>NSobject</code>的<code>class</code>对象</li>
-<li>它们都是同一个对象，在内存中有且只有一个class对象</li>
-<li>class对象在内存中存储的信息主要包括</li>
+<li>它们都是同一个对象，在内存中有且只有一个<code>class</code>对象</li>
+<li><code>class</code>对象在内存中存储的信息主要包括</li>
 </ul>
 <ol>
-<li>isa指针</li>
-<li>superclass指针</li>
-<li>类的属性信息（@property）、类的<code>对象方法</code>信息（instance method）</li>
-<li>类的协议信息（protocol）、类的成员变量信息（ivar）<ol>
-<li>ivar并非成员变量的值，成员变量的值有instance决定</li>
-<li>ivar实际存储的类型，名称等描述信息<h2 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h2><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除isa指针、superclass指针、类方法信息外，其他均为null<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系<img src="16713605118546.png"></h3></li>
+<li><code>isa</code>指针</li>
+<li><code>superclass</code>指针</li>
+<li>类的属性信息（<code>@property</code>）、类的对象方法信息（<code>instance method</code>）</li>
+<li>类的协议信息（<code>protocol</code>）、类的成员变量信息（<code>ivar</code>）<ol>
+<li><code>ivar</code>并非成员变量的值，成员变量的值由<code>instance</code>决定</li>
+<li><code>ivar</code>实际存储的类型，名称等描述信息<h3 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h3><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除<code>isa</code>指针、<code>superclass</code>指针、<code>类方法信息</code>外，其他均为<code>null</code><h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3></li>
 </ol>
 </li>
-<li>instance的isa指向class</li>
-<li>class的isa指向meta-class</li>
-<li>meta-class的isa指向基类的meta-class</li>
-<li>class的superclass指向父类的class<ol>
-<li>如果没有父类，superclass指针为nil</li>
 </ol>
-</li>
-<li>meta-class的superclass指向父类的meta-class<ol>
-<li>基类的meta-class的superclass指向基类的class</li>
-</ol>
-</li>
-<li></li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/其他/16708614441261"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16708614441261/"
-    >NSObject</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16708614441261/" class="article-date">
-  <time datetime="2022-12-16T16:00:00.000Z" itemprop="datePublished">2022-12-17</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h1><h3 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><ul>
-<li>系统分配了16个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
-<li>但<code>NSObject</code>对象内部只使用了8个字节（<code>isa</code>指针）的空间（64bit环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
-<li>用<code>clang -rewrite-objc main.m -o main.cpp</code>编译成<code>C++</code>文件（全平台），</li>
-<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m -o main.cpp</code>(推荐)编译成指定平台的</li>
-<li>16字节而不是8字节的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小16字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-<li>扩展例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> @interface student: NSObject &#123;</span><br><span class="line"> int _no;</span><br><span class="line"> int _age;</span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">int _no; //4字节</span><br><span class="line">int _age; //4 字节</span><br><span class="line">&#125;</span><br><span class="line">内存对齐: 结构体的大小必须是最大成员大小的倍数</span><br></pre></td></tr></table></figure></li>
-<li>注意，ios操作系统的内存对齐，是按16倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)<strong>24位大小，但是用<code>malloc_size</code>计算</strong>实际</strong>分配的确实32位 </li>
-<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为8，实际不知道内存中的大小<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3></li>
-</ul>
-<ol>
-<li><code>print、p</code>：打印</li>
-<li><code>po</code>: 打印对象</li>
-<li>读取内存<ol>
-<li><code>memory red/数量格式字节数 内存地址</code>:`memory red/3xw 0x10010</li>
-<li><code>x/数量格式字节数 内存地址</code>: x/3xw 0x10010</li>
-<li>格式: x-16进制，d是10进制</li>
-<li>字节大小:b 1字节，h 2字节，w 4字节，g 8字节</li>
-</ol>
-</li>
-<li>修改内存中的值，<code>memory write 内存地址 数值</code>：memory write 0x0000010 10</li>
-<li><h3 id="对象的isa指针指向哪里"><a href="#对象的isa指针指向哪里" class="headerlink" title="对象的isa指针指向哪里"></a>对象的isa指针指向哪里</h3></li>
-</ol>
+<p><img src="16713605118546.png"></p>
 <ul>
-<li>instance对象的isa指针指向类对象</li>
-<li>类对象的isa指针指向元类对象</li>
-<li>元类对象的isa指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
-<li>对象的方法、属性、协议信息、成员变量，存放在类对象</li>
-<li>类方法存放在元类对象</li>
-<li>成员变量的具体值，存放在instance</li>
+<li>关系总结<ol>
+<li><code>instance</code>的<code>isa</code>指向<code>class</code></li>
+<li><code>class</code>的<code>isa</code>指向<code>meta-class</code></li>
+<li><code>meta-class</code>的<code>isa</code>指向基类<code>meta-class</code><ul>
+<li>基类<code>meta-class</code>的<code>isa</code>指向自己</li>
+</ul>
+</li>
+<li><code>class</code>的<code>superclass</code>指向父类的<code>class</code><ol>
+<li>如果没有父类，<code>superclass</code>指针为<code>nil</code></li>
+</ol>
+</li>
+<li><code>meta-class</code>的<code>superclass</code>指向父类的<code>meta-class</code><ol>
+<li>基类<code>meta-class</code>的<code>superclass</code>指向基类<code>class</code></li>
+</ol>
+</li>
+</ol>
+</li>
 </ul>
  
       <!-- reward -->
@@ -711,37 +874,37 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h1><h3 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><ul>
-<li>系统分配了16个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
-<li>但<code>NSObject</code>对象内部只使用了8个字节（<code>isa</code>指针）的空间（64bit环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
+  <h3 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><h4 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h4><ul>
+<li>系统分配了<code>16</code>个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
+<li>但<code>NSObject</code>对象内部只使用了<code>8</code>个字节（<code>isa</code>指针）的空间（<code>64bit</code>环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
 <li>用<code>clang -rewrite-objc main.m -o main.cpp</code>编译成<code>C++</code>文件（全平台），</li>
 <li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m -o main.cpp</code>(推荐)编译成指定平台的</li>
-<li>16字节而不是8字节的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小16字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>16字节</code>而不是<code>8字节</code>的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小<code>16字节</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 </li>
-<li>扩展例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> @interface student: NSObject &#123;</span><br><span class="line"> int _no;</span><br><span class="line"> int _age;</span><br><span class="line"> int _height; </span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">int _no; //4字节</span><br><span class="line">int _age; //4 字节</span><br><span class="line">int _height; // 4 字节</span><br><span class="line">&#125;</span><br><span class="line">内存对齐: 结构体的大小必须是最大成员大小的倍数,实际为24字节，但是用`malloc_size`计算分配是32</span><br></pre></td></tr></table></figure></li>
-<li>注意，ios操作系统的内存对齐，是按16倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)<strong>24位大小，但是用<code>malloc_size</code>计算</strong>实际</strong>分配的确实32位 </li>
-<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为8，实际不知道内存中的大小<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3></li>
+<li>扩展的例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> @interface Student: NSObject &#123;</span><br><span class="line">    int _no;</span><br><span class="line">    int _age;</span><br><span class="line">    int _height; </span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> // 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">    Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">    int _no; //4字节</span><br><span class="line">    int _age; //4 字节</span><br><span class="line">    int _height; // 4 字节</span><br><span class="line">&#125;</span><br><span class="line">// 内存对齐: 结构体的大小必须是最大成员大小的倍数,实际为24字节，但是用`malloc_size`计算分配是32</span><br></pre></td></tr></table></figure></li>
+<li>注意，<code>ios</code>操作系统的内存对齐，是按<code>16</code>倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)</strong><code>24</code>位大小，但是用<code>malloc_size</code>计算<strong>实际</strong>分配的确是<code>32</code>位 </li>
+<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为<code>8</code>，实际不知道内存中的大小</li>
 </ul>
-<ol>
+<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3><ol>
 <li><code>print、p</code>：打印</li>
 <li><code>po</code>: 打印对象</li>
 <li>读取内存<ol>
-<li><code>memory red/数量格式字节数 内存地址</code>:`memory red/3xw 0x10010</li>
-<li><code>x/数量格式字节数 内存地址</code>: x/3xw 0x10010</li>
-<li>格式: x-16进制，d是10进制</li>
-<li>字节大小:b 1字节，h 2字节，w 4字节，g 8字节</li>
+<li><code>memory red/数量格式字节数 内存地址</code>:<code>memory red/3xw 0x10010</code></li>
+<li><code>x/数量格式字节数 内存地址</code>: <code>x/3xw 0x10010</code></li>
+<li>格式: <code>x</code>-16进制，<code>d</code>是10进制</li>
+<li>字节大小:<code>b 1字节</code>，<code>h 2字节</code>，<code>w 4字节</code>，<code>g 8字节</code></li>
 </ol>
 </li>
-<li>修改内存中的值，<code>memory write 内存地址 数值</code>：memory write 0x0000010 10</li>
+<li>修改内存中的值，<code>memory write 内存地址 数值</code>：<code>memory write 0x0000010 10</code></li>
 </ol>
 <h3 id="对象的isa指针指向哪里"><a href="#对象的isa指针指向哪里" class="headerlink" title="对象的isa指针指向哪里"></a>对象的isa指针指向哪里</h3><ul>
-<li>instance对象的isa指针指向类对象</li>
-<li>类对象的isa指针指向元类对象</li>
-<li>元类对象的isa指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
+<li><code>instance</code>对象的<code>isa</code>指针指向类对象</li>
+<li>类对象的<code>isa</code>指针指向元类对象</li>
+<li>元类对象的<code>isa</code>指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
 <li>对象的方法、属性、协议信息、成员变量，存放在类对象</li>
 <li>类方法存放在元类对象</li>
-<li>成员变量的具体值，存放在instance</li>
+<li>成员变量的具体值，存放在<code>instance</code></li>
 </ul>
  
       <!-- reward -->
@@ -755,110 +918,6 @@
        
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
 
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/其他/16706010476870"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/12/09/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16706010476870/" class="article-date">
-  <time datetime="2022-12-09T15:50:47.687Z" itemprop="datePublished">2022-12-09</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="FishHook"><a href="#FishHook" class="headerlink" title="FishHook"></a>FishHook</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>iOS中通过<code>Method Swizzling</code>实现<code>hook</code>，其原理是利用OC的<code>Runtime</code>特性，动态改变<code>SEL</code>（方法编号）和<code>IMP</code>（方法实现）的对应关系，达到OC方法交换的目的。然而只适用于动态的OC方法，对于C函数Hook，可以引用fishHook，通过修改machO文件中<code>la_symbol_ptr</code>和<code>non_la_symbol_ptr</code>两个表的指针达到C函数HOOK的目的。</p>
-<h2 id="框架地址"><a href="#框架地址" class="headerlink" title="框架地址"></a>框架地址</h2><p><code>fishhook</code>是一个非常简单的库，可以在模拟器和设备上运行在iOS上的Mach-O二进制文件中动态重新绑定符号,代码地址<a target="_blank" rel="noopener" href="https://github.com/facebook/fishhook">https://github.com/facebook/fishhook</a></p>
-<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><ol>
-<li>头文件导入<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;fishhook.h&quot;</span><br></pre></td></tr></table></figure></li>
-<li>交换制定的C函数,构建<code>rebinding</code>结构体<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct rebinding rebindSend;</span><br><span class="line">rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br></pre></td></tr></table></figure></li>
-<li><code>rebind_symbols</code>重新绑定符号<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">rebind_symbols(rebs, 1);</span><br></pre></td></tr></table></figure></li>
-<li>完整使用用例<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//  FishHooklViewController.m</span><br><span class="line">//  transitionController</span><br><span class="line">//</span><br><span class="line">//  Created by 陈晶泊 on 2022/8/10.</span><br><span class="line">//</span><br><span class="line">#import &quot;fishhook.h&quot;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdarg.h&gt;</span><br><span class="line">#import &quot;FishHooklViewController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface FishHooklViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation FishHooklViewController</span><br><span class="line">__unused static void(*orig_objc_nslog)(NSString *format, ...);</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    self.view.backgroundColor = UIColor.whiteColor;</span><br><span class="line">    struct rebinding rebindSend;</span><br><span class="line">    rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">    rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">    rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br><span class="line">    struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">    rebind_symbols(rebs, 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void hook_Objc_nslog(NSString *format, ...) &#123;</span><br><span class="line">    format = [format stringByAppendingFormat:@&quot;已hook&quot;];</span><br><span class="line">    orig_objc_nslog(format);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event &#123;</span><br><span class="line">    NSLog(@&quot;FishHooklViewController&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><code>MachO</code>文件的静态链接在编译的时候，就确定了方法地址，位于代码段模，是不可写的，因此静态链接的函数方法，在运行时是无法更改的。<br>然而动态链接，是在运行时进行方法链接的，在<code>MachO</code>文件中，访问动态库里的数据符号地址放在<code>got</code>(也称<code>Non-Lazy Symbol Pointers</code>)数据段，调用动态库的函数的地址放在<code>la_symbol_ptr</code>数据段的数据段中，是可读写的，因此可以在程序运行期间修改<code>got</code>(<code>non_la_symbol_ptr</code>)和<code>la_symbol_ptr</code>数据段，来替换函数跟全局变量的地址。<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="1-传入需要替换的函数"><a href="#1-传入需要替换的函数" class="headerlink" title="1. 传入需要替换的函数"></a>1. 传入需要替换的函数<img src="16706010476870/16706577321150.png"></h4> <code>rebindings_head</code>的<code>next</code>为nil是第一次调用；去注册方法，其中<code>_dyld_register_func_for_add_image</code>做了2件事，1.是跟<code>else</code>里面一样，为每个image(镜像)调用<code>_rebind_symbols_for_image</code>，2.是当<code>dyld</code>后面加载镜像时候，也为这个新镜像调用<code>_rebind_symbols_for_image</code>。<br> <code>rebindings_head</code>采用的链表结构，具体如下:<br><img src="16706010476870/16706578333010.jpg"><h4 id="2-计算地址"><a href="#2-计算地址" class="headerlink" title="2. 计算地址"></a>2. 计算地址</h4><code>rebind_symbols_for_image</code>方法的目的，主要是计算基址，找到符号表、字符串表、间接符号表、<code>nl_symbol_ptr(got)</code>以及<code>la_symbol_ptr</code>数据段的地址。</li>
-<li>首先遍历加载命令，获得<code>MachO</code>文件中符号表、间接符号表、<code>LINKEDIT</code>三个加载命令<br><img src="16706010476870/16706583225213.png"></li>
-<li>根据<code>LINKEDIT</code>获取的真实基址，根据第一步中得到的加载命令，确定符号表、间接符号表、字符串表的虚拟内存地址<br><img src="16706010476870/16706584145390.png"></li>
-<li>遍历加载命令，找到数据段，在从数据段的<code>section</code>中找到<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code></li>
-</ol>
-<p><img src="16706010476870/16706586123063.png"></p>
-<h4 id="3-方法替换"><a href="#3-方法替换" class="headerlink" title="3. 方法替换"></a>3. 方法替换</h4><p>最后遍历<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和数据地址，并结合间接符号表、符号表、以及字符串表，得到地址对应的函数，变量名称，找到相同的名称，即可进行地址的替换。<br><img src="16706010476870/16706587741784.png"></p>
-<h2 id="通过MachOView分析"><a href="#通过MachOView分析" class="headerlink" title="通过MachOView分析"></a>通过MachOView分析</h2><ol>
-<li>计算出符号表、间接符号表、字符串表的地址<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.07.46.png" alt="截屏2022-12-10 16.07.46"></li>
-<li><code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和函数数据地址，其中<code>reserved1</code>即为数据段中的函数在间接符号表中的位置<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.16.25.png" alt="截屏2022-12-10 16.16.25"></li>
-<li>间接符号表中的地址，和实际数据段地址是对应的，其中间接符号表中的数据，实际对应的是符号表中的索引。<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.20.04.png" alt="截屏2022-12-10 16.20.04"></li>
-</ol>
-<p><img src="16706010476870/16706604848859.png"><br>4. 符号表中，关联由字符串表，从而知道函数的名称，因此，最终，根据名称，从间接符号表中拿到原始函数地址，从而完成了方法的替换。<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.24.10.png" alt="截屏2022-12-10 16.24.10"></p>
-<h2 id="FishHook应用实例"><a href="#FishHook应用实例" class="headerlink" title="FishHook应用实例"></a>FishHook应用实例</h2><p><code>SMCallTrace</code>通过hook<code>objc_msgSend</code>方法，hook了所有OC的方法，在hook方法中通过汇编语言来计算方法的耗时，可以用来项目中方法的执行情况。在需要检测耗时时间的地方调用 <code>[SMCallTrace start]</code>，结束时调用 <code>stop</code> 和 <code>save</code> 就可以打印出方法的调用层级和耗时了。还可以设置最大深度和最小耗时检测，来过滤不需要看到的信息。<a target="_blank" rel="noopener" href="https://github.com/ming1016/GCDFetchFeed">源码地址</a><br>具体使用后的效果<img src="16706010476870/IMG_963F24C3F87F-1.jpeg" alt="IMG_963F24C3F87F-1"></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/其他/16703379364755"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2022/12/06/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16703379364755/" class="article-date">
-  <time datetime="2022-12-06T14:45:36.476Z" itemprop="datePublished">2022-12-06</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="theos-tweak原理"><a href="#theos-tweak原理" class="headerlink" title="theos-tweak原理"></a>theos-tweak原理</h1><ol>
-<li><code>make</code>指令实际上是将<code>Tweak.xm</code>的代码编译成动态库</li>
-<li><code>make packpage</code>指令，将动态库文件打包成了<code>deb</code>文件，插件安装包</li>
-<li><code>make install</code>指令，远程登录手机安装插件到app内，<code>Makefile</code>文件内配置<ol>
-<li>安装完的包会在<code>/Library/MobileSubstrate/DynamicLibraries</code>文件夹内,包含动态库，以及相关的<code>.plist</code>文件(里面由相关应用的bundlId)</li>
-<li>该文件夹由Cydia管理</li>
-</ol>
-</li>
-<li>对应bundlId的应用打开后，会加载相关插件的动态库到内存中（不会缓存，每次重新打开，都会加载），去做交换方法的操作</li>
-<li>实际上没次动态修改，并为修改代码<h3 id="过程图"><a href="#过程图" class="headerlink" title="过程图"></a>过程图</h3><img src="16703379364755/16703398332015.png"></li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
     </footer>
   </div>
 

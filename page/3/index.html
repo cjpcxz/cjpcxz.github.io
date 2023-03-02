@@ -142,7 +142,7 @@
     
     
     <article
-  id="post-iOS学习/Runtime知识/中间代码"
+  id="post-iOS学习/Runloop知识/runloop相关的类"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -153,7 +153,201 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/"
+  <a class="article-title" href="/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/"
+    >runloop相关的类</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/" class="article-date">
+  <time datetime="2023-01-12T14:29:38.000Z" itemprop="datePublished">2023-01-12</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/runloop/">runloop</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="runloop的结构"><a href="#runloop的结构" class="headerlink" title="runloop的结构"></a>runloop的结构</h2><blockquote>
+<ul>
+<li>Core Foundation中关于RunLoop的5个类<ul>
+<li>CFRunLoopRef</li>
+<li>CFRunLoopModeRef</li>
+<li>CFRunLoopSourceRef</li>
+<li>CFRunLoopTimerRef</li>
+<li>CFRunLoopObserverRef</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><h3 id="CFRunLoop"><a href="#CFRunLoop" class="headerlink" title="__CFRunLoop"></a>__CFRunLoop</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">struct __CFRunLoop &#123;</span><br><span class="line">    CFRuntimeBase _base;</span><br><span class="line">    pthread_mutex_t _lock;			/* locked for accessing mode list */</span><br><span class="line">    __CFPort _wakeUpPort;			// used for CFRunLoopWakeUp </span><br><span class="line">    Boolean _unused;</span><br><span class="line">    volatile _per_run_data *_perRunData;              // reset for runs of the run loop</span><br><span class="line">    pthread_t _pthread; //相对应地线程</span><br><span class="line">    uint32_t _winthread;</span><br><span class="line">    CFMutableSetRef _commonModes; // </span><br><span class="line">    CFMutableSetRef _commonModeItems;</span><br><span class="line">    CFRunLoopModeRef _currentMode; //Mode</span><br><span class="line">    CFMutableSetRef _modes;</span><br><span class="line">    struct _block_item *_blocks_head;</span><br><span class="line">    struct _block_item *_blocks_tail;</span><br><span class="line">    CFAbsoluteTime _runTime;</span><br><span class="line">    CFAbsoluteTime _sleepTime;</span><br><span class="line">    CFTypeRef _counterpart;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>简化版<br><img src="1.png"></li>
+</ul>
+<h3 id="CFRunLoopModeRef"><a href="#CFRunLoopModeRef" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">typedef struct __CFRunLoopMode *CFRunLoopModeRef;</span><br><span class="line"></span><br><span class="line">struct __CFRunLoopMode &#123;</span><br><span class="line">    CFRuntimeBase _base;</span><br><span class="line">    pthread_mutex_t _lock;	/* must have the run loop locked before locking this */</span><br><span class="line">    CFStringRef _name;</span><br><span class="line">    Boolean _stopped;</span><br><span class="line">    char _padding[3];</span><br><span class="line">    CFMutableSetRef _sources0; </span><br><span class="line">    CFMutableSetRef _sources1;</span><br><span class="line">    CFMutableArrayRef _observers;</span><br><span class="line">    CFMutableArrayRef _timers;</span><br><span class="line">    CFMutableDictionaryRef _portToV1SourceMap;</span><br><span class="line">    __CFPortSet _portSet;</span><br><span class="line">    CFIndex _observerMask;</span><br><span class="line">#if USE_DISPATCH_SOURCE_FOR_TIMERS</span><br><span class="line">    dispatch_source_t _timerSource;</span><br><span class="line">    dispatch_queue_t _queue;</span><br><span class="line">    Boolean _timerFired; // set to true by the source when a timer has fired</span><br><span class="line">    Boolean _dispatchTimerArmed;</span><br><span class="line">#endif</span><br><span class="line">#if USE_MK_TIMER_TOO</span><br><span class="line">    mach_port_t _timerPort;</span><br><span class="line">    Boolean _mkTimerArmed;</span><br><span class="line">#endif</span><br><span class="line">#if DEPLOYMENT_TARGET_WINDOWS</span><br><span class="line">    DWORD _msgQMask;</span><br><span class="line">    void (*_msgPump)(void);</span><br><span class="line">#endif</span><br><span class="line">    uint64_t _timerSoftDeadline; /* TSR */</span><br><span class="line">    uint64_t _timerHardDeadline; /* TSR */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>简化版<br><img src="2.png"><h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3></li>
+<li>一个runLoop中有很多模式，存在modes中，但是每次只会选择一种模式,作为当前模式<br><img src="3.png"></li>
+<li>CFRunLoopModeRef代表RunLoop的运行模式</li>
+<li>一个RunLoop包含若干个Mode，每个Mode又包含若干个Source0/Source1/Timer/Observer</li>
+<li>RunLoop启动时只能选择其中一个Mode，作为currentMode</li>
+<li>如果需要切换Mode，只能退出当前Loop，再重新选择一个Mode进入<ul>
+<li>不同组的Source0/Source1/Timer/Observer能分隔开来，互不影响</li>
+</ul>
+</li>
+<li>如果Mode里没有任何Source0/Source1/Timer/Observer，RunLoop会立马退出<h2 id="CFRunLoopModeRef-1"><a href="#CFRunLoopModeRef-1" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h2></li>
+</ul>
+<ol>
+<li><code>Source0</code><ul>
+<li>触摸事件处理<br><img src="4.png"></li>
+<li><code>performSelector:onThread:</code>,线程之前的通信</li>
+</ul>
+</li>
+<li><code>Source1</code><ul>
+<li>基于<code>Port</code>的线程间通信,</li>
+<li>系统事件捕捉，例如，屏幕点击，最开始是source1</li>
+</ul>
+</li>
+<li><code>Timers</code><ul>
+<li><code>NSTimer</code></li>
+<li><code>performSelector:withObject:afterDelay:</code>,本质会加到runloop的timer</li>
+</ul>
+</li>
+<li><code>Observers</code><ul>
+<li>用于监听<code>RunLoop</code>的状态</li>
+<li><code>UI</code>刷新（<code>BeforeWaiting</code>）,在线程休眠之前，设置UI</li>
+<li><code>Autorelease pool</code>（<code>BeforeWaiting</code>）,在休眠之前释放自动释放池对象，唤醒后新建新的自动释放池<h2 id="CFRunLoopObserverRef"><a href="#CFRunLoopObserverRef" class="headerlink" title="CFRunLoopObserverRef"></a>CFRunLoopObserverRef</h2></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><code>RunLoop</code>的状态改变流程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/* Run Loop Observer Activities */</span><br><span class="line">typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) &#123;</span><br><span class="line">    kCFRunLoopEntry = (1UL &lt;&lt; 0),</span><br><span class="line">    kCFRunLoopBeforeTimers = (1UL &lt;&lt; 1),</span><br><span class="line">    kCFRunLoopBeforeSources = (1UL &lt;&lt; 2),</span><br><span class="line">    kCFRunLoopBeforeWaiting = (1UL &lt;&lt; 5),</span><br><span class="line">    kCFRunLoopAfterWaiting = (1UL &lt;&lt; 6),</span><br><span class="line">    kCFRunLoopExit = (1UL &lt;&lt; 7),</span><br><span class="line">    kCFRunLoopAllActivities = 0x0FFFFFFFU</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>监听RunLoop的状态<ul>
+<li>切换mode之后，会先<code>kCFRunLoopExit - kCFRunLoopDefaultMode</code>，之后再<code>kCFRunLoopEntry - UITrackingRunLoopMode</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity) &#123;</span><br><span class="line">    switch (activity) &#123;</span><br><span class="line">       case kCFRunLoopEntry:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopEntry&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeTimers:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeTimers&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeSources:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeSources&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeWaiting:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeWaiting&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopAfterWaiting:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopAfterWaiting&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopExit:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopExit&quot;);</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    // 添加Observer到RunLoop中</span><br><span class="line">CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);</span><br><span class="line">    // 释放</span><br><span class="line">CFRelease(observer);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Runloop知识/runloop"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/10/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop/"
+    >runloop</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/10/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop/" class="article-date">
+  <time datetime="2023-01-10T15:09:41.000Z" itemprop="datePublished">2023-01-10</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/runloop/">runloop</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="什么是RunLoop"><a href="#什么是RunLoop" class="headerlink" title="什么是RunLoop"></a>什么是RunLoop</h2><ul>
+<li>顾名思义<ul>
+<li>运行循环</li>
+<li>在程序运行过程中循环做一些事情</li>
+</ul>
+</li>
+<li>基本作用<ul>
+<li>保持程序的持续运行</li>
+<li>处理App中的各种事件（比如触摸事件、定时器事件等）</li>
+<li>节省CPU资源，提高程序性能：该做事时做事，该休息时休息</li>
+</ul>
+</li>
+<li>应用范畴<ul>
+<li>定时器（Timer）、PerformSelector</li>
+<li>GCD Async Main Queue</li>
+<li>事件响应、手势识别、界面刷新</li>
+<li>网络请求</li>
+<li><code>AutoreleasePool</code></li>
+</ul>
+</li>
+<li><code>RunLoop</code>与线程<ul>
+<li>每条线程都有唯一的一个与之对应的RunLoop对象<ul>
+<li><code>CFRunLoopGetCurrent()</code>和<code>[NSRunLoop currentRunLoop]</code>,在当前线程中获取runloop</li>
+<li>从字典中获取，如果没有的话，则会创建，并存放在字典中，key是线程的指针地址<br><img src="1.png"></li>
+</ul>
+</li>
+<li>RunLoop保存在一个全局的Dictionary里，线程作为key，RunLoop作为value</li>
+<li>线程刚创建时并没有RunLoop对象，RunLoop会在第一次获取它时创建</li>
+<li>RunLoop会在线程结束时销毁</li>
+<li>主线程的RunLoop已经自动获取（创建），子线程默认没有开启RunLoop</li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Runtime/中间代码"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/"
     >中间代码（IR）</a> 
 </h2>
  
@@ -162,7 +356,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/" class="article-date">
+      <a href="/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/" class="article-date">
   <time datetime="2023-01-09T14:29:54.000Z" itemprop="datePublished">2023-01-09</time>
 </a> 
   <div class="article-category">
@@ -217,7 +411,7 @@
 
     
     <article
-  id="post-iOS学习/Runtime知识/runtime特殊问题"
+  id="post-iOS学习/Runtime/runtime特殊问题"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -228,7 +422,7 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/"
+  <a class="article-title" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/"
     >runtime特殊问题</a> 
 </h2>
  
@@ -237,7 +431,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/" class="article-date">
+      <a href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/" class="article-date">
   <time datetime="2023-01-08T14:41:07.000Z" itemprop="datePublished">2023-01-08</time>
 </a> 
   <div class="article-category">
@@ -453,7 +647,7 @@
 
     
     <article
-  id="post-iOS学习/Runtime知识/isKindofclass和isMemberofClass"
+  id="post-iOS学习/Runtime/isKindofclass和isMemberofClass"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -464,7 +658,7 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/isKindofclass%E5%92%8CisMemberofClass/"
+  <a class="article-title" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/isKindofclass%E5%92%8CisMemberofClass/"
     >isKindofClass和isMemberofClass</a> 
 </h2>
  
@@ -473,7 +667,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/isKindofclass%E5%92%8CisMemberofClass/" class="article-date">
+      <a href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/isKindofclass%E5%92%8CisMemberofClass/" class="article-date">
   <time datetime="2023-01-08T11:49:59.000Z" itemprop="datePublished">2023-01-08</time>
 </a> 
   <div class="article-category">
@@ -490,7 +684,7 @@
 <li>isMemberOfClass是否是当前类</li>
 </ul>
 </blockquote> 
-      <a class="article-more-link" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/isKindofclass%E5%92%8CisMemberofClass/"
+      <a class="article-more-link" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/isKindofclass%E5%92%8CisMemberofClass/"
         >阅读更多...</a
       >
        
@@ -513,7 +707,7 @@
 
     
     <article
-  id="post-iOS学习/Runtime知识/super"
+  id="post-iOS学习/Runtime/super"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -524,7 +718,7 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/01/06/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/super/"
+  <a class="article-title" href="/2023/01/06/iOS%E5%AD%A6%E4%B9%A0/Runtime/super/"
     >super</a> 
 </h2>
  
@@ -533,7 +727,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/01/06/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/super/" class="article-date">
+      <a href="/2023/01/06/iOS%E5%AD%A6%E4%B9%A0/Runtime/super/" class="article-date">
   <time datetime="2023-01-05T16:49:17.000Z" itemprop="datePublished">2023-01-06</time>
 </a> 
   <div class="article-category">
@@ -582,7 +776,7 @@
 
     
     <article
-  id="post-iOS学习/Runtime知识/objc-msgSend"
+  id="post-iOS学习/Runtime/objc-msgSend"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -593,7 +787,7 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/objc-msgSend/"
+  <a class="article-title" href="/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-msgSend/"
     >objc_msgSend</a> 
 </h2>
  
@@ -602,7 +796,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/objc-msgSend/" class="article-date">
+      <a href="/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-msgSend/" class="article-date">
   <time datetime="2023-01-02T10:48:31.000Z" itemprop="datePublished">2023-01-02</time>
 </a> 
   <div class="article-category">
@@ -624,7 +818,7 @@
 </li>
 </ul>
 </blockquote> 
-      <a class="article-more-link" href="/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/objc-msgSend/"
+      <a class="article-more-link" href="/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-msgSend/"
         >阅读更多...</a
       >
        
@@ -647,7 +841,7 @@
 
     
     <article
-  id="post-iOS学习/Runtime知识/objc-class"
+  id="post-iOS学习/Runtime/objc-class"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -658,7 +852,7 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/objc-class/"
+  <a class="article-title" href="/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-class/"
     >objc_class</a> 
 </h2>
  
@@ -667,7 +861,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/objc-class/" class="article-date">
+      <a href="/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-class/" class="article-date">
   <time datetime="2023-01-01T13:53:01.000Z" itemprop="datePublished">2023-01-01</time>
 </a> 
   <div class="article-category">
@@ -747,7 +941,7 @@
 
     
     <article
-  id="post-iOS学习/Runtime知识/Runtime"
+  id="post-iOS学习/Runtime/Runtime"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -758,7 +952,7 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/Runtime/"
+  <a class="article-title" href="/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/Runtime/"
     >isa</a> 
 </h2>
  
@@ -767,7 +961,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/Runtime/" class="article-date">
+      <a href="/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/Runtime/" class="article-date">
   <time datetime="2023-01-01T08:21:47.000Z" itemprop="datePublished">2023-01-01</time>
 </a> 
   <div class="article-category">
@@ -859,7 +1053,7 @@
 
     
     <article
-  id="post-iOS学习/底层原理/initialize"
+  id="post-iOS学习/底层原理/Block的类型"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -870,8 +1064,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2022/12/27/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/"
-    >initialize</a> 
+  <a class="article-title" href="/2022/12/29/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Block%E7%9A%84%E7%B1%BB%E5%9E%8B/"
+    >Block的类型</a> 
 </h2>
  
 
@@ -879,8 +1073,8 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2022/12/27/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/" class="article-date">
-  <time datetime="2022-12-27T10:40:00.000Z" itemprop="datePublished">2022-12-27</time>
+      <a href="/2022/12/29/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Block%E7%9A%84%E7%B1%BB%E5%9E%8B/" class="article-date">
+  <time datetime="2022-12-29T08:35:53.000Z" itemprop="datePublished">2022-12-29</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
@@ -890,176 +1084,119 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <span id="more"></span>
-<h1 id="initialize"><a href="#initialize" class="headerlink" title="initialize"></a>initialize</h1><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><ol>
-<li>在查找方法前，进行initialize的调用<br><img src="16721352310424.png"><img src="16721353684859.png"></li>
-</ol>
+  <h1 id="Block编译成C"><a href="#Block编译成C" class="headerlink" title="Block编译成C++"></a>Block编译成C++</h1><ul>
+<li><p>捕获了auto变量<code>JPPerson</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">struct __main_block_impl_0 &#123;</span><br><span class="line">  struct __block_impl impl;</span><br><span class="line">  struct __main_block_desc_0* Desc;</span><br><span class="line">  JPPerson *__strong person;</span><br><span class="line">  __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, JPPerson *__strong _person, int flags=0) : person(_person) &#123;</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">static struct __main_block_desc_0 &#123;</span><br><span class="line">  size_t reserved;</span><br><span class="line">  size_t Block_size;</span><br><span class="line">  void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*);</span><br><span class="line">  void (*dispose)(struct __main_block_impl_0*);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>编译器会将<code>__block</code>变量包装成一个对象</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">struct __Block_byref_age_0 &#123;</span><br><span class="line">  void *__isa;</span><br><span class="line">__Block_byref_age_0 *__forwarding;</span><br><span class="line"> int __flags;</span><br><span class="line"> int __size;</span><br><span class="line"> int age;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="Block的类型"><a href="#Block的类型" class="headerlink" title="Block的类型"></a>Block的类型</h1><table>
+<thead>
+<tr>
+<th>block类型</th>
+<th>环境</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>NSGlobalBlock</em></td>
+<td>没有访问auto变量</td>
+</tr>
+<tr>
+<td><em>NSStackBlock</em></td>
+<td>访问了auto变量</td>
+</tr>
+<tr>
+<td><em>NSMallocBlock</em></td>
+<td>_NSStackBlock_调用了copy</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>注意在非ARC环境下是准确的，如果在ARC环境下,编译器会根据情况，将栈上的block,变成<code>NSMalloCBlock</code></p>
+</li>
+<li><p>每一种block调用copy后的结果如图所示</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>block的类</th>
+<th>副本源的配置存储域</th>
+<th>赋值效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>_NSConcreteStackBlock</td>
+<td>栈</td>
+<td>从栈复制到堆</td>
+</tr>
+<tr>
+<td>_NSConcreteGlobalBlock</td>
+<td>程序的数据区域</td>
+<td>什么也不做</td>
+</tr>
+<tr>
+<td>_NSConcreteMallocBlock</td>
+<td>堆</td>
+<td>引用计数增加</td>
+</tr>
+</tbody></table>
 <ul>
-<li>类没有初始化，则去调用初始化<br><img src="16721354586849.png"></li>
-<li>先查看有没有父类，且父类，没有初始化，则先初始化父类的initial<br><img src="16721355384202.png"></li>
-<li>采用的是objc_msSend去调用initialize方法<br><img src="16721356497584.png"></li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li>initialize和load的很大区别是，initize是通过objc_msgSend进行调用的。而load是拿到函数地址后直接调用的<ul>
-<li>如果子类没有实现initialize，会调用父类的initialize（所以父类的initialize可能会调用多次）</li>
-<li>如果分类实现了initialize，就会覆盖本身的initialize调用</li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/load%E3%80%81initialize/" rel="tag">load、initialize</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runtime知识/分类"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/27/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/%E5%88%86%E7%B1%BB/"
-    >分类</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/27/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/%E5%88%86%E7%B1%BB/" class="article-date">
-  <time datetime="2022-12-26T16:00:00.000Z" itemprop="datePublished">2022-12-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><ol>
-<li>通过runtime动态将分类的方法合并到类对象、元类对象中，并非编译</li>
-<li>一个分类文件的编译后的结构体实际为</li></ol> 
-      <a class="article-more-link" href="/2022/12/27/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/%E5%88%86%E7%B1%BB/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E7%B1%BB/" rel="tag">分类</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/底层原理/Load"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/"
-    >Load</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/" class="article-date">
-  <time datetime="2022-12-26T10:40:00.000Z" itemprop="datePublished">2022-12-26</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="Load方法"><a href="#Load方法" class="headerlink" title="Load方法"></a>Load方法</h1><ul>
-<li>+load方法会在runtime加载类、分类时调用</li>
-<li>每个类、分类的+load，在程序运行过程中只调用一次<ul>
-<li>flags标识位保证类只会加载一次</li>
-<li>这里有递归，首选会先将父类添加到数组，后将自己加进去数组，因此最后，先父类，再执行子类的load方法</li>
-<li>最开始的关系时按照编译的顺序来</li>
-</ul>
-</li>
-<li>尽管load中方法在源码中只会调用一次，但实际上主动<code>[Class load]</code>也会触发load,因此在调用<code>method_exchangeImplementations</code>做hook时，会加上<code>dispatch_once</code>，保证只会执行一次。<br><img src="16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
-</ul>
+<li><p>在ARC环境下，编译器会根据情况，将栈上的block,拷贝到堆上,有以下情况</p>
 <ol>
-<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="16720646359112.png"></p>
-</li>
-<li><p>构建有类load方法的数组，以及有分类load方法的数组，整个添加顺序是</p>
-<ol>
-<li>类先按编译的顺序进行添加，其中父类会比子类先添加到数组中</li>
-<li>分类按编译的顺序进行添加的<br><img src="16720651219179.png"></li>
+<li><code>block</code>作为函数的返回值时</li>
+<li>将<code>block</code>赋值给<code>__strong</code>引指针</li>
+<li><code>block</code>作为<code>Cocoa api</code>名含有<code>usingBlock</code>的方法参数输入时</li>
+<li><code>block</code>作为<code>GCD API</code>的方法参数时</li>
 </ol>
 </li>
-<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="16720639325952.png"></p>
-</li>
-<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="16720641861246.png"></p>
-</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>调用顺序</li>
-</ul>
-<ol>
-<li><p>先带哦用类的+load</p>
-<ol>
-<li>按照编译先后顺序调用，先编译，先调用</li>
-<li>调用子类的+load之前会先调用父类的+load</li>
-</ol>
-</li>
-<li><p>再调用分类的+load</p>
-<ol>
-<li>按照编译先后顺序调用，先编译，先调用</li>
-</ol>
-</li>
-</ol>
+<li><p>在将有_weak的方法，使用clang转换OC为C++代码时，注意支持ARC、以及指定运行时系统版本</p>
 <ul>
-<li></li>
+<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc -fobjc-arc -fobjc-runtime=ios-16.0.0 main.m -o main.cpp</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="当block内部访问了对象类型的auto变量时"><a href="#当block内部访问了对象类型的auto变量时" class="headerlink" title="当block内部访问了对象类型的auto变量时"></a>当block内部访问了对象类型的auto变量时</h2><ul>
+<li><p>如果block是在栈上，将不会对auto变量产生强引用</p>
+</li>
+<li><p>如果block是在堆上</p>
+<ul>
+<li>会调用block内部的copy函数</li>
+<li>copy函数内部会调用_Block_objc_assign函数</li>
+<li>_Block_objc_assign函数会根据auto变量的修饰符（_string、_weak、_unsafe_unretained）做出相应的操作，类似于retain（形成强引用、弱引用）<h2 id="block的内存管理"><a href="#block的内存管理" class="headerlink" title="block的内存管理"></a>block的内存管理</h2></li>
+</ul>
+</li>
+<li><p><strong>当block在栈上</strong>时，并不会对<code>__block</code>变量，以及<code>auto</code>的对象产生强引用</p>
+</li>
+<li><p>当block被copy到堆时</p>
+<ul>
+<li>会调用block内部的copy函数</li>
+<li>copy函数内部会调用_Block_object_assign函数</li>
+<li>_Block_object_assign函数会对_block变量形成强引用,会区分是auto对象（会区分是_weak还是_strong），还是_block对象（强引用）</li>
+</ul>
+</li>
+<li><p>当block从堆移除</p>
+<ul>
+<li>会调用block内部的dispose函数</li>
+<li>dispose函数内部会调用_Block_object_dispose函数</li>
+<li>_Block_object_dispose函数会自动释放引用的_block变量</li>
+</ul>
+</li>
+<li><ul>
+<li>当<code>__block</code>修饰对象时，其构建的_block变量内，也会有copy方法和dispose方法<ul>
+<li>其内copy方法，同样也有<code>_Block_object_assign</code>,以及<code>_Block_object_dispose</code>,对其内修饰的对象进行内存管理（跟外围是_strong还是_weak有一定关系）<ul>
+<li> <strong>但是注意，该内存管理只会在ARC下生效，如果在MRC下，在_block不会增加其内对象的引用，属于unowned关系</strong></li>
+<li> <strong>如果不是__block,而是直接引用了auto对象，则和此前一样，block直接引用对象(mrc下，copy时，内部也会对auto增加引用)，而非通过__block间接引用</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>_block的生成的对象，通过fowarding去指向的原因</p>
+<ul>
+<li>在栈上的时候，指针指向自己</li>
+<li>而赋值到堆上时，栈上的指向堆上复制的，栈上赋值时，其值是保存堆上的值，从而保证了，无论是在栈上还是堆上修改，最后值都会保存的堆上。最终使用的是堆上的block</li>
+</ul>
+</li>
 </ul>
  
       <!-- reward -->
@@ -1071,7 +1208,7 @@
     
     <footer class="article-footer">
        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/load%E3%80%81initialize/" rel="tag">load、initialize</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Block/" rel="tag">Block</a></li></ul>
 
     </footer>
   </div>

@@ -142,6 +142,213 @@
     
     
     <article
+  id="post-iOS学习/内存管理/自动释放池"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E8%87%AA%E5%8A%A8%E9%87%8A%E6%94%BE%E6%B1%A0/"
+    >自动释放池</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E8%87%AA%E5%8A%A8%E9%87%8A%E6%94%BE%E6%B1%A0/" class="article-date">
+  <time datetime="2023-02-18T11:33:56.000Z" itemprop="datePublished">2023-02-18</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@autoreleasepool &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>编译后发现,<code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/* @autoreleasepool */ &#123; __AtAutoreleasePool __autoreleasepool; </span><br><span class="line">    //创建的时候调用构造函数，即 objc_autoreleasePoolPush();</span><br><span class="line">    &#125;</span><br><span class="line">    //代码块结束的时候析构函数,即 objc_autoreleasePoolPop(atautoreleasepoolobj)</span><br><span class="line">struct __AtAutoreleasePool &#123;</span><br><span class="line">    //构造函数，在创建结构体的时候调用</span><br><span class="line">  __AtAutoreleasePool() &#123; </span><br><span class="line">  atautoreleasepoolobj = objc_autoreleasePoolPush();</span><br><span class="line">  &#125;</span><br><span class="line">    //析构函数，在结构体销毁的时候调用</span><br><span class="line">  ~__AtAutoreleasePool() &#123;</span><br><span class="line">  objc_autoreleasePoolPop(atautoreleasepoolobj);</span><br><span class="line">  &#125;</span><br><span class="line">  void * atautoreleasepoolobj;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">void *</span><br><span class="line">objc_autoreleasePoolPush(void)</span><br><span class="line">&#123;</span><br><span class="line">    return AutoreleasePoolPage::push();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">NEVER_INLINE</span><br><span class="line">void</span><br><span class="line">objc_autoreleasePoolPop(void *ctxt)</span><br><span class="line">&#123;</span><br><span class="line">    AutoreleasePoolPage::pop(ctxt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>自动释放池的主要底层数据结构是：<code>__AtAutoreleasePool</code>、<code>AutoreleasePoolPage</code></li>
+<li>用了<code>autorelease</code>的对象最终都是通过<code>AutoreleasePoolPage</code>对象来管理的<h4 id="AutoreleasePoolPage"><a href="#AutoreleasePoolPage" class="headerlink" title="AutoreleasePoolPage"></a>AutoreleasePoolPage</h4></li>
+<li>主要结构<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class AutoreleasePoolPage : private AutoreleasePoolPageData &#123; .... &#125;</span><br><span class="line">struct AutoreleasePoolPageData &#123;</span><br><span class="line">static size_t const SIZE =</span><br><span class="line">#if PROTECT_AUTORELEASEPOOL</span><br><span class="line">		PAGE_MAX_SIZE;  // must be multiple of vm page size</span><br><span class="line">#else</span><br><span class="line">		PAGE_MIN_SIZE;  // size and alignment, power of 2</span><br><span class="line">		//(1 &lt;&lt; 12) //4096</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    magic_t const magic;</span><br><span class="line">	__unsafe_unretained id *next;</span><br><span class="line">	objc_thread_t const thread;</span><br><span class="line">	AutoreleasePoolPage * const parent;</span><br><span class="line">	AutoreleasePoolPage *child;</span><br><span class="line">	uint32_t const depth;</span><br><span class="line">	uint32_t hiwat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>每个AutoreleasePoolPage对象占用4096字节内存，除了用来存放它内部的成员变量(主要成员大概占用56字节)，剩下的空间用来存放autorelease对象的地址<ul>
+<li>剩下空间不够了，则会创建一个新的</li>
+</ul>
+</li>
+<li>所有的AutoreleasePoolPage对象通过双向链表的形式连接在一起<h3 id="源码-1"><a href="#源码-1" class="headerlink" title="源码"></a>源码</h3></li>
+<li>所有的<code>AutoreleasePoolPage</code>对象通过双向链表的形式连接在一起</li>
+</ul>
+<ol>
+<li><code>objc_autoreleasePoolPush</code>调用push方法会将一个<code>POOL_BOUNDARY</code>(实际是个nil)入栈，并且返回其存放的内存地址<ul>
+<li>后续调用<code>autorelease</code>加入释放值,也是调用<code>autoreleaseFast</code>方法添加到释放池，page不够，则创建新的，此时新的不用加<code>POOL_BOUNDARY</code>标记<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">static inline void *push() </span><br><span class="line">    &#123;</span><br><span class="line">        ReturnAutoreleaseInfo info = getReturnAutoreleaseInfo();</span><br><span class="line">        moveTLSAutoreleaseToPool(info);</span><br><span class="line"></span><br><span class="line">        id *dest;</span><br><span class="line">        if (slowpath(DebugPoolAllocation)) &#123;</span><br><span class="line">            // Each autorelease pool starts on a new pool page.</span><br><span class="line">            dest = autoreleaseNewPage(POOL_BOUNDARY);//新建的页，第一个地址假上一个POOL_BOUNDARY</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            dest = autoreleaseFast(POOL_BOUNDARY);</span><br><span class="line">        &#125;</span><br><span class="line">        ASSERT(dest == (id *)EMPTY_POOL_PLACEHOLDER || *dest == POOL_BOUNDARY);</span><br><span class="line">        return dest;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><code>objc_autoreleasePoolPop(atautoreleasepoolobj)</code>,调用pop时，则会对所有添加的值调用<code>release</code>方法，直到遇到<code>POOL_BOUNDARY</code>为止,<code>holdPage</code>为当前页面<br><img src="1.png"><ol>
+<li>存放的类型是<code>AutoreleasePoolEntry</code>,<code>ptr</code>是对象地址，<code>count</code>则是释放池内，该对象调用<code>autorelease</code>的次数<ul>
+<li>当前页面没了，则会调整到父页，并设置父页面为当前页面，继续<code>release</code>，直到碰到<code>POOL_BOUNDARY</code></li>
+<li>id *next指向了下一个能存放<code>autorelease</code>对象地址的区域<br><img src="2.png"></li>
+</ul>
+</li>
+</ol>
+</li>
+<li><code>autorelease</code>方法实际内部调用的是<code>autoreleaseFast</code>，其传入的值是对象<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">static inline id *autoreleaseFast(id obj)</span><br><span class="line">    &#123;</span><br><span class="line">        AutoreleasePoolPage *page = hotPage();</span><br><span class="line">        if (page &amp;&amp; !page-&gt;full()) &#123;</span><br><span class="line">            return page-&gt;add(obj);</span><br><span class="line">        &#125; else if (page) &#123;</span><br><span class="line">            return autoreleaseFullPage(obj, page);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return autoreleaseNoPage(obj);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><code>add</code>添加到释放值，如果已经存在则增加次数，否则增加一个<code>AutoreleasePoolEntry</code><ul>
+<li>这里增加次数只会在4个偏移内，如果超过了这个偏移，则当新的</li>
+<li>在找到新存在的后，会将其移动到存储的最后一个<br><img src="3.png"><h3 id="查看释放值信息"><a href="#查看释放值信息" class="headerlink" title="查看释放值信息"></a>查看释放值信息</h3></li>
+</ul>
+</li>
+<li><code>_objc_autoreleasePoolPrint</code>,该方法是一个私有方法,MRC环境下</li>
+<li>p1在距离上一个p1在4的范围内，则数量增加1，并且移动到最后<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">extern void _objc_autoreleasePoolPrint(void);</span><br><span class="line">@autoreleasepool &#123;  </span><br><span class="line">    CJPerson *p1 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p2 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p3 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p4 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    [p1 retain];</span><br><span class="line">    [p1 autorelease];</span><br><span class="line">    CJPerson *p5 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    @autoreleasepool &#123; </span><br><span class="line">            CJPerson *p6 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">             _objc_autoreleasePoolPrint();</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">objc[5867]: ##############</span><br><span class="line">objc[5867]: AUTORELEASE POOLS for thread 0x7ff856aee640</span><br><span class="line">objc[5867]: 10 releases pending.</span><br><span class="line">objc[5867]: [0x10080b000]  ................  PAGE  (hot) (cold)</span><br><span class="line">objc[5867]: [0x10080b038]  ################  POOL 0x10080b038</span><br><span class="line">//每个AutoreleasePoolEntry`指针占8位</span><br><span class="line">objc[5867]: [0x10080b040]    0x600000004060  CJPerson</span><br><span class="line">objc[5867]: [0x10080b048]    0x600000004070  CJPerson</span><br><span class="line">objc[5867]: [0x10080b050]    0x600000004080  CJPerson</span><br><span class="line">//移动到最后，并且会打印数量</span><br><span class="line">objc[5867]: [0x10080b058]    0x600000004050  CJPerson  autorelease count 2 </span><br><span class="line">objc[5867]: [0x10080b060]    0x600000004090  CJPerson</span><br><span class="line">objc[5867]: [0x10080b068]  ################  POOL 0x10080b068</span><br><span class="line">objc[5867]: [0x10080b070]    0x6000000040a0  CJPerson</span><br><span class="line">objc[5867]: ##############</span><br><span class="line">*/</span><br></pre></td></tr></table></figure></li>
+<li>p1在距离上一个p1在4的范围之外，则会另新增一个，尽管他们存的内存地址是一样的<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">extern void _objc_autoreleasePoolPrint(void);</span><br><span class="line">@autoreleasepool &#123;  </span><br><span class="line">    CJPerson *p1 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p2 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p3 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p4 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p5 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    [p1 retain];</span><br><span class="line">    [p1 autorelease];</span><br><span class="line">    @autoreleasepool &#123; </span><br><span class="line">            CJPerson *p6 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">             _objc_autoreleasePoolPrint();</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">objc[6090]: ##############</span><br><span class="line">objc[6090]: AUTORELEASE POOLS for thread 0x7ff856aee640</span><br><span class="line">objc[6090]: 11 releases pending.</span><br><span class="line">objc[6090]: [0x102009000]  ................  PAGE  (hot) (cold)</span><br><span class="line">objc[6090]: [0x102009038]  ################  POOL 0x102009038</span><br><span class="line">objc[6090]: [0x102009040]    0x60000000c020  CJPerson</span><br><span class="line">objc[6090]: [0x102009048]    0x60000000c030  CJPerson</span><br><span class="line">objc[6090]: [0x102009050]    0x60000000c040  CJPerson</span><br><span class="line">objc[6090]: [0x102009058]    0x60000000c050  CJPerson</span><br><span class="line">objc[6090]: [0x102009060]    0x60000000c060  CJPerson</span><br><span class="line">objc[6090]: [0x102009068]    0x60000000c020  CJPerson</span><br><span class="line">objc[6090]: [0x102009070]  ################  POOL 0x102009070</span><br><span class="line">objc[6090]: [0x102009078]    0x60000000c070  CJPerson</span><br><span class="line">objc[6090]: [0x102009080]  ################  POOL 0x102009080</span><br><span class="line">objc[6090]: [0x102009088]    0x60000000c080  CJPerson</span><br><span class="line">objc[6090]: ##############</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+<h3 id="autorelease时机"><a href="#autorelease时机" class="headerlink" title="autorelease时机"></a>autorelease时机</h3></li>
+<li>iOS在主线程的Runloop中注册了2个Observer<ul>
+<li>第1个<code>Observer</code>监听了<code>kCFRunLoopEntry</code>事件，会调用<code>objc_autoreleasePoolPush()</code></li>
+<li>第2个<code>Observer</code>监听了<code>kCFRunLoopBeforeWaiting</code>事件，会调用<code>objc_autoreleasePoolPop()</code>、<code>objc_autoreleasePoolPush()</code></li>
+<li>  监听了<code>kCFRunLoopBeforeExit</code>事件，会调用<code>objc_autoreleasePoolPop()</code></li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/内存管理/dealloc"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/dealloc/"
+    >dealloc</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/dealloc/" class="article-date">
+  <time datetime="2023-02-18T10:31:44.000Z" itemprop="datePublished">2023-02-18</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="引用计数存储"><a href="#引用计数存储" class="headerlink" title="引用计数存储"></a>引用计数存储</h3><blockquote>
+<ul>
+<li>在iOS中，使用引用计数来管理OC对象的内存</li>
+<li>一个新创建的OC对象引用计数默认是1，当引用计数减为0，OC对象就会销毁，释放其占用的内存空间</li>
+<li>调用retain会让OC对象的引用计数+1，调用release会让OC对象的引用计数-1</li>
+<li>内存管理的经验总结<ul>
+<li>当调用alloc、new、copy、mutableCopy方法返回了一个对象，在不需要这个对象时，要调用release或者autorelease来释放它</li>
+<li>想拥有某个对象，就让它的引用计数+1；不想再拥有某个对象，就让它的引用计数-1</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>从arm64架构开始，对isa进行了优化，变成了一个共用体（union）结构，还使用位域来存储更多的信息<ul>
+<li>其中has_sidetable_rc为1引用计数器是否过大无法存储在isa中<ul>
+<li>如果为1，那么引用计数会存储在一个叫SideTable的类的属性中</li>
+</ul>
+</li>
+<li>extra_rc里面里面存储的值是引用计数器减1,818源码之前是减1，之后则不是了</li>
+</ul>
+</li>
+</ul>
+<p><img src="1.png"></p>
+<ul>
+<li>SideTable<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct SideTable &#123;</span><br><span class="line">    spinlock_t slock;</span><br><span class="line">    RefcountMap refcnts; //refcnts是一个存放着对象引用计数的散列表</span><br><span class="line">    weak_table_t weak_table;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>retainCount<ul>
+<li>818源码<br><img src="2.png"></li>
+<li>781源码<br><img src="2.png"></li>
+<li>根据key从SideTables中获取sidetable，再从refcnts获取迭代器，从中取出引用计数<br>  <img src="4.png"></li>
+</ul>
+</li>
+<li>refcnts，在每次引用计数增减，是一个SIDE_TABLE_RC_ONE<ul>
+<li>relese，引用计数释放完了，则会调用delloc方法<br><img src="5.png"></li>
+<li>retain<br><img src="6.png"></li>
+<li>每次引用计数改变的值<code>0B100</code>，后两位分别判断是否有弱引用，是否正在释放<br><img src="7.png"><h3 id="dealloc"><a href="#dealloc" class="headerlink" title="dealloc"></a>dealloc</h3></li>
+</ul>
+</li>
+<li>当一个对象要释放时，会自动调用dealloc，接下的调用轨迹是<ol>
+<li>dealloc</li>
+<li>_objc_rootDealloc</li>
+<li>rootDealloc</li>
+<li>object_dispose</li>
+<li>objc_destructInstance、free</li>
+</ol>
+</li>
+</ul>
+<ol>
+<li><p>会判断是否是弱引用、关联对象、c++析构函数、引用计数表，都没有的话直接free释放</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">objc_object::rootDealloc()</span><br><span class="line">&#123;</span><br><span class="line">    if (isTaggedPointer()) return;  // fixme necessary?</span><br><span class="line"></span><br><span class="line">    if (fastpath(isa().nonpointer                     &amp;&amp;</span><br><span class="line">                 !isa().weakly_referenced             &amp;&amp;</span><br><span class="line">                 !isa().has_assoc                     &amp;&amp;</span><br><span class="line">#if ISA_HAS_CXX_DTOR_BIT</span><br><span class="line">                 !isa().has_cxx_dtor                  &amp;&amp;</span><br><span class="line">#else</span><br><span class="line">                 !isa().getClass(false)-&gt;hasCxxDtor() &amp;&amp;</span><br><span class="line">#endif</span><br><span class="line">                 !isa().has_sidetable_rc))</span><br><span class="line">    &#123;</span><br><span class="line">        assert(!sidetable_present());</span><br><span class="line">        free(this);</span><br><span class="line">    &#125; </span><br><span class="line">    else &#123;</span><br><span class="line">        object_dispose((id)this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>按顺序先处理后，再去释放</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">void *objc_destructInstance(id obj)</span><br><span class="line">&#123;</span><br><span class="line">    if (obj) &#123;</span><br><span class="line">        // Read all of the flags at once for performance.</span><br><span class="line">        bool cxx = obj-&gt;hasCxxDtor();</span><br><span class="line">        bool assoc = obj-&gt;hasAssociatedObjects();</span><br><span class="line"></span><br><span class="line">        // This order is important.</span><br><span class="line">        if (cxx) object_cxxDestruct(obj);//调用c++析构函数</span><br><span class="line">        if (assoc) _object_remove_associations(obj, /*deallocating*/true);//删删除关联对象</span><br><span class="line">        obj-&gt;clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br><span class="line">//清除弱引用和sidetable</span><br><span class="line">objc_object::clearDeallocating()</span><br><span class="line">&#123;</span><br><span class="line">    if (slowpath(!isa().nonpointer)) &#123;</span><br><span class="line">        // Slow path for raw pointer isa.</span><br><span class="line">        sidetable_clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line">    else if (slowpath(isa().weakly_referenced  ||  isa().has_sidetable_rc)) &#123;</span><br><span class="line">        // Slow path for non-pointer isa with weak refs and/or side table data.</span><br><span class="line">        clearDeallocating_slow();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    assert(!sidetable_present());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">objc_object::clearDeallocating_slow()</span><br><span class="line">&#123;</span><br><span class="line">    ASSERT(isa().nonpointer  &amp;&amp;  (isa().weakly_referenced || isa().has_sidetable_rc));</span><br><span class="line"></span><br><span class="line">    SideTable&amp; table = SideTables()[this];</span><br><span class="line">    table.lock();</span><br><span class="line">    if (isa().weakly_referenced) &#123;</span><br><span class="line">        weak_clear_no_lock(&amp;table.weak_table, (id)this); //清楚弱引用</span><br><span class="line">    &#125;</span><br><span class="line">    if (isa().has_sidetable_rc) &#123;</span><br><span class="line">        table.refcnts.erase(this); //清楚sidetable</span><br><span class="line">    &#125;</span><br><span class="line">    table.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>weak指针释放</p>
+<ol>
+<li>获取到<code>weak_entry_t</code>，从中获取存放的弱引用指针，将其置为nil<br><img src="8.png"></li>
+<li>从<code>weak_table_t</code>，查找的方式，是通过hash表，线性查找的方式<br><img src="9.png"></li>
+<li><code>weak_entry_t</code>的结构，会根据数组长度的不同，结构有所不同<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">struct weak_table_t &#123;</span><br><span class="line">weak_entry_t *weak_entries;</span><br><span class="line">size_t    num_entries;</span><br><span class="line">uintptr_t mask;</span><br><span class="line">uintptr_t max_hash_displacement;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct weak_entry_t &#123;</span><br><span class="line">    DisguisedPtr&lt;objc_object&gt; referent;</span><br><span class="line"> union &#123;</span><br><span class="line">      struct &#123;</span><br><span class="line">          weak_referrer_t *referrers;</span><br><span class="line">          uintptr_t        out_of_line_ness : 2;</span><br><span class="line">          uintptr_t        num_refs : PTR_MINUS_2;</span><br><span class="line">          uintptr_t        mask;</span><br><span class="line">         uintptr_t        max_hash_displacement;</span><br><span class="line">      &#125;;</span><br><span class="line">     struct &#123;</span><br><span class="line">        // out_of_line_ness field is low bits of inline_referrers[1]</span><br><span class="line">        weak_referrer_t  inline_referrers[WEAK_INLINE_COUNT];</span><br><span class="line">    &#125;;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-js的学习/js的基础学习（二）"
   class="article article-type-post"
   itemscope
@@ -182,6 +389,10 @@
 <p>四舍五入，其他数字都是四舍五入，但是.5特殊，它是往大了取</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">console.log(Math.round(1.5)); // 2</span><br><span class="line">console.log(Math.round(&#x27;-1.5&#x27;)); // -1 .5特殊，它是往大了取</span><br><span class="line">console.log(Math.round(-1.4)); // -1</span><br><span class="line">console.log(Math.round(-1.6)); // -2</span><br></pre></td></tr></table></figure>
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><blockquote>
+<p>字符串本身是不可变的，指的是里面的值不可变，虽然看上去可以改变内容，但其实是地址变了，内存中新开辟了一个内存空间</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var str = &#x27;abc&#x27;</span><br><span class="line">str = &#x27;hello&#x27;</span><br><span class="line">//当重新给str赋值的时候，常量`abc`不会被修改，依然在内存中</span><br><span class="line">//重新给字符串赋予值没回重新在内存中开辟空间，这个特点就是字符串的不可变</span><br><span class="line">//由于字符串的不可变，咋子大量拼接字符串的时候会有效率问题</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       
@@ -259,8 +470,8 @@
 
     
     <article
-  id="Tagged Pointer-iOS学习/内存管理/TaggedPointer"
-  class="article article-type-Tagged Pointer"
+  id="post-iOS学习/内存管理/TaggedPointer"
+  class="article article-type-post"
   itemscope
   itemprop="blogPost"
   data-scroll-reveal
@@ -271,7 +482,7 @@
        
 <h2 itemprop="name">
   <a class="article-title" href="/2023/02/15/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/TaggedPointer/"
-    >Pointer</a> 
+    >Tagged Pointer</a> 
 </h2>
  
 
@@ -306,7 +517,7 @@
 </ul>
 <h2 id="Tagged-Pointer存储地方思考"><a href="#Tagged-Pointer存储地方思考" class="headerlink" title="Tagged Pointer存储地方思考"></a>Tagged Pointer存储地方思考</h2><ul>
 <li>解码<code>extern</code>调用私有函数<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">extern uintptr_t objc_debug_taggedpointer_obfuscator;</span><br><span class="line">uintptr_t _objc_decodeTaggedPointer_(const void * _Nullable  ptr) &#123;</span><br><span class="line">    return (uintptr_t)ptr ^ objc_debug_taggedpointer_obfuscator;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">NSNumber *number1 = @4;</span><br><span class="line">NSNumber *number2 = @5;</span><br><span class="line">NSNumber *number3 = @100;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%p  %p  %p&quot;,number1,number2,number3);</span><br><span class="line">///0xc96fede699842146  0xc96fede699842786  0xc96fede699861216</span><br><span class="line">NSLog(@&quot;0x%lx   0x%lx   0x%lx&quot;,_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number1)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number2)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number3)));</span><br><span class="line">///0xb000000000000042   0xb000000000000052   0xb000000000000642</span><br><span class="line"></span><br><span class="line">NSString *str1 = [NSString stringWithFormat:@&quot;sd&quot;];</span><br><span class="line">NSString *str2 = [NSString stringWithFormat:@&quot;sdadad&quot;];</span><br><span class="line">NSLog(@&quot;%p  %p&quot;,str1,str2);</span><br><span class="line">//0xbaf35d65b6463f52  0xbaf51b73f0563f56</span><br><span class="line">NSLog(@&quot;0x%lx 0x%lx&quot;,_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(str1)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(str2)));</span><br><span class="line">//0xa000000000064732   0xa006461646164736</span><br></pre></td></tr></table></figure></li>
-<li>分析<ul>
+<li>分析,注意上面的数据是在<code>x86</code>模拟器上的数据<ul>
 <li>前面的0xb明显是tag,为<code>0xb -&gt; 1011</code>, <code>0xa -&gt; 1010</code>,<ul>
 <li>在iOS中最高位为1表明是<code>Tagged Pointer</code></li>
 <li>后三位代表数据类型，<code>011</code>代表int（如果是带小数点的无法不会转出tag），<code>010</code>代表字符串</li>
@@ -317,6 +528,10 @@
 <li>后4位代表数据长度(一般是字符串长度)，后四位<code>sd -&gt; 0010</code>长度2、<code>sdadad -&gt; 0110</code>长度6</li>
 </ul>
 </li>
+</ul>
+</li>
+<li>如果是iOS，<code>arm64</code>下，数据格式不同,需要注意<ul>
+<li><code>@5 -&gt; 0x8000000000000291</code>,<code>@8 -&gt; 0x8000000000000411</code>,最高位1是标识，低7位是标识和数据长度</li>
 </ul>
 </li>
 <li>在iOS中，<code>Tagged Pointer</code>中间56位用来存东西，前4位是tag，后4位是数据长度<h2 id="Tagged-Pointer的题目思考"><a href="#Tagged-Pointer的题目思考" class="headerlink" title="Tagged Pointer的题目思考"></a>Tagged Pointer的题目思考</h2><h3 id="关于野指针的问题"><a href="#关于野指针的问题" class="headerlink" title="关于野指针的问题"></a>关于野指针的问题</h3></li>
@@ -882,200 +1097,6 @@
 </li>
 <li><code>NSDefaultRunLoopMode</code>、<code>UITrackingRunLoopMode</code>才是真正存在的模式<code>NSRunLoopCommonModes</code>并不是一个真的模式，它只是一个标记</li>
 </ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runloop知识/runloop相关的类"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/"
-    >runloop相关的类</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/" class="article-date">
-  <time datetime="2023-01-12T14:29:38.000Z" itemprop="datePublished">2023-01-12</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/runloop/">runloop</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="runloop的结构"><a href="#runloop的结构" class="headerlink" title="runloop的结构"></a>runloop的结构</h2><blockquote>
-<ul>
-<li>Core Foundation中关于RunLoop的5个类<ul>
-<li>CFRunLoopRef</li>
-<li>CFRunLoopModeRef</li>
-<li>CFRunLoopSourceRef</li>
-<li>CFRunLoopTimerRef</li>
-<li>CFRunLoopObserverRef</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><h3 id="CFRunLoop"><a href="#CFRunLoop" class="headerlink" title="__CFRunLoop"></a>__CFRunLoop</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">struct __CFRunLoop &#123;</span><br><span class="line">    CFRuntimeBase _base;</span><br><span class="line">    pthread_mutex_t _lock;			/* locked for accessing mode list */</span><br><span class="line">    __CFPort _wakeUpPort;			// used for CFRunLoopWakeUp </span><br><span class="line">    Boolean _unused;</span><br><span class="line">    volatile _per_run_data *_perRunData;              // reset for runs of the run loop</span><br><span class="line">    pthread_t _pthread; //相对应地线程</span><br><span class="line">    uint32_t _winthread;</span><br><span class="line">    CFMutableSetRef _commonModes; // </span><br><span class="line">    CFMutableSetRef _commonModeItems;</span><br><span class="line">    CFRunLoopModeRef _currentMode; //Mode</span><br><span class="line">    CFMutableSetRef _modes;</span><br><span class="line">    struct _block_item *_blocks_head;</span><br><span class="line">    struct _block_item *_blocks_tail;</span><br><span class="line">    CFAbsoluteTime _runTime;</span><br><span class="line">    CFAbsoluteTime _sleepTime;</span><br><span class="line">    CFTypeRef _counterpart;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>简化版<br><img src="1.png"></li>
-</ul>
-<h3 id="CFRunLoopModeRef"><a href="#CFRunLoopModeRef" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">typedef struct __CFRunLoopMode *CFRunLoopModeRef;</span><br><span class="line"></span><br><span class="line">struct __CFRunLoopMode &#123;</span><br><span class="line">    CFRuntimeBase _base;</span><br><span class="line">    pthread_mutex_t _lock;	/* must have the run loop locked before locking this */</span><br><span class="line">    CFStringRef _name;</span><br><span class="line">    Boolean _stopped;</span><br><span class="line">    char _padding[3];</span><br><span class="line">    CFMutableSetRef _sources0; </span><br><span class="line">    CFMutableSetRef _sources1;</span><br><span class="line">    CFMutableArrayRef _observers;</span><br><span class="line">    CFMutableArrayRef _timers;</span><br><span class="line">    CFMutableDictionaryRef _portToV1SourceMap;</span><br><span class="line">    __CFPortSet _portSet;</span><br><span class="line">    CFIndex _observerMask;</span><br><span class="line">#if USE_DISPATCH_SOURCE_FOR_TIMERS</span><br><span class="line">    dispatch_source_t _timerSource;</span><br><span class="line">    dispatch_queue_t _queue;</span><br><span class="line">    Boolean _timerFired; // set to true by the source when a timer has fired</span><br><span class="line">    Boolean _dispatchTimerArmed;</span><br><span class="line">#endif</span><br><span class="line">#if USE_MK_TIMER_TOO</span><br><span class="line">    mach_port_t _timerPort;</span><br><span class="line">    Boolean _mkTimerArmed;</span><br><span class="line">#endif</span><br><span class="line">#if DEPLOYMENT_TARGET_WINDOWS</span><br><span class="line">    DWORD _msgQMask;</span><br><span class="line">    void (*_msgPump)(void);</span><br><span class="line">#endif</span><br><span class="line">    uint64_t _timerSoftDeadline; /* TSR */</span><br><span class="line">    uint64_t _timerHardDeadline; /* TSR */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>简化版<br><img src="2.png"><h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3></li>
-<li>一个runLoop中有很多模式，存在modes中，但是每次只会选择一种模式,作为当前模式<br><img src="3.png"></li>
-<li>CFRunLoopModeRef代表RunLoop的运行模式</li>
-<li>一个RunLoop包含若干个Mode，每个Mode又包含若干个Source0/Source1/Timer/Observer</li>
-<li>RunLoop启动时只能选择其中一个Mode，作为currentMode</li>
-<li>如果需要切换Mode，只能退出当前Loop，再重新选择一个Mode进入<ul>
-<li>不同组的Source0/Source1/Timer/Observer能分隔开来，互不影响</li>
-</ul>
-</li>
-<li>如果Mode里没有任何Source0/Source1/Timer/Observer，RunLoop会立马退出<h2 id="CFRunLoopModeRef-1"><a href="#CFRunLoopModeRef-1" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h2></li>
-</ul>
-<ol>
-<li><code>Source0</code><ul>
-<li>触摸事件处理<br><img src="4.png"></li>
-<li><code>performSelector:onThread:</code>,线程之前的通信</li>
-</ul>
-</li>
-<li><code>Source1</code><ul>
-<li>基于<code>Port</code>的线程间通信,</li>
-<li>系统事件捕捉，例如，屏幕点击，最开始是source1</li>
-</ul>
-</li>
-<li><code>Timers</code><ul>
-<li><code>NSTimer</code></li>
-<li><code>performSelector:withObject:afterDelay:</code>,本质会加到runloop的timer</li>
-</ul>
-</li>
-<li><code>Observers</code><ul>
-<li>用于监听<code>RunLoop</code>的状态</li>
-<li><code>UI</code>刷新（<code>BeforeWaiting</code>）,在线程休眠之前，设置UI</li>
-<li><code>Autorelease pool</code>（<code>BeforeWaiting</code>）,在休眠之前释放自动释放池对象，唤醒后新建新的自动释放池<h2 id="CFRunLoopObserverRef"><a href="#CFRunLoopObserverRef" class="headerlink" title="CFRunLoopObserverRef"></a>CFRunLoopObserverRef</h2></li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><code>RunLoop</code>的状态改变流程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/* Run Loop Observer Activities */</span><br><span class="line">typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) &#123;</span><br><span class="line">    kCFRunLoopEntry = (1UL &lt;&lt; 0),</span><br><span class="line">    kCFRunLoopBeforeTimers = (1UL &lt;&lt; 1),</span><br><span class="line">    kCFRunLoopBeforeSources = (1UL &lt;&lt; 2),</span><br><span class="line">    kCFRunLoopBeforeWaiting = (1UL &lt;&lt; 5),</span><br><span class="line">    kCFRunLoopAfterWaiting = (1UL &lt;&lt; 6),</span><br><span class="line">    kCFRunLoopExit = (1UL &lt;&lt; 7),</span><br><span class="line">    kCFRunLoopAllActivities = 0x0FFFFFFFU</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
-<li>监听RunLoop的状态<ul>
-<li>切换mode之后，会先<code>kCFRunLoopExit - kCFRunLoopDefaultMode</code>，之后再<code>kCFRunLoopEntry - UITrackingRunLoopMode</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity) &#123;</span><br><span class="line">    switch (activity) &#123;</span><br><span class="line">       case kCFRunLoopEntry:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopEntry&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeTimers:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeTimers&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeSources:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeSources&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeWaiting:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeWaiting&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopAfterWaiting:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopAfterWaiting&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopExit:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopExit&quot;);</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    // 添加Observer到RunLoop中</span><br><span class="line">CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);</span><br><span class="line">    // 释放</span><br><span class="line">CFRelease(observer);</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runloop知识/runloop"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/10/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop/"
-    >runloop</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/10/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop/" class="article-date">
-  <time datetime="2023-01-10T15:09:41.000Z" itemprop="datePublished">2023-01-10</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/runloop/">runloop</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="什么是RunLoop"><a href="#什么是RunLoop" class="headerlink" title="什么是RunLoop"></a>什么是RunLoop</h2><ul>
-<li>顾名思义<ul>
-<li>运行循环</li>
-<li>在程序运行过程中循环做一些事情</li>
-</ul>
-</li>
-<li>基本作用<ul>
-<li>保持程序的持续运行</li>
-<li>处理App中的各种事件（比如触摸事件、定时器事件等）</li>
-<li>节省CPU资源，提高程序性能：该做事时做事，该休息时休息</li>
-</ul>
-</li>
-<li>应用范畴<ul>
-<li>定时器（Timer）、PerformSelector</li>
-<li>GCD Async Main Queue</li>
-<li>事件响应、手势识别、界面刷新</li>
-<li>网络请求</li>
-<li><code>AutoreleasePool</code></li>
-</ul>
-</li>
-<li><code>RunLoop</code>与线程<ul>
-<li>每条线程都有唯一的一个与之对应的RunLoop对象<ul>
-<li><code>CFRunLoopGetCurrent()</code>和<code>[NSRunLoop currentRunLoop]</code>,在当前线程中获取runloop</li>
-<li>从字典中获取，如果没有的话，则会创建，并存放在字典中，key是线程的指针地址<br><img src="1.png"></li>
-</ul>
-</li>
-<li>RunLoop保存在一个全局的Dictionary里，线程作为key，RunLoop作为value</li>
-<li>线程刚创建时并没有RunLoop对象，RunLoop会在第一次获取它时创建</li>
-<li>RunLoop会在线程结束时销毁</li>
-<li>主线程的RunLoop已经自动获取（创建），子线程默认没有开启RunLoop</li>
-</ul>
-</li>
-</ul>
  
       <!-- reward -->
       

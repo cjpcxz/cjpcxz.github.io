@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">143</span>
+            <span class="post-count">290</span>
         </span>
     </span>
 
@@ -110,6 +110,10 @@
 <p>四舍五入，其他数字都是四舍五入，但是.5特殊，它是往大了取</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">console.log(Math.round(1.5)); // 2</span><br><span class="line">console.log(Math.round(&#x27;-1.5&#x27;)); // -1 .5特殊，它是往大了取</span><br><span class="line">console.log(Math.round(-1.4)); // -1</span><br><span class="line">console.log(Math.round(-1.6)); // -2</span><br></pre></td></tr></table></figure>
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><blockquote>
+<p>字符串本身是不可变的，指的是里面的值不可变，虽然看上去可以改变内容，但其实是地址变了，内存中新开辟了一个内存空间</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var str = &#x27;abc&#x27;</span><br><span class="line">str = &#x27;hello&#x27;</span><br><span class="line">//当重新给str赋值的时候，常量`abc`不会被修改，依然在内存中</span><br><span class="line">//重新给字符串赋予值没回重新在内存中开辟空间，这个特点就是字符串的不可变</span><br><span class="line">//由于字符串的不可变，咋子大量拼接字符串的时候会有效率问题</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       

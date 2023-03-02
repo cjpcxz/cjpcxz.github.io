@@ -1,6 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>SSH常用指令</title>
+    <url>/2023/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
+<h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
+<li>ssh <a href="mailto:&#x72;&#111;&#111;&#x74;&#x40;&#x31;&#57;&#50;&#x2e;&#49;&#x36;&#56;&#x2e;&#x31;&#x2e;&#x31;&#x34;">&#x72;&#111;&#111;&#x74;&#x40;&#x31;&#57;&#50;&#x2e;&#49;&#x36;&#56;&#x2e;&#x31;&#x2e;&#x31;&#x34;</a>,跳转到指定ip的命令</li>
+<li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
+</ul>
+<ol>
+<li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
+<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#x6f;&#x6f;&#116;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#x2e;&#x31;&#46;&#x31;&#52;">&#x72;&#x6f;&#x6f;&#116;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#x2e;&#x31;&#46;&#x31;&#52;</a>，追加到当前ip服务器授权文件的尾部</li>
+</ul>
+</li>
+<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#x72;&#111;&#111;&#116;&#x40;&#x31;&#57;&#50;&#x2e;&#x31;&#54;&#x38;&#x2e;&#x31;&#x2e;&#x31;&#52;">&#x72;&#111;&#111;&#116;&#x40;&#x31;&#57;&#50;&#x2e;&#x31;&#54;&#x38;&#x2e;&#x31;&#x2e;&#x31;&#52;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
+<li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>chmod 755 ~/.ssh 给文件夹赋予权限，755含义<ul>
+<li>读（r=4），写（w=2），执行（x=1）</li>
+<li>文件所有者可读可写可执行                                   –7</li>
+<li>与文件所有者同属一个用户组的其他用户可读可执行                 –5 </li>
+<li>其它用户组可读可执行                                       –5<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2></li>
+</ul>
+</li>
+<li>每个端口都有个端口号，（范围是0～65535，公2^16）</li>
+<li>21端口，FTP服务</li>
+<li>80端口，http服务</li>
+<li>22端口，ssh服务<h2 id="通过USB进行SSH登录"><a href="#通过USB进行SSH登录" class="headerlink" title="通过USB进行SSH登录"></a>通过USB进行SSH登录</h2></li>
+<li>默认会用网络登录，USB登录的方式是，先用SSH登录MAC上的10010端口(非保留端口均可)，在通过usbmuxd连接22端口</li>
+<li>将iPhone的22端口（SSH端口）映射到Mac本地的10010端口</li>
+<li>用python脚本，将mac上10010映射到22，python3 tcprelay.py -t 22:10010</li>
+<li>ssh root@localhost -p 10010,直接连接本地的10010接口</li>
+<li>scp -P 10010 <del>/.ssh/id_rsa.pub root@localhost:</del>,拷贝的方法</li>
+</ul>
+]]></content>
+      <categories>
+        <category>iOS越狱</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>属性</title>
+    <url>/2023/03/01/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%B1%9E%E6%80%A7/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="延迟存储属性"><a href="#延迟存储属性" class="headerlink" title="延迟存储属性"></a>延迟存储属性</h3><ul>
+<li><code>lazy</code>属性必须是<code>var</code>，不能是<code>let</code><ul>
+<li>必须在实例的初始化方法完成之前就拥有值</li>
+</ul>
+</li>
+<li>如果多条线程同时第一次访问<code>lazy</code>属性<ul>
+<li>无法保证属性只被初始化1次</li>
+</ul>
+</li>
+<li>当结构体包含一个延迟存储属性时，只有<code>var</code>才能访问延迟存储属性<ul>
+<li>因为延迟属性初始化时需要改变结构体的内存<h3 id="属性观察器"><a href="#属性观察器" class="headerlink" title="属性观察器"></a>属性观察器</h3></li>
+</ul>
+</li>
+<li><code>wil1set</code>会传递新值，默认叫<code>newValue</code></li>
+<li><code>didset</code>会传递旧值，默认叫<code>oldValue</code></li>
+<li>在初始化器中设置属性值不会触发<code>wil1Set</code>和<code>didset</code></li>
+<li>在属性定义时设置初始值也不会触发<code>wi11Set</code>和<code>didset</code><ul>
+<li>属性定义是设置，和初始化器中设置，其源码实际是一样的</li>
+</ul>
+</li>
+<li>属性观察器，计算属性的功能，同样可以应用在全局变量、局部变量身上</li>
+</ul>
+]]></content>
+      <categories>
+        <category>swift笔记</category>
+      </categories>
+  </entry>
+  <entry>
     <title>闭包</title>
     <url>/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
@@ -10,6 +81,58 @@
 <li>一般它捕获的是外层西数的局部变量\常量</li>
 </ul>
 </blockquote>
+<span id="more"></span>
+<h3 id="闭包本质查看"><a href="#闭包本质查看" class="headerlink" title="闭包本质查看"></a>闭包本质查看</h3><h4 id="不捕获变量"><a href="#不捕获变量" class="headerlink" title="不捕获变量"></a>不捕获变量</h4><ul>
+<li>源码<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func getFun() -&gt;(Int)-&gt;Int &#123;</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return i</span><br><span class="line">    &#125;</span><br><span class="line">    return plus(i:)</span><br><span class="line">&#125;</span><br><span class="line">var fu = getFun()</span><br><span class="line">print(MemoryLayout.stride(ofValue: fu)) //16</span><br></pre></td></tr></table></figure></li>
+<li>汇编<ul>
+<li><code>rax</code>一般最为返回值，很明显将<code>0xe5(%rip)</code>的地址存放在计算器<code>rax</code>中，返回<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SwiftDText`getFun():</span><br><span class="line">-&gt;  0x100004e10 &lt;+0&gt;:  pushq  %rbp</span><br><span class="line">    0x100004e11 &lt;+1&gt;:  movq   %rsp, %rbp</span><br><span class="line">    0x100004e14 &lt;+4&gt;:  leaq   0xe5(%rip), %rax          ; plus(i: Swift.Int) -&gt; Swift.Int at main.swift:195</span><br><span class="line">    0x100004e1b &lt;+11&gt;: xorl   %ecx, %ecx</span><br><span class="line">    0x100004e1d &lt;+13&gt;: movl   %ecx, %edx</span><br><span class="line">    0x100004e1f &lt;+15&gt;: popq   %rbp</span><br><span class="line"> 0x100004e20 &lt;+16&gt;: retq   </span><br></pre></td></tr></table></figure></li>
+<li>查看<code>rax</code>地址,很明显存放的是函数地址，显然不捕获变量的闭包，直接返回了函数的地址。并且和<code>fu</code>的指针一致。</li>
+<li>此外将<code>xorl   %ecx, %ecx</code>进行异或,其值为0，并将结果赋值给<code>edx</code>（<code>edx</code>与<code>rdx</code>共寄存器，只是一个4字节，一个8字节),也可理解为赋值给了<code>rdx</code><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">register read rax</span><br><span class="line">rax = 0x0000000100004f00  SwiftDText`plus(i: Swift.Int) -&gt; Swift.Int at main.swift:195</span><br><span class="line">p fu</span><br><span class="line">() $R0 = 0x0000000100004f00 </span><br></pre></td></tr></table></figure></li>
+<li><code>fn</code>指针变量是16字节空间，<ul>
+<li>其中赋值<code>0x100002299 + 0xe337 = 0x1000105D0</code>,<code>0x1000022a0 + 0xe338 = 0x1000105D8</code>,并且为<code>movq</code>(占8字节)移动</li>
+<li>因此，很显然这里将<code>rax</code>中的函数地址地址赋予<code>fu</code>，同时<code>rdx</code>也赋值给了<code>fu</code>，<code>rdx</code>和后续捕获变量有关系<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0x100002292 &lt;+18&gt;:  movq   %rax, 0xe337(%rip)        ; SwiftDText.fu : (Swift.Int) -&gt; Swift.Int</span><br><span class="line">0x100002299 &lt;+25&gt;:  movq   %rdx, 0xe338(%rip)        ; SwiftDText.fu : (Swift.Int) -&gt; Swift.Int + 8</span><br><span class="line">0x1000022a0 &lt;+32&gt;:  movl   $0x1, %edi</span><br></pre></td></tr></table></figure>
+<h4 id="捕获变量"><a href="#捕获变量" class="headerlink" title="捕获变量"></a>捕获变量</h4></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>源码<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func getFun() -&gt;(Int)-&gt;Int &#123;</span><br><span class="line">    var num = 9,num2 = 3</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return num + num2 + i</span><br><span class="line">    &#125;</span><br><span class="line">    return plus(i:)</span><br><span class="line">&#125;</span><br><span class="line">var fu = getFun()</span><br><span class="line">print(MemoryLayout.stride(ofValue: fu)) //16</span><br></pre></td></tr></table></figure></li>
+<li>汇编<ul>
+<li>汇编源码<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0x100008870 &lt;+0&gt;:  pushq  %rbp</span><br><span class="line">0x100008871 &lt;+1&gt;:  movq   %rsp, %rbp</span><br><span class="line">0x100008874 &lt;+4&gt;:  subq   $0x10, %rsp</span><br><span class="line">0x100008878 &lt;+8&gt;:  movq   $0x0, -0x8(%rbp)</span><br><span class="line">0x100008880 &lt;+16&gt;: movq   $0x0, -0x10(%rbp)</span><br><span class="line">0x100008888 &lt;+24&gt;: movq   $0x9, -0x8(%rbp)</span><br><span class="line">0x100008890 &lt;+32&gt;: movq   $0x3, -0x10(%rbp)</span><br><span class="line">0x100008898 &lt;+40&gt;: leaq   0x3b79(%rip), %rdi        ; _swift_FORCE_LOAD_$_swiftIOKit_$_SwiftDText + 24</span><br><span class="line">0x10000889f &lt;+47&gt;: movl   $0x20, %esi</span><br><span class="line">0x1000088a4 &lt;+52&gt;: movl   $0x7, %edx</span><br><span class="line">0x1000088a9 &lt;+57&gt;: callq  0x10000ab86               ; symbol stub for: swift_allocObject</span><br><span class="line">0x1000088ae &lt;+62&gt;: movq   %rax, %rdx //堆生成的对象，给了rdx</span><br><span class="line">0x1000088b1 &lt;+65&gt;: movq   $0x9, 0x10(%rdx)  //9赋值给了rdx后16字节</span><br><span class="line">0x1000088b9 &lt;+73&gt;: movq   $0x3, 0x18(%rdx) //3赋值给了rdx后24字节</span><br><span class="line">0x1000088c1 &lt;+81&gt;: leaq   0xf8(%rip), %rax          ; partial apply forwarder for function signature specialization &lt;Arg[1] = Value Promoted from Box, Arg[2] = Value Promoted from Box&gt; of plus(i: Swift.Int) -&gt; Swift.Int at &lt;compiler-generated&gt; //注意这里和之前未捕获的不同</span><br><span class="line">0x1000088c8 &lt;+88&gt;: addq   $0x10, %rsp</span><br><span class="line">0x1000088cc &lt;+92&gt;: popq   %rbp</span><br><span class="line">0x1000088cd &lt;+93&gt;: retq </span><br></pre></td></tr></table></figure></li>
+<li>可以看出调用了<code>swift_allocObject</code>，在堆空间生成了对象。并且该对象的地址返回在<code>rax</code>中,打印出地址，以及存储的<code>num</code>,<code>num2</code><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">register read rax</span><br><span class="line">    rax = 0x0000600000208000</span><br><span class="line">//显示地址的内存，6组，每组8字节，按16进制显示</span><br><span class="line">x/6xg 0x0000600000208000</span><br><span class="line">0x600000208000: 0x000000010000c418 0x0000000000000003</span><br><span class="line">0x600000208010: 0x0000000000000009 0x0000000000000003</span><br><span class="line">0x600000208020: 0x0000000000000000 0x0000000000000000</span><br></pre></td></tr></table></figure></li>
+<li><code>leaq    0xf8(%rip), %rax</code>，<code>movq   $0x9, 0x10(%rdx)、movq   $0x3, 0x18(%rdx)</code>,函数地址传给了<code>rax</code>,生成的包装<code>num</code> 的对象传给了<code>rdx</code>,<code>rdx</code>和<code>rax</code>一般用做函数返回值。实际返回结果后，将rax和rdx上的值，赋值给了<code>fn对象</code>（由于在全局区执行，所以是<code>rip</code>，全局变量）<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> 0x100005f62 &lt;+18&gt;:  movq   %rax, 0xaca7(%rip)        ; SwiftDText.fu : (Swift.Int) -&gt; Swift.Int</span><br><span class="line">0x100005f69 &lt;+25&gt;:  movq   %rdx, 0xaca8(%rip)        ; SwiftDText.fu : (Swift.Int) -&gt; Swift.Int + 8</span><br><span class="line">//此时rip的的地址是0x100010C10，将rax和rdx存在该地址的内存上，一个为函数地址，一个为存储的变量地址</span><br><span class="line">x/2g 0x100010C10</span><br><span class="line">0x100010c10: 0x00000001000089c0 0x0000600000208000</span><br></pre></td></tr></table></figure></li>
+<li><strong>注意</strong>，和未捕获的闭包表达式不同，捕获了变量的闭包，其赋值给<code>rdx</code>的函数地址，和实际的不同.(xcode旁边的注解和捕获变量的赋值，是不一样的)，实际上，该函数地址进行了一次包装<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//实际调用函数的地方</span><br><span class="line">0x100005f97 &lt;+71&gt;:  movq   0xac7a(%rip), %r13        ; SwiftDText.fu : (Swift.Int) -&gt; Swift.Int + 8 //这里实际将，num包装的堆地址传给了r13</span><br><span class="line">0x100005f9e &lt;+78&gt;:  movq   %r13, -0x80(%rbp)</span><br><span class="line">0x100005fa2 &lt;+82&gt;:  movq   %r13, %rdi</span><br><span class="line">0x100005fa5 &lt;+85&gt;:  callq  0x10000abf2               ; symbol stub for: swift_retain</span><br><span class="line">0x100005faa &lt;+90&gt;:  leaq   -0x20(%rbp), %rdi</span><br><span class="line">0x100005fae &lt;+94&gt;:  callq  0x10000abb6               ; symbol stub for: swift_endAccess</span><br><span class="line">0x100005fb3 &lt;+99&gt;:  movq   -0x88(%rbp), %rax</span><br><span class="line">0x100005fba &lt;+106&gt;: movl   $0x1, %edi</span><br><span class="line">0x100005fbf &lt;+111&gt;: callq  *%rax</span><br><span class="line">//函数内部</span><br><span class="line">0x1000089c0 &lt;+0&gt;:  pushq  %rbp  //即上面rax中存放的地址</span><br><span class="line">0x1000089c1 &lt;+1&gt;:  movq   %rsp, %rbp</span><br><span class="line">0x1000089c4 &lt;+4&gt;:  movq   0x10(%r13), %rsi //将r13中的num包装对象偏移16字节（即num）取出，偏移24字节num2，传给rsi作为函数参数</span><br><span class="line">0x1000089c8 &lt;+8&gt;:  movq   0x18(%r13), %rdx</span><br><span class="line">0x1000089cc &lt;+12&gt;: popq   %rbp</span><br><span class="line">0x1000089cd &lt;+13&gt;: jmp    0x100008920               ; function signature specialization &lt;Arg[1] = Value Promoted from Box, Arg[2] = Value Promoted from Box&gt; of plus(i: Swift.Int) -&gt; Swift.Int at main.swift:197 //最终实际地址是0x100008920  </span><br></pre></td></tr></table></figure>
+<h4 id="捕获的时机"><a href="#捕获的时机" class="headerlink" title="捕获的时机"></a>捕获的时机</h4></li>
+</ul>
+</li>
+<li><strong>注意</strong>，捕获只会在使用的时候进行捕获，这里捕获的是20，而非9<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func getFun() -&gt;(Int)-&gt;Int &#123;</span><br><span class="line">    var num = 9</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return num + i</span><br><span class="line">    &#125;</span><br><span class="line">    var num = 20</span><br><span class="line">    return plus(i:)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>注意</strong>,如果没有执行，则不会捕获，和此前未捕获变量一致<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func getFun() -&gt;(Int)-&gt;Int &#123;</span><br><span class="line">    var num = 9</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return num + i</span><br><span class="line">    &#125;</span><br><span class="line">    var num = 20</span><br><span class="line">    return &#123;$0&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>注意</strong>,如果是全局变量，也不会进行捕获</li>
+<li><strong>注意</strong>,上面的函数中未对<code>num</code>和<code>num2</code>进行修改，最终这两个数(3个以上也是这样)，会包装成一个堆对象</li>
+<li><strong>注意</strong>,下面的函数对<code>num</code>和<code>num2</code>进行修改，最终这两个数，会分别包装成一个堆对象，汇编查看会生成两个堆对象<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func getFun() -&gt;((Int)-&gt;Int,(Int)-&gt;Int) &#123;</span><br><span class="line">    var num = 9,num2 = 3</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        num += i</span><br><span class="line">        num2 += i</span><br><span class="line">        return num + num2 + i</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>注意</strong>,下面会生成两个堆对象，每个堆对象包装了<code>num</code>和<code>num2</code>（由于未修改）。如果<code>num</code>和<code>num2</code>修改了，也只会分别生成一个，不会因为两次闭包捕获，各自生成一次。<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func getFun() -&gt;((Int)-&gt;Int,(Int)-&gt;Int) &#123;</span><br><span class="line">    var num = 9,num2 = 3</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return num + num2 + i</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func minus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return num + num2 + i</span><br><span class="line">    &#125;</span><br><span class="line">    num = 20</span><br><span class="line">    return (plus(i:),minus(i:))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>可以把闭包想象成是一个类的实例对象<ul>
+<li>内存在堆空间</li>
+<li>捕获的局部变量\常量就是对象的成员（存储属性）</li>
+<li>组成闭包的西数就是类内部定义的方法</li>
+</ul>
+</li>
+</ul>
+<h3 id="自动闭包"><a href="#自动闭包" class="headerlink" title="自动闭包"></a>自动闭包</h3><blockquote>
+<p>自动闭包的参数会延迟执行，甚至不执行</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func getfirstPositive(_ v1: Int, _ v2: @autoclosure () -&gt; Int) -&gt; Int? &#123;</span><br><span class="line">return v1 &gt; 0 ? v1 : v2 ()</span><br><span class="line">&#125;</span><br><span class="line">getFirstPositive(-4, 20)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>@autoclosure</code> 会自动将20 封装成闭包<code>&#123; 20 &#125;</code></li>
+<li><code>@autoclosure</code> 只支持<code>()一＞T</code>格式的参数</li>
+<li>空合并运算符<code>??</code>使用了<code>@autoclosure</code> 技术<ul>
+<li><code>func ?? &lt;T&gt;(optional:T?,defaultValue:@autoclosure() throws -&gt; T?) rethrows -&gt; T?</code></li>
+</ul>
+</li>
+<li>有<code>@autoclosure</code>、无<code>@autoclosure</code>，构成了函数重载</li>
+</ul>
 ]]></content>
       <categories>
         <category>swift笔记</category>
@@ -489,9 +612,12 @@
 </li>
 </ul>
 <ol>
-<li>会判断是否是弱引用、关联对象、c++析构函数、引用计数表，都没有的话直接free释放<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">objc_object::rootDealloc()</span><br><span class="line">&#123;</span><br><span class="line">    if (isTaggedPointer()) return;  // fixme necessary?</span><br><span class="line"></span><br><span class="line">    if (fastpath(isa().nonpointer                     &amp;&amp;</span><br><span class="line">                 !isa().weakly_referenced             &amp;&amp;</span><br><span class="line">                 !isa().has_assoc                     &amp;&amp;</span><br><span class="line">#if ISA_HAS_CXX_DTOR_BIT</span><br><span class="line">                 !isa().has_cxx_dtor                  &amp;&amp;</span><br><span class="line">#else</span><br><span class="line">                 !isa().getClass(false)-&gt;hasCxxDtor() &amp;&amp;</span><br><span class="line">#endif</span><br><span class="line">                 !isa().has_sidetable_rc))</span><br><span class="line">    &#123;</span><br><span class="line">        assert(!sidetable_present());</span><br><span class="line">        free(this);</span><br><span class="line">    &#125; </span><br><span class="line">    else &#123;</span><br><span class="line">        object_dispose((id)this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>按顺序先处理后，再去释放<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void *objc_destructInstance(id obj)</span><br><span class="line">&#123;</span><br><span class="line">    if (obj) &#123;</span><br><span class="line">        // Read all of the flags at once for performance.</span><br><span class="line">        bool cxx = obj-&gt;hasCxxDtor();</span><br><span class="line">        bool assoc = obj-&gt;hasAssociatedObjects();</span><br><span class="line"></span><br><span class="line">        // This order is important.</span><br><span class="line">        if (cxx) object_cxxDestruct(obj);//调用c++析构函数</span><br><span class="line">        if (assoc) _object_remove_associations(obj, /*deallocating*/true);//删删除关联对象</span><br><span class="line">        obj-&gt;clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br><span class="line">//清除弱引用和sidetable</span><br><span class="line">objc_object::clearDeallocating()</span><br><span class="line">&#123;</span><br><span class="line">    if (slowpath(!isa().nonpointer)) &#123;</span><br><span class="line">        // Slow path for raw pointer isa.</span><br><span class="line">        sidetable_clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line">    else if (slowpath(isa().weakly_referenced  ||  isa().has_sidetable_rc)) &#123;</span><br><span class="line">        // Slow path for non-pointer isa with weak refs and/or side table data.</span><br><span class="line">        clearDeallocating_slow();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    assert(!sidetable_present());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">objc_object::clearDeallocating_slow()</span><br><span class="line">&#123;</span><br><span class="line">    ASSERT(isa().nonpointer  &amp;&amp;  (isa().weakly_referenced || isa().has_sidetable_rc));</span><br><span class="line"></span><br><span class="line">    SideTable&amp; table = SideTables()[this];</span><br><span class="line">    table.lock();</span><br><span class="line">    if (isa().weakly_referenced) &#123;</span><br><span class="line">        weak_clear_no_lock(&amp;table.weak_table, (id)this); //清楚弱引用</span><br><span class="line">    &#125;</span><br><span class="line">    if (isa().has_sidetable_rc) &#123;</span><br><span class="line">        table.refcnts.erase(this); //清楚sidetable</span><br><span class="line">    &#125;</span><br><span class="line">    table.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>weak指针释放<ol>
+<li><p>会判断是否是弱引用、关联对象、c++析构函数、引用计数表，都没有的话直接free释放</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">objc_object::rootDealloc()</span><br><span class="line">&#123;</span><br><span class="line">    if (isTaggedPointer()) return;  // fixme necessary?</span><br><span class="line"></span><br><span class="line">    if (fastpath(isa().nonpointer                     &amp;&amp;</span><br><span class="line">                 !isa().weakly_referenced             &amp;&amp;</span><br><span class="line">                 !isa().has_assoc                     &amp;&amp;</span><br><span class="line">#if ISA_HAS_CXX_DTOR_BIT</span><br><span class="line">                 !isa().has_cxx_dtor                  &amp;&amp;</span><br><span class="line">#else</span><br><span class="line">                 !isa().getClass(false)-&gt;hasCxxDtor() &amp;&amp;</span><br><span class="line">#endif</span><br><span class="line">                 !isa().has_sidetable_rc))</span><br><span class="line">    &#123;</span><br><span class="line">        assert(!sidetable_present());</span><br><span class="line">        free(this);</span><br><span class="line">    &#125; </span><br><span class="line">    else &#123;</span><br><span class="line">        object_dispose((id)this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>按顺序先处理后，再去释放</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void *objc_destructInstance(id obj)</span><br><span class="line">&#123;</span><br><span class="line">    if (obj) &#123;</span><br><span class="line">        // Read all of the flags at once for performance.</span><br><span class="line">        bool cxx = obj-&gt;hasCxxDtor();</span><br><span class="line">        bool assoc = obj-&gt;hasAssociatedObjects();</span><br><span class="line"></span><br><span class="line">        // This order is important.</span><br><span class="line">        if (cxx) object_cxxDestruct(obj);//调用c++析构函数</span><br><span class="line">        if (assoc) _object_remove_associations(obj, /*deallocating*/true);//删删除关联对象</span><br><span class="line">        obj-&gt;clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br><span class="line">//清除弱引用和sidetable</span><br><span class="line">objc_object::clearDeallocating()</span><br><span class="line">&#123;</span><br><span class="line">    if (slowpath(!isa().nonpointer)) &#123;</span><br><span class="line">        // Slow path for raw pointer isa.</span><br><span class="line">        sidetable_clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line">    else if (slowpath(isa().weakly_referenced  ||  isa().has_sidetable_rc)) &#123;</span><br><span class="line">        // Slow path for non-pointer isa with weak refs and/or side table data.</span><br><span class="line">        clearDeallocating_slow();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    assert(!sidetable_present());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">objc_object::clearDeallocating_slow()</span><br><span class="line">&#123;</span><br><span class="line">    ASSERT(isa().nonpointer  &amp;&amp;  (isa().weakly_referenced || isa().has_sidetable_rc));</span><br><span class="line"></span><br><span class="line">    SideTable&amp; table = SideTables()[this];</span><br><span class="line">    table.lock();</span><br><span class="line">    if (isa().weakly_referenced) &#123;</span><br><span class="line">        weak_clear_no_lock(&amp;table.weak_table, (id)this); //清楚弱引用</span><br><span class="line">    &#125;</span><br><span class="line">    if (isa().has_sidetable_rc) &#123;</span><br><span class="line">        table.refcnts.erase(this); //清楚sidetable</span><br><span class="line">    &#125;</span><br><span class="line">    table.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>weak指针释放</p>
+<ol>
 <li>获取到<code>weak_entry_t</code>，从中获取存放的弱引用指针，将其置为nil<br><img src="8.png"></li>
 <li>从<code>weak_table_t</code>，查找的方式，是通过hash表，线性查找的方式<br><img src="9.png"></li>
 <li><code>weak_entry_t</code>的结构，会根据数组长度的不同，结构有所不同<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct weak_table_t &#123;</span><br><span class="line">weak_entry_t *weak_entries;</span><br><span class="line">size_t    num_entries;</span><br><span class="line">uintptr_t mask;</span><br><span class="line">uintptr_t max_hash_displacement;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct weak_entry_t &#123;</span><br><span class="line">    DisguisedPtr&lt;objc_object&gt; referent;</span><br><span class="line"> union &#123;</span><br><span class="line">      struct &#123;</span><br><span class="line">          weak_referrer_t *referrers;</span><br><span class="line">          uintptr_t        out_of_line_ness : 2;</span><br><span class="line">          uintptr_t        num_refs : PTR_MINUS_2;</span><br><span class="line">          uintptr_t        mask;</span><br><span class="line">         uintptr_t        max_hash_displacement;</span><br><span class="line">      &#125;;</span><br><span class="line">     struct &#123;</span><br><span class="line">        // out_of_line_ness field is low bits of inline_referrers[1]</span><br><span class="line">        weak_referrer_t  inline_referrers[WEAK_INLINE_COUNT];</span><br><span class="line">    &#125;;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
@@ -515,6 +641,10 @@
 <p>四舍五入，其他数字都是四舍五入，但是.5特殊，它是往大了取</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">console.log(Math.round(1.5)); // 2</span><br><span class="line">console.log(Math.round(&#x27;-1.5&#x27;)); // -1 .5特殊，它是往大了取</span><br><span class="line">console.log(Math.round(-1.4)); // -1</span><br><span class="line">console.log(Math.round(-1.6)); // -2</span><br></pre></td></tr></table></figure>
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><blockquote>
+<p>字符串本身是不可变的，指的是里面的值不可变，虽然看上去可以改变内容，但其实是地址变了，内存中新开辟了一个内存空间</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var str = &#x27;abc&#x27;</span><br><span class="line">str = &#x27;hello&#x27;</span><br><span class="line">//当重新给str赋值的时候，常量`abc`不会被修改，依然在内存中</span><br><span class="line">//重新给字符串赋予值没回重新在内存中开辟空间，这个特点就是字符串的不可变</span><br><span class="line">//由于字符串的不可变，咋子大量拼接字符串的时候会有效率问题</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>JavaScript</category>
@@ -646,7 +776,7 @@
       </categories>
   </entry>
   <entry>
-    <title>Pointer</title>
+    <title>Tagged Pointer</title>
     <url>/2023/02/15/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/TaggedPointer/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Tagged-Pointer"><a href="#Tagged-Pointer" class="headerlink" title="Tagged Pointer"></a>Tagged Pointer</h1><blockquote>
 <ul>
@@ -664,7 +794,7 @@
 </ul>
 <h2 id="Tagged-Pointer存储地方思考"><a href="#Tagged-Pointer存储地方思考" class="headerlink" title="Tagged Pointer存储地方思考"></a>Tagged Pointer存储地方思考</h2><ul>
 <li>解码<code>extern</code>调用私有函数<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">extern uintptr_t objc_debug_taggedpointer_obfuscator;</span><br><span class="line">uintptr_t _objc_decodeTaggedPointer_(const void * _Nullable  ptr) &#123;</span><br><span class="line">    return (uintptr_t)ptr ^ objc_debug_taggedpointer_obfuscator;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">NSNumber *number1 = @4;</span><br><span class="line">NSNumber *number2 = @5;</span><br><span class="line">NSNumber *number3 = @100;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%p  %p  %p&quot;,number1,number2,number3);</span><br><span class="line">///0xc96fede699842146  0xc96fede699842786  0xc96fede699861216</span><br><span class="line">NSLog(@&quot;0x%lx   0x%lx   0x%lx&quot;,_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number1)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number2)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number3)));</span><br><span class="line">///0xb000000000000042   0xb000000000000052   0xb000000000000642</span><br><span class="line"></span><br><span class="line">NSString *str1 = [NSString stringWithFormat:@&quot;sd&quot;];</span><br><span class="line">NSString *str2 = [NSString stringWithFormat:@&quot;sdadad&quot;];</span><br><span class="line">NSLog(@&quot;%p  %p&quot;,str1,str2);</span><br><span class="line">//0xbaf35d65b6463f52  0xbaf51b73f0563f56</span><br><span class="line">NSLog(@&quot;0x%lx 0x%lx&quot;,_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(str1)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(str2)));</span><br><span class="line">//0xa000000000064732   0xa006461646164736</span><br></pre></td></tr></table></figure></li>
-<li>分析<ul>
+<li>分析,注意上面的数据是在<code>x86</code>模拟器上的数据<ul>
 <li>前面的0xb明显是tag,为<code>0xb -&gt; 1011</code>, <code>0xa -&gt; 1010</code>,<ul>
 <li>在iOS中最高位为1表明是<code>Tagged Pointer</code></li>
 <li>后三位代表数据类型，<code>011</code>代表int（如果是带小数点的无法不会转出tag），<code>010</code>代表字符串</li>
@@ -675,6 +805,10 @@
 <li>后4位代表数据长度(一般是字符串长度)，后四位<code>sd -&gt; 0010</code>长度2、<code>sdadad -&gt; 0110</code>长度6</li>
 </ul>
 </li>
+</ul>
+</li>
+<li>如果是iOS，<code>arm64</code>下，数据格式不同,需要注意<ul>
+<li><code>@5 -&gt; 0x8000000000000291</code>,<code>@8 -&gt; 0x8000000000000411</code>,最高位1是标识，低7位是标识和数据长度</li>
 </ul>
 </li>
 <li>在iOS中，<code>Tagged Pointer</code>中间56位用来存东西，前4位是tag，后4位是数据长度<h2 id="Tagged-Pointer的题目思考"><a href="#Tagged-Pointer的题目思考" class="headerlink" title="Tagged Pointer的题目思考"></a>Tagged Pointer的题目思考</h2><h3 id="关于野指针的问题"><a href="#关于野指针的问题" class="headerlink" title="关于野指针的问题"></a>关于野指针的问题</h3></li>
@@ -1140,7 +1274,7 @@
   </entry>
   <entry>
     <title>中间代码（IR）</title>
-    <url>/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/</url>
+    <url>/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
 <p>Objective-C在变为机器代码之前，会被LLVM编译器转换为中间代码（Intermediate Representation）,ir中间代码代码相比于转成C++更接近底层（但是肯定无法和汇编相比）</p>
 </blockquote>
@@ -1172,7 +1306,7 @@
   </entry>
   <entry>
     <title>runtime特殊问题</title>
-    <url>/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/</url>
+    <url>/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="第一个问题"><a href="#第一个问题" class="headerlink" title="第一个问题"></a>第一个问题</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@interface Person:NSObject</span><br><span class="line">@property (copy, nonatomic) NSString *name;</span><br><span class="line">- (void)print;</span><br><span class="line">@end</span><br><span class="line">@implementation Person</span><br><span class="line">- (void)print</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;my name is %@&quot;, self-&gt;_name);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//ViewController中</span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    //NSString *test = @&quot;123&quot;;如果，前面有这个text对象，则实际会输出my name is 123</span><br><span class="line">    id cls = [Person class];</span><br><span class="line"></span><br><span class="line">    void *obj = &amp;cls;</span><br><span class="line"></span><br><span class="line">    [(__bridge id)obj print];</span><br><span class="line">    //实际输出my name is &lt;ViewController: 0x104b08020&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="print为什么能够调用成功？"><a href="#print为什么能够调用成功？" class="headerlink" title="print为什么能够调用成功？"></a><code>print</code>为什么能够调用成功？</h3><ul>
 <li><p>示意图<br><img src="1.jpg"></p>
@@ -1365,7 +1499,7 @@
   </entry>
   <entry>
     <title>isKindofClass和isMemberofClass</title>
-    <url>/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/isKindofclass%E5%92%8CisMemberofClass/</url>
+    <url>/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/isKindofclass%E5%92%8CisMemberofClass/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
 <ul>
 <li>isKindofClass是判断是否是当前类,或者其子类</li>
@@ -1383,7 +1517,7 @@
   </entry>
   <entry>
     <title>super</title>
-    <url>/2023/01/06/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/super/</url>
+    <url>/2023/01/06/iOS%E5%AD%A6%E4%B9%A0/Runtime/super/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
 <h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><ul>
 <li>方法中子类调用<code>[super class]</code>实际输出还是子类的对象，和一般语言中的有所不同<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@interface Student:Person</span><br><span class="line">@implementation Student</span><br><span class="line">- (instancetype)init</span><br><span class="line">&#123;</span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        NSLog(@&quot;[self class] = %@&quot;, [self class]); // Student</span><br><span class="line">        NSLog(@&quot;[self superclass] = %@&quot;, [self superclass]); // Person</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;[super class] = %@&quot;, [super class]); // 实际输出 Student</span><br><span class="line">        NSLog(@&quot;[super superclass] = %@&quot;, [super superclass]); // MJPerson</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
@@ -1409,7 +1543,7 @@
   </entry>
   <entry>
     <title>objc_msgSend</title>
-    <url>/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/objc-msgSend/</url>
+    <url>/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-msgSend/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="objc-msgSend"><a href="#objc-msgSend" class="headerlink" title="objc_msgSend"></a>objc_msgSend</h1><blockquote>
 <ul>
 <li>OC中的方法调用，其实都是转换为objc_msgSend函数的调用</li>
@@ -1566,7 +1700,7 @@
   </entry>
   <entry>
     <title>objc_class</title>
-    <url>/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/objc-class/</url>
+    <url>/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-class/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
 <h2 id="Class的结构"><a href="#Class的结构" class="headerlink" title="Class的结构"></a>Class的结构</h2><p><img src="1.png"></p>
 <h3 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h3><blockquote>
@@ -1624,7 +1758,7 @@
   </entry>
   <entry>
     <title>isa</title>
-    <url>/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/Runtime/</url>
+    <url>/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/Runtime/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h2><blockquote>
 <ul>
 <li>objective-C的动态性是由runtime API来支撑的</li>
@@ -1693,6 +1827,177 @@
       </tags>
   </entry>
   <entry>
+    <title>Block的类型</title>
+    <url>/2022/12/29/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Block%E7%9A%84%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Block编译成C"><a href="#Block编译成C" class="headerlink" title="Block编译成C++"></a>Block编译成C++</h1><ul>
+<li><p>捕获了auto变量<code>JPPerson</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct __main_block_impl_0 &#123;</span><br><span class="line">  struct __block_impl impl;</span><br><span class="line">  struct __main_block_desc_0* Desc;</span><br><span class="line">  JPPerson *__strong person;</span><br><span class="line">  __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, JPPerson *__strong _person, int flags=0) : person(_person) &#123;</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">static struct __main_block_desc_0 &#123;</span><br><span class="line">  size_t reserved;</span><br><span class="line">  size_t Block_size;</span><br><span class="line">  void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*);</span><br><span class="line">  void (*dispose)(struct __main_block_impl_0*);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>编译器会将<code>__block</code>变量包装成一个对象</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct __Block_byref_age_0 &#123;</span><br><span class="line">  void *__isa;</span><br><span class="line">__Block_byref_age_0 *__forwarding;</span><br><span class="line"> int __flags;</span><br><span class="line"> int __size;</span><br><span class="line"> int age;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="Block的类型"><a href="#Block的类型" class="headerlink" title="Block的类型"></a>Block的类型</h1><table>
+<thead>
+<tr>
+<th>block类型</th>
+<th>环境</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>NSGlobalBlock</em></td>
+<td>没有访问auto变量</td>
+</tr>
+<tr>
+<td><em>NSStackBlock</em></td>
+<td>访问了auto变量</td>
+</tr>
+<tr>
+<td><em>NSMallocBlock</em></td>
+<td>_NSStackBlock_调用了copy</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>注意在非ARC环境下是准确的，如果在ARC环境下,编译器会根据情况，将栈上的block,变成<code>NSMalloCBlock</code></p>
+</li>
+<li><p>每一种block调用copy后的结果如图所示</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>block的类</th>
+<th>副本源的配置存储域</th>
+<th>赋值效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>_NSConcreteStackBlock</td>
+<td>栈</td>
+<td>从栈复制到堆</td>
+</tr>
+<tr>
+<td>_NSConcreteGlobalBlock</td>
+<td>程序的数据区域</td>
+<td>什么也不做</td>
+</tr>
+<tr>
+<td>_NSConcreteMallocBlock</td>
+<td>堆</td>
+<td>引用计数增加</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>在ARC环境下，编译器会根据情况，将栈上的block,拷贝到堆上,有以下情况</p>
+<ol>
+<li><code>block</code>作为函数的返回值时</li>
+<li>将<code>block</code>赋值给<code>__strong</code>引指针</li>
+<li><code>block</code>作为<code>Cocoa api</code>名含有<code>usingBlock</code>的方法参数输入时</li>
+<li><code>block</code>作为<code>GCD API</code>的方法参数时</li>
+</ol>
+</li>
+<li><p>在将有_weak的方法，使用clang转换OC为C++代码时，注意支持ARC、以及指定运行时系统版本</p>
+<ul>
+<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc -fobjc-arc -fobjc-runtime=ios-16.0.0 main.m -o main.cpp</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="当block内部访问了对象类型的auto变量时"><a href="#当block内部访问了对象类型的auto变量时" class="headerlink" title="当block内部访问了对象类型的auto变量时"></a>当block内部访问了对象类型的auto变量时</h2><ul>
+<li><p>如果block是在栈上，将不会对auto变量产生强引用</p>
+</li>
+<li><p>如果block是在堆上</p>
+<ul>
+<li>会调用block内部的copy函数</li>
+<li>copy函数内部会调用_Block_objc_assign函数</li>
+<li>_Block_objc_assign函数会根据auto变量的修饰符（_string、_weak、_unsafe_unretained）做出相应的操作，类似于retain（形成强引用、弱引用）<h2 id="block的内存管理"><a href="#block的内存管理" class="headerlink" title="block的内存管理"></a>block的内存管理</h2></li>
+</ul>
+</li>
+<li><p><strong>当block在栈上</strong>时，并不会对<code>__block</code>变量，以及<code>auto</code>的对象产生强引用</p>
+</li>
+<li><p>当block被copy到堆时</p>
+<ul>
+<li>会调用block内部的copy函数</li>
+<li>copy函数内部会调用_Block_object_assign函数</li>
+<li>_Block_object_assign函数会对_block变量形成强引用,会区分是auto对象（会区分是_weak还是_strong），还是_block对象（强引用）</li>
+</ul>
+</li>
+<li><p>当block从堆移除</p>
+<ul>
+<li>会调用block内部的dispose函数</li>
+<li>dispose函数内部会调用_Block_object_dispose函数</li>
+<li>_Block_object_dispose函数会自动释放引用的_block变量</li>
+</ul>
+</li>
+<li><ul>
+<li>当<code>__block</code>修饰对象时，其构建的_block变量内，也会有copy方法和dispose方法<ul>
+<li>其内copy方法，同样也有<code>_Block_object_assign</code>,以及<code>_Block_object_dispose</code>,对其内修饰的对象进行内存管理（跟外围是_strong还是_weak有一定关系）<ul>
+<li> <strong>但是注意，该内存管理只会在ARC下生效，如果在MRC下，在_block不会增加其内对象的引用，属于unowned关系</strong></li>
+<li> <strong>如果不是__block,而是直接引用了auto对象，则和此前一样，block直接引用对象(mrc下，copy时，内部也会对auto增加引用)，而非通过__block间接引用</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>_block的生成的对象，通过fowarding去指向的原因</p>
+<ul>
+<li>在栈上的时候，指针指向自己</li>
+<li>而赋值到堆上时，栈上的指向堆上复制的，栈上赋值时，其值是保存堆上的值，从而保证了，无论是在栈上还是堆上修改，最后值都会保存的堆上。最终使用的是堆上的block</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>Block</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>load、initialize方法的区别</title>
+    <url>/2022/12/28/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="load、initialize方法的区别"><a href="#load、initialize方法的区别" class="headerlink" title="load、initialize方法的区别"></a>load、initialize方法的区别</h1><ol>
+<li><p>调用方式</p>
+<ul>
+<li> load是根据函数地址直接调用</li>
+<li> initialize是通过objc_msgSend调用</li>
+</ul>
+</li>
+<li><p>调用时刻</p>
+<ul>
+<li>load是runtime加载类、分类的时候调用（只会调用1次）</li>
+<li>initialize是累第一次接收到消息的时候调用，每个类只会initialize一次（父类的initialize方法可能会被调用多次）</li>
+</ul>
+</li>
+<li><p>load、initialize的调用顺序</p>
+<ol>
+<li>load<ul>
+<li>先调用类的load<ul>
+<li>先编译的类，优先调用load</li>
+<li>调用子类的load之前，会先调用父类的load</li>
+</ul>
+</li>
+<li>再调用分类的load<ul>
+<li>先编译的分类，优先调用load</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>initialize<ul>
+<li>在，第一次使用的时候调用，先初始化父类，</li>
+<li>再初始化子类（可能最终调用的是父类的）</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>load、initialize</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>initialize</title>
     <url>/2022/12/27/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/initialize/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
@@ -1720,8 +2025,62 @@
       </tags>
   </entry>
   <entry>
+    <title>Load</title>
+    <url>/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Load方法"><a href="#Load方法" class="headerlink" title="Load方法"></a>Load方法</h1><ul>
+<li>+load方法会在runtime加载类、分类时调用</li>
+<li>每个类、分类的+load，在程序运行过程中只调用一次<ul>
+<li>flags标识位保证类只会加载一次</li>
+<li>这里有递归，首选会先将父类添加到数组，后将自己加进去数组，因此最后，先父类，再执行子类的load方法</li>
+<li>最开始的关系时按照编译的顺序来</li>
+</ul>
+</li>
+<li>尽管load中方法在源码中只会调用一次，但实际上主动<code>[Class load]</code>也会触发load,因此在调用<code>method_exchangeImplementations</code>做hook时，会加上<code>dispatch_once</code>，保证只会执行一次。<br><img src="16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
+</ul>
+<ol>
+<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="16720646359112.png"></p>
+</li>
+<li><p>构建有类load方法的数组，以及有分类load方法的数组，整个添加顺序是</p>
+<ol>
+<li>类先按编译的顺序进行添加，其中父类会比子类先添加到数组中</li>
+<li>分类按编译的顺序进行添加的<br><img src="16720651219179.png"></li>
+</ol>
+</li>
+<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="16720639325952.png"></p>
+</li>
+<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="16720641861246.png"></p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>调用顺序</li>
+</ul>
+<ol>
+<li><p>先带哦用类的+load</p>
+<ol>
+<li>按照编译先后顺序调用，先编译，先调用</li>
+<li>调用子类的+load之前会先调用父类的+load</li>
+</ol>
+</li>
+<li><p>再调用分类的+load</p>
+<ol>
+<li>按照编译先后顺序调用，先编译，先调用</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li></li>
+</ul>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>load、initialize</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>分类</title>
-    <url>/2022/12/27/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/%E5%88%86%E7%B1%BB/</url>
+    <url>/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><ol>
 <li>通过runtime动态将分类的方法合并到类对象、元类对象中，并非编译</li>
 <li>一个分类文件的编译后的结构体实际为<span id="more"></span>
@@ -1800,62 +2159,8 @@
       </tags>
   </entry>
   <entry>
-    <title>Load</title>
-    <url>/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Load方法"><a href="#Load方法" class="headerlink" title="Load方法"></a>Load方法</h1><ul>
-<li>+load方法会在runtime加载类、分类时调用</li>
-<li>每个类、分类的+load，在程序运行过程中只调用一次<ul>
-<li>flags标识位保证类只会加载一次</li>
-<li>这里有递归，首选会先将父类添加到数组，后将自己加进去数组，因此最后，先父类，再执行子类的load方法</li>
-<li>最开始的关系时按照编译的顺序来</li>
-</ul>
-</li>
-<li>尽管load中方法在源码中只会调用一次，但实际上主动<code>[Class load]</code>也会触发load,因此在调用<code>method_exchangeImplementations</code>做hook时，会加上<code>dispatch_once</code>，保证只会执行一次。<br><img src="16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
-</ul>
-<ol>
-<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="16720646359112.png"></p>
-</li>
-<li><p>构建有类load方法的数组，以及有分类load方法的数组，整个添加顺序是</p>
-<ol>
-<li>类先按编译的顺序进行添加，其中父类会比子类先添加到数组中</li>
-<li>分类按编译的顺序进行添加的<br><img src="16720651219179.png"></li>
-</ol>
-</li>
-<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="16720639325952.png"></p>
-</li>
-<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="16720641861246.png"></p>
-</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>调用顺序</li>
-</ul>
-<ol>
-<li><p>先带哦用类的+load</p>
-<ol>
-<li>按照编译先后顺序调用，先编译，先调用</li>
-<li>调用子类的+load之前会先调用父类的+load</li>
-</ol>
-</li>
-<li><p>再调用分类的+load</p>
-<ol>
-<li>按照编译先后顺序调用，先编译，先调用</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li></li>
-</ul>
-]]></content>
-      <categories>
-        <category>底层原理</category>
-      </categories>
-      <tags>
-        <tag>load、initialize</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>KVC</title>
-    <url>/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/KVC/</url>
+    <url>/2022/12/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="KVC"><a href="#KVC" class="headerlink" title="KVC"></a>KVC</h1><ol>
 <li>通过KVC修改属性会触发KVO，例如age属性,<ul>
 <li>注意，就是age属性没有实现set的方法，只有<code>成员变量</code>，通过<code>KVC</code>设置，同样会触发KVO</li>
@@ -1876,43 +2181,62 @@
   </entry>
   <entry>
     <title>KVO</title>
-    <url>/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/Runtime%E7%9F%A5%E8%AF%86/KVO/</url>
+    <url>/2022/12/22/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVO/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
 <h1 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h1><h3 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h3><ul>
-<li>未使用<code>KVO</code>监听，其<code>isa</code>指针指向的是其<code>class</code>对象，（<code>isa</code>指针、<code>superclass</code>指针、实例方法、协议列表、属性列表、成员变量）</li>
-<li>使用KVO监听，其isa指向为<code>NSKVONotifying_class</code>一个全新的class对象,有<code>runtime</code>运行时，动态创建的类,<ul>
-<li>该类实现为其<code>class对象</code>的子类，其内部实现了<code>class</code>、<code>delloc</code>、<code>_isKVOA</code>，以及重新了相关的set方法</li>
+<li><p>未使用<code>KVO</code>监听，其<code>isa</code>指针指向的是其<code>class</code>对象。</p>
+<ul>
+<li><code>class对象</code>包含：（<code>isa</code>指针、<code>superclass</code>指针、实例方法、协议列表、属性列表、成员变量）</li>
 </ul>
 </li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[self.person1 addObserver:self forKeyPath:@&quot;height&quot; options:options context:@&quot;456&quot;];</span><br><span class="line">    int num;</span><br><span class="line">    //=注意，这里如果用[self.person1 class]拿不到，被重写了，不会拿到实际的类</span><br><span class="line">    Method * list = class_copyMethodList(object_getClass(self.person1), &amp;num);</span><br><span class="line">    for(int i = 0;i &lt; num;i++) &#123;</span><br><span class="line">        Method method = list[i];</span><br><span class="line">        NSLog(@&quot;%@&quot;,NSStringFromSelector(method_getName(method)));</span><br><span class="line">    &#125;</span><br><span class="line">    free(list);</span><br><span class="line">    /*</span><br><span class="line">    输出setHeight:、setAge:、class、dealloc、_isKVOA</span><br><span class="line">    */</span><br></pre></td></tr></table></figure>
-
+<li><p>使用KVO监听，其isa指向为<code>NSKVONotifying_class</code>，一个全新的<code>class对</code>象,</p>
 <ul>
-<li>在调用set方法后实际调用了<code>_NSSetIntValueAndNotify();</code>(整型所以是int，如果是double则是<code>_NSSetDoubleValueAndNotify()</code>)</li>
-<li><code>_NSSetIntValueAndNotify()</code>内，类似实现,伪代码<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">NSKVONotifying_MJPerson中</span><br><span class="line">- (void)setAge:(int)age &#123;</span><br><span class="line">    _NSSetIntValueAndNotify()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void _NSSetIntValueAndNotify() &#123;</span><br><span class="line">    [self willChangeValueForKey:&quot;age&quot;]</span><br><span class="line">    [super setAge:age]</span><br><span class="line">    [self didChangeValueForKey:&quot;age&quot;] //里面调用监听器的方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void) didChangeValueForKey:(NSString *)key &#123;</span><br><span class="line">    [observer observeValueForKeyPath:key ofObject: change: content:]//通知观察者</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>如果内存中有个<code>NSKVONotifying_xxx</code>类，则相应的kvo无法实现</li>
-<li>通过<code>[self.person1 methodForSelector:@selector(setAge:)]</code>找到对应方法的实现，在lldb中根据内存，用<code>p (IMP)0x7ff800bde9cb</code>即可找到实际实现的方法<code>Foundation _NSSetIntValueAndNotify</code></li>
-<li>被kvo的对象，其元类对象也是不同的</li>
+<li>由<code>runtime</code>运行时，动态创建的类,</li>
+<li>该类实现为其<code>class对象</code>的子类，其内部实现了<code>class</code>、<code>delloc</code>、<code>_isKVOA</code>，以及重写了相关的<code>set</code>方法</li>
+<li>通过runtime输出方法，示例代码如下</li>
+</ul>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[self.person1 addObserver:self forKeyPath:@&quot;height&quot; options:options    context:@&quot;456&quot;];</span><br><span class="line"> int num;</span><br><span class="line"> //=注意，这里如果用[self.person1 class]拿不到，被重写了，不会拿到实际的类</span><br><span class="line">   Method * list = class_copyMethodList(object_getClass(self.person1),     &amp;num);</span><br><span class="line">  for(int i = 0;i &lt; num;i++) &#123;</span><br><span class="line">      Method method = list[i];</span><br><span class="line">       NSLog(@&quot;%@&quot;,NSStringFromSelector(method_getName(method)));</span><br><span class="line">&#125;</span><br><span class="line"> free(list);</span><br><span class="line"> /*</span><br><span class="line"> 输出setHeight:、setAge:、class、dealloc、_isKVOA</span><br><span class="line"> */</span><br></pre></td></tr></table></figure></li>
+<li><p>在调用<code>set</code>方法后实际调用了<code>_NSSetIntValueAndNotify();</code></p>
+<ul>
+<li>(整型所以是<code>int</code>，如果是<code>double</code>则是<code>_NSSetDoubleValueAndNotify()</code>)</li>
+</ul>
+</li>
+<li><p><code>_NSSetIntValueAndNotify()</code>内，类似实现的伪代码如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">NSKVONotifying_MJPerson中</span><br><span class="line">- (void)setAge:(int)age &#123;</span><br><span class="line">    _NSSetIntValueAndNotify()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void _NSSetIntValueAndNotify() &#123;</span><br><span class="line">    [self willChangeValueForKey:&quot;age&quot;]</span><br><span class="line">    [super setAge:age]</span><br><span class="line">    [self didChangeValueForKey:&quot;age&quot;] //里面调用监听器的方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void) didChangeValueForKey:(NSString *)key &#123;</span><br><span class="line">    [observer observeValueForKeyPath:key ofObject: change: content:]//通知观察者</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>注意</strong>，如果内存中有个<code>NSKVONotifying_xxx</code>类，则相应的<code>kvo</code>无法实现</p>
+</li>
+<li><p>通过<code>[self.person1 methodForSelector:@selector(setAge:)]</code>找到对应方法的实现。</p>
+<ul>
+<li>在<code>lldb</code>中根据内存，用<code>p (IMP)0x7ff800bde9cb</code>即可找到实际实现的方法<code>Foundation _NSSetIntValueAndNotify</code></li>
+</ul>
+</li>
+<li><p>此外，被<code>kvo</code>的对象，其元类对象也是不同的。</p>
+</li>
 </ul>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
-<li><p>KVO的本质是什么</p>
+<li><p><code>KVO</code>的本质是什么</p>
 <ul>
-<li>利用RuntimeAPI动态生成一个子类，并且让instance对象的isa指向这个全新的子类</li>
-<li>当修改instance对象的属性时，会调用Foundation的_NSSetxxxValueAndNotif函数<ul>
-<li>willchangValueForKey</li>
-<li>父类原来的setter</li>
-<li>didChangeValueForKey<ul>
-<li>其内部会触发监听器Obserser的监听方法（observeValueForKeyPath:ofObject:change:）</li>
+<li>利用<code>RuntimeAPI</code>动态生成一个子类，并且让<code>instance</code>对象的<code>isa</code>指向这个全新的子类</li>
+<li>当修改<code>instance</code>对象的属性时，会调用<code>Foundation</code>的<code>_NSSetxxxValueAndNotif</code>函数。内部实际调用:<ul>
+<li><code>willchangValueForKey</code></li>
+<li>父类原来的<code>setter</code></li>
+<li><code>didChangeValueForKey</code><ul>
+<li>其内部会触发监听器<code>Obserser</code>的监听方法<code>（observeValueForKeyPath:ofObject:change:）</code></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>KVO的本质是什么</p>
+<li><p>如何触发<code>KVO</code></p>
 <ul>
 <li>设置方法时，自动触发</li>
-<li>手动调用willChangeForKey：和didChangeForKey： </li>
+<li>手动调用<code>willChangeForKey：</code>和<code>didChangeForKey：</code> </li>
+</ul>
+</li>
+<li><p>直接修改成员变量会触发KVO么？</p>
+<ul>
+<li>不会触发<code>KVO</code>,除非手动调用<code>willChangeForKey：</code>和<code>didChangeForKey：</code> </li>
 </ul>
 </li>
 </ol>
@@ -1925,57 +2249,11 @@
       </tags>
   </entry>
   <entry>
-    <title>load、initialize方法的区别</title>
-    <url>/2022/12/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/load%E3%80%81initialize%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="load、initialize方法的区别"><a href="#load、initialize方法的区别" class="headerlink" title="load、initialize方法的区别"></a>load、initialize方法的区别</h1><ol>
-<li><p>调用方式</p>
-<ul>
-<li> load是根据函数地址直接调用</li>
-<li> initialize是通过objc_msgSend调用</li>
-</ul>
-</li>
-<li><p>调用时刻</p>
-<ul>
-<li>load是runtime加载类、分类的时候调用（只会调用1次）</li>
-<li>initialize是累第一次接收到消息的时候调用，每个类只会initialize一次（父类的initialize方法可能会被调用多次）</li>
-</ul>
-</li>
-<li><p>load、initialize的调用顺序</p>
-<ol>
-<li>load<ul>
-<li>先调用类的load<ul>
-<li>先编译的类，优先调用load</li>
-<li>调用子类的load之前，会先调用父类的load</li>
-</ul>
-</li>
-<li>再调用分类的load<ul>
-<li>先编译的分类，优先调用load</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>initialize<ul>
-<li>在，第一次使用的时候调用，先初始化父类，</li>
-<li>再初始化子类（可能最终调用的是父类的）</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>底层原理</category>
-      </categories>
-      <tags>
-        <tag>load、initialize</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>objc_class的结构</title>
     <url>/2022/12/21/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="objc-class的结构"><a href="#objc-class的结构" class="headerlink" title="objc_class的结构"></a>objc_class的结构</h1><p><img src="16715558479895.png"></p>
 <ul>
-<li>如何去查看<code>objc_class</code>的源码在真实项目中用，吧objc_class结构体，在函数类直接写出来，用桥接的方式实现<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">#ifndef MJClassInfo_h</span><br><span class="line">#define MJClassInfo_h</span><br><span class="line"></span><br><span class="line"># if __arm64__</span><br><span class="line">#   define ISA_MASK        0x0000000ffffffff8ULL</span><br><span class="line"># elif __x86_64__</span><br><span class="line">#   define ISA_MASK        0x00007ffffffffff8ULL</span><br><span class="line"># endif</span><br><span class="line"></span><br><span class="line">#if __LP64__</span><br><span class="line">typedef uint32_t mask_t;</span><br><span class="line">#else</span><br><span class="line">typedef uint16_t mask_t;</span><br><span class="line">#endif</span><br><span class="line">typedef uintptr_t cache_key_t;</span><br><span class="line"></span><br><span class="line">struct bucket_t &#123;</span><br><span class="line">    cache_key_t _key;</span><br><span class="line">    IMP _imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct cache_t &#123;</span><br><span class="line">    bucket_t *_buckets;</span><br><span class="line">    mask_t _mask;</span><br><span class="line">    mask_t _occupied;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct entsize_list_tt &#123;</span><br><span class="line">    uint32_t entsizeAndFlags;</span><br><span class="line">    uint32_t count;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_t &#123;</span><br><span class="line">    SEL name;</span><br><span class="line">    const char *types;</span><br><span class="line">    IMP imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_list_t : entsize_list_tt &#123;</span><br><span class="line">    method_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_t &#123;</span><br><span class="line">    int32_t *offset;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *type;</span><br><span class="line">    uint32_t alignment_raw;</span><br><span class="line">    uint32_t size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_list_t : entsize_list_tt &#123;</span><br><span class="line">    ivar_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_t &#123;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *attributes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_list_t : entsize_list_tt &#123;</span><br><span class="line">    property_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct chained_property_list &#123;</span><br><span class="line">    chained_property_list *next;</span><br><span class="line">    uint32_t count;</span><br><span class="line">    property_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef uintptr_t protocol_ref_t;</span><br><span class="line">struct protocol_list_t &#123;</span><br><span class="line">    uintptr_t count;</span><br><span class="line">    protocol_ref_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_ro_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t instanceStart;</span><br><span class="line">    uint32_t instanceSize;  // instance对象占用的内存空间</span><br><span class="line">#ifdef __LP64__</span><br><span class="line">    uint32_t reserved;</span><br><span class="line">#endif</span><br><span class="line">    const uint8_t * ivarLayout;</span><br><span class="line">    const char * name;  // 类名</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;  // 成员变量列表</span><br><span class="line">    const uint8_t * weakIvarLayout;</span><br><span class="line">    property_list_t *baseProperties;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line">    method_list_t * methods;    // 方法列表</span><br><span class="line">    property_list_t *properties;    // 属性列表</span><br><span class="line">    const protocol_list_t * protocols;  // 协议列表</span><br><span class="line">    Class firstSubclass;</span><br><span class="line">    Class nextSiblingClass;</span><br><span class="line">    char *demangledName;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#define FAST_DATA_MASK          0x00007ffffffffff8UL</span><br><span class="line">struct class_data_bits_t &#123;</span><br><span class="line">    uintptr_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* OC对象 */</span><br><span class="line">struct mj_objc_object &#123;</span><br><span class="line">    void *isa;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* 类对象 */</span><br><span class="line">struct mj_objc_class : mj_objc_object &#123;</span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;</span><br><span class="line">    class_data_bits_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return bits.data();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mj_objc_class* metaClass() &#123;</span><br><span class="line">        return (mj_objc_class *)((long long)isa &amp; ISA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#endif /* MJClassInfo_h */</span><br></pre></td></tr></table></figure></li>
+<li>如何去查看<code>objc_class</code>的源码在真实项目中用，吧<code>objc_class</code>结构体，在函数类直接写出来，用桥接的方式实现<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">#ifndef MJClassInfo_h</span><br><span class="line">#define MJClassInfo_h</span><br><span class="line"></span><br><span class="line"># if __arm64__</span><br><span class="line">#   define ISA_MASK        0x0000000ffffffff8ULL</span><br><span class="line"># elif __x86_64__</span><br><span class="line">#   define ISA_MASK        0x00007ffffffffff8ULL</span><br><span class="line"># endif</span><br><span class="line"></span><br><span class="line">#if __LP64__</span><br><span class="line">typedef uint32_t mask_t;</span><br><span class="line">#else</span><br><span class="line">typedef uint16_t mask_t;</span><br><span class="line">#endif</span><br><span class="line">typedef uintptr_t cache_key_t;</span><br><span class="line"></span><br><span class="line">struct bucket_t &#123;</span><br><span class="line">    cache_key_t _key;</span><br><span class="line">    IMP _imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct cache_t &#123;</span><br><span class="line">    bucket_t *_buckets;</span><br><span class="line">    mask_t _mask;</span><br><span class="line">    mask_t _occupied;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct entsize_list_tt &#123;</span><br><span class="line">    uint32_t entsizeAndFlags;</span><br><span class="line">    uint32_t count;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_t &#123;</span><br><span class="line">    SEL name;</span><br><span class="line">    const char *types;</span><br><span class="line">    IMP imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_list_t : entsize_list_tt &#123;</span><br><span class="line">    method_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_t &#123;</span><br><span class="line">    int32_t *offset;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *type;</span><br><span class="line">    uint32_t alignment_raw;</span><br><span class="line">    uint32_t size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_list_t : entsize_list_tt &#123;</span><br><span class="line">    ivar_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_t &#123;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *attributes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_list_t : entsize_list_tt &#123;</span><br><span class="line">    property_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct chained_property_list &#123;</span><br><span class="line">    chained_property_list *next;</span><br><span class="line">    uint32_t count;</span><br><span class="line">    property_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef uintptr_t protocol_ref_t;</span><br><span class="line">struct protocol_list_t &#123;</span><br><span class="line">    uintptr_t count;</span><br><span class="line">    protocol_ref_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_ro_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t instanceStart;</span><br><span class="line">    uint32_t instanceSize;  // instance对象占用的内存空间</span><br><span class="line">#ifdef __LP64__</span><br><span class="line">    uint32_t reserved;</span><br><span class="line">#endif</span><br><span class="line">    const uint8_t * ivarLayout;</span><br><span class="line">    const char * name;  // 类名</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;  // 成员变量列表</span><br><span class="line">    const uint8_t * weakIvarLayout;</span><br><span class="line">    property_list_t *baseProperties;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line">    method_list_t * methods;    // 方法列表</span><br><span class="line">    property_list_t *properties;    // 属性列表</span><br><span class="line">    const protocol_list_t * protocols;  // 协议列表</span><br><span class="line">    Class firstSubclass;</span><br><span class="line">    Class nextSiblingClass;</span><br><span class="line">    char *demangledName;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#define FAST_DATA_MASK          0x00007ffffffffff8UL</span><br><span class="line">struct class_data_bits_t &#123;</span><br><span class="line">    uintptr_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* OC对象 */</span><br><span class="line">struct mj_objc_object &#123;</span><br><span class="line">    void *isa;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* 类对象 */</span><br><span class="line">struct mj_objc_class : mj_objc_object &#123;</span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;</span><br><span class="line">    class_data_bits_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return bits.data();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mj_objc_class* metaClass() &#123;</span><br><span class="line">        return (mj_objc_class *)((long long)isa &amp; ISA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#endif /* MJClassInfo_h */</span><br></pre></td></tr></table></figure></li>
 <li>实际使用,即可查看相关类<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        MJStudent *stu = [[MJStudent alloc] init];</span><br><span class="line">        stu-&gt;_weight = 10;</span><br><span class="line">        </span><br><span class="line">        mj_objc_class *studentClass = (__bridge mj_objc_class *)([MJStudent class]);</span><br><span class="line">        mj_objc_class *personClass = (__bridge mj_objc_class *)([MJPerson class]);</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentClassData = studentClass-&gt;data();</span><br><span class="line">        class_rw_t *personClassData = personClass-&gt;data();</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentMetaClassData = studentClass-&gt;metaClass()-&gt;data();</span><br><span class="line">        class_rw_t *personMetaClassData = personClass-&gt;metaClass()-&gt;data();</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;1111&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 ]]></content>
@@ -1987,7 +2265,7 @@
       </tags>
   </entry>
   <entry>
-    <title>isa指针</title>
+    <title>isa指针简介</title>
     <url>/2022/12/19/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
 
@@ -2007,87 +2285,49 @@
   <entry>
     <title>OC对象的分类</title>
     <url>/2022/12/18/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="OC对象的分类"><a href="#OC对象的分类" class="headerlink" title="OC对象的分类"></a>OC对象的分类</h1><p>主要分为3种</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
+<h2 id="OC对象的分类"><a href="#OC对象的分类" class="headerlink" title="OC对象的分类"></a>OC对象的分类</h2><p>主要分为3种</p>
 <ol>
 <li><code>instance</code>对象，实例对象 </li>
 <li><code>class</code>对象，类对象</li>
-<li><code>meta-class</code>对象，元类对象<h2 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h2>通过类alloc出来的对象，instance对象在内存种存储的信息（只有成员变量）包括</li>
+<li><code>meta-class</code>对象，元类对象<h3 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h3>通过类<code>alloc</code>出来的对象，<code>instance</code>对象在内存种存储的信息（只有成员变量）包括</li>
 </ol>
 <ul>
-<li>isa指针</li>
-<li>其他成员变量</li>
-</ul>
-<p>isa指针始终在对象结构体的前面，因此，isa指针的地址即实例对象的地址</p>
-<h2 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h2><ul>
+<li><code>isa</code>指针</li>
+<li>其他成员变量<br><code>isa</code>指针始终在对象结构体的前面，因此，<code>isa</code>指针的地址即实例对象的地址<h3 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h3></li>
 <li><code>[objec class]</code>、<code>[NSObject class]</code>、<code>object_getClass(object)</code>都是获取<code>NSobject</code>的<code>class</code>对象</li>
-<li>它们都是同一个对象，在内存中有且只有一个class对象</li>
-<li>class对象在内存中存储的信息主要包括</li>
+<li>它们都是同一个对象，在内存中有且只有一个<code>class</code>对象</li>
+<li><code>class</code>对象在内存中存储的信息主要包括</li>
 </ul>
 <ol>
-<li>isa指针</li>
-<li>superclass指针</li>
-<li>类的属性信息（@property）、类的<code>对象方法</code>信息（instance method）</li>
-<li>类的协议信息（protocol）、类的成员变量信息（ivar）<ol>
-<li>ivar并非成员变量的值，成员变量的值有instance决定</li>
-<li>ivar实际存储的类型，名称等描述信息<h2 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h2><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除isa指针、superclass指针、类方法信息外，其他均为null<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系<img src="16713605118546.png"></h3></li>
+<li><code>isa</code>指针</li>
+<li><code>superclass</code>指针</li>
+<li>类的属性信息（<code>@property</code>）、类的对象方法信息（<code>instance method</code>）</li>
+<li>类的协议信息（<code>protocol</code>）、类的成员变量信息（<code>ivar</code>）<ol>
+<li><code>ivar</code>并非成员变量的值，成员变量的值由<code>instance</code>决定</li>
+<li><code>ivar</code>实际存储的类型，名称等描述信息<h3 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h3><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除<code>isa</code>指针、<code>superclass</code>指针、<code>类方法信息</code>外，其他均为<code>null</code><h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3></li>
 </ol>
 </li>
-<li>instance的isa指向class</li>
-<li>class的isa指向meta-class</li>
-<li>meta-class的isa指向基类的meta-class</li>
-<li>class的superclass指向父类的class<ol>
-<li>如果没有父类，superclass指针为nil</li>
 </ol>
-</li>
-<li>meta-class的superclass指向父类的meta-class<ol>
-<li>基类的meta-class的superclass指向基类的class</li>
-</ol>
-</li>
-<li></li>
-</ol>
-]]></content>
-      <categories>
-        <category>底层原理</category>
-      </categories>
-      <tags>
-        <tag>类的结构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NSObject</title>
-    <url>/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16708614441261/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h1><h3 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><ul>
-<li>系统分配了16个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
-<li>但<code>NSObject</code>对象内部只使用了8个字节（<code>isa</code>指针）的空间（64bit环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
-<li>用<code>clang -rewrite-objc main.m -o main.cpp</code>编译成<code>C++</code>文件（全平台），</li>
-<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m -o main.cpp</code>(推荐)编译成指定平台的</li>
-<li>16字节而不是8字节的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小16字节<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-<li>扩展例子<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> @interface student: NSObject &#123;</span><br><span class="line"> int _no;</span><br><span class="line"> int _age;</span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">int _no; //4字节</span><br><span class="line">int _age; //4 字节</span><br><span class="line">&#125;</span><br><span class="line">内存对齐: 结构体的大小必须是最大成员大小的倍数</span><br></pre></td></tr></table></figure></li>
-<li>注意，ios操作系统的内存对齐，是按16倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)<strong>24位大小，但是用<code>malloc_size</code>计算</strong>实际</strong>分配的确实32位 </li>
-<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为8，实际不知道内存中的大小<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3></li>
-</ul>
-<ol>
-<li><code>print、p</code>：打印</li>
-<li><code>po</code>: 打印对象</li>
-<li>读取内存<ol>
-<li><code>memory red/数量格式字节数 内存地址</code>:`memory red/3xw 0x10010</li>
-<li><code>x/数量格式字节数 内存地址</code>: x/3xw 0x10010</li>
-<li>格式: x-16进制，d是10进制</li>
-<li>字节大小:b 1字节，h 2字节，w 4字节，g 8字节</li>
-</ol>
-</li>
-<li>修改内存中的值，<code>memory write 内存地址 数值</code>：memory write 0x0000010 10</li>
-<li><h3 id="对象的isa指针指向哪里"><a href="#对象的isa指针指向哪里" class="headerlink" title="对象的isa指针指向哪里"></a>对象的isa指针指向哪里</h3></li>
-</ol>
+<p><img src="16713605118546.png"></p>
 <ul>
-<li>instance对象的isa指针指向类对象</li>
-<li>类对象的isa指针指向元类对象</li>
-<li>元类对象的isa指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
-<li>对象的方法、属性、协议信息、成员变量，存放在类对象</li>
-<li>类方法存放在元类对象</li>
-<li>成员变量的具体值，存放在instance</li>
+<li>关系总结<ol>
+<li><code>instance</code>的<code>isa</code>指向<code>class</code></li>
+<li><code>class</code>的<code>isa</code>指向<code>meta-class</code></li>
+<li><code>meta-class</code>的<code>isa</code>指向基类<code>meta-class</code><ul>
+<li>基类<code>meta-class</code>的<code>isa</code>指向自己</li>
+</ul>
+</li>
+<li><code>class</code>的<code>superclass</code>指向父类的<code>class</code><ol>
+<li>如果没有父类，<code>superclass</code>指针为<code>nil</code></li>
+</ol>
+</li>
+<li><code>meta-class</code>的<code>superclass</code>指向父类的<code>meta-class</code><ol>
+<li>基类<code>meta-class</code>的<code>superclass</code>指向基类<code>class</code></li>
+</ol>
+</li>
+</ol>
+</li>
 </ul>
 ]]></content>
       <categories>
@@ -2100,37 +2340,37 @@
   <entry>
     <title>NSObject</title>
     <url>/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/NSObject/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h1><h3 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><ul>
-<li>系统分配了16个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
-<li>但<code>NSObject</code>对象内部只使用了8个字节（<code>isa</code>指针）的空间（64bit环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><h4 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h4><ul>
+<li>系统分配了<code>16</code>个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
+<li>但<code>NSObject</code>对象内部只使用了<code>8</code>个字节（<code>isa</code>指针）的空间（<code>64bit</code>环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
 <li>用<code>clang -rewrite-objc main.m -o main.cpp</code>编译成<code>C++</code>文件（全平台），</li>
 <li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m -o main.cpp</code>(推荐)编译成指定平台的</li>
-<li>16字节而不是8字节的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小16字节<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>16字节</code>而不是<code>8字节</code>的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小<code>16字节</code><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 </li>
-<li>扩展例子<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> @interface student: NSObject &#123;</span><br><span class="line"> int _no;</span><br><span class="line"> int _age;</span><br><span class="line"> int _height; </span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">int _no; //4字节</span><br><span class="line">int _age; //4 字节</span><br><span class="line">int _height; // 4 字节</span><br><span class="line">&#125;</span><br><span class="line">内存对齐: 结构体的大小必须是最大成员大小的倍数,实际为24字节，但是用`malloc_size`计算分配是32</span><br></pre></td></tr></table></figure></li>
-<li>注意，ios操作系统的内存对齐，是按16倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)<strong>24位大小，但是用<code>malloc_size</code>计算</strong>实际</strong>分配的确实32位 </li>
-<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为8，实际不知道内存中的大小<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3></li>
+<li>扩展的例子<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> @interface Student: NSObject &#123;</span><br><span class="line">    int _no;</span><br><span class="line">    int _age;</span><br><span class="line">    int _height; </span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> // 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">    Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">    int _no; //4字节</span><br><span class="line">    int _age; //4 字节</span><br><span class="line">    int _height; // 4 字节</span><br><span class="line">&#125;</span><br><span class="line">// 内存对齐: 结构体的大小必须是最大成员大小的倍数,实际为24字节，但是用`malloc_size`计算分配是32</span><br></pre></td></tr></table></figure></li>
+<li>注意，<code>ios</code>操作系统的内存对齐，是按<code>16</code>倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)</strong><code>24</code>位大小，但是用<code>malloc_size</code>计算<strong>实际</strong>分配的确是<code>32</code>位 </li>
+<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为<code>8</code>，实际不知道内存中的大小</li>
 </ul>
-<ol>
+<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3><ol>
 <li><code>print、p</code>：打印</li>
 <li><code>po</code>: 打印对象</li>
 <li>读取内存<ol>
-<li><code>memory red/数量格式字节数 内存地址</code>:`memory red/3xw 0x10010</li>
-<li><code>x/数量格式字节数 内存地址</code>: x/3xw 0x10010</li>
-<li>格式: x-16进制，d是10进制</li>
-<li>字节大小:b 1字节，h 2字节，w 4字节，g 8字节</li>
+<li><code>memory red/数量格式字节数 内存地址</code>:<code>memory red/3xw 0x10010</code></li>
+<li><code>x/数量格式字节数 内存地址</code>: <code>x/3xw 0x10010</code></li>
+<li>格式: <code>x</code>-16进制，<code>d</code>是10进制</li>
+<li>字节大小:<code>b 1字节</code>，<code>h 2字节</code>，<code>w 4字节</code>，<code>g 8字节</code></li>
 </ol>
 </li>
-<li>修改内存中的值，<code>memory write 内存地址 数值</code>：memory write 0x0000010 10</li>
+<li>修改内存中的值，<code>memory write 内存地址 数值</code>：<code>memory write 0x0000010 10</code></li>
 </ol>
 <h3 id="对象的isa指针指向哪里"><a href="#对象的isa指针指向哪里" class="headerlink" title="对象的isa指针指向哪里"></a>对象的isa指针指向哪里</h3><ul>
-<li>instance对象的isa指针指向类对象</li>
-<li>类对象的isa指针指向元类对象</li>
-<li>元类对象的isa指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
+<li><code>instance</code>对象的<code>isa</code>指针指向类对象</li>
+<li>类对象的<code>isa</code>指针指向元类对象</li>
+<li>元类对象的<code>isa</code>指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
 <li>对象的方法、属性、协议信息、成员变量，存放在类对象</li>
 <li>类方法存放在元类对象</li>
-<li>成员变量的具体值，存放在instance</li>
+<li>成员变量的具体值，存放在<code>instance</code></li>
 </ul>
 ]]></content>
       <categories>
@@ -2141,8 +2381,8 @@
       </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2022/12/09/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16706010476870/</url>
+    <title>FishHook</title>
+    <url>/2022/12/10/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/FishHook/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="FishHook"><a href="#FishHook" class="headerlink" title="FishHook"></a>FishHook</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>iOS中通过<code>Method Swizzling</code>实现<code>hook</code>，其原理是利用OC的<code>Runtime</code>特性，动态改变<code>SEL</code>（方法编号）和<code>IMP</code>（方法实现）的对应关系，达到OC方法交换的目的。然而只适用于动态的OC方法，对于C函数Hook，可以引用fishHook，通过修改machO文件中<code>la_symbol_ptr</code>和<code>non_la_symbol_ptr</code>两个表的指针达到C函数HOOK的目的。</p>
 <h2 id="框架地址"><a href="#框架地址" class="headerlink" title="框架地址"></a>框架地址</h2><p><code>fishhook</code>是一个非常简单的库，可以在模拟器和设备上运行在iOS上的Mach-O二进制文件中动态重新绑定符号,代码地址<a href="https://github.com/facebook/fishhook">https://github.com/facebook/fishhook</a></p>
 <h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><ol>
@@ -2150,93 +2390,33 @@
 <li>交换制定的C函数,构建<code>rebinding</code>结构体<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct rebinding rebindSend;</span><br><span class="line">rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br></pre></td></tr></table></figure></li>
 <li><code>rebind_symbols</code>重新绑定符号<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">rebind_symbols(rebs, 1);</span><br></pre></td></tr></table></figure></li>
 <li>完整使用用例<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//</span><br><span class="line">//  FishHooklViewController.m</span><br><span class="line">//  transitionController</span><br><span class="line">//</span><br><span class="line">//  Created by 陈晶泊 on 2022/8/10.</span><br><span class="line">//</span><br><span class="line">#import &quot;fishhook.h&quot;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdarg.h&gt;</span><br><span class="line">#import &quot;FishHooklViewController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface FishHooklViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation FishHooklViewController</span><br><span class="line">__unused static void(*orig_objc_nslog)(NSString *format, ...);</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    self.view.backgroundColor = UIColor.whiteColor;</span><br><span class="line">    struct rebinding rebindSend;</span><br><span class="line">    rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">    rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">    rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br><span class="line">    struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">    rebind_symbols(rebs, 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void hook_Objc_nslog(NSString *format, ...) &#123;</span><br><span class="line">    format = [format stringByAppendingFormat:@&quot;已hook&quot;];</span><br><span class="line">    orig_objc_nslog(format);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event &#123;</span><br><span class="line">    NSLog(@&quot;FishHooklViewController&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><code>MachO</code>文件的静态链接在编译的时候，就确定了方法地址，位于代码段模，是不可写的，因此静态链接的函数方法，在运行时是无法更改的。<br>然而动态链接，是在运行时进行方法链接的，在<code>MachO</code>文件中，访问动态库里的数据符号地址放在<code>got</code>(也称<code>Non-Lazy Symbol Pointers</code>)数据段，调用动态库的函数的地址放在<code>la_symbol_ptr</code>数据段的数据段中，是可读写的，因此可以在程序运行期间修改<code>got</code>(<code>non_la_symbol_ptr</code>)和<code>la_symbol_ptr</code>数据段，来替换函数跟全局变量的地址。<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="1-传入需要替换的函数"><a href="#1-传入需要替换的函数" class="headerlink" title="1. 传入需要替换的函数"></a>1. 传入需要替换的函数<img src="16706010476870/16706577321150.png"></h4> <code>rebindings_head</code>的<code>next</code>为nil是第一次调用；去注册方法，其中<code>_dyld_register_func_for_add_image</code>做了2件事，1.是跟<code>else</code>里面一样，为每个image(镜像)调用<code>_rebind_symbols_for_image</code>，2.是当<code>dyld</code>后面加载镜像时候，也为这个新镜像调用<code>_rebind_symbols_for_image</code>。<br> <code>rebindings_head</code>采用的链表结构，具体如下:<br><img src="16706010476870/16706578333010.jpg"><h4 id="2-计算地址"><a href="#2-计算地址" class="headerlink" title="2. 计算地址"></a>2. 计算地址</h4><code>rebind_symbols_for_image</code>方法的目的，主要是计算基址，找到符号表、字符串表、间接符号表、<code>nl_symbol_ptr(got)</code>以及<code>la_symbol_ptr</code>数据段的地址。</li>
-<li>首先遍历加载命令，获得<code>MachO</code>文件中符号表、间接符号表、<code>LINKEDIT</code>三个加载命令<br><img src="16706010476870/16706583225213.png"></li>
-<li>根据<code>LINKEDIT</code>获取的真实基址，根据第一步中得到的加载命令，确定符号表、间接符号表、字符串表的虚拟内存地址<br><img src="16706010476870/16706584145390.png"></li>
+<h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><code>MachO</code>文件的静态链接在编译的时候，就确定了方法地址，位于代码段模，是不可写的，因此静态链接的函数方法，在运行时是无法更改的。<br>然而动态链接，是在运行时进行方法链接的，在<code>MachO</code>文件中，访问动态库里的数据符号地址放在<code>got</code>(也称<code>Non-Lazy Symbol Pointers</code>)数据段，调用动态库的函数的地址放在<code>la_symbol_ptr</code>数据段的数据段中，是可读写的，因此可以在程序运行期间修改<code>got</code>(<code>non_la_symbol_ptr</code>)和<code>la_symbol_ptr</code>数据段，来替换函数跟全局变量的地址。<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="1-传入需要替换的函数"><a href="#1-传入需要替换的函数" class="headerlink" title="1. 传入需要替换的函数"></a>1. 传入需要替换的函数<img src="16706577321150.png"></h4> <code>rebindings_head</code>的<code>next</code>为nil是第一次调用；去注册方法，其中<code>_dyld_register_func_for_add_image</code>做了2件事，1.是跟<code>else</code>里面一样，为每个image(镜像)调用<code>_rebind_symbols_for_image</code>，2.是当<code>dyld</code>后面加载镜像时候，也为这个新镜像调用<code>_rebind_symbols_for_image</code>。<br> <code>rebindings_head</code>采用的链表结构，具体如下:<br><img src="16706578333010.jpg"><h4 id="2-计算地址"><a href="#2-计算地址" class="headerlink" title="2. 计算地址"></a>2. 计算地址</h4><code>rebind_symbols_for_image</code>方法的目的，主要是计算基址，找到符号表、字符串表、间接符号表、<code>nl_symbol_ptr(got)</code>以及<code>la_symbol_ptr</code>数据段的地址。</li>
+<li>首先遍历加载命令，获得<code>MachO</code>文件中符号表、间接符号表、<code>LINKEDIT</code>三个加载命令<br><img src="16706583225213.png"></li>
+<li>根据<code>LINKEDIT</code>获取的真实基址，根据第一步中得到的加载命令，确定符号表、间接符号表、字符串表的虚拟内存地址<br><img src="16706584145390.png"></li>
 <li>遍历加载命令，找到数据段，在从数据段的<code>section</code>中找到<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code></li>
 </ol>
-<p><img src="16706010476870/16706586123063.png"></p>
-<h4 id="3-方法替换"><a href="#3-方法替换" class="headerlink" title="3. 方法替换"></a>3. 方法替换</h4><p>最后遍历<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和数据地址，并结合间接符号表、符号表、以及字符串表，得到地址对应的函数，变量名称，找到相同的名称，即可进行地址的替换。<br><img src="16706010476870/16706587741784.png"></p>
+<p><img src="16706586123063.png"></p>
+<h4 id="3-方法替换"><a href="#3-方法替换" class="headerlink" title="3. 方法替换"></a>3. 方法替换</h4><p>最后遍历<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和数据地址，并结合间接符号表、符号表、以及字符串表，得到地址对应的函数，变量名称，找到相同的名称，即可进行地址的替换。<br><img src="16706587741784.png"></p>
 <h2 id="通过MachOView分析"><a href="#通过MachOView分析" class="headerlink" title="通过MachOView分析"></a>通过MachOView分析</h2><ol>
-<li>计算出符号表、间接符号表、字符串表的地址<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.07.46.png" alt="截屏2022-12-10 16.07.46"></li>
-<li><code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和函数数据地址，其中<code>reserved1</code>即为数据段中的函数在间接符号表中的位置<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.16.25.png" alt="截屏2022-12-10 16.16.25"></li>
-<li>间接符号表中的地址，和实际数据段地址是对应的，其中间接符号表中的数据，实际对应的是符号表中的索引。<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.20.04.png" alt="截屏2022-12-10 16.20.04"></li>
+<li>计算出符号表、间接符号表、字符串表的地址<br><img src="16706010476870.png"></li>
+<li><code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和函数数据地址，其中<code>reserved1</code>即为数据段中的函数在间接符号表中的位置<br><img src="1.png"></li>
+<li>间接符号表中的地址，和实际数据段地址是对应的，其中间接符号表中的数据，实际对应的是符号表中的索引。<br><img src="2.png"></li>
 </ol>
-<p><img src="16706010476870/16706604848859.png"><br>4. 符号表中，关联由字符串表，从而知道函数的名称，因此，最终，根据名称，从间接符号表中拿到原始函数地址，从而完成了方法的替换。<br><img src="16706010476870/%E6%88%AA%E5%B1%8F2022-12-10%2016.24.10.png" alt="截屏2022-12-10 16.24.10"></p>
-<h2 id="FishHook应用实例"><a href="#FishHook应用实例" class="headerlink" title="FishHook应用实例"></a>FishHook应用实例</h2><p><code>SMCallTrace</code>通过hook<code>objc_msgSend</code>方法，hook了所有OC的方法，在hook方法中通过汇编语言来计算方法的耗时，可以用来项目中方法的执行情况。在需要检测耗时时间的地方调用 <code>[SMCallTrace start]</code>，结束时调用 <code>stop</code> 和 <code>save</code> 就可以打印出方法的调用层级和耗时了。还可以设置最大深度和最小耗时检测，来过滤不需要看到的信息。<a href="https://github.com/ming1016/GCDFetchFeed">源码地址</a><br>具体使用后的效果<img src="16706010476870/IMG_963F24C3F87F-1.jpeg" alt="IMG_963F24C3F87F-1"></p>
+<p><img src="16706604848859.png"><br>4. 符号表中，关联由字符串表，从而知道函数的名称，因此，最终，根据名称，从间接符号表中拿到原始函数地址，从而完成了方法的替换。<br><img src="16706604848859.png"></p>
+<h2 id="FishHook应用实例"><a href="#FishHook应用实例" class="headerlink" title="FishHook应用实例"></a>FishHook应用实例</h2><p><code>SMCallTrace</code>通过hook<code>objc_msgSend</code>方法，hook了所有OC的方法，在hook方法中通过汇编语言来计算方法的耗时，可以用来项目中方法的执行情况。在需要检测耗时时间的地方调用 <code>[SMCallTrace start]</code>，结束时调用 <code>stop</code> 和 <code>save</code> 就可以打印出方法的调用层级和耗时了。还可以设置最大深度和最小耗时检测，来过滤不需要看到的信息。<a href="https://github.com/ming1016/GCDFetchFeed">源码地址</a><br>具体使用后的效果<img src="4.jpeg"></p>
 ]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>hook</tag>
+      </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2022/12/06/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16703379364755/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="theos-tweak原理"><a href="#theos-tweak原理" class="headerlink" title="theos-tweak原理"></a>theos-tweak原理</h1><ol>
-<li><code>make</code>指令实际上是将<code>Tweak.xm</code>的代码编译成动态库</li>
-<li><code>make packpage</code>指令，将动态库文件打包成了<code>deb</code>文件，插件安装包</li>
-<li><code>make install</code>指令，远程登录手机安装插件到app内，<code>Makefile</code>文件内配置<ol>
-<li>安装完的包会在<code>/Library/MobileSubstrate/DynamicLibraries</code>文件夹内,包含动态库，以及相关的<code>.plist</code>文件(里面由相关应用的bundlId)</li>
-<li>该文件夹由Cydia管理</li>
-</ol>
-</li>
-<li>对应bundlId的应用打开后，会加载相关插件的动态库到内存中（不会缓存，每次重新打开，都会加载），去做交换方法的操作</li>
-<li>实际上没次动态修改，并为修改代码<h3 id="过程图"><a href="#过程图" class="headerlink" title="过程图"></a>过程图</h3><img src="16703379364755/16703398332015.png"></li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2022/11/22/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16690971923137/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="IPC时间推送"><a href="#IPC时间推送" class="headerlink" title="IPC时间推送"></a>IPC时间推送</h1><p>1、消息列表点击事件消息不再弹出购买套餐提示，消息列表点击事件消息，统一跳转至对应事件的播放器页面弹出相对应的提示<br>2、事件播放器页面App判断事件列表里是否存在视频URL，若视频URL不为空，则表示事件上报时用户购买了套餐，则App可以直接播放视频，如视频无法播放则提示「该视频已过期」<br>3、若视频URL为空，则App调用支付平台接口判断用户当前是否购买套餐，若用户当前已购买套餐，则在APP的事件播放器页面提示「因该视频生成时未购买云套餐，无法支持其播放」<br>4、若视频URL为空，并且用户当前没有购买套餐，则在APP的事件播放器页面去弹框引导用户购买套餐</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2022/11/06/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16677424889825/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="练习一-喜玛拉广告去除"><a href="#练习一-喜玛拉广告去除" class="headerlink" title="练习一 喜玛拉广告去除"></a>练习一 喜玛拉广告去除</h1><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
-<li><code>Revel</code>中查看广告的图层信息，通过Cycript<code>[#0x12333 removeFromSuperlayer]</code>只能暂时将广告屏蔽</li>
-<li>用<code>CLutch</code>脱壳应用，<code>class-dump</code>指令拿到头文件信息，查看相关视图图层的信息，通过hook的方式去去除广告<h1 id="练习二，桌面更新数字去除"><a href="#练习二，桌面更新数字去除" class="headerlink" title="练习二，桌面更新数字去除"></a>练习二，桌面更新数字去除</h1></li>
-</ol>
-<ul>
-<li>iOS桌面为<code>springboard</code>，位置在<code>/System/Library/CoreServices/SpringBoard.app</code></li>
-<li><code>springboard</code>无法通过<code>revel</code>的方式查看，需要用<code>cycript</code>的方式查看</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2022/11/05/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16676513774655/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="用theos去hook"><a href="#用theos去hook" class="headerlink" title="用theos去hook"></a>用theos去hook</h1><ol>
-<li>安装threos<a href="media/16676513774655/07-theos%E7%9A%84%E5%89%AF%E6%9C%AC.pdf">theos安装教程</a></li>
-<li><code>nic.pl</code>指令选择创建<code>iphone/tweak</code>项目,（自己的bundId，和越狱app的bundId）<ol>
-<li>在生成的Makefile文件内，增加端口信息<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export THEOS_DEVICE_IP = localhost</span><br><span class="line">export THEOS_DEVICE_PORT = 100010</span><br><span class="line">include $(THEOS)/makefiles/common.mk</span><br><span class="line">TWEAK_NAME = tingweak</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>THES_DEVICE_IP</code>,<code>THEOS_DEVICE_PORT</code>可以配置到.bash_profile的文件下,全局配置</li>
-</ul>
-</li>
-<li>实际在Tweak.x文件内进行hook，找到相应的view，然后写hook后的方法.<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">  #import &lt;UIKit/UIView.h&gt;</span><br><span class="line"> %hook XMNowPlayingADView</span><br><span class="line">   - (id)initWithFrame:(struct CGRect)arg1 &#123;</span><br><span class="line">       return nil;</span><br><span class="line">   &#125;</span><br><span class="line"> %end</span><br><span class="line"> ///%orig(arg1,arg2);调用原始方法</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><code>make</code> 自动编译makefile中的文件</li>
-<li><code>make package</code>打包成越狱插件</li>
-<li><code>make install</code>默认安装到手机上</li>
-<li>手机重启，则会看到修改后的程序，注入的包位置在<code>/library/MobileSubstrate/DynamicLibraries</code>位置，删除，则无效果了（Cydia中也有该插件）<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2></li>
-</ol>
-</li>
-<li>在生成的Tweak.x文件中的方法，一般均会被认为是要hook替换的，如果没有的话，则不会生效。如果是新方法的话，需要在方法前加<code>%new</code></li>
-<li><code>%orig</code>为原始方法</li>
-<li>资源文件，<ol>
-<li>内部图片，则放到<code>对应应用内</code>,</li>
-<li>如果加载自己的，则用<code>imageWithContentsOfFile:</code>加载图片路径，例如，<code>/text.png</code>则在文件根目录</li>
-<li>在theos中直接打包资源文件，在中，构建一个<code>layout</code>文件夹(实际放在<code>根目录</code>下)，将资源放进去，一般会放到<code>layout/Library/PreferenceLoader/Preferences</code>目录下（偏好设置），其他的可以放到<code>layout/Library/Caches</code>文件中</li>
-</ol>
-</li>
-<li>注意<code>theos</code>将其他类型认为是id，因此直接用<code>self.view</code>是会报错的，要用<code>[self view]</code></li>
-<li>可以像OC项目一样,多文件开发，建立相关的.h和.m文件，然后在<code>Tweak.x</code>文件中按正常的#import导入(注意文件夹)即可，此外在<code>Makefile</code>中要指定编译的文件<code>tweaksp_FILES = xxx/Tweak.x xxx/xxxx.m</code>，也可以通过<code>tweaksp_FILES = xxx/*.x</code>导入，但是无法用<code>xxx/**/*.x</code>的方式,必须指定文件夹</li>
-<li>生成<code>Realease</code>版本，<code>make package debug=0</code></li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2022/11/03/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Mach-o%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Mach-o文件"><a href="#Mach-o文件" class="headerlink" title="Mach-o文件"></a>Mach-o文件</h1><ul>
+    <title>Mach-o文件</title>
+    <url>/2022/11/04/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/Mach-o%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
+<h2 id="Mach-o文件"><a href="#Mach-o文件" class="headerlink" title="Mach-o文件"></a>Mach-o文件</h2><ul>
 <li>一个Mach-O文件包含3个主要区域<ul>
 <li>Header <ul>
 <li>文件类型、目标架构类型等</li>
@@ -2277,29 +2457,7 @@
 </ul>
 </li>
 </ol>
-<h2 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h2><h3 id="file："><a href="#file：" class="headerlink" title="file："></a>file：</h3><ul>
-<li>查看Mach-O的文件类型</li>
-<li><code>file  文件路径</code><h3 id="otool："><a href="#otool：" class="headerlink" title="otool："></a>otool：</h3></li>
-<li>查看Mach-O特定部分和段的内容<ul>
-<li><code>otool -L 文件路径</code>查看依赖的库</li>
-<li><code>otool -h 文件路径</code>mach中head的信息</li>
-<li><code>otool -l 文件路径</code>mach中loadcommand的信息<h3 id="dyld"><a href="#dyld" class="headerlink" title="dyld"></a>dyld</h3></li>
-</ul>
-</li>
-<li><code>dyld</code>是mach-o文件（MH_DYLINKER），但是它也能加载mach-o文件，但是只能加载<ul>
-<li><code>MH_EXEUTE</code>，可执行文件</li>
-<li><code>MH_DYLIB</code>,动态库</li>
-<li><code>MH_BUNDLE</code></li>
-</ul>
-</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2022/11/01/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16673137289641/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Hopper"><a href="#Hopper" class="headerlink" title="Hopper"></a>Hopper</h1><h2 id="Mach-o"><a href="#Mach-o" class="headerlink" title="Mach-o"></a>Mach-o</h2><ul>
-<li>机器码可以反编译成汇编，但是汇编很难反编译成OC<h2 id="ios系统Mach-o文件在手机上"><a href="#ios系统Mach-o文件在手机上" class="headerlink" title="ios系统Mach-o文件在手机上"></a>ios系统Mach-o文件在手机上</h2></li>
+<h2 id="ios系统Mach-o文件在手机上"><a href="#ios系统Mach-o文件在手机上" class="headerlink" title="ios系统Mach-o文件在手机上"></a>ios系统Mach-o文件在手机上</h2><ul>
 <li>从iOS3.1开始，为了提高性能，绝大部分的系统动态库文件都打包存放到了一个缓存文件中（<code>dyld shared cache</code>）<ol>
 <li>缓存文件路径：<code>/System/Library/Caches/com.apple.dyld/dyld_shared_cache_armX</code></li>
 <li>绝大部分的系统动态库都放在共享缓存中，一个文件中，（多个动态库<code>mach</code>会有多个描述信息，因此降低内存，放到了一个文件中，也就是mach文件中<code>dlyld</code>(命令在/usr/lib中)加载指令(通过这个指令去加载动态库)，只会加载到一处）</li>
@@ -2307,76 +2465,70 @@
 <li><a href="https://opensource.apple.com/tarballs/dyld/">dyld源码 </a></li>
 <li><code>dlyld</code>中的<code>dsc_extractor</code>文件可以，将1中缓存文件抽取出压缩在里面的库<ol>
 <li>先用<code>clang++</code>编译,`clang++ -o dsc_extractor dsc_extractor.cpp</li>
-<li><code>/dsc_extractor dyld_shared_cache_armv7s armv7s</code>所有动态库在呵rmv7s文件夹中<br>`</li>
+<li><code>/dsc_extractor dyld_shared_cache_armv7s armv7s</code>所有动态库在呵rmv7s文件夹中<h2 id="Universal-Binary（胖二进制文件）"><a href="#Universal-Binary（胖二进制文件）" class="headerlink" title="Universal Binary（胖二进制文件）"></a>Universal Binary（胖二进制文件）</h2></li>
 </ol>
 </li>
 </ol>
 </li>
+<li>通用二进制文件同时适用于多种架构的二进制文件包含了多种不同架构的独立的二进制文件</li>
+<li>因为需要储存多种架构的代码，通用二进制文件通常比单一平台二进制的程序要大</li>
+<li>由于两种架构有共同的一些资源，所以并不会达到单一版本的两倍之多</li>
 </ul>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2022/11/01/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16672327206592/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="class-dump"><a href="#class-dump" class="headerlink" title="class-dump"></a>class-dump</h1><pre><code>-它的作用就是把Mach-O文件的class信息给dump出来（把类信息给导出来），生成对应的.h头文件
-</code></pre>
-<hr>
-<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><ul>
-<li>将命令放大/usr/local/bin目录下(mac下不能放到/usr/bin下)</li>
+<h2 id="由于执行过程中，只调用一部分代码，运行起来也不需要额外的内存"><a href="#由于执行过程中，只调用一部分代码，运行起来也不需要额外的内存" class="headerlink" title="由于执行过程中，只调用一部分代码，运行起来也不需要额外的内存"></a>由于执行过程中，只调用一部分代码，运行起来也不需要额外的内存</h2><ul>
+<li><code>lipo -info 文件</code>，获取胖二进制文件支持架构信息</li>
+<li><code>lipo 文件 -thin armv64 - output Text_arm64</code>，抽出其中的arm64二进制文件</li>
+<li><code>lipo -create Text_arm64 Text_armv7 -output test</code>，生成出胖二进制文件</li>
+</ul>
+<h2 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h2><h3 id="file："><a href="#file：" class="headerlink" title="file："></a>file：</h3><ul>
+<li><p>查看Mach-O的文件类型</p>
+</li>
+<li><p><code>file  文件路径</code></p>
+<h3 id="otool："><a href="#otool：" class="headerlink" title="otool："></a>otool：</h3></li>
+<li><p>查看Mach-O特定部分和段的内容</p>
+<ul>
+<li><code>otool -L 文件路径</code>查看依赖的库</li>
+<li><code>otool -h 文件路径</code>mach中head的信息</li>
+<li><code>otool -l 文件路径</code>mach中loadcommand的信息<h3 id="dyld"><a href="#dyld" class="headerlink" title="dyld"></a>dyld</h3></li>
+</ul>
+</li>
+<li><p><code>dyld</code>是mach-o文件（MH_DYLINKER），但是它也能加载mach-o文件，但是只能加载</p>
+<ul>
+<li><code>MH_EXEUTE</code>，可执行文件</li>
+<li><code>MH_DYLIB</code>,动态库</li>
+<li><code>MH_BUNDLE</code><h3 id="class-dump"><a href="#class-dump" class="headerlink" title="class-dump"></a>class-dump</h3></li>
+</ul>
+</li>
+<li><p>它的作用就是把Mach-O文件的class信息给dump出来（把类信息给导出来），生成对应的.h头文件</p>
+<ul>
+<li>命令放到/usr/local/bin目录下(mac下不能放到/usr/bin下)</li>
 <li><code>class-dump  -H  Mach-O文件路径  -o  头文件存放目录</code></li>
 </ul>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2022/10/29/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16670400106477/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
-<li>ssh <a href="mailto:&#x72;&#x6f;&#x6f;&#116;&#64;&#49;&#x39;&#x32;&#46;&#49;&#x36;&#56;&#46;&#x31;&#x2e;&#x31;&#x34;">&#x72;&#x6f;&#x6f;&#116;&#64;&#49;&#x39;&#x32;&#46;&#49;&#x36;&#56;&#46;&#x31;&#x2e;&#x31;&#x34;</a>,跳转到指定ip的命令</li>
-<li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
-</ul>
-<ol>
-<li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
-<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#x6f;&#111;&#116;&#64;&#x31;&#57;&#50;&#x2e;&#x31;&#x36;&#x38;&#46;&#49;&#x2e;&#x31;&#52;">&#x72;&#x6f;&#111;&#116;&#64;&#x31;&#57;&#50;&#x2e;&#x31;&#x36;&#x38;&#46;&#49;&#x2e;&#x31;&#52;</a>，追加到当前ip服务器授权文件的尾部</li>
-</ul>
 </li>
-<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#114;&#111;&#x6f;&#x74;&#x40;&#49;&#57;&#x32;&#x2e;&#49;&#x36;&#x38;&#46;&#x31;&#46;&#x31;&#x34;">&#114;&#111;&#x6f;&#x74;&#x40;&#49;&#57;&#x32;&#x2e;&#49;&#x36;&#x38;&#46;&#x31;&#46;&#x31;&#x34;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
-<li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
-</ul>
-</li>
-</ol>
-<ul>
-<li>chmod 755 ~/.ssh 给文件夹赋予权限，755含义<ul>
-<li>读（r=4），写（w=2），执行（x=1）</li>
-<li>文件所有者可读可写可执行                                   –7</li>
-<li>与文件所有者同属一个用户组的其他用户可读可执行                 –5 </li>
-<li>其它用户组可读可执行                                       –5<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2></li>
-</ul>
-</li>
-<li>每个端口都有个端口号，（范围是0～65535，公2^16）</li>
-<li>21端口，FTP服务</li>
-<li>80端口，http服务</li>
-<li>22端口，ssh服务<h2 id="通过USB进行SSH登录"><a href="#通过USB进行SSH登录" class="headerlink" title="通过USB进行SSH登录"></a>通过USB进行SSH登录</h2></li>
-<li>默认会用网络登录，USB登录的方式是，先用SSH登录MAC上的10010端口(非保留端口均可)，在通过usbmuxd连接22端口</li>
-<li>将iPhone的22端口（SSH端口）映射到Mac本地的10010端口</li>
-<li>用python脚本，将mac上10010映射到22，python3 tcprelay.py -t 22:10010</li>
-<li>ssh root@localhost -p 10010,直接连接本地的10010接口</li>
-<li>scp -P 10010 <del>/.ssh/id_rsa.pub root@localhost:</del>,拷贝的方法</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>iOS越狱</category>
+      </categories>
+      <tags>
+        <tag>Mach-o</tag>
+      </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2022/09/11/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16629071383706/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h1><ul>
+    <title>flutter指令</title>
+    <url>/2022/09/11/Flutter/%E6%8C%87%E4%BB%A4/%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h4 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h4><ul>
 <li>flutter run –no-sound-null-safety  解决flutter插件旧版本兼容问题</li>
 <li>flutter create –template=package hello 创建pakcage</li>
 <li>flutter create -t module flutter_module 创建fluttermodule</li>
-<li>flutter create example 创建flutter项目<h1 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h1></li>
+<li>flutter create example 创建flutter项目<h4 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h4></li>
 <li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
-<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h1 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h1></li>
+<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h4 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h4></li>
 <li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>flutter指令</category>
+      </categories>
   </entry>
   <entry>
     <title>详解iOS的presentViewController</title>
@@ -3138,124 +3290,6 @@
       <categories>
         <category>iOS动画学习</category>
       </categories>
-  </entry>
-  <entry>
-    <title>Block的类型</title>
-    <url>/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Block%E7%9A%84%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Block的类型"><a href="#Block的类型" class="headerlink" title="Block的类型"></a>Block的类型</h1><table>
-<thead>
-<tr>
-<th>block类型</th>
-<th>环境</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><em>NSGlobalBlock</em></td>
-<td>没有访问auto变量</td>
-</tr>
-<tr>
-<td><em>NSStackBlock</em></td>
-<td>访问了auto变量</td>
-</tr>
-<tr>
-<td><em>NSMallocBlock</em></td>
-<td>_NSStackBlock_调用了copy</td>
-</tr>
-</tbody></table>
-<ul>
-<li>注意在非ARC环境下是准确的，如果在ARC环境下,编译器会根据情况，将栈上的block,变成<code>NSMalloCBlock</code></li>
-<li>每一种block调用copy后的结果如图所示</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>block的类</th>
-<th>副本源的配置存储域</th>
-<th>赋值效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>_NSConcreteStackBlock</td>
-<td>栈</td>
-<td>从栈复制到堆</td>
-</tr>
-<tr>
-<td>_NSConcreteGlobalBlock</td>
-<td>程序的数据区域</td>
-<td>什么也不做</td>
-</tr>
-<tr>
-<td>_NSConcreteMallocBlock</td>
-<td>堆</td>
-<td>引用计数增加</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>在ARC环境下，编译器会根据情况，将栈上的block,拷贝到堆上,有以下情况</p>
-<ol>
-<li><code>block</code>作为函数的返回值时</li>
-<li>将<code>block</code>赋值给<code>__strong</code>引指针</li>
-<li><code>block</code>作为<code>Cocoa api</code>名含有<code>usingBlock</code>的方法参数输入时</li>
-<li><code>block</code>作为<code>GCD API</code>的方法参数时</li>
-</ol>
-</li>
-<li><p>在将有_weak的方法，使用clang转换OC为C++代码时，注意支持ARC、以及指定运行时系统版本</p>
-<ul>
-<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc -fobjc-arc -fobjc-runtime=ios-16.0.0 main.m -o main.cpp</code></li>
-</ul>
-</li>
-</ul>
-<h2 id="当block内部访问了对象类型的auto变量时"><a href="#当block内部访问了对象类型的auto变量时" class="headerlink" title="当block内部访问了对象类型的auto变量时"></a>当block内部访问了对象类型的auto变量时</h2><ul>
-<li><p>如果block是在栈上，将不会对auto变量产生强引用</p>
-</li>
-<li><p>如果block是在堆上</p>
-<ul>
-<li>会调用block内部的copy函数</li>
-<li>copy函数内部会调用_Block_objc_assign函数</li>
-<li>_Block_objc_assign函数会根据auto变量的修饰符（_string、_weak、_unsafe_unretained）做出相应的操作，类似于retain（形成强引用、弱引用）<h2 id="block的内存管理"><a href="#block的内存管理" class="headerlink" title="block的内存管理"></a>block的内存管理</h2></li>
-</ul>
-</li>
-<li><p><strong>当block在栈上</strong>时，并不会对<code>__block</code>变量，以及<code>auto</code>的对象产生强引用</p>
-</li>
-<li><p>当block被copy到堆时</p>
-<ul>
-<li>会调用block内部的copy函数</li>
-<li>copy函数内部会调用_Block_object_assign函数</li>
-<li>_Block_object_assign函数会对_block变量形成强引用,会区分是auto对象（会区分是_weak还是_strong），还是_block对象（强引用）</li>
-</ul>
-</li>
-<li><p>当block从堆移除</p>
-<ul>
-<li>会调用block内部的dispose函数</li>
-<li>dispose函数内部会调用_Block_object_dispose函数</li>
-<li>_Block_object_dispose函数会自动释放引用的_block变量</li>
-</ul>
-</li>
-<li><ul>
-<li>当<code>__block</code>修饰对象时，其构建的_block变量内，也会有copy方法和dispose方法<ul>
-<li>其内copy方法，同样也有<code>_Block_object_assign</code>,以及<code>_Block_object_dispose</code>,对其内修饰的对象进行内存管理（跟外围是_strong还是_weak有一定关系）<ul>
-<li> <strong>但是注意，该内存管理只会在ARC下生效，如果在MRC下，在_block不会增加其内对象的引用，属于unowned关系</strong></li>
-<li> <strong>如果不是__block,而是直接引用了auto对象，则和此前一样，block直接引用对象(mrc下，copy时，内部也会对auto增加引用)，而非通过__block间接引用</strong></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>_block的生成的对象，通过fowarding去指向的原因</p>
-<ul>
-<li>在栈上的时候，指针指向自己</li>
-<li>而赋值到堆上时，栈上的指向堆上复制的，栈上赋值时，其值是保存堆上的值，从而保证了，无论是在栈上还是堆上修改，最后值都会保存的堆上。最终使用的是堆上的block</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>底层原理</category>
-      </categories>
-      <tags>
-        <tag>Block</tag>
-      </tags>
   </entry>
   <entry>
     <title>碎片化笔记</title>

@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">343</span>
+            <span class="post-count">353</span>
         </span>
     </span>
 
@@ -101,44 +101,50 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="OC对象的分类"><a href="#OC对象的分类" class="headerlink" title="OC对象的分类"></a>OC对象的分类</h1><p>主要分为3种</p>
+  <span id="more"></span>
+<h2 id="OC对象的分类"><a href="#OC对象的分类" class="headerlink" title="OC对象的分类"></a>OC对象的分类</h2><p>主要分为3种</p>
 <ol>
 <li><code>instance</code>对象，实例对象 </li>
 <li><code>class</code>对象，类对象</li>
-<li><code>meta-class</code>对象，元类对象<h2 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h2>通过类alloc出来的对象，instance对象在内存种存储的信息（只有成员变量）包括</li>
+<li><code>meta-class</code>对象，元类对象<h3 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h3>通过类<code>alloc</code>出来的对象，<code>instance</code>对象在内存种存储的信息（只有成员变量）包括</li>
 </ol>
 <ul>
-<li>isa指针</li>
-<li>其他成员变量</li>
-</ul>
-<p>isa指针始终在对象结构体的前面，因此，isa指针的地址即实例对象的地址</p>
-<h2 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h2><ul>
+<li><code>isa</code>指针</li>
+<li>其他成员变量<br><code>isa</code>指针始终在对象结构体的前面，因此，<code>isa</code>指针的地址即实例对象的地址<h3 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h3></li>
 <li><code>[objec class]</code>、<code>[NSObject class]</code>、<code>object_getClass(object)</code>都是获取<code>NSobject</code>的<code>class</code>对象</li>
-<li>它们都是同一个对象，在内存中有且只有一个class对象</li>
-<li>class对象在内存中存储的信息主要包括</li>
+<li>它们都是同一个对象，在内存中有且只有一个<code>class</code>对象</li>
+<li><code>class</code>对象在内存中存储的信息主要包括</li>
 </ul>
 <ol>
-<li>isa指针</li>
-<li>superclass指针</li>
-<li>类的属性信息（@property）、类的<code>对象方法</code>信息（instance method）</li>
-<li>类的协议信息（protocol）、类的成员变量信息（ivar）<ol>
-<li>ivar并非成员变量的值，成员变量的值有instance决定</li>
-<li>ivar实际存储的类型，名称等描述信息<h2 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h2><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除isa指针、superclass指针、类方法信息外，其他均为null<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系<img src="16713605118546.png"></h3></li>
+<li><code>isa</code>指针</li>
+<li><code>superclass</code>指针</li>
+<li>类的属性信息（<code>@property</code>）、类的对象方法信息（<code>instance method</code>）</li>
+<li>类的协议信息（<code>protocol</code>）、类的成员变量信息（<code>ivar</code>）<ol>
+<li><code>ivar</code>并非成员变量的值，成员变量的值由<code>instance</code>决定</li>
+<li><code>ivar</code>实际存储的类型，名称等描述信息<h3 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h3><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除<code>isa</code>指针、<code>superclass</code>指针、<code>类方法信息</code>外，其他均为<code>null</code><h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3></li>
 </ol>
 </li>
-<li>instance的isa指向class</li>
-<li>class的isa指向meta-class</li>
-<li>meta-class的isa指向基类的meta-class</li>
-<li>class的superclass指向父类的class<ol>
-<li>如果没有父类，superclass指针为nil</li>
+</ol>
+<p><img src="16713605118546.png"></p>
+<ul>
+<li>关系总结<ol>
+<li><code>instance</code>的<code>isa</code>指向<code>class</code></li>
+<li><code>class</code>的<code>isa</code>指向<code>meta-class</code></li>
+<li><code>meta-class</code>的<code>isa</code>指向基类<code>meta-class</code><ul>
+<li>基类<code>meta-class</code>的<code>isa</code>指向自己</li>
+</ul>
+</li>
+<li><code>class</code>的<code>superclass</code>指向父类的<code>class</code><ol>
+<li>如果没有父类，<code>superclass</code>指针为<code>nil</code></li>
 </ol>
 </li>
-<li>meta-class的superclass指向父类的meta-class<ol>
-<li>基类的meta-class的superclass指向基类的class</li>
+<li><code>meta-class</code>的<code>superclass</code>指向父类的<code>meta-class</code><ol>
+<li>基类<code>meta-class</code>的<code>superclass</code>指向基类<code>class</code></li>
 </ol>
 </li>
-<li></li>
 </ol>
+</li>
+</ul>
  
       <!-- reward -->
       
@@ -220,13 +226,13 @@
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            isa指针
+            isa指针简介
           
         </div>
       </a>
     
     
-      <a href="/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/16708614441261/" class="article-nav-link">
+      <a href="/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/NSObject/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
         <div class="article-nav-title">NSObject</div>
       </a>

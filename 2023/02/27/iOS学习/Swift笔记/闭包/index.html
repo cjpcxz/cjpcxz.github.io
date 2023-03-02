@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">55</span>
+            <span class="post-count">1.7k</span>
         </span>
     </span>
 
@@ -86,13 +86,15 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">7 min</span>
         </span>
     </span>
 </div>
  
     </div>
       
+    <div class="tocbot"></div>
+
 
 
 
@@ -106,6 +108,58 @@
 <li>一般它捕获的是外层西数的局部变量\常量</li>
 </ul>
 </blockquote>
+<span id="more"></span>
+<h3 id="闭包本质查看"><a href="#闭包本质查看" class="headerlink" title="闭包本质查看"></a>闭包本质查看</h3><h4 id="不捕获变量"><a href="#不捕获变量" class="headerlink" title="不捕获变量"></a>不捕获变量</h4><ul>
+<li>源码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func getFun() -&gt;(Int)-&gt;Int &#123;</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return i</span><br><span class="line">    &#125;</span><br><span class="line">    return plus(i:)</span><br><span class="line">&#125;</span><br><span class="line">var fu = getFun()</span><br><span class="line">print(MemoryLayout.stride(ofValue: fu)) //16</span><br></pre></td></tr></table></figure></li>
+<li>汇编<ul>
+<li><code>rax</code>一般最为返回值，很明显将<code>0xe5(%rip)</code>的地址存放在计算器<code>rax</code>中，返回<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SwiftDText`getFun():</span><br><span class="line">-&gt;  0x100004e10 &lt;+0&gt;:  pushq  %rbp</span><br><span class="line">    0x100004e11 &lt;+1&gt;:  movq   %rsp, %rbp</span><br><span class="line">    0x100004e14 &lt;+4&gt;:  leaq   0xe5(%rip), %rax          ; plus(i: Swift.Int) -&gt; Swift.Int at main.swift:195</span><br><span class="line">    0x100004e1b &lt;+11&gt;: xorl   %ecx, %ecx</span><br><span class="line">    0x100004e1d &lt;+13&gt;: movl   %ecx, %edx</span><br><span class="line">    0x100004e1f &lt;+15&gt;: popq   %rbp</span><br><span class="line"> 0x100004e20 &lt;+16&gt;: retq   </span><br></pre></td></tr></table></figure></li>
+<li>查看<code>rax</code>地址,很明显存放的是函数地址，显然不捕获变量的闭包，直接返回了函数的地址。并且和<code>fu</code>的指针一致。</li>
+<li>此外将<code>xorl   %ecx, %ecx</code>进行异或,其值为0，并将结果赋值给<code>edx</code>（<code>edx</code>与<code>rdx</code>共寄存器，只是一个4字节，一个8字节),也可理解为赋值给了<code>rdx</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">register read rax</span><br><span class="line">rax = 0x0000000100004f00  SwiftDText`plus(i: Swift.Int) -&gt; Swift.Int at main.swift:195</span><br><span class="line">p fu</span><br><span class="line">() $R0 = 0x0000000100004f00 </span><br></pre></td></tr></table></figure></li>
+<li><code>fn</code>指针变量是16字节空间，<ul>
+<li>其中赋值<code>0x100002299 + 0xe337 = 0x1000105D0</code>,<code>0x1000022a0 + 0xe338 = 0x1000105D8</code>,并且为<code>movq</code>(占8字节)移动</li>
+<li>因此，很显然这里将<code>rax</code>中的函数地址地址赋予<code>fu</code>，同时<code>rdx</code>也赋值给了<code>fu</code>，<code>rdx</code>和后续捕获变量有关系<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0x100002292 &lt;+18&gt;:  movq   %rax, 0xe337(%rip)        ; SwiftDText.fu : (Swift.Int) -&gt; Swift.Int</span><br><span class="line">0x100002299 &lt;+25&gt;:  movq   %rdx, 0xe338(%rip)        ; SwiftDText.fu : (Swift.Int) -&gt; Swift.Int + 8</span><br><span class="line">0x1000022a0 &lt;+32&gt;:  movl   $0x1, %edi</span><br></pre></td></tr></table></figure>
+<h4 id="捕获变量"><a href="#捕获变量" class="headerlink" title="捕获变量"></a>捕获变量</h4></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>源码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func getFun() -&gt;(Int)-&gt;Int &#123;</span><br><span class="line">    var num = 9,num2 = 3</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return num + num2 + i</span><br><span class="line">    &#125;</span><br><span class="line">    return plus(i:)</span><br><span class="line">&#125;</span><br><span class="line">var fu = getFun()</span><br><span class="line">print(MemoryLayout.stride(ofValue: fu)) //16</span><br></pre></td></tr></table></figure></li>
+<li>汇编<ul>
+<li>汇编源码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">0x100008870 &lt;+0&gt;:  pushq  %rbp</span><br><span class="line">0x100008871 &lt;+1&gt;:  movq   %rsp, %rbp</span><br><span class="line">0x100008874 &lt;+4&gt;:  subq   $0x10, %rsp</span><br><span class="line">0x100008878 &lt;+8&gt;:  movq   $0x0, -0x8(%rbp)</span><br><span class="line">0x100008880 &lt;+16&gt;: movq   $0x0, -0x10(%rbp)</span><br><span class="line">0x100008888 &lt;+24&gt;: movq   $0x9, -0x8(%rbp)</span><br><span class="line">0x100008890 &lt;+32&gt;: movq   $0x3, -0x10(%rbp)</span><br><span class="line">0x100008898 &lt;+40&gt;: leaq   0x3b79(%rip), %rdi        ; _swift_FORCE_LOAD_$_swiftIOKit_$_SwiftDText + 24</span><br><span class="line">0x10000889f &lt;+47&gt;: movl   $0x20, %esi</span><br><span class="line">0x1000088a4 &lt;+52&gt;: movl   $0x7, %edx</span><br><span class="line">0x1000088a9 &lt;+57&gt;: callq  0x10000ab86               ; symbol stub for: swift_allocObject</span><br><span class="line">0x1000088ae &lt;+62&gt;: movq   %rax, %rdx //堆生成的对象，给了rdx</span><br><span class="line">0x1000088b1 &lt;+65&gt;: movq   $0x9, 0x10(%rdx)  //9赋值给了rdx后16字节</span><br><span class="line">0x1000088b9 &lt;+73&gt;: movq   $0x3, 0x18(%rdx) //3赋值给了rdx后24字节</span><br><span class="line">0x1000088c1 &lt;+81&gt;: leaq   0xf8(%rip), %rax          ; partial apply forwarder for function signature specialization &lt;Arg[1] = Value Promoted from Box, Arg[2] = Value Promoted from Box&gt; of plus(i: Swift.Int) -&gt; Swift.Int at &lt;compiler-generated&gt; //注意这里和之前未捕获的不同</span><br><span class="line">0x1000088c8 &lt;+88&gt;: addq   $0x10, %rsp</span><br><span class="line">0x1000088cc &lt;+92&gt;: popq   %rbp</span><br><span class="line">0x1000088cd &lt;+93&gt;: retq </span><br></pre></td></tr></table></figure></li>
+<li>可以看出调用了<code>swift_allocObject</code>，在堆空间生成了对象。并且该对象的地址返回在<code>rax</code>中,打印出地址，以及存储的<code>num</code>,<code>num2</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">register read rax</span><br><span class="line">    rax = 0x0000600000208000</span><br><span class="line">//显示地址的内存，6组，每组8字节，按16进制显示</span><br><span class="line">x/6xg 0x0000600000208000</span><br><span class="line">0x600000208000: 0x000000010000c418 0x0000000000000003</span><br><span class="line">0x600000208010: 0x0000000000000009 0x0000000000000003</span><br><span class="line">0x600000208020: 0x0000000000000000 0x0000000000000000</span><br></pre></td></tr></table></figure></li>
+<li><code>leaq    0xf8(%rip), %rax</code>，<code>movq   $0x9, 0x10(%rdx)、movq   $0x3, 0x18(%rdx)</code>,函数地址传给了<code>rax</code>,生成的包装<code>num</code> 的对象传给了<code>rdx</code>,<code>rdx</code>和<code>rax</code>一般用做函数返回值。实际返回结果后，将rax和rdx上的值，赋值给了<code>fn对象</code>（由于在全局区执行，所以是<code>rip</code>，全局变量）<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 0x100005f62 &lt;+18&gt;:  movq   %rax, 0xaca7(%rip)        ; SwiftDText.fu : (Swift.Int) -&gt; Swift.Int</span><br><span class="line">0x100005f69 &lt;+25&gt;:  movq   %rdx, 0xaca8(%rip)        ; SwiftDText.fu : (Swift.Int) -&gt; Swift.Int + 8</span><br><span class="line">//此时rip的的地址是0x100010C10，将rax和rdx存在该地址的内存上，一个为函数地址，一个为存储的变量地址</span><br><span class="line">x/2g 0x100010C10</span><br><span class="line">0x100010c10: 0x00000001000089c0 0x0000600000208000</span><br></pre></td></tr></table></figure></li>
+<li><strong>注意</strong>，和未捕获的闭包表达式不同，捕获了变量的闭包，其赋值给<code>rdx</code>的函数地址，和实际的不同.(xcode旁边的注解和捕获变量的赋值，是不一样的)，实际上，该函数地址进行了一次包装<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//实际调用函数的地方</span><br><span class="line">0x100005f97 &lt;+71&gt;:  movq   0xac7a(%rip), %r13        ; SwiftDText.fu : (Swift.Int) -&gt; Swift.Int + 8 //这里实际将，num包装的堆地址传给了r13</span><br><span class="line">0x100005f9e &lt;+78&gt;:  movq   %r13, -0x80(%rbp)</span><br><span class="line">0x100005fa2 &lt;+82&gt;:  movq   %r13, %rdi</span><br><span class="line">0x100005fa5 &lt;+85&gt;:  callq  0x10000abf2               ; symbol stub for: swift_retain</span><br><span class="line">0x100005faa &lt;+90&gt;:  leaq   -0x20(%rbp), %rdi</span><br><span class="line">0x100005fae &lt;+94&gt;:  callq  0x10000abb6               ; symbol stub for: swift_endAccess</span><br><span class="line">0x100005fb3 &lt;+99&gt;:  movq   -0x88(%rbp), %rax</span><br><span class="line">0x100005fba &lt;+106&gt;: movl   $0x1, %edi</span><br><span class="line">0x100005fbf &lt;+111&gt;: callq  *%rax</span><br><span class="line">//函数内部</span><br><span class="line">0x1000089c0 &lt;+0&gt;:  pushq  %rbp  //即上面rax中存放的地址</span><br><span class="line">0x1000089c1 &lt;+1&gt;:  movq   %rsp, %rbp</span><br><span class="line">0x1000089c4 &lt;+4&gt;:  movq   0x10(%r13), %rsi //将r13中的num包装对象偏移16字节（即num）取出，偏移24字节num2，传给rsi作为函数参数</span><br><span class="line">0x1000089c8 &lt;+8&gt;:  movq   0x18(%r13), %rdx</span><br><span class="line">0x1000089cc &lt;+12&gt;: popq   %rbp</span><br><span class="line">0x1000089cd &lt;+13&gt;: jmp    0x100008920               ; function signature specialization &lt;Arg[1] = Value Promoted from Box, Arg[2] = Value Promoted from Box&gt; of plus(i: Swift.Int) -&gt; Swift.Int at main.swift:197 //最终实际地址是0x100008920  </span><br></pre></td></tr></table></figure>
+<h4 id="捕获的时机"><a href="#捕获的时机" class="headerlink" title="捕获的时机"></a>捕获的时机</h4></li>
+</ul>
+</li>
+<li><strong>注意</strong>，捕获只会在使用的时候进行捕获，这里捕获的是20，而非9<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func getFun() -&gt;(Int)-&gt;Int &#123;</span><br><span class="line">    var num = 9</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return num + i</span><br><span class="line">    &#125;</span><br><span class="line">    var num = 20</span><br><span class="line">    return plus(i:)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>注意</strong>,如果没有执行，则不会捕获，和此前未捕获变量一致<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func getFun() -&gt;(Int)-&gt;Int &#123;</span><br><span class="line">    var num = 9</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return num + i</span><br><span class="line">    &#125;</span><br><span class="line">    var num = 20</span><br><span class="line">    return &#123;$0&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>注意</strong>,如果是全局变量，也不会进行捕获</li>
+<li><strong>注意</strong>,上面的函数中未对<code>num</code>和<code>num2</code>进行修改，最终这两个数(3个以上也是这样)，会包装成一个堆对象</li>
+<li><strong>注意</strong>,下面的函数对<code>num</code>和<code>num2</code>进行修改，最终这两个数，会分别包装成一个堆对象，汇编查看会生成两个堆对象<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func getFun() -&gt;((Int)-&gt;Int,(Int)-&gt;Int) &#123;</span><br><span class="line">    var num = 9,num2 = 3</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        num += i</span><br><span class="line">        num2 += i</span><br><span class="line">        return num + num2 + i</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>注意</strong>,下面会生成两个堆对象，每个堆对象包装了<code>num</code>和<code>num2</code>（由于未修改）。如果<code>num</code>和<code>num2</code>修改了，也只会分别生成一个，不会因为两次闭包捕获，各自生成一次。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func getFun() -&gt;((Int)-&gt;Int,(Int)-&gt;Int) &#123;</span><br><span class="line">    var num = 9,num2 = 3</span><br><span class="line">    func plus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return num + num2 + i</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func minus(i:Int) -&gt; Int &#123;</span><br><span class="line">        return num + num2 + i</span><br><span class="line">    &#125;</span><br><span class="line">    num = 20</span><br><span class="line">    return (plus(i:),minus(i:))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>可以把闭包想象成是一个类的实例对象<ul>
+<li>内存在堆空间</li>
+<li>捕获的局部变量\常量就是对象的成员（存储属性）</li>
+<li>组成闭包的西数就是类内部定义的方法</li>
+</ul>
+</li>
+</ul>
+<h3 id="自动闭包"><a href="#自动闭包" class="headerlink" title="自动闭包"></a>自动闭包</h3><blockquote>
+<p>自动闭包的参数会延迟执行，甚至不执行</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func getfirstPositive(_ v1: Int, _ v2: @autoclosure () -&gt; Int) -&gt; Int? &#123;</span><br><span class="line">return v1 &gt; 0 ? v1 : v2 ()</span><br><span class="line">&#125;</span><br><span class="line">getFirstPositive(-4, 20)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>@autoclosure</code> 会自动将20 封装成闭包<code>&#123; 20 &#125;</code></li>
+<li><code>@autoclosure</code> 只支持<code>()一＞T</code>格式的参数</li>
+<li>空合并运算符<code>??</code>使用了<code>@autoclosure</code> 技术<ul>
+<li><code>func ?? &lt;T&gt;(optional:T?,defaultValue:@autoclosure() throws -&gt; T?) rethrows -&gt; T?</code></li>
+</ul>
+</li>
+<li>有<code>@autoclosure</code>、无<code>@autoclosure</code>，构成了函数重载</li>
+</ul>
  
       <!-- reward -->
       
@@ -180,6 +234,15 @@
 
    
   <nav class="article-nav">
+    
+      <a href="/2023/03/01/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%B1%9E%E6%80%A7/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            属性
+          
+        </div>
+      </a>
     
     
       <a href="/2023/02/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/class/" class="article-nav-link">
