@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>属性 |  ayer</title>
+      <title>Array |  ayer</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -46,7 +46,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-iOS学习/Swift笔记/属性"
+  id="post-iOS学习/Swift笔记/Array"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -57,7 +57,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  属性
+  Array
 </h1>
  
 
@@ -65,8 +65,8 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/03/01/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%B1%9E%E6%80%A7/" class="article-date">
-  <time datetime="2023-03-01T15:42:56.000Z" itemprop="datePublished">2023-03-01</time>
+      <a href="/2023/03/13/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/Array/" class="article-date">
+  <time datetime="2023-03-12T16:02:14.000Z" itemprop="datePublished">2023-03-13</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">225</span>
+            <span class="post-count">601</span>
         </span>
     </span>
 
@@ -86,7 +86,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">2 min</span>
         </span>
     </span>
 </div>
@@ -101,27 +101,27 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="延迟存储属性"><a href="#延迟存储属性" class="headerlink" title="延迟存储属性"></a>延迟存储属性</h3><ul>
-<li><code>lazy</code>属性必须是<code>var</code>，不能是<code>let</code><ul>
-<li>必须在实例的初始化方法完成之前就拥有值</li>
+  <h3 id="Array的内存"><a href="#Array的内存" class="headerlink" title="Array的内存"></a>Array的内存</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1,2,3,4,4]</span><br><span class="line">print(MemoryLayout.stride(ofValue: arr)) //8</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数组是结构体，但其内存占用是8字节，而并非，其数组内<code>int</code>存储的总和，<ul>
+<li>实际上数组生成在堆空间，其8字节是堆空间</li>
+<li>汇编查看,显然在数组初始化的时候，调用了alloc，在堆空间创建了内存<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  * thread #1, queue = &#x27;com.apple.main-thread&#x27;, stop reason = breakpoint 4.1</span><br><span class="line">* frame #0: 0x00007ff81a193e62 libswiftCore.dylib`swift_allocObject + 34</span><br><span class="line">  frame #1: 0x00007ff819e9e533 libswiftCore.dylib`Swift._allocateUninitializedArray&lt;τ_0_0&gt;(Builtin.Word) -&gt; (Swift.Array&lt;τ_0_0&gt;, Builtin.RawPointer) + 83</span><br><span class="line">  frame #2: 0x0000000100004275 SwiftDText`main at main.swift:26:7</span><br><span class="line">  frame #3: 0x00007ff80b6fd310 dyld`start + 2432</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li>如果多条线程同时第一次访问<code>lazy</code>属性<ul>
-<li>无法保证属性只被初始化1次</li>
+<li>数组在堆中的内存数据查看<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1,2,3,4,4]</span><br><span class="line">//&amp;arr</span><br><span class="line">x/4xg 0x10000C3A0</span><br><span class="line">0x10000c3a0: 0x0000600002104000 0x0000000000000000</span><br><span class="line">0x10000c3b0: 0x0000000000000000 0x0000000000000000</span><br><span class="line">// 数组上内存的情况</span><br><span class="line">x/10xg 0x0000600002104000</span><br><span class="line">0x600002104000: 0x00007ff84e38f7b0 0x0000000000000003</span><br><span class="line">0x600002104010: 0x0000000000000005 0x000000000000000a</span><br><span class="line">0x600002104020: 0x0000000000000001 0x0000000000000002</span><br><span class="line">0x600002104030: 0x0000000000000003 0x0000000000000004</span><br><span class="line">0x600002104040: 0x0000000000000004 0x0000000000000000</span><br></pre></td></tr></table></figure></li>
+<li>显然，数组和引用类型相似，其真正存储的值在堆空间，该堆空间，<ul>
+<li>第一个8字节可能是metaData,</li>
+<li>第二个8字节存放是引用计数</li>
+<li>第三个8字节存放是数组长度，第四个8字节是数组的容量，（长度大于容量的一半，则容量会进行倍数扩容）</li>
+<li>往后字节存放数组中存放的值，上面介绍的是整型，下面介绍其他类型的<ul>
+<li>注意如果是Any，则除数据本身外，还会有介绍数据类型相关的字节，每个内容占4字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//字符串</span><br><span class="line">var arr = [&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;]</span><br><span class="line">0x60000260c000: 0x00007ff84e38eaa0 0x0000000000000003</span><br><span class="line">0x60000260c010: 0x0000000000000004 0x0000000000000008</span><br><span class="line">0x60000260c020: 0x0000000000000031 0xe100000000000000</span><br><span class="line">0x60000260c030: 0x0000000000000032 0xe100000000000000</span><br><span class="line">0x60000260c040: 0x0000000000000033 0xe100000000000000</span><br><span class="line">0x60000260c050: 0x0000000000000034 0xe100000000000000</span><br><span class="line">// Any  var arr = [&quot;1&quot;,2,3,&quot;4&quot;]</span><br><span class="line">0x6000033080a0: 0x00007ff84e38eb70 0x0000000000000003</span><br><span class="line">0x6000033080b0: 0x0000000000000004 0x0000000000000008</span><br><span class="line">0x6000033080c0: 0x0000000000000031 0xe100000000000000</span><br><span class="line">0x6000033080d0: 0x0000000000000000 0x00007ff84ef72ad8</span><br><span class="line">0x6000033080e0: 0x0000000000000002 0x0000000000000000</span><br><span class="line">0x6000033080f0: 0x0000000000000000 0x00007ff84ef74a40</span><br><span class="line">0x600003308100: 0x0000000000000003 0x0000000000000000</span><br><span class="line">0x600003308110: 0x0000000000000000 0x00007ff84ef74a40</span><br><span class="line">0x600003308120: 0x0000000000000034 0xe100000000000000</span><br><span class="line">0x600003308130: 0x0000000000000000 0x00007ff84ef72ad8</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li>当结构体包含一个延迟存储属性时，只有<code>var</code>才能访问延迟存储属性<ul>
-<li>因为延迟属性初始化时需要改变结构体的内存<h3 id="属性观察器"><a href="#属性观察器" class="headerlink" title="属性观察器"></a>属性观察器</h3></li>
 </ul>
 </li>
-<li><code>wil1set</code>会传递新值，默认叫<code>newValue</code></li>
-<li><code>didset</code>会传递旧值，默认叫<code>oldValue</code></li>
-<li>在初始化器中设置属性值不会触发<code>wil1Set</code>和<code>didset</code></li>
-<li>在属性定义时设置初始值也不会触发<code>wi11Set</code>和<code>didset</code><ul>
-<li>属性定义是设置，和初始化器中设置，其源码实际是一样的</li>
-</ul>
-</li>
-<li>属性观察器，计算属性的功能，同样可以应用在全局变量、局部变量身上</li>
+<li>扩容方式查看<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">var arr = [Int]()</span><br><span class="line">for i in 0..&lt;3 &#123;</span><br><span class="line">    arr.append(i)</span><br><span class="line">&#125;</span><br><span class="line">// 数组地址 0x000000010000c260</span><br><span class="line">// [0]</span><br><span class="line">x/xg 0x000000010000c260</span><br><span class="line">0x10000c260: 0x0000600000c00bd0</span><br><span class="line">x/6xg 0x0000600000c00bd0</span><br><span class="line">0x600000c00bd0: 0x00007ff84e38f7b0 0x0000000000000003</span><br><span class="line">0x600000c00be0: 0x0000000000000001 0x0000000000000004</span><br><span class="line">0x600000c00bf0: 0x0000000000000000 0x0000000000000000</span><br><span class="line"></span><br><span class="line">// [0,1]</span><br><span class="line">x/xg 0x000000010000c260</span><br><span class="line">0x10000c260: 0x0000600000c00bd0</span><br><span class="line">x/6xg 0x0000600000c00bd0</span><br><span class="line">0x600000c14000: 0x00007ff84e38f7b0 0x0000000000000003</span><br><span class="line">0x600000c14010: 0x0000000000000002 0x0000000000000004</span><br><span class="line">0x600000c14020: 0x0000000000000000 0x0000000000000001</span><br><span class="line"></span><br><span class="line">// [0,1,2]</span><br><span class="line">x/xg 0x000000010000c260</span><br><span class="line">0x10000c260: 0x0000600001700600</span><br><span class="line">x/8xg 0x0000600001700600</span><br><span class="line">0x600001700600: 0x00007ff84e38f7b0 0x0000000000000003</span><br><span class="line">0x600001700610: 0x0000000000000003 0x0000000000000008</span><br><span class="line">0x600001700620: 0x0000000000000000 0x0000000000000001</span><br><span class="line">0x600001700630: 0x0000000000000002 0x0000000000000000</span><br></pre></td></tr></table></figure></li>
+<li>显然扩容在数组实际长度达到容量值的一半以上之后，就会进行扩容，此时会重新申请堆空间构建数组</li>
+<li><strong>注意</strong>,<code>Array</code>在<code>swift</code>中是值类型，但其本质实际上是引用类型，其内存存储在堆空间中，在<code>swift</code>中设置为<code>struct</code>只是表明<code>Array</code>在<code>swift</code>中使用的行为是按结构体的方式来编写代码的,其本质仍是引用类型。</li>
 </ul>
  
       <!-- reward -->
@@ -187,7 +187,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/03/01/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%B1%9E%E6%80%A7/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/03/13/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/Array/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -198,19 +198,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2023/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/" class="article-nav-link">
+      <a href="/2023/03/14/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%AB%98%E7%BA%A7%E8%BF%90%E7%AE%97%E7%AC%A6/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            SSH常用指令
+            高级运算符
           
         </div>
       </a>
     
     
-      <a href="/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/" class="article-nav-link">
+      <a href="/2023/03/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">闭包</div>
+        <div class="article-nav-title">字符串</div>
       </a>
     
   </nav>

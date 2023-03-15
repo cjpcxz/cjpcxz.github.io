@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-03-02T11:12:29.377Z</updated>
+  <updated>2023-03-15T16:02:40.731Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>SSH常用指令</title>
-    <link href="http://example.com/2023/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/"/>
-    <id>http://example.com/2023/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/</id>
-    <published>2023-10-29T09:28:35.000Z</published>
-    <updated>2023-03-02T11:12:29.377Z</updated>
+    <title>内存管理</title>
+    <link href="http://example.com/2023/03/15/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
+    <id>http://example.com/2023/03/15/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</id>
+    <published>2023-03-15T15:52:37.000Z</published>
+    <updated>2023-03-15T16:02:40.731Z</updated>
     
     
       
@@ -34,17 +34,109 @@
     
     
     
-    <category term="iOS越狱" scheme="http://example.com/categories/iOS%E8%B6%8A%E7%8B%B1/"/>
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
     
     
   </entry>
   
   <entry>
-    <title>属性</title>
-    <link href="http://example.com/2023/03/01/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%B1%9E%E6%80%A7/"/>
-    <id>http://example.com/2023/03/01/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%B1%9E%E6%80%A7/</id>
-    <published>2023-03-01T15:42:56.000Z</published>
-    <updated>2023-03-01T16:50:01.674Z</updated>
+    <title>高级运算符</title>
+    <link href="http://example.com/2023/03/14/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%AB%98%E7%BA%A7%E8%BF%90%E7%AE%97%E7%AC%A6/"/>
+    <id>http://example.com/2023/03/14/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%AB%98%E7%BA%A7%E8%BF%90%E7%AE%97%E7%AC%A6/</id>
+    <published>2023-03-13T16:19:25.000Z</published>
+    <updated>2023-03-13T16:40:07.597Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Array</title>
+    <link href="http://example.com/2023/03/13/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/Array/"/>
+    <id>http://example.com/2023/03/13/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/Array/</id>
+    <published>2023-03-12T16:02:14.000Z</published>
+    <updated>2023-03-12T16:45:17.066Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>字符串</title>
+    <link href="http://example.com/2023/03/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    <id>http://example.com/2023/03/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/</id>
+    <published>2023-03-12T08:02:28.000Z</published>
+    <updated>2023-03-12T10:34:44.711Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>类的初始化</title>
+    <link href="http://example.com/2023/03/06/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
+    <id>http://example.com/2023/03/06/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%88%9D%E5%A7%8B%E5%8C%96/</id>
+    <published>2023-03-06T13:44:56.000Z</published>
+    <updated>2023-03-14T15:37:02.827Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="swift笔记" scheme="http://example.com/categories/swift%E7%AC%94%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>下标、重写</title>
+    <link href="http://example.com/2023/03/05/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E4%B8%8B%E6%A0%87/"/>
+    <id>http://example.com/2023/03/05/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E4%B8%8B%E6%A0%87/</id>
+    <published>2023-03-05T07:46:11.000Z</published>
+    <updated>2023-03-05T09:40:49.199Z</updated>
     
     
       
@@ -107,16 +199,10 @@
     <link href="http://example.com/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/"/>
     <id>http://example.com/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/</id>
     <published>2023-02-25T10:25:03.000Z</published>
-    <updated>2023-02-26T17:10:51.005Z</updated>
+    <updated>2023-03-03T02:05:06.022Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
+    <summary type="html">&lt;h3 id=&quot;内存查看&quot;&gt;&lt;a href=&quot;#内存查看&quot; class=&quot;headerlink&quot; title=&quot;内存查看&quot;&gt;&lt;/a&gt;内存查看&lt;/h3&gt;</summary>
     
     
     
@@ -366,98 +452,6 @@
     
     
     <category term="内存管理" scheme="http://example.com/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>读写锁</title>
-    <link href="http://example.com/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E8%AF%BB%E5%86%99%E9%94%81/"/>
-    <id>http://example.com/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E8%AF%BB%E5%86%99%E9%94%81/</id>
-    <published>2023-02-12T09:28:35.000Z</published>
-    <updated>2023-02-12T12:57:09.359Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="多线程" scheme="http://example.com/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>多线程和锁</title>
-    <link href="http://example.com/2023/02/02/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E9%94%81/"/>
-    <id>http://example.com/2023/02/02/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E9%94%81/</id>
-    <published>2023-02-02T15:53:50.000Z</published>
-    <updated>2023-02-06T16:00:26.315Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="多线程" scheme="http://example.com/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>多线程的问题</title>
-    <link href="http://example.com/2023/01/31/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    <id>http://example.com/2023/01/31/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</id>
-    <published>2023-01-31T15:54:11.000Z</published>
-    <updated>2023-02-05T16:07:15.148Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="多线程" scheme="http://example.com/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>runloop的运行逻辑</title>
-    <link href="http://example.com/2023/01/20/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9A%84%E8%BF%90%E8%A1%8C%E9%80%BB%E8%BE%91/"/>
-    <id>http://example.com/2023/01/20/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9A%84%E8%BF%90%E8%A1%8C%E9%80%BB%E8%BE%91/</id>
-    <published>2023-01-20T11:39:49.000Z</published>
-    <updated>2023-02-04T10:48:09.978Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="runloop" scheme="http://example.com/categories/runloop/"/>
     
     
   </entry>

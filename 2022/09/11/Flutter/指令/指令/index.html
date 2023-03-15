@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">119</span>
+            <span class="post-count">196</span>
         </span>
     </span>
 
@@ -109,6 +109,34 @@
 <li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
 <li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h4 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h4></li>
 <li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
+</ul>
+<h3 id="创建flutter"><a href="#创建flutter" class="headerlink" title="创建flutter"></a>创建flutter</h3><ol>
+<li>集成SDK<ul>
+<li><a target="_blank" rel="noopener" href="https://flutter.cn/docs/get-started/install/macos#get-sdk">Flutter地址</a></li>
+</ul>
+</li>
+<li>创建<code>flutter</code>项目<ul>
+<li><code>flutter create -i swift -a java --org com.flutter. test_flutter</code></li>
+</ul>
+</li>
+<li>运行<code>flutter</code>项目<ul>
+<li><code>flutter run</code><h3 id="创建packages"><a href="#创建packages" class="headerlink" title="创建packages"></a>创建packages</h3><blockquote>
+<ol>
+<li>纯flutter的<code>Dart package</code></li>
+<li>原生插件<code>Plugin packages</code></li>
+</ol>
+</blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="Dart-package"><a href="#Dart-package" class="headerlink" title="Dart package"></a><code>Dart package</code></h4><ul>
+<li><code>flutter create --template=package hello</code></li>
+<li><code>flutter pub publish --dry-run</code><ul>
+<li>发布检查包是否合法</li>
+</ul>
+</li>
+<li><code>flutter create --org com.example --template=plugin -platforms=android,ios -a kotlin hello</code></li>
 </ul>
  
       <!-- reward -->
@@ -185,11 +213,11 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/11/04/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/Mach-o%E6%96%87%E4%BB%B6/" class="article-nav-link">
+      <a href="/2022/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            Mach-o文件
+            SSH常用指令
           
         </div>
       </a>

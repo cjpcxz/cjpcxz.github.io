@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>枚举内存分析 |  ayer</title>
+      <title>下标、重写 |  ayer</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -46,7 +46,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-iOS学习/Swift笔记/枚举内存分析"
+  id="post-iOS学习/Swift笔记/下标"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -57,7 +57,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  枚举内存分析
+  下标、重写
 </h1>
  
 
@@ -65,8 +65,8 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2023-02-25T10:25:03.000Z" itemprop="datePublished">2023-02-25</time>
+      <a href="/2023/03/05/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E4%B8%8B%E6%A0%87/" class="article-date">
+  <time datetime="2023-03-05T07:46:11.000Z" itemprop="datePublished">2023-03-05</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">976</span>
+            <span class="post-count">792</span>
         </span>
     </span>
 
@@ -86,7 +86,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">4 min</span>
+            <span class="post-count">3 min</span>
         </span>
     </span>
 </div>
@@ -101,40 +101,49 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="内存查看"><a href="#内存查看" class="headerlink" title="内存查看"></a>内存查看</h3><span id="more"></span>
-<blockquote>
-<p><code>view Memory</code>功能，查看地址中存放的内存</p>
+  <h3 id="subscript下标"><a href="#subscript下标" class="headerlink" title="subscript下标"></a><code>subscript</code>下标</h3><ul>
+<li>结构体,对结构体设置，必须要有set方法，才能改结构体内的值<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">struct Point &#123;</span><br><span class="line">    var x = 0.0,y = 0.0</span><br><span class="line">&#125;</span><br><span class="line">struct Person &#123;</span><br><span class="line">    var point = Point()</span><br><span class="line">    subscript(index:String) -&gt; Point &#123;</span><br><span class="line">        set &#123; point = newValue &#125;</span><br><span class="line"></span><br><span class="line">        get &#123; point &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var p = Person()</span><br><span class="line">p[&quot;0&quot;].x = 11 //本质上是 p[&quot;0&quot;].x = Point(11,p[&quot;0&quot;].y)</span><br><span class="line">p[&quot;0&quot;].y = 12</span><br></pre></td></tr></table></figure></li>
+<li>类，返回的是引用类型，因此不需要set也能设置<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">    var x = 0.0,y = 0.0</span><br><span class="line">&#125;</span><br><span class="line">struct Person &#123;</span><br><span class="line">    var point = Point()</span><br><span class="line">    subscript(index:String) -&gt; Point &#123;</span><br><span class="line">        get &#123; point &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var p = Person()</span><br><span class="line">p[&quot;0&quot;].x = 11 </span><br><span class="line">p[&quot;0&quot;].y = 12</span><br></pre></td></tr></table></figure>
+<h3 id="重写"><a href="#重写" class="headerlink" title="重写"></a>重写</h3><h4 id="重写类型方法、下标"><a href="#重写类型方法、下标" class="headerlink" title="重写类型方法、下标"></a>重写类型方法、下标</h4></li>
+<li>被<code>class</code>修饰的类型方法、下标，允许被子类重写<ul>
+<li>父类如果是<code>class</code>修饰方法，则可以重写，并且新的方法写出<code>static</code>可以防止当前类的子类，继续重写</li>
+</ul>
+</li>
+<li>被<code>static</code>修饰的类型方法、下标，不允许被子类重写</li>
+</ul>
+<h4 id="重写属性"><a href="#重写属性" class="headerlink" title="重写属性"></a>重写属性</h4><ul>
+<li>重写实例属性<ul>
+<li>子类可以将父类的属性（存储、计算） 重写为计算属性</li>
+<li>子类不可以将父类属性性重写为存储属性</li>
+<li>只能重写<code>var</code>属性，不能重写<code>let</code>属性</li>
+<li>重写时，属性名、类型要一致</li>
+<li>子类重写后的属性权限 不能小于 父类属性的权限<ul>
+<li>如果父类属性是只读的，那么子类重写后的属性可以是只读的、也可以是可读写的</li>
+<li>如果父类属性是可读写的，那么子类重写后的属性也必须是可读写的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>重写类型属性<ul>
+<li>被<code>class</code>修饰的计算类型属性，可以被子类重写,存储属性不能用<code>class</code>修饰，只能被<code>static</code></li>
+<li>被<code>static</code>修饰的类型属性（存储、计算），不可以被子类重写<h4 id="重写属性观察器"><a href="#重写属性观察器" class="headerlink" title="重写属性观察器"></a>重写属性观察器</h4><blockquote>
+<p>重写属性观察器，实际上并不会覆盖父类的属性观察器，只是再添加了一次观察器。</p>
 </blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Animal &#123;</span><br><span class="line">    var age = 0 &#123;</span><br><span class="line">        willSet &#123;</span><br><span class="line">            print(&quot;Animal:willSet&quot;,newValue)</span><br><span class="line">        &#125;</span><br><span class="line">        didSet &#123;</span><br><span class="line">            print(&quot;Animal:didSet&quot;,oldValue)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Dog:Animal &#123;</span><br><span class="line">    override var age: Int &#123;</span><br><span class="line">        willSet &#123;</span><br><span class="line">            print(&quot;Dog:willSet&quot;,newValue)</span><br><span class="line">        &#125;</span><br><span class="line">        didSet &#123;</span><br><span class="line">            print(&quot;Dog:didSet&quot;,oldValue)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">let dog = Dog ()</span><br><span class="line">dog.age = 10</span><br><span class="line">/*打印结果：</span><br><span class="line">Dog:willSet 10</span><br><span class="line">Animal:willSet 10</span><br><span class="line">Animal:didSet 0</span><br><span class="line">Dog:didSet 0</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>查看效果<br><img src="1.png"></p>
-</li>
-<li><p>地址内存查看方式，iOS是小端模式，高高低低，高地址存高位，低地址存地位</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">上面8个字节实际上是</span><br><span class="line">0x00 00 00 00 00 00 00 05</span><br></pre></td></tr></table></figure></li>
-<li><p>获取枚举的地址方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var t = TestNum.test1 </span><br><span class="line">let nums = withUnsafePointer(to: &amp;t) &#123; UnsafeRawPointer($0) &#125; //内存地址 0x000000010000c0b0</span><br></pre></td></tr></table></figure>
-<h4 id="普通枚举"><a href="#普通枚举" class="headerlink" title="普通枚举"></a>普通枚举</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum &#123; </span><br><span class="line">    case test1,test2,test3,test4,test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.size) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.stride) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.alignment) // 1</span><br><span class="line"></span><br><span class="line">var t = TestNum.test1</span><br><span class="line">t = .test5</span><br><span class="line">t = .test6</span><br></pre></td></tr></table></figure></li>
-<li><p>内存情况,1字节内存,第一个枚举是00,后面依次增加，其内存最大是<code>0xFF</code>预计最大可以有枚举数256个（这么大的数量无需用枚举了）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var t = TestNum.test1 // 0x00</span><br><span class="line">t = .test5  // 0x04</span><br><span class="line">t = .test6  // 0x05</span><br></pre></td></tr></table></figure>
-<h4 id="带原始值的枚举"><a href="#带原始值的枚举" class="headerlink" title="带原始值的枚举"></a>带原始值的枚举</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum:Int &#123; </span><br><span class="line">    case test1 = 10,test2,test3,test4,test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.size) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.stride) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.alignment) // 1</span><br></pre></td></tr></table></figure></li>
-<li><p>内存情况,带有1字节内存。其内存情况和普通枚举类型一样的，其原始值不占有内存空间，类似计算属性</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var t = TestNum.test1 // 0x00</span><br><span class="line">t = .test5  // 0x04</span><br><span class="line">t = .test6  // 0x05</span><br></pre></td></tr></table></figure>
-<h4 id="带关联值的枚举"><a href="#带关联值的枚举" class="headerlink" title="带关联值的枚举"></a>带关联值的枚举</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum &#123; </span><br><span class="line">    case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool),test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.size) // 25</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.stride) // 32</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.alignment) // 8</span><br></pre></td></tr></table></figure></li>
-<li><p>内存情况,实际占用25个字节，内存对齐是32个字节。对于存储情况，以最大存储3个Int，位24字节，前面的24个字节均用来存储关联值的（不管当前实际关联值大小是1个字节，还是16个字节），最高位用来存储枚举的类型（普通枚举不一样）。</p>
+<li>重写属性观察器，会先是子类的<code>willSet</code>-&gt;父类的<code>willSet</code>方法，最后是在父类中进行实际的设置，然后父类的<code>didSet</code>方法-&gt;子类的<code>didSet</code>方法</li>
+</ul>
+<h4 id="通过重写为计算属性增加属性观察器"><a href="#通过重写为计算属性增加属性观察器" class="headerlink" title="通过重写为计算属性增加属性观察器"></a>通过重写为计算属性增加属性观察器</h4><blockquote>
+<p>在同一个类中计算属性不能同时有set/get和willset/didSet，但是可以通过重写的方式，使其子类中可以拥有属性观察器。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">class Animal &#123;</span><br><span class="line">    var num:Int &#123;</span><br><span class="line">        get &#123;</span><br><span class="line">            print(&quot;num get&quot;)</span><br><span class="line">            return 20</span><br><span class="line">        &#125;</span><br><span class="line">        set &#123;</span><br><span class="line">            print(&quot;num set&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Dog:Animal &#123; </span><br><span class="line">    override var num: Int &#123;</span><br><span class="line">        willSet &#123;</span><br><span class="line">            print(&quot;num:willSet&quot;,newValue)</span><br><span class="line">        &#125;</span><br><span class="line">        didSet &#123;</span><br><span class="line">            print(&quot;num:didSet&quot;,oldValue)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let dog = Dog ()</span><br><span class="line">dog.num = 12</span><br><span class="line">/*打印结果：</span><br><span class="line">num get</span><br><span class="line">num:willSet 12</span><br><span class="line">num set</span><br><span class="line">num:didSet 20</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
 <ul>
-<li>内存从左到右，从上到下，内存地址增加</li>
-<li>关联值和非关联值，枚举的标志位存放的位置是不一样的，类似共用体<ul>
-<li>非关联值排在前面，普通枚举排在后面<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//占用内存情况</span><br><span class="line">//10 00 00 00 00 00 00 00  //实际为 0x10</span><br><span class="line">//02 00 00 00 00 00 00 00  //实际为 0x02</span><br><span class="line">//03 00 00 00 00 00 00 00  //实际为 0x03</span><br><span class="line">//00 </span><br><span class="line">var t = TestNum.test1(16,2,3) </span><br><span class="line">//占用内存情况</span><br><span class="line">//04 00 00 00 00 00 00 00  //实际为 0x04</span><br><span class="line">//05 00 00 00 00 00 00 00  //实际为 0x05</span><br><span class="line">//00 00 00 00 00 00 00 00  </span><br><span class="line">//01                       //实际为 0x01</span><br><span class="line">t = .test2(4, 5) </span><br><span class="line"> //占用内存情况</span><br><span class="line">//01 00 00 00 00 00 00 00  //实际为 0x01</span><br><span class="line">//00 00 00 00 00 00 00 00</span><br><span class="line">//00 00 00 00 00 00 00 00  </span><br><span class="line">//03                       //实际为 0x03</span><br><span class="line">t = .test4(true)</span><br><span class="line">//占用内存情况</span><br><span class="line">//10 00 00 00 00 00 00 00  //第一位标识位是1，表明第二个普通的枚举</span><br><span class="line">//00 00 00 00 00 00 00 00</span><br><span class="line">//00 00 00 00 00 00 00 00  </span><br><span class="line">//04                      //实际为 0x04, 这表明总共有4个关联枚举？</span><br><span class="line">t = .test6</span><br></pre></td></tr></table></figure></li>
+<li>重写计算属性，可以为其添加属性观察器，会先调用<code>get</code>方法，给<code>oldValue</code>赋值,再调用<code>willSet</code>、<code>set</code>、<code>didSet</code>方法</li>
 </ul>
-</li>
-</ul>
-</li>
-<li><p>最后一个值为<code>bool</code>类型，则实际尺寸仍然是<code>25</code>字节，<code>bool</code>和<code>枚举的标识位</code>混用，并且有关联类型的标识符和普通的标识符号顺序不同。但是中间有bool，实际占用是32字节。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//实际占用25字节</span><br><span class="line">enum TestNum2 &#123;</span><br><span class="line">    case test4(Bool) </span><br><span class="line">    case test5 </span><br><span class="line">    case test1(Int,Int,Int,Bool)</span><br><span class="line">    case test2(Int,Int)</span><br><span class="line">    case test3(Int)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//实际占用32字节</span><br><span class="line">enum TestNum2 &#123;</span><br><span class="line">    case test4(Bool) </span><br><span class="line">    case test5 </span><br><span class="line">    case test1(Int,Int,Bool,Int)</span><br><span class="line">    case test2(Int,Int)</span><br><span class="line">    case test3(Int)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
-<li>注意如果只有一个项的关联值，其内存不会算上枚举自身的1字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">enum TestNUm &#123;</span><br><span class="line">    case test1(Int,Int,Int)</span><br><span class="line">&#125;</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.size) //24</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.stride) //24</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.alignment) //24</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="switch匹配"><a href="#switch匹配" class="headerlink" title="switch匹配"></a>switch匹配</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum &#123; </span><br><span class="line">    case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool),test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//实际大小是25</span><br><span class="line">var e = TestEnum.test1(10,20,30)</span><br><span class="line">//取出标识位去判断，这里是第25位</span><br><span class="line">switch e &#123;</span><br><span class="line">    case let .test1(v1,v2,v3): //判断25位是0，取出前24个字节进行赋值</span><br><span class="line">        print(v1,v2,v3)</span><br><span class="line">     case let .test2(v1,v2): //判断25位是1，取出前16个字节进行赋值</span><br><span class="line">        print(v1,v2,v3)</span><br><span class="line">    default:break</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       
@@ -199,7 +208,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/03/05/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E4%B8%8B%E6%A0%87/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -210,19 +219,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2023/02/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/class/" class="article-nav-link">
+      <a href="/2023/03/06/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%88%9D%E5%A7%8B%E5%8C%96/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            结构体与类
+            类的初始化
           
         </div>
       </a>
     
     
-      <a href="/2023/02/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E7%9A%84%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" class="article-nav-link">
+      <a href="/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">swift的基础语法</div>
+        <div class="article-nav-title">闭包</div>
       </a>
     
   </nav>

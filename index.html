@@ -142,7 +142,7 @@
     
     
     <article
-  id="post-iOS学习/iOS越狱/SSH指令"
+  id="post-iOS学习/Swift笔记/内存管理"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -153,8 +153,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/"
-    >SSH常用指令</a> 
+  <a class="article-title" href="/2023/03/15/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"
+    >内存管理</a> 
 </h2>
  
 
@@ -162,49 +162,34 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/" class="article-date">
-  <time datetime="2023-10-29T09:28:35.000Z" itemprop="datePublished">2023-10-29</time>
+      <a href="/2023/03/15/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="article-date">
+  <time datetime="2023-03-15T15:52:37.000Z" itemprop="datePublished">2023-03-15</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS%E8%B6%8A%E7%8B%B1/">iOS越狱</a>
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <span id="more"></span>
-<h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
-<li>ssh <a href="mailto:&#x72;&#111;&#111;&#x74;&#x40;&#x31;&#57;&#50;&#x2e;&#49;&#x36;&#56;&#x2e;&#x31;&#x2e;&#x31;&#x34;">&#x72;&#111;&#111;&#x74;&#x40;&#x31;&#57;&#50;&#x2e;&#49;&#x36;&#56;&#x2e;&#x31;&#x2e;&#x31;&#x34;</a>,跳转到指定ip的命令</li>
-<li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
-</ul>
-<ol>
-<li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
-<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#x6f;&#x6f;&#116;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#x2e;&#x31;&#46;&#x31;&#52;">&#x72;&#x6f;&#x6f;&#116;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#x2e;&#x31;&#46;&#x31;&#52;</a>，追加到当前ip服务器授权文件的尾部</li>
-</ul>
-</li>
-<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#x72;&#111;&#111;&#116;&#x40;&#x31;&#57;&#50;&#x2e;&#x31;&#54;&#x38;&#x2e;&#x31;&#x2e;&#x31;&#52;">&#x72;&#111;&#111;&#116;&#x40;&#x31;&#57;&#50;&#x2e;&#x31;&#54;&#x38;&#x2e;&#x31;&#x2e;&#x31;&#52;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
-<li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
+  <h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><ul>
+<li>跟<code>OC</code>一样，<code>Swift</code>也是采取基于引用计数的<code>ARC</code>内存管理方案(针对堆空间）</li>
+<li><code>Swift</code>的<code>ARC</code>中有3种引用<ul>
+<li>强引用 (<code>strong reference</code> ）：默认情况下，引用都是强引用</li>
+<li>弱引用(<code>weak reference</code>）：通过weak定义弱引用<ul>
+<li>必须是可选类型的<code>var</code>，因为实例销毁后，<code>ARC</code>会自动将弱引用设置为<code>nil</code></li>
+<li><code>ARC</code>自动给弱引用设置<code>nil</code>时，不会触发<strong>属性观察器</strong></li>
 </ul>
 </li>
-</ol>
-<ul>
-<li>chmod 755 ~/.ssh 给文件夹赋予权限，755含义<ul>
-<li>读（r=4），写（w=2），执行（x=1）</li>
-<li>文件所有者可读可写可执行                                   –7</li>
-<li>与文件所有者同属一个用户组的其他用户可读可执行                 –5 </li>
-<li>其它用户组可读可执行                                       –5<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2></li>
+<li>无主引用 (<code>unowned reference</code>）：通过<code>unowned</code>定义无主引用<ul>
+<li>不会产生强引用，实例销毁后仍然存储着实例的内存地址（类似于OC中的<code>unsafe_unretained</code>）</li>
+<li>试图在实例销毀后访问无主引用，会产生运行时错误（野指针）</li>
 </ul>
 </li>
-<li>每个端口都有个端口号，（范围是0～65535，公2^16）</li>
-<li>21端口，FTP服务</li>
-<li>80端口，http服务</li>
-<li>22端口，ssh服务<h2 id="通过USB进行SSH登录"><a href="#通过USB进行SSH登录" class="headerlink" title="通过USB进行SSH登录"></a>通过USB进行SSH登录</h2></li>
-<li>默认会用网络登录，USB登录的方式是，先用SSH登录MAC上的10010端口(非保留端口均可)，在通过usbmuxd连接22端口</li>
-<li>将iPhone的22端口（SSH端口）映射到Mac本地的10010端口</li>
-<li>用python脚本，将mac上10010映射到22，python3 tcprelay.py -t 22:10010</li>
-<li>ssh root@localhost -p 10010,直接连接本地的10010接口</li>
-<li>scp -P 10010 <del>/.ssh/id_rsa.pub root@localhost:</del>,拷贝的方法</li>
+</ul>
+</li>
+<li><code>weak</code>、<code>unowned</code>只能用在类实例上面</li>
 </ul>
  
       <!-- reward -->
@@ -226,7 +211,7 @@
 
     
     <article
-  id="post-iOS学习/Swift笔记/属性"
+  id="post-iOS学习/Swift笔记/高级运算符"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -237,8 +222,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/03/01/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%B1%9E%E6%80%A7/"
-    >属性</a> 
+  <a class="article-title" href="/2023/03/14/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%AB%98%E7%BA%A7%E8%BF%90%E7%AE%97%E7%AC%A6/"
+    >高级运算符</a> 
 </h2>
  
 
@@ -246,8 +231,8 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/03/01/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%B1%9E%E6%80%A7/" class="article-date">
-  <time datetime="2023-03-01T15:42:56.000Z" itemprop="datePublished">2023-03-01</time>
+      <a href="/2023/03/14/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%AB%98%E7%BA%A7%E8%BF%90%E7%AE%97%E7%AC%A6/" class="article-date">
+  <time datetime="2023-03-13T16:19:25.000Z" itemprop="datePublished">2023-03-14</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
@@ -257,27 +242,395 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="延迟存储属性"><a href="#延迟存储属性" class="headerlink" title="延迟存储属性"></a>延迟存储属性</h3><ul>
-<li><code>lazy</code>属性必须是<code>var</code>，不能是<code>let</code><ul>
-<li>必须在实例的初始化方法完成之前就拥有值</li>
+  <h3 id="自定义运算符"><a href="#自定义运算符" class="headerlink" title="自定义运算符"></a>自定义运算符</h3><ul>
+<li>在全局作用域使用operator进行声明<ul>
+<li>prefix operator 前缀运算符</li>
+<li>postfix operator 后缀运算符</li>
+<li>infix operator 中缀运算符：优先级组</li>
 </ul>
 </li>
-<li>如果多条线程同时第一次访问<code>lazy</code>属性<ul>
-<li>无法保证属性只被初始化1次</li>
+<li>自定义优先组<ul>
+<li><code>associativity</code>,结合性，指多个运算符能否一起用，类似<code>1 + 1 + 1</code>,<code>left</code>和<code>right</code>指多个运算符，从哪个方向开始算</li>
+<li><code>higherThan</code>和<code>1owerThan</code>,比系统的优先级高或低，<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swift/operator-declarations">系统运算符参考</a></li>
+<li><code>assignment</code>支持出现可选链出现nil的情况，例如<code>p1?.point +- Point(x: 1, y: 3)</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">precedenceqroup 优先级组&#123;</span><br><span class="line">    associativity：结合性(left\rightinone)</span><br><span class="line">    higherThan：比谁的优先级高</span><br><span class="line">    1owerThan：比谁的优先級低</span><br><span class="line">    assignment：true 代表在可选链操作中拥有跟赋值运算符一样的优先級</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li>当结构体包含一个延迟存储属性时，只有<code>var</code>才能访问延迟存储属性<ul>
-<li>因为延迟属性初始化时需要改变结构体的内存<h3 id="属性观察器"><a href="#属性观察器" class="headerlink" title="属性观察器"></a>属性观察器</h3></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Swift笔记/Array"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/03/13/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/Array/"
+    >Array</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/03/13/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/Array/" class="article-date">
+  <time datetime="2023-03-12T16:02:14.000Z" itemprop="datePublished">2023-03-13</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="Array的内存"><a href="#Array的内存" class="headerlink" title="Array的内存"></a>Array的内存</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1,2,3,4,4]</span><br><span class="line">print(MemoryLayout.stride(ofValue: arr)) //8</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数组是结构体，但其内存占用是8字节，而并非，其数组内<code>int</code>存储的总和，<ul>
+<li>实际上数组生成在堆空间，其8字节是堆空间</li>
+<li>汇编查看,显然在数组初始化的时候，调用了alloc，在堆空间创建了内存<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  * thread #1, queue = &#x27;com.apple.main-thread&#x27;, stop reason = breakpoint 4.1</span><br><span class="line">* frame #0: 0x00007ff81a193e62 libswiftCore.dylib`swift_allocObject + 34</span><br><span class="line">  frame #1: 0x00007ff819e9e533 libswiftCore.dylib`Swift._allocateUninitializedArray&lt;τ_0_0&gt;(Builtin.Word) -&gt; (Swift.Array&lt;τ_0_0&gt;, Builtin.RawPointer) + 83</span><br><span class="line">  frame #2: 0x0000000100004275 SwiftDText`main at main.swift:26:7</span><br><span class="line">  frame #3: 0x00007ff80b6fd310 dyld`start + 2432</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li><code>wil1set</code>会传递新值，默认叫<code>newValue</code></li>
-<li><code>didset</code>会传递旧值，默认叫<code>oldValue</code></li>
-<li>在初始化器中设置属性值不会触发<code>wil1Set</code>和<code>didset</code></li>
-<li>在属性定义时设置初始值也不会触发<code>wi11Set</code>和<code>didset</code><ul>
-<li>属性定义是设置，和初始化器中设置，其源码实际是一样的</li>
+<li>数组在堆中的内存数据查看<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1,2,3,4,4]</span><br><span class="line">//&amp;arr</span><br><span class="line">x/4xg 0x10000C3A0</span><br><span class="line">0x10000c3a0: 0x0000600002104000 0x0000000000000000</span><br><span class="line">0x10000c3b0: 0x0000000000000000 0x0000000000000000</span><br><span class="line">// 数组上内存的情况</span><br><span class="line">x/10xg 0x0000600002104000</span><br><span class="line">0x600002104000: 0x00007ff84e38f7b0 0x0000000000000003</span><br><span class="line">0x600002104010: 0x0000000000000005 0x000000000000000a</span><br><span class="line">0x600002104020: 0x0000000000000001 0x0000000000000002</span><br><span class="line">0x600002104030: 0x0000000000000003 0x0000000000000004</span><br><span class="line">0x600002104040: 0x0000000000000004 0x0000000000000000</span><br></pre></td></tr></table></figure></li>
+<li>显然，数组和引用类型相似，其真正存储的值在堆空间，该堆空间，<ul>
+<li>第一个8字节可能是metaData,</li>
+<li>第二个8字节存放是引用计数</li>
+<li>第三个8字节存放是数组长度，第四个8字节是数组的容量，（长度大于容量的一半，则容量会进行倍数扩容）</li>
+<li>往后字节存放数组中存放的值，上面介绍的是整型，下面介绍其他类型的<ul>
+<li>注意如果是Any，则除数据本身外，还会有介绍数据类型相关的字节，每个内容占4字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//字符串</span><br><span class="line">var arr = [&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;]</span><br><span class="line">0x60000260c000: 0x00007ff84e38eaa0 0x0000000000000003</span><br><span class="line">0x60000260c010: 0x0000000000000004 0x0000000000000008</span><br><span class="line">0x60000260c020: 0x0000000000000031 0xe100000000000000</span><br><span class="line">0x60000260c030: 0x0000000000000032 0xe100000000000000</span><br><span class="line">0x60000260c040: 0x0000000000000033 0xe100000000000000</span><br><span class="line">0x60000260c050: 0x0000000000000034 0xe100000000000000</span><br><span class="line">// Any  var arr = [&quot;1&quot;,2,3,&quot;4&quot;]</span><br><span class="line">0x6000033080a0: 0x00007ff84e38eb70 0x0000000000000003</span><br><span class="line">0x6000033080b0: 0x0000000000000004 0x0000000000000008</span><br><span class="line">0x6000033080c0: 0x0000000000000031 0xe100000000000000</span><br><span class="line">0x6000033080d0: 0x0000000000000000 0x00007ff84ef72ad8</span><br><span class="line">0x6000033080e0: 0x0000000000000002 0x0000000000000000</span><br><span class="line">0x6000033080f0: 0x0000000000000000 0x00007ff84ef74a40</span><br><span class="line">0x600003308100: 0x0000000000000003 0x0000000000000000</span><br><span class="line">0x600003308110: 0x0000000000000000 0x00007ff84ef74a40</span><br><span class="line">0x600003308120: 0x0000000000000034 0xe100000000000000</span><br><span class="line">0x600003308130: 0x0000000000000000 0x00007ff84ef72ad8</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li>属性观察器，计算属性的功能，同样可以应用在全局变量、局部变量身上</li>
+</ul>
+</li>
+<li>扩容方式查看<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">var arr = [Int]()</span><br><span class="line">for i in 0..&lt;3 &#123;</span><br><span class="line">    arr.append(i)</span><br><span class="line">&#125;</span><br><span class="line">// 数组地址 0x000000010000c260</span><br><span class="line">// [0]</span><br><span class="line">x/xg 0x000000010000c260</span><br><span class="line">0x10000c260: 0x0000600000c00bd0</span><br><span class="line">x/6xg 0x0000600000c00bd0</span><br><span class="line">0x600000c00bd0: 0x00007ff84e38f7b0 0x0000000000000003</span><br><span class="line">0x600000c00be0: 0x0000000000000001 0x0000000000000004</span><br><span class="line">0x600000c00bf0: 0x0000000000000000 0x0000000000000000</span><br><span class="line"></span><br><span class="line">// [0,1]</span><br><span class="line">x/xg 0x000000010000c260</span><br><span class="line">0x10000c260: 0x0000600000c00bd0</span><br><span class="line">x/6xg 0x0000600000c00bd0</span><br><span class="line">0x600000c14000: 0x00007ff84e38f7b0 0x0000000000000003</span><br><span class="line">0x600000c14010: 0x0000000000000002 0x0000000000000004</span><br><span class="line">0x600000c14020: 0x0000000000000000 0x0000000000000001</span><br><span class="line"></span><br><span class="line">// [0,1,2]</span><br><span class="line">x/xg 0x000000010000c260</span><br><span class="line">0x10000c260: 0x0000600001700600</span><br><span class="line">x/8xg 0x0000600001700600</span><br><span class="line">0x600001700600: 0x00007ff84e38f7b0 0x0000000000000003</span><br><span class="line">0x600001700610: 0x0000000000000003 0x0000000000000008</span><br><span class="line">0x600001700620: 0x0000000000000000 0x0000000000000001</span><br><span class="line">0x600001700630: 0x0000000000000002 0x0000000000000000</span><br></pre></td></tr></table></figure></li>
+<li>显然扩容在数组实际长度达到容量值的一半以上之后，就会进行扩容，此时会重新申请堆空间构建数组</li>
+<li><strong>注意</strong>,<code>Array</code>在<code>swift</code>中是值类型，但其本质实际上是引用类型，其内存存储在堆空间中，在<code>swift</code>中设置为<code>struct</code>只是表明<code>Array</code>在<code>swift</code>中使用的行为是按结构体的方式来编写代码的,其本质仍是引用类型。</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Swift笔记/字符串"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/03/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/"
+    >字符串</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/03/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="article-date">
+  <time datetime="2023-03-12T08:02:28.000Z" itemprop="datePublished">2023-03-12</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="一个字符串变量占用多少内存"><a href="#一个字符串变量占用多少内存" class="headerlink" title="一个字符串变量占用多少内存"></a>一个字符串变量占用多少内存</h3><blockquote>
+<p>显然一个字符串占有16个字节</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var str1 = &quot;0123456789&quot;</span><br><span class="line">var str2 = &quot;0123456789ABCDEFGHIGK&quot;</span><br><span class="line">MemoryLayout&lt;String&gt;.stride. //16</span><br><span class="line">MemoryLayout.stride(ofValue: str1) //16</span><br><span class="line">MemoryLayout.stride(ofValue: str2) //16</span><br></pre></td></tr></table></figure>
+<h3 id="字符串的底层存储"><a href="#字符串的底层存储" class="headerlink" title="字符串的底层存储"></a>字符串的底层存储</h3><h4 id="小于长度0xF的字符串"><a href="#小于长度0xF的字符串" class="headerlink" title="小于长度0xF的字符串"></a>小于长度0xF的字符串</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var str1 = &quot;0123456789&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>汇编查看<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0x10000dfd9 &lt;+25&gt;:  callq  0x10000e1c2               ; symbol stub for: Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -&gt; Swift.String</span><br><span class="line">    0x10000dfde &lt;+30&gt;:  movq   %rax, 0x71fb(%rip)        ; SwiftDText.str1 : Swift.String</span><br><span class="line">    0x10000dfe5 &lt;+37&gt;:  movq   %rdx, 0x71fc(%rip)        ; SwiftDText.str1 : Swift.String + 8</span><br></pre></td></tr></table></figure></li>
+<li>分析，这里将<code>rax</code>和<code>rdx</code>的分别赋值给了<code>str1</code>(地址是<code>0x1000151E0</code>)的前8个字节和后8个字节，<code>register read rax</code>查看<ul>
+<li><code>x 0x1000151E0</code> -&gt; <code>30 31 32 33 34 35 36 37 38 39 00 00 00 00 00 ea</code>,查看<code>str1</code>地址内存,小端模式（低低高高）</li>
+<li><code>rax = 0x3736353433323130</code>，<code>rdx = 0xea00000000003938</code>,根据<a target="_blank" rel="noopener" href="https://www.ascii-code.com/">ASCII码表</a>可知<code>30-39</code>是<code>0-9</code>。<strong>显然</strong>,字符串直接存储在<code>str1</code>地址的内存上</li>
+<li><code>0xea</code>,存储的实际是字符串的tag和长度，其中<code>e</code>是<code>tag</code>,而<code>a</code>是<code>10</code>即字符串的长度<ul>
+<li><code>&quot;0123456789ABCDE&quot;</code>的内存<code>30 31 32 33 34 35 36 37 38 39 41 42 43 44 45 ef</code>,显然最后的长度变成了<code>f</code>即<code>15</code>,<code>e</code>是<code>tag</code></li>
+<li><code>&quot;0123456789ABCDEF&quot;</code>上<code>10 00 00 00 00 00 00 d0 f0 f5 00 00 01 00 00 80</code>,<code>0xd000000000000010</code> + <code>0x800000010000f5f0</code>,显然和前面的不同。其存储的方式发生了改变</li>
+</ul>
+</li>
+<li><strong>总结</strong>，如果字符串长度小于<code>0xF</code>，其字符串直接存储在地址的内存上，其第16个字节上，存储者字符串的tag和长度。而字符串长度大于<code>0xF</code>，其存储方式发生了改变<h4 id="大于长度0xF的字符串"><a href="#大于长度0xF的字符串" class="headerlink" title="大于长度0xF的字符串"></a>大于长度0xF的字符串</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var str2 = &quot;0123456789ABCDEF&quot;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>根据其内存，其内存地址是 <code>0xd000000000000010</code> + <code>0x8000000100003f50</code></li>
+<li>汇编查看<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">0x10000dfb8 &lt;+8&gt;:   leaq   0x1651(%rip), %rdi        ; &quot;0123456789ABCDEF&quot;</span><br><span class="line">    0x10000dfbf &lt;+15&gt;:  movl   $0x10, %esi</span><br><span class="line">    0x10000dfc4 &lt;+20&gt;:  movl   $0x1, %edx</span><br><span class="line">-&gt;  0x10000dfc9 &lt;+25&gt;:  callq  0x10000e1b2               ; symbol stub for: Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -&gt; Swift.String</span><br><span class="line">    0x10000dfce &lt;+30&gt;:  movq   %rax, 0x720b(%rip)        ; SwiftDText.str1 : Swift.String</span><br><span class="line">    0x10000dfd5 &lt;+37&gt;:  movq   %rdx, 0x720c(%rip)        ; SwiftDText.str1 : Swift.String + 8</span><br><span class="line">    </span><br><span class="line">-------</span><br><span class="line">libswiftCore.dylib`Swift.String.init</span><br><span class="line">    0x7ff819e87ae0 &lt;+32&gt;:  cmpq   $0xf, %rsi</span><br><span class="line">    0x7ff819e87ae4 &lt;+36&gt;:  jle    0x7ff819e87b26            ; &lt;+102&gt;</span><br><span class="line">    0x7ff819e87ae6 &lt;+38&gt;:  movabsq $-0x4000000000000000, %rcx ; imm = 0xC000000000000000 </span><br><span class="line">    0x7ff819e87af0 &lt;+48&gt;:  orq    %rsi, %rcx</span><br><span class="line">    0x7ff819e87af3 &lt;+51&gt;:  testb  $0x1, %al</span><br><span class="line">    0x7ff819e87af5 &lt;+53&gt;:  cmoveq %rsi, %rcx</span><br><span class="line">    0x7ff819e87af9 &lt;+57&gt;:  movabsq $0x1000000000000000, %rax ; imm = 0x1000000000000000 </span><br><span class="line">    0x7ff819e87b03 &lt;+67&gt;:  orq    %rcx, %rax</span><br><span class="line">    0x7ff819e87b06 &lt;+70&gt;:  movabsq $0x7fffffffffffffe0, %rdx ; imm = 0x7FFFFFFFFFFFFFE0 </span><br><span class="line">    0x7ff819e87b10 &lt;+80&gt;:  addq   %rdx, %rdi</span><br><span class="line">    0x7ff819e87b13 &lt;+83&gt;:  addq   $0x20, %rdx</span><br><span class="line">-&gt;  0x7ff819e87b17 &lt;+87&gt;:  orq    %rdi, %rdx</span><br></pre></td></tr></table></figure></li>
+<li>分析,这里字符串<code>&quot;0123456789ABCDEF&quot;</code>的地址赋值给了<code>rdi = 0x0000000100003f70  &quot;0123456789ABCDEF&quot;</code>,将字符串的长度<code>0x10</code>传给了<code>esi</code>（即<code>rsi</code>）</li>
+<li>在<code>Swift.String.init</code>方法中会<code>cmpq   $0xf, %rsi</code>会对字符串的长度，进行判断然后处理，这里<code>addq   %rdx, %rdi</code>,这里对讲<code>rdx</code>和<code>rdi</code>中的值相加，然后赋值给<code>rdi</code>(最终复制给了<code>rdx</code>),这里<code>rdi</code>是<code>0x7fffffffffffffe0</code> + <code>0x0000000100003f70</code> = <code>0x8000000100003f50</code>,即字符串<code>后8字节</code>存储的内容,显然字符串后8字节减去<code>0x7fffffffffffffe0</code>存储着字符串的内存地址。</li>
+<li>其<code>前8字节</code>存储的实际是字符串的<code>tag</code>和<code>长度</code><ul>
+<li><code>&quot;0123456789ABCDEFGH&quot;</code>的内存地址<code>0xd000000000000012</code> + <code>0x8000000100003f70</code></li>
+<li>显然，其高位d代表大于<code>oxF</code>的字符串存储方法，低位开始代表字符串的长度</li>
+</ul>
+</li>
+<li>大于<code>oxF</code>的字符串存储的字符串真实地址位置实际在<code>__TEXT.cstring</code>常量区,<code>&quot;0123456789ABCDEF&quot;</code>的真实内存地址是<code>0x0000000100003f70</code><ul>
+<li><code>swiftc -o main.o main.swift</code>,编译成.o文件，用<code>machOview</code>查看</li>
+<li>显然<code>3f70</code>是在<code>__TEXT.cstring</code>常量区，且小于<code>oxF</code>存在内存上的字符串，在常量区，仍有备份<br><img src="1.png"></li>
+</ul>
+</li>
+</ul>
+<h4 id="字符串拼接后的内存放在那里"><a href="#字符串拼接后的内存放在那里" class="headerlink" title="字符串拼接后的内存放在那里"></a>字符串拼接后的内存放在那里</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var str1 = &quot;0123456789ABCD&quot;</span><br><span class="line">str1.append(&quot;E&quot;)</span><br><span class="line">str1.append(&quot;G&quot;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加长度小于<code>0xF</code>，直接查看内存<code>str1</code>的地址是<code>0x1000151E0</code>,<ul>
+<li><code>x 0x1000151E0</code> -&gt; <code>30 31 32 33 34 35 36 37 38 39 41 42 43 44 00 ee</code></li>
+<li><code>str1.append(&quot;E&quot;)</code>后<code>x 0x1000151E0</code> -&gt; <code>30 31 32 33 34 35 36 37 38 39 41 42 43 44 45 ef</code></li>
+<li>显然，当添加后长度低于<code>0xF</code>后，其内存仍然存储在地址内存上</li>
+</ul>
+</li>
+<li>当添加后大于<code>0xF</code>，<code>str1.append(&quot;G&quot;)</code> -&gt; <code>0xf000000000000010 0x000060000170c000</code>，此时tag和此前不同位<code>f</code>,其长度为<code>16</code>,查看其存储地址<code>0x000060000170c000</code>,显然其地址后<code>0x20</code>之后开始存储字符串的真实内容。实际上字符串拼接长度大于<code>oxF</code>后，会存储在堆中，其内存存储在地址后<code>0x20</code>（前16个字节，类似对象，metaDat和引用计数）后 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x/50xb 0x000060000170c000</span><br><span class="line"> 0x60000170c000: 0xa8 0xe9 0x3f 0x4f 0xf8 0x7f 0x00 0x00</span><br><span class="line"> 0x60000170c008: 0x03 0x00 0x00 0x00 0x00 0x00 0x00 0x00</span><br><span class="line"> 0x60000170c010: 0x20 0x00 0x00 0x00 0x00 0x00 0x00 0x00</span><br><span class="line"> 0x60000170c018: 0x10 0x00 0x00 0x00 0x00 0x00 0x00 0xf0</span><br><span class="line"> 0x60000170c020: 0x30 0x31 0x32 0x33 0x34 0x35 0x36 0x37</span><br><span class="line"> 0x60000170c028: 0x38 0x39 0x41 0x42 0x43 0x44 0x45 0x47</span><br><span class="line"> 0x60000170c030: 0x00 0x00</span><br></pre></td></tr></table></figure>
+<ul>
+<li>判断为何在堆中，断点查看<code>malloc</code>方法，查看append是否有分配堆空间，显然拦截成功，分配了堆空间<ul>
+<li>查看<code>malloc</code>生成的堆空间地址<code>rax = 0x000060000170c000</code>,即最后字符串的后8字节地址<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  bt</span><br><span class="line">  * thread #1, queue = &#x27;com.apple.main-thread&#x27;, stop reason = breakpoint 2.1</span><br><span class="line">* frame #0: 0x00007ff80b89ec19 libsystem_malloc.dylib`_malloc_zone_malloc + 10</span><br><span class="line">  frame #1: 0x00007ff81a1a2b96 libswiftCore.dylib`std::__1::pair&lt;(anonymous namespace)::TupleCacheEntry*, swift::MetadataResponse&gt; swift::LockingConcurrentMap&lt;(anonymous namespace)::TupleCacheEntry, (anonymous namespace)::TupleCacheStorage&gt;::getOrInsert&lt;(anonymous namespace)::TupleCacheEntry::Key, swift::MetadataRequest&amp;, swift::TargetValueWitnessTable&lt;swift::InProcess&gt; const*&amp;&gt;((anonymous namespace)::TupleCacheEntry::Key, swift::MetadataRequest&amp;, swift::TargetValueWitnessTable&lt;swift::InProcess&gt; const*&amp;) + 4038</span><br><span class="line">  frame #2: 0x00007ff81a1a19b4 libswiftCore.dylib`swift_getTupleTypeMetadata + 116</span><br><span class="line">  frame #3: 0x00007ff81a1c41ce libswiftCore.dylib`swift::Demangle::__runtime::TypeDecoder&lt;(anonymous namespace)::DecodedMetadataBuilder&gt;::decodeMangledType(swift::Demangle::__runtime::Node*, unsigned int, bool) + 9342</span><br><span class="line">  frame #4: 0x00007ff81a1c149d libswiftCore.dylib`swift_getTypeByMangledNodeImpl(swift::MetadataRequest, swift::Demangle::__runtime::Demangler&amp;, swift::Demangle::__runtime::Node*, void const* const*, std::__1::function&lt;swift::TargetMetadata&lt;swift::InProcess&gt; const* (unsigned int, unsigned int)&gt;, std::__1::function&lt;swift::TargetWitnessTable&lt;swift::InProcess&gt; const* (swift::TargetMetadata&lt;swift::InProcess&gt; const*, unsigned int)&gt;) + 493</span><br><span class="line">  frame #5: 0x00007ff81a1c126d libswiftCore.dylib`swift_getTypeByMangledNode + 477</span><br><span class="line">  frame #6: 0x00007ff81a1c1980 libswiftCore.dylib`swift_getTypeByMangledNameImpl(swift::MetadataRequest, __swift::__runtime::llvm::StringRef, void const* const*, std::__1::function&lt;swift::TargetMetadata&lt;swift::InProcess&gt; const* (unsigned int, unsigned int)&gt;, std::__1::function&lt;swift::TargetWitnessTable&lt;swift::InProcess&gt; const* (swift::TargetMetadata&lt;swift::InProcess&gt; const*, unsigned int)&gt;) + 992</span><br><span class="line">  frame #7: 0x00007ff81a1bdc4d libswiftCore.dylib`swift_getTypeByMangledName + 477</span><br><span class="line">  frame #8: 0x00007ff81a1bde7e libswiftCore.dylib`swift_getTypeByMangledNameInContext + 174</span><br><span class="line">  frame #9: 0x00007ff81a133c47 libswiftCore.dylib`__swift_instantiateConcreteTypeFromMangledName + 39</span><br><span class="line">  frame #10: 0x00007ff81a01f961 libswiftCore.dylib`Swift._StringGuts.prepareForAppendInPlace(totalCount: Swift.Int, otherUTF8Count: Swift.Int) -&gt; () + 385</span><br><span class="line">  frame #11: 0x00007ff81a01fc16 libswiftCore.dylib`Swift._StringGuts.append(Swift._StringGutsSlice) -&gt; () + 390</span><br><span class="line">  frame #12: 0x000000010000e041 SwiftDText`main at main.swift:69:6</span><br><span class="line">  frame #13: 0x00007ff80b6fd310 dyld`start + 2432</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>注意</strong>，一开始大于<code>oxF</code>的字符串拼接后和小于一样的存储在堆中，因为常量区是无法更改的</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Swift笔记/初始化"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/03/06/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%88%9D%E5%A7%8B%E5%8C%96/"
+    >类的初始化</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/03/06/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%88%9D%E5%A7%8B%E5%8C%96/" class="article-date">
+  <time datetime="2023-03-06T13:44:56.000Z" itemprop="datePublished">2023-03-06</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="初始化器"><a href="#初始化器" class="headerlink" title="初始化器"></a>初始化器</h3><ul>
+<li>类、结构体、枚举都可以定义初始化器</li>
+<li>类有2种初始化器：指定初始化器 (<code>designated initializer</code>）、便捷初始化器 (<code>convenience initializer</code>)</li>
+<li>每个类至少有一个指定初始化器，指定初始化器是类的主要初始化器</li>
+<li>默认初始化器总是类的指定初始化器</li>
+<li>类偏向于少量指定初始化器，一个类通常只有一个指定初始化器</li>
+<li>初始化器的相互调用规则<ul>
+<li>指定初始化器必须从它的直系父类调用指定初始化器</li>
+<li>便捷初始化器必须从相同的类里调用另一个初始化器</li>
+<li>便捷初始化器最终必须调用一个<strong>指定初始化器</strong><h4 id="两段式初始化"><a href="#两段式初始化" class="headerlink" title="两段式初始化"></a>两段式初始化</h4></li>
+</ul>
+</li>
+<li><code>swift</code>在编码安全方面是煞费苦心，为了保证初始化过程的安全，设定了两段式初始化、 安全检查</li>
+<li>两段式初始化<ul>
+<li>第1阶段：初始化所有存储属性<ol>
+<li>外层调用指定\便捷初始化器</li>
+<li>分配内存给实例，但未初始化</li>
+<li>指定初始化器确保当前类定义的存储属性都初始化</li>
+<li>指定初始化器调用父类的初始化器，不断向上调用，形成初始化器链</li>
+</ol>
+</li>
+<li>第2阶段：设置新的存储属性值<ol>
+<li>从顶部初始化器往下，链中的每一个指定初始化器都有机会进一步定制实例</li>
+<li>初始化器现在能够使用<code>self</code>（访问、修改它的属性 ，调用它的实例方法等等）</li>
+<li>最终，链中任何便捷初始化器都有机会定制实例以及使用<code>self</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="安全检查"><a href="#安全检查" class="headerlink" title="安全检查"></a>安全检查</h5><ul>
+<li>指定初始化器必须保证在调用父类初始化器之前，其所在类定义的所有存储属性都要初始化完成</li>
+<li>指定初始化器必须先调用父类初始化器，然后才能为继承的属性设置新值</li>
+<li>便捷初始化器必须先调用同类中的其它初始化器(指定初始化器，或者其他调用了指定初始化器的便携初始化)，然后再为任意属性设置新值</li>
+<li>初始化器在第1阶段初始化完成之前，不能调用任何实例方法、不能读取任何实例属性的值，也不能引用<code>se1f</code></li>
+<li>直到第1阶段结束，实例才算完全合法</li>
+</ul>
+<h5 id="重写"><a href="#重写" class="headerlink" title="重写"></a>重写</h5><ul>
+<li>当重写父类的指定初始化器时 ，必须加上<code>override</code>（即使子类的实现是便捷初始化器）</li>
+<li>如果子类写了一个匹配父类便捷初始化器的初始化器，不用加上<code>override</code><ul>
+<li>因为父类的便捷初始化器永远不会通过子类直接调用，因此，严格来说，子类<strong>无法重写</strong>父类的便捷初始化器</li>
+</ul>
+</li>
+</ul>
+<h5 id="自动继承"><a href="#自动继承" class="headerlink" title="自动继承"></a>自动继承</h5><ol>
+<li>如果子类没有自定义任何<code>指定初始化器</code>，它会自动继承父类所有的指定初始化器<ul>
+<li>如果子类有自己的初始化器，且不满足2，则不会继承父类的任何初始化器</li>
+</ul>
+</li>
+<li>如果子类提供了父类所有<code>指定初始化器</code>的实现（要么通过<code>方式1</code>继承，要么重写）<ul>
+<li>子类自动继承所有的父类便捷初始化器</li>
+</ul>
+</li>
+<li>就算子类添加了更多的便捷初始化器，这些规则仍然适用</li>
+<li>子类以<code>便捷初始化器的形式</code><strong>重写</strong>父类的指定初始化器，也可以作为满足规则2的一部分</li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/Swift笔记/下标"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/03/05/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E4%B8%8B%E6%A0%87/"
+    >下标、重写</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/03/05/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E4%B8%8B%E6%A0%87/" class="article-date">
+  <time datetime="2023-03-05T07:46:11.000Z" itemprop="datePublished">2023-03-05</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="subscript下标"><a href="#subscript下标" class="headerlink" title="subscript下标"></a><code>subscript</code>下标</h3><ul>
+<li>结构体,对结构体设置，必须要有set方法，才能改结构体内的值<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">struct Point &#123;</span><br><span class="line">    var x = 0.0,y = 0.0</span><br><span class="line">&#125;</span><br><span class="line">struct Person &#123;</span><br><span class="line">    var point = Point()</span><br><span class="line">    subscript(index:String) -&gt; Point &#123;</span><br><span class="line">        set &#123; point = newValue &#125;</span><br><span class="line"></span><br><span class="line">        get &#123; point &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var p = Person()</span><br><span class="line">p[&quot;0&quot;].x = 11 //本质上是 p[&quot;0&quot;].x = Point(11,p[&quot;0&quot;].y)</span><br><span class="line">p[&quot;0&quot;].y = 12</span><br></pre></td></tr></table></figure></li>
+<li>类，返回的是引用类型，因此不需要set也能设置<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">    var x = 0.0,y = 0.0</span><br><span class="line">&#125;</span><br><span class="line">struct Person &#123;</span><br><span class="line">    var point = Point()</span><br><span class="line">    subscript(index:String) -&gt; Point &#123;</span><br><span class="line">        get &#123; point &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var p = Person()</span><br><span class="line">p[&quot;0&quot;].x = 11 </span><br><span class="line">p[&quot;0&quot;].y = 12</span><br></pre></td></tr></table></figure>
+<h3 id="重写"><a href="#重写" class="headerlink" title="重写"></a>重写</h3><h4 id="重写类型方法、下标"><a href="#重写类型方法、下标" class="headerlink" title="重写类型方法、下标"></a>重写类型方法、下标</h4></li>
+<li>被<code>class</code>修饰的类型方法、下标，允许被子类重写<ul>
+<li>父类如果是<code>class</code>修饰方法，则可以重写，并且新的方法写出<code>static</code>可以防止当前类的子类，继续重写</li>
+</ul>
+</li>
+<li>被<code>static</code>修饰的类型方法、下标，不允许被子类重写</li>
+</ul>
+<h4 id="重写属性"><a href="#重写属性" class="headerlink" title="重写属性"></a>重写属性</h4><ul>
+<li>重写实例属性<ul>
+<li>子类可以将父类的属性（存储、计算） 重写为计算属性</li>
+<li>子类不可以将父类属性性重写为存储属性</li>
+<li>只能重写<code>var</code>属性，不能重写<code>let</code>属性</li>
+<li>重写时，属性名、类型要一致</li>
+<li>子类重写后的属性权限 不能小于 父类属性的权限<ul>
+<li>如果父类属性是只读的，那么子类重写后的属性可以是只读的、也可以是可读写的</li>
+<li>如果父类属性是可读写的，那么子类重写后的属性也必须是可读写的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>重写类型属性<ul>
+<li>被<code>class</code>修饰的计算类型属性，可以被子类重写,存储属性不能用<code>class</code>修饰，只能被<code>static</code></li>
+<li>被<code>static</code>修饰的类型属性（存储、计算），不可以被子类重写<h4 id="重写属性观察器"><a href="#重写属性观察器" class="headerlink" title="重写属性观察器"></a>重写属性观察器</h4><blockquote>
+<p>重写属性观察器，实际上并不会覆盖父类的属性观察器，只是再添加了一次观察器。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Animal &#123;</span><br><span class="line">    var age = 0 &#123;</span><br><span class="line">        willSet &#123;</span><br><span class="line">            print(&quot;Animal:willSet&quot;,newValue)</span><br><span class="line">        &#125;</span><br><span class="line">        didSet &#123;</span><br><span class="line">            print(&quot;Animal:didSet&quot;,oldValue)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Dog:Animal &#123;</span><br><span class="line">    override var age: Int &#123;</span><br><span class="line">        willSet &#123;</span><br><span class="line">            print(&quot;Dog:willSet&quot;,newValue)</span><br><span class="line">        &#125;</span><br><span class="line">        didSet &#123;</span><br><span class="line">            print(&quot;Dog:didSet&quot;,oldValue)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">let dog = Dog ()</span><br><span class="line">dog.age = 10</span><br><span class="line">/*打印结果：</span><br><span class="line">Dog:willSet 10</span><br><span class="line">Animal:willSet 10</span><br><span class="line">Animal:didSet 0</span><br><span class="line">Dog:didSet 0</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重写属性观察器，会先是子类的<code>willSet</code>-&gt;父类的<code>willSet</code>方法，最后是在父类中进行实际的设置，然后父类的<code>didSet</code>方法-&gt;子类的<code>didSet</code>方法</li>
+</ul>
+<h4 id="通过重写为计算属性增加属性观察器"><a href="#通过重写为计算属性增加属性观察器" class="headerlink" title="通过重写为计算属性增加属性观察器"></a>通过重写为计算属性增加属性观察器</h4><blockquote>
+<p>在同一个类中计算属性不能同时有set/get和willset/didSet，但是可以通过重写的方式，使其子类中可以拥有属性观察器。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">class Animal &#123;</span><br><span class="line">    var num:Int &#123;</span><br><span class="line">        get &#123;</span><br><span class="line">            print(&quot;num get&quot;)</span><br><span class="line">            return 20</span><br><span class="line">        &#125;</span><br><span class="line">        set &#123;</span><br><span class="line">            print(&quot;num set&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Dog:Animal &#123; </span><br><span class="line">    override var num: Int &#123;</span><br><span class="line">        willSet &#123;</span><br><span class="line">            print(&quot;num:willSet&quot;,newValue)</span><br><span class="line">        &#125;</span><br><span class="line">        didSet &#123;</span><br><span class="line">            print(&quot;num:didSet&quot;,oldValue)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let dog = Dog ()</span><br><span class="line">dog.num = 12</span><br><span class="line">/*打印结果：</span><br><span class="line">num get</span><br><span class="line">num:willSet 12</span><br><span class="line">num set</span><br><span class="line">num:didSet 20</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重写计算属性，可以为其添加属性观察器，会先调用<code>get</code>方法，给<code>oldValue</code>赋值,再调用<code>willSet</code>、<code>set</code>、<code>didSet</code>方法</li>
 </ul>
  
       <!-- reward -->
@@ -446,41 +799,11 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <span id="more"></span>
-<h3 id="内存查看"><a href="#内存查看" class="headerlink" title="内存查看"></a>内存查看</h3><blockquote>
-<p><code>view Memory</code>功能，查看地址中存放的内存</p>
-</blockquote>
-<ul>
-<li><p>查看效果<br><img src="1.png"></p>
-</li>
-<li><p>地址内存查看方式，iOS是小端模式，高高低低，高地址存高位，低地址存地位</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">上面8个字节实际上是</span><br><span class="line">0x00 00 00 00 00 00 00 05</span><br></pre></td></tr></table></figure></li>
-<li><p>获取枚举的地址方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var t = TestNum.test1 </span><br><span class="line">let nums = withUnsafePointer(to: &amp;t) &#123; UnsafeRawPointer($0) &#125; //内存地址 0x000000010000c0b0</span><br></pre></td></tr></table></figure>
-<h4 id="普通枚举"><a href="#普通枚举" class="headerlink" title="普通枚举"></a>普通枚举</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum &#123; </span><br><span class="line">    case test1,test2,test3,test4,test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.size) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.stride) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.alignment) // 1</span><br><span class="line"></span><br><span class="line">var t = TestNum.test1</span><br><span class="line">t = .test5</span><br><span class="line">t = .test6</span><br></pre></td></tr></table></figure></li>
-<li><p>内存情况,1字节内存,第一个枚举是00,后面依次增加，其内存最大是<code>0xFF</code>预计最大可以有枚举数256个（这么大的数量无需用枚举了）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var t = TestNum.test1 // 0x00</span><br><span class="line">t = .test5  // 0x04</span><br><span class="line">t = .test6  // 0x05</span><br></pre></td></tr></table></figure>
-<h4 id="带原始值的枚举"><a href="#带原始值的枚举" class="headerlink" title="带原始值的枚举"></a>带原始值的枚举</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum:Int &#123; </span><br><span class="line">    case test1 = 10,test2,test3,test4,test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.size) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.stride) // 1</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.alignment) // 1</span><br></pre></td></tr></table></figure></li>
-<li><p>内存情况,带有1字节内存。其内存情况和普通枚举类型一样的，其原始值不占有内存空间，类似计算属性</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var t = TestNum.test1 // 0x00</span><br><span class="line">t = .test5  // 0x04</span><br><span class="line">t = .test6  // 0x05</span><br></pre></td></tr></table></figure>
-<h4 id="带关联值的枚举"><a href="#带关联值的枚举" class="headerlink" title="带关联值的枚举"></a>带关联值的枚举</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum &#123; </span><br><span class="line">    case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool),test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.size) // 25</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.stride) // 32</span><br><span class="line">print(MemoryLayout&lt;TestNum&gt;.alignment) // 8</span><br></pre></td></tr></table></figure></li>
-<li><p>内存情况,实际占用25个字节，内存对齐是32个字节。对于存储情况，以最大存储3个Int，位24字节，前面的24个字节均用来存储关联值的（不管当前实际关联值大小是1个字节，还是16个字节），最高位用来存储枚举的类型（普通枚举不一样）。</p>
-<ul>
-<li>内存从左到右，从上到下，内存地址增加</li>
-<li>关联值和非关联值，枚举标志位存放的位置是不一样的，类似共用体<ul>
-<li>非关联值在最高位，普通枚举在最低位<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//占用内存情况</span><br><span class="line">//10 00 00 00 00 00 00 00  //实际为 0x10</span><br><span class="line">//02 00 00 00 00 00 00 00  //实际为 0x02</span><br><span class="line">//03 00 00 00 00 00 00 00  //实际为 0x03</span><br><span class="line">//00 </span><br><span class="line">var t = TestNum.test1(16,2,3) </span><br><span class="line">//占用内存情况</span><br><span class="line">//04 00 00 00 00 00 00 00  //实际为 0x04</span><br><span class="line">//05 00 00 00 00 00 00 00  //实际为 0x05</span><br><span class="line">//00 00 00 00 00 00 00 00  </span><br><span class="line">//01                       //实际为 0x01</span><br><span class="line">t = .test2(4, 5) </span><br><span class="line"> //占用内存情况</span><br><span class="line">//01 00 00 00 00 00 00 00  //实际为 0x01</span><br><span class="line">//00 00 00 00 00 00 00 00</span><br><span class="line">//00 00 00 00 00 00 00 00  </span><br><span class="line">//03                       //实际为 0x03</span><br><span class="line">t = .test4(true)</span><br><span class="line">//占用内存情况</span><br><span class="line">//10 00 00 00 00 00 00 00  //第一位标识位是1，表明第二个普通的枚举</span><br><span class="line">//00 00 00 00 00 00 00 00</span><br><span class="line">//00 00 00 00 00 00 00 00  </span><br><span class="line">//04                      //实际为 0x04, 这表明总共有4个关联枚举？</span><br><span class="line">t = .test6</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>最后一个值为bool类型，则实际尺寸仍然是<code>25</code>字节，bool和枚举标识位混用，并且有关联类型的标识符和普通的标识符号顺序不同。但是中间有bool，实际占用是32字节。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//实际占用25字节</span><br><span class="line">enum TestNum2 &#123;</span><br><span class="line">    case test4(Bool) </span><br><span class="line">    case test5 </span><br><span class="line">    case test1(Int,Int,Int,Bool)</span><br><span class="line">    case test2(Int,Int)</span><br><span class="line">    case test3(Int)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//实际占用32字节</span><br><span class="line">enum TestNum2 &#123;</span><br><span class="line">    case test4(Bool) </span><br><span class="line">    case test5 </span><br><span class="line">    case test1(Int,Int,Bool,Int)</span><br><span class="line">    case test2(Int,Int)</span><br><span class="line">    case test3(Int)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
-<li>注意如果只有一个项的关联值，其内存不会算上枚举自身的1字节<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">enum TestNUm &#123;</span><br><span class="line">    case test1(Int,Int,Int)</span><br><span class="line">&#125;</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.size) //24</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.stride) //24</span><br><span class="line">print(MemoryLayout&lt;TestNUm&gt;.alignment) //24</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="switch匹配"><a href="#switch匹配" class="headerlink" title="switch匹配"></a>switch匹配</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">enum TestNum &#123; </span><br><span class="line">    case test1(Int,Int,Int),test2(Int,Int),test3(Int),test4(Bool),test5,test6</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//实际大小是25</span><br><span class="line">var e = TestEnum.test1(10,20,30)</span><br><span class="line">//取出第25个字节去判断</span><br><span class="line">switch e &#123;</span><br><span class="line">    case let .test1(v1,v2,v3): //判断25位是0，取出前24个字节进行赋值</span><br><span class="line">        print(v1,v2,v3)</span><br><span class="line">     case let .test2(v1,v2): //判断25位是1，取出前16个字节进行赋值</span><br><span class="line">        print(v1,v2,v3)</span><br><span class="line">    default:break</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
- 
+  <h3 id="内存查看"><a href="#内存查看" class="headerlink" title="内存查看"></a>内存查看</h3> 
+      <a class="article-more-link" href="/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E6%9E%9A%E4%B8%BE%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/"
+        >阅读更多...</a
+      >
+       
       <!-- reward -->
       
     </div>
@@ -538,424 +861,6 @@
         >阅读更多...</a
       >
        
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/性能优化/安装包瘦身"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%AE%89%E8%A3%85%E5%8C%85%E7%98%A6%E8%BA%AB/"
-    >安装包瘦身</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%AE%89%E8%A3%85%E5%8C%85%E7%98%A6%E8%BA%AB/" class="article-date">
-  <time datetime="2023-02-19T15:22:49.000Z" itemprop="datePublished">2023-02-19</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>安装包（IPA）主要由可执行文件、资源组成</p>
-</blockquote>
-<ul>
-<li>资源（图片、音频、视频等）<ul>
-<li>采取无损压缩</li>
-<li>去除没有用到的资源： <a target="_blank" rel="noopener" href="https://github.com/tinymind/LSUnusedResources">地址</a></li>
-</ul>
-</li>
-<li>可执行文件瘦身<ul>
-<li><code>Strip Linked Product</code>、<code>Make Strings Read-Only</code>、<code>Symbols Hidden by Default</code>设置为<code>YES</code></li>
-<li>去掉异常支持，<code>Enable C++ Exceptions</code>、<code>Enable Objective-C Exceptions</code>设置为<code>NO</code>， <code>Other C Flags</code>添加<code>-fno-exceptions</code></li>
-</ul>
-</li>
-<li>利用<a target="_blank" rel="noopener" href="https://www.jetbrains.com/objc/">AppCode</a>检测未使用的代码：<code>菜单栏 -&gt; Code -&gt; Inspect Code</code></li>
-<li>编写<code>LLVM插件</code>检测出重复代码、未被调用的代码</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/性能优化/启动优化"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96/"
-    >启动优化</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96/" class="article-date">
-  <time datetime="2023-02-19T13:30:06.000Z" itemprop="datePublished">2023-02-19</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="APP的启动"><a href="#APP的启动" class="headerlink" title="APP的启动"></a>APP的启动</h2><ul>
-<li><p>APP的启动可以分为2种</p>
-<ul>
-<li>冷启动（Cold Launch）：从零开始启动APP</li>
-<li>热启动（Warm Launch）：APP已经在内存中，在后台存活着，再次点击图标启动APP</li>
-<li>APP启动时间的优化，主要是针对冷启动进行优化</li>
-</ul>
-</li>
-<li><p>APP的冷启动可以概括为3大阶段</p>
-<ul>
-<li><code>dyld</code></li>
-<li><code>runtime</code></li>
-<li><code>main</code><br><img src="1.png"><h3 id="dyld"><a href="#dyld" class="headerlink" title="dyld"></a>dyld</h3></li>
-</ul>
-</li>
-<li><p><code>dyld（dynamic link editor）</code>，<code>Apple</code>的动态链接器，可以用来装载<code>Mach-O</code>文件（可执行文件、动态库等）</p>
-</li>
-<li><p>启动<code>APP</code>时，<code>dyld</code>所做的事情有</p>
-<ul>
-<li>装载<code>APP</code>的可执行文件，同时会递归加载所有依赖的动态库</li>
-<li>当<code>dyld</code>把可执行文件、动态库都装载完毕后，会通知<code>Runtime</code>进行下一步的处理<h3 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h3></li>
-</ul>
-</li>
-<li><p>启动APP时，runtime所做的事情有</p>
-<ul>
-<li>调用<code>map_images</code>进行可执行文件内容的解析和处理<ul>
-<li>例如类的解析<code>realizeClassWithoutSwift</code>（重新解析<code>Class</code>，初始化一些<code>flags</code>,初始化<code>class_rw_t</code>(一开始<code>data</code>中存的是<code>class_ro_t</code>,取出存入<code>class_rw_t</code>)并设置<code>data</code>）</li>
-</ul>
-</li>
-<li>在<code>load_images</code>中调用<code>call_load_methods</code>，调用所有<code>Class</code>和<code>Category</code>的<code>+load</code>方法<ul>
-<li>还有<code>attachCategories</code>，将分类中的方法、属性、协议，加到<code>class_rw_t</code>中</li>
-</ul>
-</li>
-<li>进行各种<code>objc</code>结构的初始化（注册<code>Objc</code>类 、初始化类对象等等）</li>
-<li>调用<code>C++</code>静态初始化器(结构体的初始化)和<code>__attribute__((constructor))</code>修饰的函数（类似<code>+load</code>，由系统调用）</li>
-</ul>
-</li>
-<li><p>到此为止，可执行文件和动态库中所有的符号<code>(Class，Protocol，Selector，IMP，…)</code>都已经按格式成功加载到内存中，被runtime 所管理</p>
-<h3 id="APP的启动-main"><a href="#APP的启动-main" class="headerlink" title="APP的启动 - main"></a>APP的启动 - main</h3></li>
-<li><p>对<code>application:didFinishLaunchingWithOptions:</code>方法耗时优化</p>
-</li>
-<li><p>总的来说</p>
-<ul>
-<li>APP的启动由dyld主导，将可执行文件加载到内存，顺便加载所有依赖的动态库</li>
-<li>并由runtime负责加载成objc定义的结构</li>
-<li>所有初始化工作结束后，dyld就会调用main函数</li>
-<li>接下来就是UIApplicationMain函数，AppDelegate的<code>application:didFinishLaunchingWithOptions:</code>方法<h2 id="APP的启动优化"><a href="#APP的启动优化" class="headerlink" title="APP的启动优化"></a>APP的启动优化</h2></li>
-</ul>
-</li>
-<li><p>按照不同的阶段</p>
-<ul>
-<li><p>dyld</p>
-<ol>
-<li>减少动态库、合并一些动态库（定期清理不必要的动态库）</li>
-<li>减少<code>Objc</code>类、分类的数量、减少<code>Selector</code>数量（定期清理不必要的类、分类）</li>
-<li>减少<code>C++虚函数</code>数量</li>
-<li><code>Swift</code>尽量使用<code>struct</code></li>
-</ol>
-</li>
-<li><p>runtime</p>
-<ul>
-<li>用<code>+initialize</code>方法和<code>dispatch_once</code>取代所有的<code>__attribute__((constructor))</code>、<code>C++静态构造器</code>、<code>ObjC的+load</code></li>
-</ul>
-</li>
-<li><p>main</p>
-<ul>
-<li>在不影响用户体验的前提下，尽可能将一些操作延迟，不要全部都放在<code>finishLaunching</code>方法中按需加载</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/性能优化/耗电优化"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E8%80%97%E7%94%B5%E4%BC%98%E5%8C%96/"
-    >耗电优化</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E8%80%97%E7%94%B5%E4%BC%98%E5%8C%96/" class="article-date">
-  <time datetime="2023-02-19T13:02:08.000Z" itemprop="datePublished">2023-02-19</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="耗电优化"><a href="#耗电优化" class="headerlink" title="耗电优化"></a>耗电优化</h2><ul>
-<li>尽可能降低CPU、GPU功耗</li>
-<li>少用定时器</li>
-<li>优化I/O操作<ul>
-<li>尽量不要频繁写入小数据，最好批量一次性写入</li>
-<li>读写大量重要数据时，考虑用<code>dispatch_io</code>，其提供了基于<code>GCD</code>的异步操作文件<code>I/O</code>的<code>API</code>。用<code>dispatch_io</code>系统会优化磁盘访问</li>
-<li>数据量比较大的，建议使用数据库（比如<code>SQLite</code>、<code>CoreData</code>）</li>
-</ul>
-</li>
-<li>网络优化<ul>
-<li>减少、压缩网络数据</li>
-<li>如果多次请求的结果是相同的，尽量使用缓存</li>
-<li>使用断点续传，否则网络不稳定时可能多次传输相同的内容</li>
-<li>网络不可用时，不要尝试执行网络请求</li>
-<li>让用户可以取消长时间运行或者速度很慢的网络操作，设置合适的超时时间</li>
-<li>批量传输，比如，下载视频流时，不要传输很小的数据包，直接下载整个文件或者一大块一大块地下载。如果下载广告，一次性多下载一些，然后再慢慢展示。如果下载电子邮件，一次下载多封，不要一封一封地下载</li>
-</ul>
-</li>
-<li>定位优化<ul>
-<li>如果只是需要快速确定用户位置，最好用<code>CLLocationManager</code>的<code>requestLocation</code>方法。定位完成后，会自动让定位硬件断电</li>
-<li>如果不是导航应用，尽量不要实时更新位置，定位完毕就关掉定位服务</li>
-<li>尽量降低定位精度，比如尽量不要使用精度最高的<code>kCLLocationAccuracyBest</code></li>
-<li>需要后台定位时，尽量设置<code>pausesLocationUpdatesAutomatically</code>为<code>YES</code>，如果用户不太可能移动的时候系统会自动暂停位置更新</li>
-<li>尽量不要使用<code>startMonitoringSignificantLocationChanges</code>，优先考虑<code>startMonitoringForRegion</code></li>
-</ul>
-</li>
-<li>硬件检测优化<ul>
-<li>用户移动、摇晃、倾斜设备时，会产生动作(motion)事件，这些事件由加速度计、陀螺仪、磁力计等硬件检测。在不需要检测的场合，应该及时关闭这些硬件</li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/性能优化/卡顿优化"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/"
-    >卡顿优化</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/" class="article-date">
-  <time datetime="2023-02-19T09:06:19.000Z" itemprop="datePublished">2023-02-19</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="CPU和GPU"><a href="#CPU和GPU" class="headerlink" title="CPU和GPU"></a>CPU和GPU</h2><blockquote>
-<p>在屏幕成像的过程中，CPU和GPU起着至关重要的作用</p>
-</blockquote>
-<ul>
-<li><p><code>CPU</code>（<code>Central Processing Unit</code>，中央处理器）</p>
-<ul>
-<li>对象的创建和销毁、对象属性的调整、布局计算、文本的计算和排版、图片的格式转换和解码、图像的绘制（<code>Core Graphics</code>）</li>
-</ul>
-</li>
-<li><p><code>GPU</code>（<code>Graphics Processing Unit</code>，图形处理器）</p>
-<ul>
-<li>纹理的渲染<br><img src="1.png"></li>
-</ul>
-</li>
-<li><p>在iOS中是双缓冲机制，有前帧缓存、后帧缓存</p>
-<h3 id="卡顿产生的原因"><a href="#卡顿产生的原因" class="headerlink" title="卡顿产生的原因"></a>卡顿产生的原因</h3><p><img src="2.png"></p>
-</li>
-<li><p>卡顿解决的主要思路</p>
-<ul>
-<li>尽可能减少CPU、GPU资源消耗</li>
-<li>按照60FPS的刷帧率，每隔16ms就会有一次VSync信号<h2 id="卡顿优化"><a href="#卡顿优化" class="headerlink" title="卡顿优化"></a>卡顿优化</h2><h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3></li>
-</ul>
-</li>
-<li><p>尽量用轻量级的对象，比如用不到事件处理的地方，可以考虑使用<code>CALayer</code>取代<code>UIView</code></p>
-</li>
-<li><p>不要频繁地调用UIView的相关属性，比如<code>frame</code>、<code>bounds</code>、<code>transform</code>等属性，尽量减少不必要的修改</p>
-</li>
-<li><p>尽量提前计算好布局，在有需要时一次性调整对应的属性，不要多次修改属性</p>
-</li>
-<li><p><code>Autolayout</code>会比直接设置<code>frame</code>消耗更多的CPU资源</p>
-</li>
-<li><p>图片的<code>size</code>最好刚好跟<code>UIImageView</code>的<code>size</code>保持一致</p>
-</li>
-<li><p>控制一下线程的最大并发数量</p>
-</li>
-<li><p>尽量把耗时的操作放到子线程</p>
-<ul>
-<li>文本处理（尺寸计算、绘制）</li>
-<li>图片处理（解码、绘制）</li>
-<li>iOS10以上支持<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">UIGraphicsImageRendererFormat *uiformat = [[UIGraphicsImageRenderer alloc] init];</span><br><span class="line">uiformat.scale = image.scale;</span><br><span class="line">uiformat.opaque = !hasAlpha;</span><br><span class="line">UIGraphicsImageRenderer *uirenderer = [[UIGraphicsImageRenderer alloc] initWithSize:imageSize format:uiformat];</span><br><span class="line">UIGraphicsImageDrawingActions uiactions = ^(UIGraphicsImageRendererContext *rendererContext) &#123;</span><br><span class="line">    [image drawInRect:CGRectMake(0, 0, imageSize.width, imageSize.height)];</span><br><span class="line">&#125;;</span><br><span class="line">UIImage *decodedImage = [uirenderer imageWithActions:uiactions];</span><br></pre></td></tr></table></figure></li>
-<li>iOS10以下支持<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//redraw image using device context</span><br><span class="line">    UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, YES, 0);</span><br><span class="line">    [image drawInRect:imageView.bounds];</span><br><span class="line">    image = UIGraphicsGetImageFromCurrentImageContext();</span><br><span class="line">    UIGraphicsEndImageContext();</span><br></pre></td></tr></table></figure>
-<h3 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h3></li>
-</ul>
-</li>
-<li><p>尽量避免短时间内大量图片的显示，尽可能将多张图片合成一张进行显示</p>
-</li>
-<li><p><code>GPU</code>能处理的最大纹理尺寸是<code>4096x4096</code>，一旦超过这个尺寸，就会占用CPU资源进行处理，所以纹理尽量不要超过这个尺寸</p>
-</li>
-<li><p>尽量减少视图数量和层次</p>
-</li>
-<li><p>减少透明的视图（<code>alpha</code>&lt;1），不透明的就设置<code>opaque</code>为YES</p>
-</li>
-<li><p>尽量避免出现离屏渲染</p>
-<h4 id="离屏渲染"><a href="#离屏渲染" class="headerlink" title="离屏渲染"></a>离屏渲染</h4></li>
-<li><p>在<code>OpenGL</code>中，<code>GPU</code>有2种渲染方式</p>
-<ol>
-<li><code>On-Screen Rendering</code>：当前屏幕渲染，在当前用于显示的屏幕缓冲区进行渲染操作</li>
-<li><code>Off-Screen Rendering</code>：离屏渲染，在当前屏幕缓冲区以外新开辟一个缓冲区进行渲染操作</li>
-</ol>
-</li>
-<li><p>离屏渲染消耗性能的原因</p>
-<ul>
-<li>需要创建新的缓冲区</li>
-<li>离屏渲染的整个过程，需要多次切换上下文环境，先是从当前屏幕（<code>On-Screen</code>）切换到离屏（<code>Off-Screen</code>）；等到离屏渲染结束以后，将离屏缓冲区的渲染结果显示到屏幕上，又需要将上下文环境从离屏切换到当前屏幕</li>
-</ul>
-</li>
-<li><p>哪些操作会触发离屏渲染？</p>
-<ul>
-<li><p>光栅化，<code>layer.shouldRasterize = YES</code></p>
-</li>
-<li><p>遮罩，<code>layer.mask</code></p>
-</li>
-<li><p>圆角，同时设置<code>layer.masksToBounds = YES</code>、<code>layer.cornerRadius大于0</code></p>
-<ul>
-<li>考虑通过<code>CoreGraphics</code>绘制裁剪圆角，或者提供圆角图片</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>阴影，<code>layer.shadowXXX</code></p>
-<ul>
-<li>如果设置了<code>layer.shadowPath</code>就不会产生离屏渲染<h3 id="卡顿检测"><a href="#卡顿检测" class="headerlink" title="卡顿检测"></a>卡顿检测</h3></li>
-</ul>
-</li>
-<li><p>平时所说的“卡顿”主要是因为在主线程执行了比较耗时的操作</p>
-</li>
-<li><p>可以添加<code>Observer</code>到主线程<code>RunLoop</code>中，通过监听<code>RunLoop</code>状态切换的耗时，以达到监控卡顿的目的</p>
-<ul>
-<li>绘制操作基本都在<code>source0</code>和<code>source1</code>中处理,主要监听</li>
-<li><code>kCFRunLoopBeforeWaiting</code>,开始休眠之前，处理的事件卡顿</li>
-<li><code>kCFRunLoopBeforeSources</code>,处理source0，<code>kCFRunLoopAfterWaiting</code>，被source1唤醒处理的耗时<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">- (void)startMonitoring &#123;</span><br><span class="line">    if (_isMonitoring) &#123; return; &#125;</span><br><span class="line">    _isMonitoring = YES;</span><br><span class="line">    CFRunLoopObserverContext context = &#123;</span><br><span class="line">        0,</span><br><span class="line">        (__bridge void *)self,</span><br><span class="line">        NULL,</span><br><span class="line">        NULL</span><br><span class="line">    &#125;;</span><br><span class="line">    _observer = CFRunLoopObserverCreate(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, &amp;lxdRunLoopObserverCallback, &amp;context);</span><br><span class="line">    CFRunLoopAddObserver(CFRunLoopGetMain(), _observer, kCFRunLoopCommonModes);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(lxd_event_monitor_queue(), ^&#123;</span><br><span class="line">        while (self.isMonitoring) &#123;</span><br><span class="line">            if (self.currentActivity == kCFRunLoopBeforeWaiting) &#123;</span><br><span class="line">                __block BOOL timeOut = YES;</span><br><span class="line">                dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                    timeOut = NO;</span><br><span class="line">                    dispatch_semaphore_signal(self.eventSemphore);</span><br><span class="line">                &#125;);</span><br><span class="line">                //等待1s,看添加到主队列的block是否执行完</span><br><span class="line">                [NSThread sleepForTimeInterval: 1];</span><br><span class="line">                if (timeOut) &#123;</span><br><span class="line">                    [LXDBacktraceLogger lxd_logMain];//打印堆栈信息</span><br><span class="line">                &#125;</span><br><span class="line">                dispatch_wait(self.eventSemphore, DISPATCH_TIME_FOREVER);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(lxd_fluecy_monitor_queue(), ^&#123;</span><br><span class="line">        while (self.isMonitoring) &#123;</span><br><span class="line">        //监听信号量解锁，并进行等待</span><br><span class="line">            long waitTime = dispatch_semaphore_wait(self.semphore, dispatch_time(DISPATCH_TIME_NOW, 200 * NSEC_PER_MSEC));//解锁成功返回0</span><br><span class="line">            if (waitTime != 0) &#123;</span><br><span class="line">                if (!self.observer) &#123;</span><br><span class="line">                    self.timeOut = 0;</span><br><span class="line">                    [self stopMonitoring];</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line">                //是否当前状态一直卡处理source0和休眠唤醒状态，超过5次，就打印</span><br><span class="line">                if (self.currentActivity == kCFRunLoopBeforeSources || self.currentActivity == kCFRunLoopAfterWaiting) &#123;</span><br><span class="line">                    if (++self.timeOut &lt; 5) &#123;</span><br><span class="line">                        continue;</span><br><span class="line">                    &#125;</span><br><span class="line">                    [LXDBacktraceLogger lxd_logMain];</span><br><span class="line">                    [NSThread sleepForTimeInterval: 5];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            self.timeOut = 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)stopMonitoring &#123;</span><br><span class="line">    if (!_isMonitoring) &#123; return; &#125;</span><br><span class="line">    _isMonitoring = NO;</span><br><span class="line">    </span><br><span class="line">    CFRunLoopRemoveObserver(CFRunLoopGetMain(), _observer, kCFRunLoopCommonModes);</span><br><span class="line">    CFRelease(_observer);</span><br><span class="line">    _observer = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static void lxdRunLoopObserverCallback(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void * info) &#123;</span><br><span class="line">    [LXDAppFluecyMonitor sharedMonitor].currentActivity = activity;</span><br><span class="line">    //每次变化进行信号量的增加，在监听的队列进行减少</span><br><span class="line">    dispatch_semaphore_signal([LXDAppFluecyMonitor sharedMonitor].semphore);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
- 
       <!-- reward -->
       
     </div>

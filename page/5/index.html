@@ -142,6 +142,306 @@
     
     
     <article
+  id="post-iOS学习/底层原理/objc_class的结构"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/21/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/"
+    >objc_class的结构</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/21/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/objc_class%E7%9A%84%E7%BB%93%E6%9E%84/" class="article-date">
+  <time datetime="2022-12-20T16:00:00.000Z" itemprop="datePublished">2022-12-21</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="objc-class的结构"><a href="#objc-class的结构" class="headerlink" title="objc_class的结构"></a>objc_class的结构</h1><p><img src="16715558479895.png"></p>
+<ul>
+<li>如何去查看<code>objc_class</code>的源码在真实项目中用，吧<code>objc_class</code>结构体，在函数类直接写出来，用桥接的方式实现<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">#ifndef MJClassInfo_h</span><br><span class="line">#define MJClassInfo_h</span><br><span class="line"></span><br><span class="line"># if __arm64__</span><br><span class="line">#   define ISA_MASK        0x0000000ffffffff8ULL</span><br><span class="line"># elif __x86_64__</span><br><span class="line">#   define ISA_MASK        0x00007ffffffffff8ULL</span><br><span class="line"># endif</span><br><span class="line"></span><br><span class="line">#if __LP64__</span><br><span class="line">typedef uint32_t mask_t;</span><br><span class="line">#else</span><br><span class="line">typedef uint16_t mask_t;</span><br><span class="line">#endif</span><br><span class="line">typedef uintptr_t cache_key_t;</span><br><span class="line"></span><br><span class="line">struct bucket_t &#123;</span><br><span class="line">    cache_key_t _key;</span><br><span class="line">    IMP _imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct cache_t &#123;</span><br><span class="line">    bucket_t *_buckets;</span><br><span class="line">    mask_t _mask;</span><br><span class="line">    mask_t _occupied;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct entsize_list_tt &#123;</span><br><span class="line">    uint32_t entsizeAndFlags;</span><br><span class="line">    uint32_t count;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_t &#123;</span><br><span class="line">    SEL name;</span><br><span class="line">    const char *types;</span><br><span class="line">    IMP imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct method_list_t : entsize_list_tt &#123;</span><br><span class="line">    method_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_t &#123;</span><br><span class="line">    int32_t *offset;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *type;</span><br><span class="line">    uint32_t alignment_raw;</span><br><span class="line">    uint32_t size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct ivar_list_t : entsize_list_tt &#123;</span><br><span class="line">    ivar_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_t &#123;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *attributes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct property_list_t : entsize_list_tt &#123;</span><br><span class="line">    property_t first;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct chained_property_list &#123;</span><br><span class="line">    chained_property_list *next;</span><br><span class="line">    uint32_t count;</span><br><span class="line">    property_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">typedef uintptr_t protocol_ref_t;</span><br><span class="line">struct protocol_list_t &#123;</span><br><span class="line">    uintptr_t count;</span><br><span class="line">    protocol_ref_t list[0];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_ro_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t instanceStart;</span><br><span class="line">    uint32_t instanceSize;  // instance对象占用的内存空间</span><br><span class="line">#ifdef __LP64__</span><br><span class="line">    uint32_t reserved;</span><br><span class="line">#endif</span><br><span class="line">    const uint8_t * ivarLayout;</span><br><span class="line">    const char * name;  // 类名</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;  // 成员变量列表</span><br><span class="line">    const uint8_t * weakIvarLayout;</span><br><span class="line">    property_list_t *baseProperties;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line">    method_list_t * methods;    // 方法列表</span><br><span class="line">    property_list_t *properties;    // 属性列表</span><br><span class="line">    const protocol_list_t * protocols;  // 协议列表</span><br><span class="line">    Class firstSubclass;</span><br><span class="line">    Class nextSiblingClass;</span><br><span class="line">    char *demangledName;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#define FAST_DATA_MASK          0x00007ffffffffff8UL</span><br><span class="line">struct class_data_bits_t &#123;</span><br><span class="line">    uintptr_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* OC对象 */</span><br><span class="line">struct mj_objc_object &#123;</span><br><span class="line">    void *isa;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/* 类对象 */</span><br><span class="line">struct mj_objc_class : mj_objc_object &#123;</span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;</span><br><span class="line">    class_data_bits_t bits;</span><br><span class="line">public:</span><br><span class="line">    class_rw_t* data() &#123;</span><br><span class="line">        return bits.data();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mj_objc_class* metaClass() &#123;</span><br><span class="line">        return (mj_objc_class *)((long long)isa &amp; ISA_MASK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#endif /* MJClassInfo_h */</span><br></pre></td></tr></table></figure></li>
+<li>实际使用,即可查看相关类<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        MJStudent *stu = [[MJStudent alloc] init];</span><br><span class="line">        stu-&gt;_weight = 10;</span><br><span class="line">        </span><br><span class="line">        mj_objc_class *studentClass = (__bridge mj_objc_class *)([MJStudent class]);</span><br><span class="line">        mj_objc_class *personClass = (__bridge mj_objc_class *)([MJPerson class]);</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentClassData = studentClass-&gt;data();</span><br><span class="line">        class_rw_t *personClassData = personClass-&gt;data();</span><br><span class="line">        </span><br><span class="line">        class_rw_t *studentMetaClassData = studentClass-&gt;metaClass()-&gt;data();</span><br><span class="line">        class_rw_t *personMetaClassData = personClass-&gt;metaClass()-&gt;data();</span><br><span class="line"></span><br><span class="line">        NSLog(@&quot;1111&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/底层原理/isa指针"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/19/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/"
+    >isa指针简介</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/19/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/isa%E6%8C%87%E9%92%88/" class="article-date">
+  <time datetime="2022-12-18T16:00:00.000Z" itemprop="datePublished">2022-12-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <span id="more"></span>
+
+<h1 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h1><ul>
+<li>从64bit开始，isa需要进行一次位运算，才能计算出真实地址,<code>isa &amp; ISA_MASK</code>即为实际的isas地址<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># if __arm64__</span><br><span class="line">#     define ISA_MASK   0x0000000ffffffff8ULL</span><br><span class="line">elif __x86_64__</span><br><span class="line"># define ISA_MASK        0x00007ffffffffff8ULL</span><br></pre></td></tr></table></figure></li>
+<li>Class中的isa指针没有暴露出来，可以通过构建一个相同的结构体，通过桥接得到<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct objc_class &#123;</span><br><span class="line">    Class isa;</span><br><span class="line">    Class superclass;</span><br><span class="line">&#125;;</span><br><span class="line">struct objc_class *personClass = (__bridge struct objc_class *)([Person class]);</span><br></pre></td></tr></table></figure></li>
+<li>superclass直接指向父类，不需要转换</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/底层原理/OC对象的分类"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/18/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/"
+    >OC对象的分类</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/18/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/" class="article-date">
+  <time datetime="2022-12-17T16:00:00.000Z" itemprop="datePublished">2022-12-18</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <span id="more"></span>
+<h2 id="OC对象的分类"><a href="#OC对象的分类" class="headerlink" title="OC对象的分类"></a>OC对象的分类</h2><p>主要分为3种</p>
+<ol>
+<li><code>instance</code>对象，实例对象 </li>
+<li><code>class</code>对象，类对象</li>
+<li><code>meta-class</code>对象，元类对象<h3 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h3>通过类<code>alloc</code>出来的对象，<code>instance</code>对象在内存种存储的信息（只有成员变量）包括</li>
+</ol>
+<ul>
+<li><code>isa</code>指针</li>
+<li>其他成员变量<br><code>isa</code>指针始终在对象结构体的前面，因此，<code>isa</code>指针的地址即实例对象的地址<h3 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h3></li>
+<li><code>[objec class]</code>、<code>[NSObject class]</code>、<code>object_getClass(object)</code>都是获取<code>NSobject</code>的<code>class</code>对象</li>
+<li>它们都是同一个对象，在内存中有且只有一个<code>class</code>对象</li>
+<li><code>class</code>对象在内存中存储的信息主要包括</li>
+</ul>
+<ol>
+<li><code>isa</code>指针</li>
+<li><code>superclass</code>指针</li>
+<li>类的属性信息（<code>@property</code>）、类的对象方法信息（<code>instance method</code>）</li>
+<li>类的协议信息（<code>protocol</code>）、类的成员变量信息（<code>ivar</code>）<ol>
+<li><code>ivar</code>并非成员变量的值，成员变量的值由<code>instance</code>决定</li>
+<li><code>ivar</code>实际存储的类型，名称等描述信息<h3 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h3><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除<code>isa</code>指针、<code>superclass</code>指针、<code>类方法信息</code>外，其他均为<code>null</code><h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3></li>
+</ol>
+</li>
+</ol>
+<p><img src="16713605118546.png"></p>
+<ul>
+<li>关系总结<ol>
+<li><code>instance</code>的<code>isa</code>指向<code>class</code></li>
+<li><code>class</code>的<code>isa</code>指向<code>meta-class</code></li>
+<li><code>meta-class</code>的<code>isa</code>指向基类<code>meta-class</code><ul>
+<li>基类<code>meta-class</code>的<code>isa</code>指向自己</li>
+</ul>
+</li>
+<li><code>class</code>的<code>superclass</code>指向父类的<code>class</code><ol>
+<li>如果没有父类，<code>superclass</code>指针为<code>nil</code></li>
+</ol>
+</li>
+<li><code>meta-class</code>的<code>superclass</code>指向父类的<code>meta-class</code><ol>
+<li>基类<code>meta-class</code>的<code>superclass</code>指向基类<code>class</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/底层原理/NSObject"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/NSObject/"
+    >NSObject</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/NSObject/" class="article-date">
+  <time datetime="2022-12-16T16:00:00.000Z" itemprop="datePublished">2022-12-17</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><h4 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h4><ul>
+<li>系统分配了<code>16</code>个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
+<li>但<code>NSObject</code>对象内部只使用了<code>8</code>个字节（<code>isa</code>指针）的空间（<code>64bit</code>环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
+<li>用<code>clang -rewrite-objc main.m -o main.cpp</code>编译成<code>C++</code>文件（全平台），</li>
+<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m -o main.cpp</code>(推荐)编译成指定平台的</li>
+<li><code>16字节</code>而不是<code>8字节</code>的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小<code>16字节</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>扩展的例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> @interface Student: NSObject &#123;</span><br><span class="line">    int _no;</span><br><span class="line">    int _age;</span><br><span class="line">    int _height; </span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> // 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">    Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">    int _no; //4字节</span><br><span class="line">    int _age; //4 字节</span><br><span class="line">    int _height; // 4 字节</span><br><span class="line">&#125;</span><br><span class="line">// 内存对齐: 结构体的大小必须是最大成员大小的倍数,实际为24字节，但是用`malloc_size`计算分配是32</span><br></pre></td></tr></table></figure></li>
+<li>注意，<code>ios</code>操作系统的内存对齐，是按<code>16</code>倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)</strong><code>24</code>位大小，但是用<code>malloc_size</code>计算<strong>实际</strong>分配的确是<code>32</code>位 </li>
+<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为<code>8</code>，实际不知道内存中的大小</li>
+</ul>
+<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3><ol>
+<li><code>print、p</code>：打印</li>
+<li><code>po</code>: 打印对象</li>
+<li>读取内存<ol>
+<li><code>memory red/数量格式字节数 内存地址</code>:<code>memory red/3xw 0x10010</code></li>
+<li><code>x/数量格式字节数 内存地址</code>: <code>x/3xw 0x10010</code></li>
+<li>格式: <code>x</code>-16进制，<code>d</code>是10进制</li>
+<li>字节大小:<code>b 1字节</code>，<code>h 2字节</code>，<code>w 4字节</code>，<code>g 8字节</code></li>
+</ol>
+</li>
+<li>修改内存中的值，<code>memory write 内存地址 数值</code>：<code>memory write 0x0000010 10</code></li>
+</ol>
+<h3 id="对象的isa指针指向哪里"><a href="#对象的isa指针指向哪里" class="headerlink" title="对象的isa指针指向哪里"></a>对象的isa指针指向哪里</h3><ul>
+<li><code>instance</code>对象的<code>isa</code>指针指向类对象</li>
+<li>类对象的<code>isa</code>指针指向元类对象</li>
+<li>元类对象的<code>isa</code>指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
+<li>对象的方法、属性、协议信息、成员变量，存放在类对象</li>
+<li>类方法存放在元类对象</li>
+<li>成员变量的具体值，存放在<code>instance</code></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-iOS学习/其他/FishHook"
   class="article article-type-post"
   itemscope
@@ -359,6 +659,90 @@
 
     
     <article
+  id="post-iOS学习/iOS越狱/SSH指令"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/"
+    >SSH常用指令</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/" class="article-date">
+  <time datetime="2022-10-29T09:28:35.000Z" itemprop="datePublished">2022-10-29</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS%E8%B6%8A%E7%8B%B1/">iOS越狱</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <span id="more"></span>
+<h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
+<li>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#56;&#x2e;&#x31;&#46;&#49;&#x34;">&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#56;&#x2e;&#x31;&#46;&#49;&#x34;</a>,跳转到指定ip的命令</li>
+<li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
+</ul>
+<ol>
+<li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
+<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#x6f;&#x6f;&#116;&#x40;&#x31;&#57;&#50;&#46;&#x31;&#x36;&#56;&#x2e;&#x31;&#x2e;&#49;&#x34;">&#x72;&#x6f;&#x6f;&#116;&#x40;&#x31;&#57;&#50;&#46;&#x31;&#x36;&#56;&#x2e;&#x31;&#x2e;&#49;&#x34;</a>，追加到当前ip服务器授权文件的尾部</li>
+</ul>
+</li>
+<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#114;&#x6f;&#111;&#116;&#64;&#x31;&#57;&#x32;&#x2e;&#49;&#x36;&#x38;&#x2e;&#49;&#46;&#x31;&#52;">&#114;&#x6f;&#111;&#116;&#64;&#x31;&#57;&#x32;&#x2e;&#49;&#x36;&#x38;&#x2e;&#49;&#46;&#x31;&#52;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
+<li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>chmod 755 ~/.ssh 给文件夹赋予权限，755含义<ul>
+<li>读（r=4），写（w=2），执行（x=1）</li>
+<li>文件所有者可读可写可执行                                   –7</li>
+<li>与文件所有者同属一个用户组的其他用户可读可执行                 –5 </li>
+<li>其它用户组可读可执行                                       –5<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2></li>
+</ul>
+</li>
+<li>每个端口都有个端口号，（范围是0～65535，公2^16）</li>
+<li>21端口，FTP服务</li>
+<li>80端口，http服务</li>
+<li>22端口，ssh服务<h2 id="通过USB进行SSH登录"><a href="#通过USB进行SSH登录" class="headerlink" title="通过USB进行SSH登录"></a>通过USB进行SSH登录</h2></li>
+<li>默认会用网络登录，USB登录的方式是，先用SSH登录MAC上的10010端口(非保留端口均可)，在通过usbmuxd连接22端口</li>
+<li>将iPhone的22端口（SSH端口）映射到Mac本地的10010端口</li>
+<li>用python脚本，将mac上10010映射到22，python3 tcprelay.py -t 22:10010</li>
+<li>ssh root@localhost -p 10010,直接连接本地的10010接口</li>
+<li>scp -P 10010 <del>/.ssh/id_rsa.pub root@localhost:</del>,拷贝的方法</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-Flutter/指令/指令"
   class="article article-type-post"
   itemscope
@@ -398,6 +782,34 @@
 <li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
 <li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h4 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h4></li>
 <li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
+</ul>
+<h3 id="创建flutter"><a href="#创建flutter" class="headerlink" title="创建flutter"></a>创建flutter</h3><ol>
+<li>集成SDK<ul>
+<li><a target="_blank" rel="noopener" href="https://flutter.cn/docs/get-started/install/macos#get-sdk">Flutter地址</a></li>
+</ul>
+</li>
+<li>创建<code>flutter</code>项目<ul>
+<li><code>flutter create -i swift -a java --org com.flutter. test_flutter</code></li>
+</ul>
+</li>
+<li>运行<code>flutter</code>项目<ul>
+<li><code>flutter run</code><h3 id="创建packages"><a href="#创建packages" class="headerlink" title="创建packages"></a>创建packages</h3><blockquote>
+<ol>
+<li>纯flutter的<code>Dart package</code></li>
+<li>原生插件<code>Plugin packages</code></li>
+</ol>
+</blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="Dart-package"><a href="#Dart-package" class="headerlink" title="Dart package"></a><code>Dart package</code></h4><ul>
+<li><code>flutter create --template=package hello</code></li>
+<li><code>flutter pub publish --dry-run</code><ul>
+<li>发布检查包是否合法</li>
+</ul>
+</li>
+<li><code>flutter create --org com.example --template=plugin -platforms=android,ios -a kotlin hello</code></li>
 </ul>
  
       <!-- reward -->
@@ -572,300 +984,6 @@
 <li>如果是方法中的block，那么方法在执行完毕之后，便会释放block，不会一直持有，不用担心内存泄露的问题</li>
 </ol>
  
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/iOS动画学习/iOS视图控制器转场详解"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/07/02/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E8%BD%AC%E5%9C%BA%E8%AF%A6%E8%A7%A3/"
-    >iOS视图控制器转场详解</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/07/02/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E8%BD%AC%E5%9C%BA%E8%AF%A6%E8%A7%A3/" class="article-date">
-  <time datetime="2021-07-02T03:17:30.000Z" itemprop="datePublished">2021-07-02</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>视图控制器中的视图显示在屏幕上有两种方式：</p>
-<ol>
-<li>最主要的方式是内嵌在容器控制器中，比如<code>UINavigationController</code>（<code>push</code>或<code>pop</code>一个<code>viewController</code>），<code>UITabBarController</code>（切换到其他<code>viewController</code>）, <code>UISplitController</code>；</li>
-<li>由另一个视图控制器显示它，也就是模态(<code>Modal</code>)显示(以Model方式显示另一个<code>viewController</code>)</li>
-</ol>
-<p>在 <code>storyboard</code> 里，每个<code>View Controller</code>是一个<code> Scene</code>，<code>View Controller Transition </code>便是从一个 <code>Scene</code> 转换到另外一个 <code>Scene</code>。</p>
-<p>在iOS7之前，只能使用系统提供的转场效果，iOS7之后开放相关API运行对转场效果进行定制</p>
-</blockquote> 
-      <a class="article-more-link" href="/2021/07/02/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E8%BD%AC%E5%9C%BA%E8%AF%A6%E8%A7%A3/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/iOS动画学习/图层视觉效果"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E8%A7%86%E8%A7%89%E6%95%88%E6%9E%9C/"
-    >图层视觉效果</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E8%A7%86%E8%A7%89%E6%95%88%E6%9E%9C/" class="article-date">
-  <time datetime="2021-06-23T09:46:10.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="图层蒙板"><a href="#图层蒙板" class="headerlink" title="图层蒙板"></a>图层蒙板</h2><blockquote>
-<p><code>CALayer</code>有一个属性叫做<code>mask</code>可以解决这个问题，这个属性本身就是个<code>CALayer</code>类型，有和其他图层一样的绘制和布局属性。它类似于一个子图层，相对于父图层（即拥有该属性的图层）布局，不同于那些绘制在父图层中的子图层，<code>mask</code>图层定义了父图层的部分可见区域。</p>
-</blockquote>
-<ul>
-<li><code>mask</code>图层的Color属性是无关紧要的，真正重要的是图层的轮廓。其显示的轮廓即为图层能显示的区域</li>
-</ul> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E8%A7%86%E8%A7%89%E6%95%88%E6%9E%9C/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/音视频学习/视频H264硬编码"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/"
-    >视频H264硬编码</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/" class="article-date">
-  <time datetime="2021-06-23T08:55:35.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>像素的大小是8bit，一张1920✖️1080的图片需要1920✖️1080✖️8✖️3bit / (1024✖️1024) = 47Mbit = 5.8MB；在观看30FPS的视频时，1s需要30张图片，也就是需要47 ✖️ 30 = 1.4Gbit，也就是1.4Gbit的带宽；以我们现在的网络带宽远远不够。所以必须进行视频源压缩编码。</p>
-</blockquote> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/音视频学习/iOS视频采集的格式类型"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/"
-    >iOS视频采集的格式类型</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/" class="article-date">
-  <time datetime="2021-06-23T08:55:28.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>iOS定义了很多的视频格式，这里简单介绍一下它的命名规则，具体还需要看开发文档。</p>
-</blockquote> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/音视频学习/iOS拍摄流程"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/"
-    >iOS拍摄流程</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/" class="article-date">
-  <time datetime="2021-06-23T08:55:17.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>iOS相机拍摄所需框架为&lt;ACFoundation/AVFoundation.h&gt;，该框架中基本上包含了视频中所需的全部方法。</p>
-</blockquote> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/"
-        >阅读更多...</a
-      >
-       
       <!-- reward -->
       
     </div>

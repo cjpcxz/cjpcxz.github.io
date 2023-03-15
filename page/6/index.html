@@ -142,6 +142,300 @@
     
     
     <article
+  id="post-iOS学习/iOS动画学习/iOS视图控制器转场详解"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/07/02/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E8%BD%AC%E5%9C%BA%E8%AF%A6%E8%A7%A3/"
+    >iOS视图控制器转场详解</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/07/02/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E8%BD%AC%E5%9C%BA%E8%AF%A6%E8%A7%A3/" class="article-date">
+  <time datetime="2021-07-02T03:17:30.000Z" itemprop="datePublished">2021-07-02</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>视图控制器中的视图显示在屏幕上有两种方式：</p>
+<ol>
+<li>最主要的方式是内嵌在容器控制器中，比如<code>UINavigationController</code>（<code>push</code>或<code>pop</code>一个<code>viewController</code>），<code>UITabBarController</code>（切换到其他<code>viewController</code>）, <code>UISplitController</code>；</li>
+<li>由另一个视图控制器显示它，也就是模态(<code>Modal</code>)显示(以Model方式显示另一个<code>viewController</code>)</li>
+</ol>
+<p>在 <code>storyboard</code> 里，每个<code>View Controller</code>是一个<code> Scene</code>，<code>View Controller Transition </code>便是从一个 <code>Scene</code> 转换到另外一个 <code>Scene</code>。</p>
+<p>在iOS7之前，只能使用系统提供的转场效果，iOS7之后开放相关API运行对转场效果进行定制</p>
+</blockquote> 
+      <a class="article-more-link" href="/2021/07/02/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E8%BD%AC%E5%9C%BA%E8%AF%A6%E8%A7%A3/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/iOS动画学习/图层视觉效果"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E8%A7%86%E8%A7%89%E6%95%88%E6%9E%9C/"
+    >图层视觉效果</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E8%A7%86%E8%A7%89%E6%95%88%E6%9E%9C/" class="article-date">
+  <time datetime="2021-06-23T09:46:10.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="图层蒙板"><a href="#图层蒙板" class="headerlink" title="图层蒙板"></a>图层蒙板</h2><blockquote>
+<p><code>CALayer</code>有一个属性叫做<code>mask</code>可以解决这个问题，这个属性本身就是个<code>CALayer</code>类型，有和其他图层一样的绘制和布局属性。它类似于一个子图层，相对于父图层（即拥有该属性的图层）布局，不同于那些绘制在父图层中的子图层，<code>mask</code>图层定义了父图层的部分可见区域。</p>
+</blockquote>
+<ul>
+<li><code>mask</code>图层的Color属性是无关紧要的，真正重要的是图层的轮廓。其显示的轮廓即为图层能显示的区域</li>
+</ul> 
+      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E8%A7%86%E8%A7%89%E6%95%88%E6%9E%9C/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/音视频学习/视频H264硬编码"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/"
+    >视频H264硬编码</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/" class="article-date">
+  <time datetime="2021-06-23T08:55:35.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>像素的大小是8bit，一张1920✖️1080的图片需要1920✖️1080✖️8✖️3bit / (1024✖️1024) = 47Mbit = 5.8MB；在观看30FPS的视频时，1s需要30张图片，也就是需要47 ✖️ 30 = 1.4Gbit，也就是1.4Gbit的带宽；以我们现在的网络带宽远远不够。所以必须进行视频源压缩编码。</p>
+</blockquote> 
+      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/音视频学习/iOS视频采集的格式类型"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/"
+    >iOS视频采集的格式类型</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/" class="article-date">
+  <time datetime="2021-06-23T08:55:28.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>iOS定义了很多的视频格式，这里简单介绍一下它的命名规则，具体还需要看开发文档。</p>
+</blockquote> 
+      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/音视频学习/iOS拍摄流程"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/"
+    >iOS拍摄流程</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/" class="article-date">
+  <time datetime="2021-06-23T08:55:17.000Z" itemprop="datePublished">2021-06-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>iOS相机拍摄所需框架为&lt;ACFoundation/AVFoundation.h&gt;，该框架中基本上包含了视频中所需的全部方法。</p>
+</blockquote> 
+      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-iOS学习/iOS动画学习/图层几何学"
   class="article article-type-post"
   itemscope
