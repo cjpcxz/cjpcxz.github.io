@@ -69,7 +69,7 @@
   <time datetime="2022-12-21T16:00:00.000Z" itemprop="datePublished">2022-12-22</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
   </div>
   
 <div class="word_count">
@@ -112,7 +112,7 @@
 <ul>
 <li>由<code>runtime</code>运行时，动态创建的类,</li>
 <li>该类实现为其<code>class对象</code>的子类，其内部实现了<code>class</code>、<code>delloc</code>、<code>_isKVOA</code>，以及重写了相关的<code>set</code>方法</li>
-<li>通过runtime输出方法，示例代码如下</li>
+<li>通过<code>runtime</code>输出方法，示例代码如下</li>
 </ul>
   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[self.person1 addObserver:self forKeyPath:@&quot;height&quot; options:options    context:@&quot;456&quot;];</span><br><span class="line"> int num;</span><br><span class="line"> //=注意，这里如果用[self.person1 class]拿不到，被重写了，不会拿到实际的类</span><br><span class="line">   Method * list = class_copyMethodList(object_getClass(self.person1),     &amp;num);</span><br><span class="line">  for(int i = 0;i &lt; num;i++) &#123;</span><br><span class="line">      Method method = list[i];</span><br><span class="line">       NSLog(@&quot;%@&quot;,NSStringFromSelector(method_getName(method)));</span><br><span class="line">&#125;</span><br><span class="line"> free(list);</span><br><span class="line"> /*</span><br><span class="line"> 输出setHeight:、setAge:、class、dealloc、_isKVOA</span><br><span class="line"> */</span><br></pre></td></tr></table></figure></li>
 <li><p>在调用<code>set</code>方法后实际调用了<code>_NSSetIntValueAndNotify();</code></p>

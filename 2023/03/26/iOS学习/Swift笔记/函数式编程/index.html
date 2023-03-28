@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>内存管理 |  ayer</title>
+      <title>函数式编程 |  ayer</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -46,7 +46,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-iOS学习/Swift笔记/内存管理"
+  id="post-iOS学习/Swift笔记/函数式编程"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -57,7 +57,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  内存管理
+  函数式编程
 </h1>
  
 
@@ -65,8 +65,8 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/03/15/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="article-date">
-  <time datetime="2023-03-15T15:52:37.000Z" itemprop="datePublished">2023-03-15</time>
+      <a href="/2023/03/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" class="article-date">
+  <time datetime="2023-03-26T14:36:36.000Z" itemprop="datePublished">2023-03-26</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a>
@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">195</span>
+            <span class="post-count">938</span>
         </span>
     </span>
 
@@ -86,7 +86,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">4 min</span>
         </span>
     </span>
 </div>
@@ -101,24 +101,77 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><ul>
-<li>跟<code>OC</code>一样，<code>Swift</code>也是采取基于引用计数的<code>ARC</code>内存管理方案(针对堆空间）</li>
-<li><code>Swift</code>的<code>ARC</code>中有3种引用<ul>
-<li>强引用 (<code>strong reference</code> ）：默认情况下，引用都是强引用</li>
-<li>弱引用(<code>weak reference</code>）：通过weak定义弱引用<ul>
-<li>必须是可选类型的<code>var</code>，因为实例销毁后，<code>ARC</code>会自动将弱引用设置为<code>nil</code></li>
-<li><code>ARC</code>自动给弱引用设置<code>nil</code>时，不会触发<strong>属性观察器</strong></li>
-</ul>
-</li>
-<li>无主引用 (<code>unowned reference</code>）：通过<code>unowned</code>定义无主引用<ul>
-<li>不会产生强引用，实例销毁后仍然存储着实例的内存地址（类似于OC中的<code>unsafe_unretained</code>）</li>
-<li>试图在实例销毀后访问无主引用，会产生运行时错误（野指针）</li>
+  <h3 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h3><blockquote>
+<ul>
+<li>函数式编程 ( Funtional Programming，简称FP）是一种编程范式，也就是如何编写程序的方法论<ul>
+<li>主要思想：把计算过程尽量分解成一系列可复用函数的调用</li>
+<li>主要特征：函数是“第一等公民〞<ul>
+<li>函数与其他数据类型一样的地位，可以赋值给其他变量，也可以作为函数参数、函数返回值</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><code>weak</code>、<code>unowned</code>只能用在类实例上面</li>
+<li>函数式编程最早出现在<code>LISP</code>语言 ，绝大部分的现代编程语言也对函数式编程做了不同程度的支持，比如<ul>
+<li>Haskell. Javascript. Python Swift、Kotlin、Scala等</li>
 </ul>
+</li>
+<li>函数式编程中几个常用的概念<ul>
+<li>Higher-Order Function, Function Currying</li>
+<li>Functor. Applicative Functor, Monad</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><ul>
+<li>传统写法，实现假设要实现：<code>var num = 1; [(num + 3）*5-1] % 10 / 2</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func add(_ v1: Int, _ v2: Int) -&gt; Int &#123; v1 + v2 &#125; </span><br><span class="line">func sub(_ v1: Int, _ V2: Int) -&gt; Int &#123; v1 - v2 &#125; </span><br><span class="line">func multiple(_ v1: Int,_v2: Int) -&gt; Int &#123; v1 * v2 &#125;</span><br><span class="line">func divide(_ v1: Int,_ v2: Int) -&gt; Int &#123; v1 / v2 &#125;</span><br><span class="line">func mod(_ v1: Int,_ v2: Int) -&gt; Int &#123; v1 % v2&#125;</span><br><span class="line"></span><br><span class="line">divide (mod (sub (mult iple(add (num, 3)， 5)， 1)， 10）， 2)</span><br></pre></td></tr></table></figure>
+</li>
+<li>函数式写法<ul>
+<li>将函数拆分成只接受一个参数   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func add( v: Int) -&gt; (Int) 一&gt;Int &#123; &#123; $0 + v &#125; &#125;</span><br><span class="line">func sub( v: Int) -&gt; (Int) -&gt; Int &#123; &#123; $0 - v &#125; &#125;</span><br><span class="line">func multiple( v: Int) 一&gt;（Int） 一&gt;Int &#123; &#123; $0 * v &#125; &#125;</span><br><span class="line">func divide( v: Int) -&gt;（Int） 一&gt; Int &#123; &#123; $0 / v &#125; &#125;</span><br><span class="line">func mod( v: Int) -&gt; (Int) -&gt; Int &#123; &#123; $0 % v &#125; &#125;</span><br></pre></td></tr></table></figure></li>
+<li>定义一个合并函数运算符 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">infix operator &gt;&gt;&gt; : AdditionPrecedence func &gt;&gt;&gt;&lt;A, B, C&gt;(</span><br><span class="line">_ f1:@escaping (A) -&gt; B,</span><br><span class="line">_ f2: eescaping (B)-&gt;C) -&gt;(A)-&gt; C &#123; &#123; f2(f1($0)) &#125; &#125;</span><br></pre></td></tr></table></figure></li>
+<li>写法 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var fn = add(3) &gt;&gt;&gt; multiple(5) &gt;&gt;&gt; sub (1) &gt;&gt;&gt; mod (10) &gt;&gt;&gt; divide (2)</span><br><span class="line">fn(num)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h4 id="高阶函数-Higher-Order-Function"><a href="#高阶函数-Higher-Order-Function" class="headerlink" title="高阶函数 ( Higher-Order Function )"></a>高阶函数 ( Higher-Order Function )</h4><blockquote>
+<ul>
+<li>高阶函数是至少满足下列一个条件的函数：</li>
+<li>接受一个或多个函数作为输入 （map、filter、reduce等）</li>
+<li>返回一个函数</li>
+</ul>
+</blockquote>
+<h4 id="柯里化-Currying"><a href="#柯里化-Currying" class="headerlink" title="柯里化 ( Currying)"></a>柯里化 ( Currying)</h4><blockquote>
+<p>什么是柯里化？</p>
+<ul>
+<li>将一个接受多参数的函数变换为一系列只接受单个参数的函数</li>
+<li>Array、Optional的map方法接收的参数就是一个柯里化函数</li>
+</ul>
+</blockquote>
+<ul>
+<li>柯里化转换的方法,和方法合并的实践，上面的例子可以改写成<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">func add(_ v1: Int, _ v2: Int) -&gt; Int &#123; v1 + v2 &#125; </span><br><span class="line">func sub(_ v1: Int, _ V2: Int) -&gt; Int &#123; v1 - v2 &#125; </span><br><span class="line">func multiple(_ v1: Int,_v2: Int) -&gt; Int &#123; v1 * v2 &#125;</span><br><span class="line">func divide(_ v1: Int,_ v2: Int) -&gt; Int &#123; v1 / v2 &#125;</span><br><span class="line">func mod(_ v1: Int,_ v2: Int) -&gt; Int &#123; v1 % v2&#125;</span><br><span class="line"></span><br><span class="line">prefix func ~&lt;A, B, C&gt;(_ fn: @escaping (A, B) -&gt; C)</span><br><span class="line">-&gt; (B) -&gt; (A) -&gt; C &#123; &#123; b in &#123; a in fn(a, b) &#125; 3 &#125;</span><br><span class="line">    </span><br><span class="line">infix operator &gt;&gt;&gt; : AdditionPrecedence func &gt;&gt;&gt;&lt;A, B, C&gt;(</span><br><span class="line">_ f1: @escaping (A) -&gt; B,</span><br><span class="line">_ f2: cescaping (B) -&gt;C) -&gt;（A)-&gt;C &#123; &#123; f2(f1($0)) &#125; &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var num = 1</span><br><span class="line"></span><br><span class="line">var fn = (~add) (3) &gt;&gt;&gt; (~multiple) (5) &gt;&gt;&gt; (~sub) (1) &gt;&gt;&gt; (~mod) (10) &gt;&gt;&gt; (~divide)(2)</span><br><span class="line">fn (num)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="函子-（Functor"><a href="#函子-（Functor" class="headerlink" title="函子 （Functor)"></a>函子 （Functor)</h4><blockquote>
+<ul>
+<li> 像Array、Optional这样支持map运算的类型，称为函子 ( Functor)</li>
+<li><code>public func mapsT&gt;(_ transform: (Element) -&gt; T) -&gt; Array&lt;T&gt;</code></li>
+<li><code>public func map&lt;U&gt;(_ transform: (Wrapped) -&gt; U) -&gt; Optional&lt;U&gt;</code></li>
+</ul>
+</blockquote>
+<h4 id="适用函子-Applicative-Functor"><a href="#适用函子-Applicative-Functor" class="headerlink" title="适用函子 ( Applicative Functor)"></a>适用函子 ( Applicative Functor)</h4><blockquote>
+<ul>
+<li>对任意一个函子F，如果能支持以下运算，该函子就是一个适用函子</li>
+<li><code>func puresA&gt;( value: A) -&gt;F&lt;A&gt;</code></li>
+<li><code>func &lt;*&gt;&lt;A, B&gt;(fn: F&lt;(A) -&gt;B&gt;, value: F&lt;A&gt;)一＞F&lt;B&gt;</code></li>
+</ul>
+</blockquote>
+<h4 id="单子（Monad"><a href="#单子（Monad" class="headerlink" title="单子（Monad)"></a>单子（Monad)</h4><blockquote>
+<ul>
+<li>对任意一个类型F，如果能支持以下运算，那么就可以称为是一个单子( Monad)<ul>
+<li><code>func pure&lt;A&gt;(_ value: A) -&gt; F&lt;A&gt;</code></li>
+<li><code>func flatMap&lt;A, B&gt;(_ value: F&lt;A&gt;,_ fn:(A) -&gt; F&lt;B&gt;) -&gt; F&lt;B&gt;</code></li>
+</ul>
+</li>
+</ul>
+</blockquote>
  
       <!-- reward -->
       
@@ -183,7 +236,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/03/15/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/03/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -194,10 +247,19 @@
    
   <nav class="article-nav">
     
+      <a href="/2023/03/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/Metadata%E5%88%86%E6%9E%90/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Metadata分析
+          
+        </div>
+      </a>
     
-      <a href="/2023/03/14/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%AB%98%E7%BA%A7%E8%BF%90%E7%AE%97%E7%AC%A6/" class="article-nav-link">
+    
+      <a href="/2023/03/19/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E5%92%8COC/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">高级运算符</div>
+        <div class="article-nav-title">swift和OC</div>
       </a>
     
   </nav>

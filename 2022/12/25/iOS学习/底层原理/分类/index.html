@@ -69,7 +69,7 @@
   <time datetime="2022-12-24T16:00:00.000Z" itemprop="datePublished">2022-12-25</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
   </div>
   
 <div class="word_count">
@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">590</span>
+            <span class="post-count">629</span>
         </span>
     </span>
 
@@ -102,71 +102,73 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><ol>
-<li>通过runtime动态将分类的方法合并到类对象、元类对象中，并非编译</li>
+<li>通过<code>runtime</code>动态将分类的方法合并到类对象、元类对象中，并非编译的时候完成</li>
 <li>一个分类文件的编译后的结构体实际为<span id="more"></span>
 <img src="16719733229400.png"><ul>
 <li>由runtime在运行时，将分类的方法合并到类对象、元类对象中</li>
-<li>编译成cpp，MJPerson(Eat)生成的 <code>_category_t</code>的静态结构体变量，其是单独的静态变量，编译时并未合入到类对象中<br><img src="16719737845768.png"></li>
+<li>编译成<code>.cpp文件</code>，<code>MJPerson(Eat)</code>生成的 <code>_category_t</code>的静态结构体变量，其是单独的静态变量，其在编译的时后,并未合入到类对象中<br><img src="16719737845768.png"></li>
 </ul>
 </li>
 </ol>
 <h1 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h1><ul>
-<li><p>objc4源码解读过程：objc-os.mm</p>
+<li><p><code>objc4</code>源码解读过程：<code>objc-os.mm</code></p>
 <ol>
-<li><p>_objc_init</p>
+<li><p><code>_objc_init</code></p>
 </li>
-<li><p>load_images</p>
-</li>
-<li><p>prepare_load_methods</p>
+<li><p><code>map_images</code></p>
 <ul>
-<li>schedule_class_load</li>
-<li>add_class_to_loadable_list</li>
-<li>add_category_to_loadable_list</li>
+<li><code>_read_images</code></li>
 </ul>
 </li>
-<li><p>call_load_methods</p>
+<li><p><code>load_images</code></p>
+</li>
+<li><p><code>prepare_load_methods</code></p>
 <ul>
-<li>call_class_loads</li>
-<li>call_category_loads</li>
-<li>(*load_method)(cls, SEL_load)</li>
+<li><code>schedule_class_load</code></li>
+<li><code>add_class_to_loadable_list</code></li>
+<li><code>add_category_to_loadable_list</code></li>
+</ul>
+</li>
+<li><p><code>call_load_methods</code></p>
+<ul>
+<li><code>call_class_loads</code></li>
+<li><code>call_category_loads</code></li>
+<li><code>(*load_method)(cls, SEL_load)</code></li>
 </ul>
 </li>
 </ol>
 </li>
-<li><p>load方法是根据方法地址直接调用，并不是经过objc_msgSend函数调用</p>
+<li><p><code>load</code>方法是根据方法地址直接调用，并不是经过<code>objc_msgSend</code>函数调用</p>
+</li>
+</ul>
 <h3 id="method-array-t的构建"><a href="#method-array-t的构建" class="headerlink" title="method_array_t的构建"></a>method_array_t的构建</h3><blockquote>
 <p>在runtime运行后，添加到class_rw_t的method_array_t二维方法数组中</p>
 </blockquote>
+<ul>
+<li><p>类的加载<code>realize</code>方法，可以看到<code>class_rw_t</code>实际上是在运行时创建的，此前类中的<code>bits</code>中保存的是<code>class_ro_t</code>相关数据，在运行时<code>realize</code>，创建<code>class_rw_t</code>数据，并将其赋给<code>bits</code>中<br><img src="2.png" alt="截屏2023-01-01 23.10.16"></p>
 </li>
-<li><p>类的realize方法，可以看到class_rw_t实际上是在现在创建的，此前类中的bits中保存的是class_ro_t相关数据，才在这里realize，创建class_rw_t数据，并将其赋给bits中<br><img src="2.png" alt="截屏2023-01-01 23.10.16"></p>
-</li>
-<li><p>加载分类的方法，保证类realize完成后，再去加载分类<br><img src="1.png" alt="截屏2023-01-01 23.10.16"></p>
+<li><p>加载分类的方法，保证类<code>realize</code>完成后，再去加载分类<br><img src="1.png" alt="截屏2023-01-01 23.10.16"></p>
 </li>
 <li><p>核心添加方法 <code>attachLists</code></p>
 </li>
-<li><p>objc838版本，在构建分类大数组是，最后编译的分类，放到最前面，将所有的分类方法、属性、协议数据合并到一个大数组中<br><img src="16720409049409.png"></p>
+<li><p><code>objc_838</code>版本，在构建分类大数组是，最后编译的分类，放到最前面，将所有的分类方法、属性、协议数据合并到一个大数组中<br><img src="16720409049409.png"></p>
 </li>
-<li><p>构建一个新数组，由后往前添加<br><img src="16720258260842.png"></p>
+<li><p>构建一个新数组，由后往前添加,新加的方法，放到最前面<br><img src="16720258260842.png"></p>
 </li>
-<li><p>objc750方法，</p>
+<li><p><code>objc_750</code>方法，最后编译的分类，放到最前面，最终所有的分类方法、属性、协议数据合并到一个大数组中<br><img src="16720410519764.png"> </p>
 </li>
-<li><p>最后编译的分类，放到最前面，最终所有的分类方法、属性、协议数据合并到一个大数组中</p>
-</li>
-<li><p><img src="16720410519764.png"> </p>
-</li>
-<li><p>会通过memmove（内存挪动）(会根据方向挪动位置，保证数据完整性)将原来的方法列表，往后移动相应增加分类容量的位置。前面空出来的位置，用memcpy（内存拷贝）（只会从小地址，开始拷贝），添加在方法列表前面。也就是分类的方法，会在原方法的前面<br><img src="16720259301593.png"></p>
+<li><p>会通过<code>memmove</code>（内存挪动）(会根据方向挪动位置，保证数据完整性)将原来的方法列表，往后移动相应增加分类容量的位置。前面空出来的位置，用<code>memcpy</code>（内存拷贝）（只会从小地址，开始拷贝），添加在方法列表前面。也就是分类的方法，会在原方法的前面<br><img src="16720259301593.png"></p>
 </li>
 </ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>为什么两个版本的，方法数组的组合方式会不一样</li>
-<li>Category的实现原理<ul>
-<li>Category编译之后的底层结构是struct category_t,里面吗存储着分类的对象方法、类方法、属性、协议信息</li>
-<li>在程序运行的时候，runtime会将Category的数据，合并到类信息中（类对象、元类对象中）</li>
+<li><code>Category</code>的实现原理<ul>
+<li><code>Category</code>编译之后的底层结构是<code>struct category_t</code>,里面吗存储着分类的对象方法、类方法、属性、协议信息</li>
+<li>在程序运行的时候，<code>runtime</code>会将<code>Category</code>的数据，合并到类信息中（类对象、元类对象中）(并不是所有的分类均会，详情见<a href="%E6%87%92%E5%8A%A0%E8%BD%BD%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD.md">懒加载类以及分类的加载</a>)</li>
 </ul>
 </li>
-<li>Category和Class EXtension的区别是什么<ul>
-<li>Class Extension在编译的时候，他的数据已经包含在类信息中</li>
-<li>Category是在运行时，才会将数据合并到类信息中</li>
+<li><code>Category</code>和<code>Class EXtension</code>的区别是什么<ul>
+<li><code>Class Extension</code>在<strong>编译</strong>的时候，他的数据已经包含在类信息中</li>
+<li><code>Category</code>是在运行时，才会将数据合并到类信息中（并不是所有的分类均会）</li>
 </ul>
 </li>
 </ul>
@@ -257,9 +259,9 @@
       </a>
     
     
-      <a href="/2022/12/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/" class="article-nav-link">
+      <a href="/2022/12/24/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/map-images/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">KVC</div>
+        <div class="article-nav-title">map_images</div>
       </a>
     
   </nav>

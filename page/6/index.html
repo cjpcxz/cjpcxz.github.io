@@ -142,6 +142,898 @@
     
     
     <article
+  id="post-iOS学习/底层原理/OC对象的分类"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/18/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/"
+    >OC对象的分类</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/18/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/OC%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%86%E7%B1%BB/" class="article-date">
+  <time datetime="2022-12-17T16:00:00.000Z" itemprop="datePublished">2022-12-18</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <span id="more"></span>
+<h2 id="OC对象的分类"><a href="#OC对象的分类" class="headerlink" title="OC对象的分类"></a>OC对象的分类</h2><p>主要分为3种</p>
+<ol>
+<li><code>instance</code>对象，实例对象 </li>
+<li><code>class</code>对象，类对象</li>
+<li><code>meta-class</code>对象，元类对象</li>
+</ol>
+<h3 id="instance"><a href="#instance" class="headerlink" title="instance"></a>instance</h3><ul>
+<li>通过类<code>alloc</code>出来的对象，<code>instance</code>对象在内存种存储的信息（只有成员变量）包括<ul>
+<li><code>isa</code>指针</li>
+<li>其他成员变量</li>
+</ul>
+</li>
+<li><code>isa</code>指针始终在对象结构体的前面，因此，<code>isa</code>指针的地址即实例对象的地址</li>
+</ul>
+<h3 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h3><ul>
+<li><code>[objec class]</code>、<code>[NSObject class]</code>、<code>object_getClass(object)</code>都是获取<code>NSobject</code>的<code>class</code>对象</li>
+<li>它们都是同一个对象，在内存中有且只有一个<code>class</code>对象</li>
+<li><code>class</code>对象在内存中存储的信息主要包括</li>
+</ul>
+<ol>
+<li><code>isa</code>指针</li>
+<li><code>superclass</code>指针</li>
+<li>类的属性信息（<code>@property</code>）、类的对象方法信息（<code>instance method</code>）</li>
+<li>类的协议信息（<code>protocol</code>）、类的成员变量信息（<code>ivar</code>）<ol>
+<li><code>ivar</code>并非成员变量的值，成员变量的值由<code>instance</code>决定</li>
+<li><code>ivar</code>实际存储的类型，名称等描述信息</li>
+</ol>
+</li>
+</ol>
+<h3 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h3><p><code>object_getClass([NSObject class])</code>获取元类对象，元类对象结构和类结构一样都是<code>class</code>,其结构相同，不过元类对象中除<code>isa</code>指针、<code>superclass</code>指针、<code>类方法信息</code>外，其他均为<code>null</code></p>
+<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3><p><img src="16713605118546.png"></p>
+<ul>
+<li>关系总结<ol>
+<li><code>instance</code>的<code>isa</code>指向<code>class</code></li>
+<li><code>class</code>的<code>isa</code>指向<code>meta-class</code></li>
+<li><code>meta-class</code>的<code>isa</code>指向基类<code>meta-class</code><ul>
+<li>基类<code>meta-class</code>的<code>isa</code>指向自己</li>
+</ul>
+</li>
+<li><code>class</code>的<code>superclass</code>指向父类的<code>class</code><ol>
+<li>如果没有父类，<code>superclass</code>指针为<code>nil</code></li>
+</ol>
+</li>
+<li><code>meta-class</code>的<code>superclass</code>指向父类的<code>meta-class</code><ol>
+<li>基类<code>meta-class</code>的<code>superclass</code>指向基类<code>class</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/底层原理/NSObject"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/NSObject/"
+    >NSObject</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/17/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/NSObject/" class="article-date">
+  <time datetime="2022-12-16T16:00:00.000Z" itemprop="datePublished">2022-12-17</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="一个NSObject对象占用多少内存？"><a href="#一个NSObject对象占用多少内存？" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h3><h4 id="一个NSObject对象占用多少内存？-1"><a href="#一个NSObject对象占用多少内存？-1" class="headerlink" title="一个NSObject对象占用多少内存？"></a>一个<code>NSObject</code>对象占用多少内存？</h4><ul>
+<li>系统分配了<code>16</code>个字节给<code>NSObject</code>对象（通过<code>malloc_size</code>函数获得）</li>
+<li>但<code>NSObject</code>对象内部只使用了<code>8</code>个字节（<code>isa</code>指针）的空间（<code>64bit</code>环境下，可以通过<code>class_getInstanceSize</code>函数（经过内存对齐过的值）获得<ol>
+<li>用<code>clang -rewrite-objc main.m -o main.cpp</code>编译成<code>C++</code>文件（全平台），</li>
+<li><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m -o main.cpp</code>(推荐)编译成指定平台的</li>
+<li><code>16字节</code>而不是<code>8字节</code>的原因,源码中可以看到，是<code>Foundation</code>框架规定的，最小<code>16字节</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone)</span><br><span class="line">&#123;</span><br><span class="line">    void *bytes;</span><br><span class="line">    size_t size;</span><br><span class="line"></span><br><span class="line">    // Can&#x27;t create something for nothing</span><br><span class="line">    if (!cls) return nil;</span><br><span class="line"></span><br><span class="line">    // Allocate and initialize</span><br><span class="line">    size = cls-&gt;alignedInstanceSize() + extraBytes;</span><br><span class="line"></span><br><span class="line">    // CF requires all objects be at least 16 bytes.</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line"></span><br><span class="line">    if (zone) &#123;</span><br><span class="line">        bytes = malloc_zone_calloc((malloc_zone_t *)zone, 1, size);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        bytes = calloc(1, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return objc_constructInstance(cls, bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>扩展的例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> @interface Student: NSObject &#123;</span><br><span class="line">    int _no;</span><br><span class="line">    int _age;</span><br><span class="line">    int _height; </span><br><span class="line"> &#125; </span><br><span class="line"> @end</span><br><span class="line"> </span><br><span class="line"> // 实际为</span><br><span class="line">struct Student_IMPL &#123;</span><br><span class="line">    Class isa; //8字节，（注意NSObect会分配16字节，但是isa结构体是8字节）</span><br><span class="line">    int _no; //4字节</span><br><span class="line">    int _age; //4 字节</span><br><span class="line">    int _height; // 4 字节</span><br><span class="line">&#125;</span><br><span class="line">// 内存对齐: 结构体的大小必须是最大成员大小的倍数,实际为24字节，但是用`malloc_size`计算分配是32</span><br></pre></td></tr></table></figure></li>
+<li>注意，<code>ios</code>操作系统的内存对齐，是按<code>16</code>倍为来进行分配的， 例如<code>class_getInstanceSize</code>计算<strong>只需(至少)</strong><code>24</code>位大小，但是用<code>malloc_size</code>计算<strong>实际</strong>分配的确是<code>32</code>位 </li>
+<li>注意，<code>sizeof</code>实际上是运算符，并不是函数，和以上两个函数有区别，在编译的时候，就会决定了，例如<code>sizeof(指针)</code>，在编译就设置为<code>8</code>，实际不知道内存中的大小</li>
+</ul>
+<h3 id="常用LLDB指令"><a href="#常用LLDB指令" class="headerlink" title="常用LLDB指令"></a>常用LLDB指令</h3><ol>
+<li><code>print、p</code>：打印</li>
+<li><code>po</code>: 打印对象</li>
+<li>读取内存<ol>
+<li><code>memory red/数量格式字节数 内存地址</code>:<code>memory red/3xw 0x10010</code></li>
+<li><code>x/数量格式字节数 内存地址</code>: <code>x/3xw 0x10010</code></li>
+<li>格式: <code>x</code>-16进制，<code>d</code>是10进制</li>
+<li>字节大小:<code>b 1字节</code>，<code>h 2字节</code>，<code>w 4字节</code>，<code>g 8字节</code></li>
+</ol>
+</li>
+<li>修改内存中的值，<code>memory write 内存地址 数值</code>：<code>memory write 0x0000010 10</code></li>
+</ol>
+<h3 id="对象的isa指针指向哪里"><a href="#对象的isa指针指向哪里" class="headerlink" title="对象的isa指针指向哪里"></a>对象的isa指针指向哪里</h3><ul>
+<li><code>instance</code>对象的<code>isa</code>指针指向类对象</li>
+<li>类对象的<code>isa</code>指针指向元类对象</li>
+<li>元类对象的<code>isa</code>指针指向基类的元类对象<h3 id="OC的类信息存放在哪里"><a href="#OC的类信息存放在哪里" class="headerlink" title="OC的类信息存放在哪里"></a>OC的类信息存放在哪里</h3></li>
+<li>对象的方法、属性、协议信息、成员变量，存放在类对象</li>
+<li>类方法存放在元类对象</li>
+<li>成员变量的具体值，存放在<code>instance</code></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" rel="tag">类的结构</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/其他/FishHook"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/10/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/FishHook/"
+    >FishHook</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/10/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/FishHook/" class="article-date">
+  <time datetime="2022-12-10T10:31:44.000Z" itemprop="datePublished">2022-12-10</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="FishHook"><a href="#FishHook" class="headerlink" title="FishHook"></a>FishHook</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>iOS中通过<code>Method Swizzling</code>实现<code>hook</code>，其原理是利用OC的<code>Runtime</code>特性，动态改变<code>SEL</code>（方法编号）和<code>IMP</code>（方法实现）的对应关系，达到OC方法交换的目的。然而只适用于动态的OC方法，对于C函数Hook，可以引用fishHook，通过修改machO文件中<code>la_symbol_ptr</code>和<code>non_la_symbol_ptr</code>两个表的指针达到C函数HOOK的目的。</p>
+<h2 id="框架地址"><a href="#框架地址" class="headerlink" title="框架地址"></a>框架地址</h2><p><code>fishhook</code>是一个非常简单的库，可以在模拟器和设备上运行在iOS上的Mach-O二进制文件中动态重新绑定符号,代码地址<a target="_blank" rel="noopener" href="https://github.com/facebook/fishhook">https://github.com/facebook/fishhook</a></p>
+<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><ol>
+<li>头文件导入<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;fishhook.h&quot;</span><br></pre></td></tr></table></figure></li>
+<li>交换制定的C函数,构建<code>rebinding</code>结构体<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct rebinding rebindSend;</span><br><span class="line">rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br></pre></td></tr></table></figure></li>
+<li><code>rebind_symbols</code>重新绑定符号<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">rebind_symbols(rebs, 1);</span><br></pre></td></tr></table></figure></li>
+<li>完整使用用例<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//  FishHooklViewController.m</span><br><span class="line">//  transitionController</span><br><span class="line">//</span><br><span class="line">//  Created by 陈晶泊 on 2022/8/10.</span><br><span class="line">//</span><br><span class="line">#import &quot;fishhook.h&quot;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdarg.h&gt;</span><br><span class="line">#import &quot;FishHooklViewController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface FishHooklViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation FishHooklViewController</span><br><span class="line">__unused static void(*orig_objc_nslog)(NSString *format, ...);</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    self.view.backgroundColor = UIColor.whiteColor;</span><br><span class="line">    struct rebinding rebindSend;</span><br><span class="line">    rebindSend.name = &quot;NSLog&quot;;</span><br><span class="line">    rebindSend.replacement = (void *)hook_Objc_nslog;</span><br><span class="line">    rebindSend.replaced = (void **)&amp;orig_objc_nslog;</span><br><span class="line">    struct rebinding rebs[] = &#123;rebindSend&#125;;</span><br><span class="line">    rebind_symbols(rebs, 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void hook_Objc_nslog(NSString *format, ...) &#123;</span><br><span class="line">    format = [format stringByAppendingFormat:@&quot;已hook&quot;];</span><br><span class="line">    orig_objc_nslog(format);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event &#123;</span><br><span class="line">    NSLog(@&quot;FishHooklViewController&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><code>MachO</code>文件的静态链接在编译的时候，就确定了方法地址，位于代码段模，是不可写的，因此静态链接的函数方法，在运行时是无法更改的。<br>然而动态链接，是在运行时进行方法链接的，在<code>MachO</code>文件中，访问动态库里的数据符号地址放在<code>got</code>(也称<code>Non-Lazy Symbol Pointers</code>)数据段，调用动态库的函数的地址放在<code>la_symbol_ptr</code>数据段的数据段中，是可读写的，因此可以在程序运行期间修改<code>got</code>(<code>non_la_symbol_ptr</code>)和<code>la_symbol_ptr</code>数据段，来替换函数跟全局变量的地址。<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="1-传入需要替换的函数"><a href="#1-传入需要替换的函数" class="headerlink" title="1. 传入需要替换的函数"></a>1. 传入需要替换的函数<img src="16706577321150.png"></h4> <code>rebindings_head</code>的<code>next</code>为nil是第一次调用；去注册方法，其中<code>_dyld_register_func_for_add_image</code>做了2件事，1.是跟<code>else</code>里面一样，为每个image(镜像)调用<code>_rebind_symbols_for_image</code>，2.是当<code>dyld</code>后面加载镜像时候，也为这个新镜像调用<code>_rebind_symbols_for_image</code>。<br> <code>rebindings_head</code>采用的链表结构，具体如下:<br><img src="16706578333010.jpg"><h4 id="2-计算地址"><a href="#2-计算地址" class="headerlink" title="2. 计算地址"></a>2. 计算地址</h4><code>rebind_symbols_for_image</code>方法的目的，主要是计算基址，找到符号表、字符串表、间接符号表、<code>nl_symbol_ptr(got)</code>以及<code>la_symbol_ptr</code>数据段的地址。</li>
+<li>首先遍历加载命令，获得<code>MachO</code>文件中符号表、间接符号表、<code>LINKEDIT</code>三个加载命令<br><img src="16706583225213.png"></li>
+<li>根据<code>LINKEDIT</code>获取的真实基址，根据第一步中得到的加载命令，确定符号表、间接符号表、字符串表的虚拟内存地址<br><img src="16706584145390.png"></li>
+<li>遍历加载命令，找到数据段，在从数据段的<code>section</code>中找到<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code></li>
+</ol>
+<p><img src="16706586123063.png"></p>
+<h4 id="3-方法替换"><a href="#3-方法替换" class="headerlink" title="3. 方法替换"></a>3. 方法替换</h4><p>最后遍历<code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和数据地址，并结合间接符号表、符号表、以及字符串表，得到地址对应的函数，变量名称，找到相同的名称，即可进行地址的替换。<br><img src="16706587741784.png"></p>
+<h2 id="通过MachOView分析"><a href="#通过MachOView分析" class="headerlink" title="通过MachOView分析"></a>通过MachOView分析</h2><ol>
+<li>计算出符号表、间接符号表、字符串表的地址<br><img src="16706010476870.png"></li>
+<li><code>nl_symbol_ptr(got)</code>/<code>la_symbol_ptr</code>可修改的变量和函数数据地址，其中<code>reserved1</code>即为数据段中的函数在间接符号表中的位置<br><img src="1.png"></li>
+<li>间接符号表中的地址，和实际数据段地址是对应的，其中间接符号表中的数据，实际对应的是符号表中的索引。<br><img src="2.png"></li>
+</ol>
+<p><img src="16706604848859.png"><br>4. 符号表中，关联由字符串表，从而知道函数的名称，因此，最终，根据名称，从间接符号表中拿到原始函数地址，从而完成了方法的替换。<br><img src="16706604848859.png"></p>
+<h2 id="FishHook应用实例"><a href="#FishHook应用实例" class="headerlink" title="FishHook应用实例"></a>FishHook应用实例</h2><p><code>SMCallTrace</code>通过hook<code>objc_msgSend</code>方法，hook了所有OC的方法，在hook方法中通过汇编语言来计算方法的耗时，可以用来项目中方法的执行情况。在需要检测耗时时间的地方调用 <code>[SMCallTrace start]</code>，结束时调用 <code>stop</code> 和 <code>save</code> 就可以打印出方法的调用层级和耗时了。还可以设置最大深度和最小耗时检测，来过滤不需要看到的信息。<a target="_blank" rel="noopener" href="https://github.com/ming1016/GCDFetchFeed">源码地址</a><br>具体使用后的效果<img src="4.jpeg"></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hook/" rel="tag">hook</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/iOS越狱/Mach-o文件"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/04/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/Mach-o%E6%96%87%E4%BB%B6/"
+    >Mach-o文件</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/04/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/Mach-o%E6%96%87%E4%BB%B6/" class="article-date">
+  <time datetime="2022-11-04T09:28:35.000Z" itemprop="datePublished">2022-11-04</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS%E8%B6%8A%E7%8B%B1/">iOS越狱</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <span id="more"></span>
+<h2 id="Mach-o文件"><a href="#Mach-o文件" class="headerlink" title="Mach-o文件"></a>Mach-o文件</h2><ul>
+<li>一个Mach-O文件包含3个主要区域<ul>
+<li>Header <ul>
+<li>文件类型、目标架构类型等</li>
+</ul>
+</li>
+<li>Load commands<ul>
+<li>描述文件在虚拟内存中的逻辑结构、布局</li>
+</ul>
+</li>
+<li>Raw segment data<ul>
+<li>在Load commands中定义的Segment的原始数据<br><img src="16674865436160.jpg"><h2 id="常见的Mach-o文件"><a href="#常见的Mach-o文件" class="headerlink" title="常见的Mach-o文件"></a>常见的Mach-o文件</h2></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>MH_OBJECT<ul>
+<li>目标文件（.o）</li>
+<li>静态库文件(.a），静态库其实就是N个.o合并在一起</li>
+</ul>
+</li>
+<li>MH_EXECUTE：可执行文件<ul>
+<li>.app/xx</li>
+</ul>
+</li>
+<li>MH_DYLIB：动态库文件<ul>
+<li>.dylib</li>
+<li>.framework/xx</li>
+</ul>
+</li>
+<li>MH_DYLINKER：动态链接编辑器<ul>
+<li>/usr/lib/dyld</li>
+</ul>
+</li>
+<li>MH_DSYM：存储着二进制文件符号信息的文件<ul>
+<li>.dSYM/Contents/Resources/DWARF/xx（常用于分析APP的崩溃信息）</li>
+</ul>
+</li>
+</ol>
+<h2 id="ios系统Mach-o文件在手机上"><a href="#ios系统Mach-o文件在手机上" class="headerlink" title="ios系统Mach-o文件在手机上"></a>ios系统Mach-o文件在手机上</h2><ul>
+<li>从iOS3.1开始，为了提高性能，绝大部分的系统动态库文件都打包存放到了一个缓存文件中（<code>dyld shared cache</code>）<ol>
+<li>缓存文件路径：<code>/System/Library/Caches/com.apple.dyld/dyld_shared_cache_armX</code></li>
+<li>绝大部分的系统动态库都放在共享缓存中，一个文件中，（多个动态库<code>mach</code>会有多个描述信息，因此降低内存，放到了一个文件中，也就是mach文件中<code>dlyld</code>(命令在/usr/lib中)加载指令(通过这个指令去加载动态库)，只会加载到一处）</li>
+<li>用<code>[[NSBundle bundleWithPath:&quot;/System/Library/Frameworks/UIKit.framework&quot;] load]</code>去加载动态库，实际上是调用2.中<code>dlyld</code>去判断是否在缓存中，有则去1.位置处的共享缓存去加载<code>UIKit.framework</code></li>
+<li><a target="_blank" rel="noopener" href="https://opensource.apple.com/tarballs/dyld/">dyld源码 </a></li>
+<li><code>dlyld</code>中的<code>dsc_extractor</code>文件可以，将1中缓存文件抽取出压缩在里面的库<ol>
+<li>先用<code>clang++</code>编译,`clang++ -o dsc_extractor dsc_extractor.cpp</li>
+<li><code>/dsc_extractor dyld_shared_cache_armv7s armv7s</code>所有动态库在呵rmv7s文件夹中<h2 id="Universal-Binary（胖二进制文件）"><a href="#Universal-Binary（胖二进制文件）" class="headerlink" title="Universal Binary（胖二进制文件）"></a>Universal Binary（胖二进制文件）</h2></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>通用二进制文件同时适用于多种架构的二进制文件包含了多种不同架构的独立的二进制文件</li>
+<li>因为需要储存多种架构的代码，通用二进制文件通常比单一平台二进制的程序要大</li>
+<li>由于两种架构有共同的一些资源，所以并不会达到单一版本的两倍之多</li>
+</ul>
+<h2 id="由于执行过程中，只调用一部分代码，运行起来也不需要额外的内存"><a href="#由于执行过程中，只调用一部分代码，运行起来也不需要额外的内存" class="headerlink" title="由于执行过程中，只调用一部分代码，运行起来也不需要额外的内存"></a>由于执行过程中，只调用一部分代码，运行起来也不需要额外的内存</h2><ul>
+<li><code>lipo -info 文件</code>，获取胖二进制文件支持架构信息</li>
+<li><code>lipo 文件 -thin armv64 - output Text_arm64</code>，抽出其中的arm64二进制文件</li>
+<li><code>lipo -create Text_arm64 Text_armv7 -output test</code>，生成出胖二进制文件</li>
+</ul>
+<h2 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h2><h3 id="file："><a href="#file：" class="headerlink" title="file："></a>file：</h3><ul>
+<li><p>查看Mach-O的文件类型</p>
+</li>
+<li><p><code>file  文件路径</code></p>
+<h3 id="otool："><a href="#otool：" class="headerlink" title="otool："></a>otool：</h3></li>
+<li><p>查看Mach-O特定部分和段的内容</p>
+<ul>
+<li><code>otool -L 文件路径</code>查看依赖的库</li>
+<li><code>otool -h 文件路径</code>mach中head的信息</li>
+<li><code>otool -l 文件路径</code>mach中loadcommand的信息<h3 id="dyld"><a href="#dyld" class="headerlink" title="dyld"></a>dyld</h3></li>
+</ul>
+</li>
+<li><p><code>dyld</code>是mach-o文件（MH_DYLINKER），但是它也能加载mach-o文件，但是只能加载</p>
+<ul>
+<li><code>MH_EXEUTE</code>，可执行文件</li>
+<li><code>MH_DYLIB</code>,动态库</li>
+<li><code>MH_BUNDLE</code><h3 id="class-dump"><a href="#class-dump" class="headerlink" title="class-dump"></a>class-dump</h3></li>
+</ul>
+</li>
+<li><p>它的作用就是把Mach-O文件的class信息给dump出来（把类信息给导出来），生成对应的.h头文件</p>
+<ul>
+<li>命令放到/usr/local/bin目录下(mac下不能放到/usr/bin下)</li>
+<li><code>class-dump  -H  Mach-O文件路径  -o  头文件存放目录</code></li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mach-o/" rel="tag">Mach-o</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/iOS越狱/SSH指令"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/"
+    >SSH常用指令</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/" class="article-date">
+  <time datetime="2022-10-29T09:28:35.000Z" itemprop="datePublished">2022-10-29</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS%E8%B6%8A%E7%8B%B1/">iOS越狱</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <span id="more"></span>
+<h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
+<li>ssh <a href="mailto:&#114;&#111;&#111;&#x74;&#64;&#49;&#x39;&#x32;&#46;&#49;&#54;&#56;&#x2e;&#x31;&#x2e;&#x31;&#52;">&#114;&#111;&#111;&#x74;&#64;&#49;&#x39;&#x32;&#46;&#49;&#54;&#56;&#x2e;&#x31;&#x2e;&#x31;&#52;</a>,跳转到指定ip的命令</li>
+<li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
+</ul>
+<ol>
+<li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
+<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#x6f;&#x6f;&#x74;&#64;&#49;&#x39;&#x32;&#x2e;&#x31;&#x36;&#56;&#x2e;&#x31;&#x2e;&#49;&#52;">&#x72;&#x6f;&#x6f;&#x74;&#64;&#49;&#x39;&#x32;&#x2e;&#x31;&#x36;&#56;&#x2e;&#x31;&#x2e;&#49;&#52;</a>，追加到当前ip服务器授权文件的尾部</li>
+</ul>
+</li>
+<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#x72;&#111;&#x6f;&#x74;&#x40;&#x31;&#57;&#x32;&#46;&#49;&#x36;&#56;&#46;&#49;&#x2e;&#49;&#x34;">&#x72;&#111;&#x6f;&#x74;&#x40;&#x31;&#57;&#x32;&#46;&#49;&#x36;&#56;&#46;&#49;&#x2e;&#49;&#x34;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
+<li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>chmod 755 ~/.ssh 给文件夹赋予权限，755含义<ul>
+<li>读（r=4），写（w=2），执行（x=1）</li>
+<li>文件所有者可读可写可执行                                   –7</li>
+<li>与文件所有者同属一个用户组的其他用户可读可执行                 –5 </li>
+<li>其它用户组可读可执行                                       –5<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2></li>
+</ul>
+</li>
+<li>每个端口都有个端口号，（范围是0～65535，公2^16）</li>
+<li>21端口，FTP服务</li>
+<li>80端口，http服务</li>
+<li>22端口，ssh服务<h2 id="通过USB进行SSH登录"><a href="#通过USB进行SSH登录" class="headerlink" title="通过USB进行SSH登录"></a>通过USB进行SSH登录</h2></li>
+<li>默认会用网络登录，USB登录的方式是，先用SSH登录MAC上的10010端口(非保留端口均可)，在通过usbmuxd连接22端口</li>
+<li>将iPhone的22端口（SSH端口）映射到Mac本地的10010端口</li>
+<li>用python脚本，将mac上10010映射到22，python3 tcprelay.py -t 22:10010</li>
+<li>ssh root@localhost -p 10010,直接连接本地的10010接口</li>
+<li>scp -P 10010 <del>/.ssh/id_rsa.pub root@localhost:</del>,拷贝的方法</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-Flutter/指令/flutter和原生交互"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/09/11/Flutter/%E6%8C%87%E4%BB%A4/flutter%E5%92%8C%E5%8E%9F%E7%94%9F%E4%BA%A4%E4%BA%92/"
+    >flutter和iOS交互</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/11/Flutter/%E6%8C%87%E4%BB%A4/flutter%E5%92%8C%E5%8E%9F%E7%94%9F%E4%BA%A4%E4%BA%92/" class="article-date">
+  <time datetime="2022-09-11T14:38:58.371Z" itemprop="datePublished">2022-09-11</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/flutter%E5%92%8C%E5%8E%9F%E7%94%9F%E4%BA%A4%E4%BA%92/">flutter和原生交互</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="flutter的创建"><a href="#flutter的创建" class="headerlink" title="flutter的创建"></a>flutter的创建</h3><ol>
+<li>集成SDK<ul>
+<li><a target="_blank" rel="noopener" href="https://flutter.cn/docs/get-started/install/macos#get-sdk">Flutter地址</a></li>
+</ul>
+</li>
+<li>创建<code>flutter</code>项目<ul>
+<li><code>flutter create -i swift -a java --org com.flutter. test_flutter</code></li>
+</ul>
+</li>
+<li>运行<code>flutter</code>项目<ul>
+<li><code>flutter run</code><h3 id="创建packages"><a href="#创建packages" class="headerlink" title="创建packages"></a>创建packages</h3><blockquote>
+<ol>
+<li>纯flutter的<code>Dart package</code></li>
+<li>原生插件<code>Plugin packages</code></li>
+</ol>
+</blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="Dart-package"><a href="#Dart-package" class="headerlink" title="Dart package"></a><code>Dart package</code></h4><ul>
+<li><code>flutter create --template=package hello</code></li>
+<li><code>flutter pub publish --dry-run</code><ul>
+<li>发布检查包是否合法</li>
+</ul>
+</li>
+</ul>
+<h4 id="原生-plugin"><a href="#原生-plugin" class="headerlink" title="原生 plugin"></a><code>原生 plugin</code></h4><ul>
+<li><code>flutter create --org com.example --template=plugin --platforms=android,ios -a kotlin -i swift hello</code></li>
+<li>创建插件目录结构如下<ul>
+<li><code>TestPlugin</code>是原生的插件代码，在这里实现原生代码</li>
+<li><code>lib</code>文件下的是，<code>flutter</code>项目调用插件功能的相关接口，以及和原生交互的<code>channel</code><br><img src="1.png"></li>
+</ul>
+</li>
+<li>创建插件时，会顺带生成一个示例的<code>flutter</code>项目，其中的iOS文件夹内<code>GeneratedPluginRegistrant</code>,将插件注册的<code>AppDelegate</code>中<br><img src="2.png"></li>
+</ul>
+<h3 id="在iOS项目中集合flutter项目"><a href="#在iOS项目中集合flutter项目" class="headerlink" title="在iOS项目中集合flutter项目"></a>在iOS项目中集合flutter项目</h3><blockquote>
+<p>创建<code>plugin</code>的方式，是在以<code>flutter</code>为主的项目中使用的，这里介绍下，在原生为主的项目中，如何嵌入<code>flutter</code></p>
+</blockquote>
+<ol>
+<li>创建<code>Flutter-Flutter module</code><ul>
+<li><code>flutter create --template module test_module</code></li>
+</ul>
+</li>
+<li>将创建的<code>module</code>加入iOS工程中，并在<code>Podfile</code>文件中加入以下代码，然后<code>pod install</code> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lutter_application_path = &#x27;../my_flutter&#x27;</span><br><span class="line">load File.join(flutter_application_path, &#x27;.ios&#x27;, &#x27;Flutter&#x27;, &#x27;podhelper.rb&#x27;)</span><br><span class="line">target &#x27;MyApp&#x27; do</span><br><span class="line">     install_all_flutter_pods(flutter_application_path)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">post_install do |installer|</span><br><span class="line">    flutter_post_install(installer) if defined?(flutter_post_install)</span><br><span class="line">end</span><br></pre></td></tr></table></figure></li>
+<li>热重载调试Flutter<ol>
+<li>项目中需要配置网络权限 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;key&gt;NSBonjourServices&lt;/key&gt;</span><br><span class="line">&lt;array&gt;</span><br><span class="line">&lt;string&gt;_dartobservatory._tcp&lt;/string&gt;</span><br><span class="line"> &lt;/array&gt;</span><br><span class="line"> &lt;key&gt;NSLocalNetworkUsageDescription&lt;/key&gt;</span><br><span class="line">&lt;string&gt;需要访问本地网络权限&lt;/string&gt;</span><br></pre></td></tr></table></figure></li>
+<li>运行<code>iOS</code>项目</li>
+<li>在flutter项目中，输入指令<code>flutter attach</code>,即可,<ul>
+<li><code>r</code>为热重载，<code>R</code>为热启动，<code>q</code>退出调试</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>创建<code>FlutterViewController</code><ol>
+<li><code>Flutter</code>设置路由的代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">MaterialApp(</span><br><span class="line">    routes: &#123;</span><br><span class="line">      &quot;/one_page&quot;: ((context) =&gt; const AnimationHomePage()),</span><br><span class="line">      &quot;/two_page&quot;: ((context) =&gt;</span><br><span class="line">          const MyHomePage(title: &#x27;Flutter Demo Home Page&#x27;))</span><br><span class="line">    &#125;,</span><br><span class="line">    title: &#x27;Flutter Demo&#x27;,</span><br><span class="line">    theme: ThemeData(</span><br><span class="line">      primarySwatch: Colors.blue,</span><br><span class="line">    ),</span><br><span class="line">    home: _widgetForRoute(window.defaultRouteName));</span><br></pre></td></tr></table></figure></li>
+<li>每次都会生成一新的<code>flutterEngine</code>,很占内存<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let flutterVc = FlutterViewController(project: nil, initialRoute: &quot;/two_page&quot;, nibName: nil, bundle: nil)</span><br><span class="line">self.navigationController?.pushViewController(flutterVc, animated: true)</span><br></pre></td></tr></table></figure></li>
+<li>设置一个全局变量<code>flutterEngine</code>，每次根据<code>flutter</code>的路由运行不同的结果<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">static let flutterVC =  &#123;</span><br><span class="line">    let engine =  FlutterEngine(name: &quot;my flutter engine&quot;)</span><br><span class="line">    engine.run(withEntrypoint: nil, initialRoute: &quot;/two_page&quot;)</span><br><span class="line">    let vc = FlutterViewController(engine: engine, nibName: nil, bundle: nil)</span><br><span class="line">    return vc</span><br><span class="line">&#125;()</span><br><span class="line"></span><br><span class="line">Self.flutterVC.pushRoute(&quot;/two_page&quot;)</span><br><span class="line">navigationController?.pushViewController(Self.flutterVC, animated: true)</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<h3 id="flutter和原生的交互"><a href="#flutter和原生的交互" class="headerlink" title="flutter和原生的交互"></a>flutter和原生的交互</h3><blockquote>
+<p>Flutter定义了三种不同的Channel</p>
+<ul>
+<li><code>MethodChannel</code>：传递方法调用，一次通讯</li>
+<li><code>BasicMessageChannel</code>：持续通讯，</li>
+<li><code>EventChannel</code>：数据流，仅原生到flutter传递数据,<code>flutter</code>端，可以控制、暂停、取消</li>
+</ul>
+</blockquote>
+<h4 id="MethodChannel"><a href="#MethodChannel" class="headerlink" title="MethodChannel"></a><code>MethodChannel</code></h4><ul>
+<li><code>flutter</code>代码  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">final channel = const MethodChannel(&#x27;methodChannel&#x27;);</span><br><span class="line"></span><br><span class="line">//监听消息</span><br><span class="line">channel.setMethodCallHandler((call) &#123;</span><br><span class="line">  switch (call.method) &#123;</span><br><span class="line">    case &quot;nativeInvoke&quot;:</span><br><span class="line">      setState(() &#123;</span><br><span class="line">        _message = &#x27;MethodChannel :$&#123;call.arguments as String&#125;&#x27;;</span><br><span class="line">      &#125;);</span><br><span class="line">      break;</span><br><span class="line">    default:</span><br><span class="line">  &#125;</span><br><span class="line">  return Future((() =&gt; &#x27;MethodCall消息&#x27;));</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//下发消息</span><br><span class="line">channel.invokeMethod(&#x27;toRoot&#x27;).then((value) =&gt; print(&quot;收到原生结果的回调,$value&quot;))</span><br></pre></td></tr></table></figure></li>
+<li><code>原生</code>代码，注意这里的消息通道是<code>flutterVC</code>的<code>binaryMessenger</code>即<code>/two_page</code>，也就是最后，在Flutter中创建的<code>MethodChannel</code>,也要在<code>/two_page</code>的<code>Widget</code>生成，<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> Self.flutterVC.pushRoute(&quot;/two_page&quot;)</span><br><span class="line">let channel = FlutterMethodChannel(name: &quot;methodChannel&quot;, binaryMessenger: Self.flutterVC.binaryMessenger)</span><br><span class="line">channel.invokeMethod(&quot;nativeInvoke&quot;, arguments: &quot;来自native的methodChannel---\(Self.time)&quot;)</span><br><span class="line">channel.setMethodCallHandler &#123;[weak self] call, result in</span><br><span class="line">    switch call.method &#123;</span><br><span class="line">    case &quot;toRoot&quot;:self?.navigationController?.popToRootViewController(animated: true)</span><br><span class="line">    default:break</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line">navigationController?.pushViewController(Self.flutterVC, animated: true)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="BasicMessageChannel"><a href="#BasicMessageChannel" class="headerlink" title="BasicMessageChannel"></a><code>BasicMessageChannel</code></h4><ul>
+<li><code>flutter</code>代码 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">final _messageChannel =</span><br><span class="line">  const BasicMessageChannel(&quot;basicMessageChannel&quot;, StandardMessageCodec());</span><br><span class="line">  </span><br><span class="line">_methodChanel.invokeMethod(&quot;toRoot&quot;)</span><br><span class="line"></span><br><span class="line"> _messageChannel.setMessageHandler((message) &#123;</span><br><span class="line">  print(&#x27;收到来自iOS的$message&#x27;);</span><br><span class="line">  return Future((() =&gt; &#x27;messageChannel&#x27;));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+<li>原生代码  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let  messageChannel = FlutterBasicMessageChannel(name: &quot;basicMessageChannel&quot;, binaryMessenger: Self.flutterVC.binaryMessenger)</span><br><span class="line">messageChannel.sendMessage(&quot;methodChannelTwo&quot;) &#123; result in</span><br><span class="line">        print(&quot;原生：methodChannelTwo---\(String(describing: result))&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">messageChannel.setMessageHandler &#123; data, reply in</span><br><span class="line">        print(&quot;收到了Flutter的数据\(String(describing: data))&quot;)</span><br><span class="line">        reply(&quot;收到了&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="EventChannel"><a href="#EventChannel" class="headerlink" title="EventChannel"></a><code>EventChannel</code></h3></li>
+<li><code>flutter</code>代码  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">final _evenChannel = const EventChannel(&quot;eventChannel&quot;);</span><br><span class="line">StreamSubscription? _streamSubscription;</span><br><span class="line"></span><br><span class="line">_streamSubscription =</span><br><span class="line">    _evenChannel.receiveBroadcastStream([&quot;abc&quot;, 123, &quot;dasw&quot;]).listen(</span><br><span class="line">  (event) &#123;</span><br><span class="line">    print(&quot;evenChannel$event&quot;);</span><br><span class="line">  &#125;,</span><br><span class="line">  onDone: () &#123;&#125;,</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//取消监听</span><br><span class="line">_streamSubscription?.cancel();</span><br></pre></td></tr></table></figure></li>
+<li>原生代码  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let eventChannel = FlutterEventChannel(name: &quot;eventChannel&quot;, binaryMessenger: Self.flutterVC.binaryMessenger)</span><br><span class="line">eventChannel.setStreamHandler(self)</span><br><span class="line">  </span><br><span class="line">  //MARK: FlutterStreamHandler</span><br><span class="line">func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -&gt; FlutterError? &#123;</span><br><span class="line">    print(&quot;onListen收到了Flutter的数据\(String(describing: arguments))&quot;)</span><br><span class="line">    timer = Observable&lt;Int&gt;.timer(.seconds(0),period: .seconds(1), scheduler: MainScheduler.instance).subscribe &#123; num in</span><br><span class="line">        events(num)</span><br><span class="line">    &#125;</span><br><span class="line">    timer?.disposed(by: bag)</span><br><span class="line">    return nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func onCancel(withArguments arguments: Any?) -&gt; FlutterError? &#123;</span><br><span class="line">    print(&quot;onCancel收到了Flutter的数据\(String(describing: arguments))&quot;)</span><br><span class="line">    timer?.dispose()</span><br><span class="line">    return nil</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="flutter嵌入原生的view"><a href="#flutter嵌入原生的view" class="headerlink" title="flutter嵌入原生的view"></a>flutter嵌入原生的view</h3><ol>
+<li><p>自定义的视图view</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">class TestView:NSObject,FlutterPlatformView &#123;</span><br><span class="line">        lazy var nameLabel: UILabel = &#123;</span><br><span class="line">            let label = UILabel()</span><br><span class="line">            label.font = .systemFont(ofSize: 15)</span><br><span class="line">            label.textColor = .white</span><br><span class="line">            label.backgroundColor = .red</span><br><span class="line">            label.textAlignment = .center</span><br><span class="line">            return label</span><br><span class="line">          &#125;()</span><br><span class="line">        </span><br><span class="line">        func view() -&gt; UIView &#123;</span><br><span class="line">            return nameLabel</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        init(_ frame: CGRect,viewID: Int64,args :Any?,messenger:FlutterBinaryMessenger) &#123;</span><br><span class="line">            super.init()</span><br><span class="line">            if let map = args as? [String:String],</span><br><span class="line">               let text = map[&quot;text&quot;] &#123;</span><br><span class="line">                nameLabel.text = text</span><br><span class="line">            &#125;</span><br><span class="line">            methodChannel(messenger: messenger)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        private func methodChannel(messenger:FlutterBinaryMessenger)&#123;</span><br><span class="line">            let  messageChannel = FlutterBasicMessageChannel(name: &quot;TestViewMessageChannel&quot;, binaryMessenger: messenger)</span><br><span class="line">            messageChannel.setMessageHandler &#123;[weak self] data, reply in</span><br><span class="line">                if let text = data as? String &#123;</span><br><span class="line">                    self?.nameLabel.text = text</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class TestViewFactory:NSObject, FlutterPlatformViewFactory &#123;</span><br><span class="line">        </span><br><span class="line">     </span><br><span class="line">      var messenger: FlutterBinaryMessenger</span><br><span class="line">      init(messenger:FlutterBinaryMessenger) &#123;</span><br><span class="line">         self.messenger = messenger</span><br><span class="line">         super.init()</span><br><span class="line">       &#125;</span><br><span class="line">        </span><br><span class="line">       </span><br><span class="line">       func createArgsCodec() -&gt; FlutterMessageCodec &amp; NSObjectProtocol &#123;</span><br><span class="line">         return FlutterStandardMessageCodec.sharedInstance()</span><br><span class="line">       &#125;</span><br><span class="line">      </span><br><span class="line">      func create(withFrame frame: CGRect, viewIdentifier viewId: Int64, arguments args: Any?) -&gt; FlutterPlatformView &#123;</span><br><span class="line">            return TestView(frame, viewID: viewId, args: args,messenger: messenger)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>在iOS中注册该view,只执行一次</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">static let register: () = &#123;</span><br><span class="line">        GeneratedPluginRegistrant.register(with: TextFlutterViewController.flutterVC)</span><br><span class="line">        </span><br><span class="line">        if let registrar = TextFlutterViewController.flutterVC.registrar(forPlugin: &quot;custom_platform_view_plugin&quot;) &#123;</span><br><span class="line">            let factory = TestViewFactory(messenger: registrar.messenger())</span><br><span class="line">            registrar.register(factory, withId: &quot;custom_platform_view&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>flutter</code>中使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UiKitView(</span><br><span class="line">    viewType: &#x27;custom_platform_view&#x27;,</span><br><span class="line">    creationParams: &#123;&#x27;text&#x27;: &#x27;Flutter传给IOSTextView的参数&#x27;&#125;,</span><br><span class="line">    creationParamsCodec: StandardMessageCodec(),</span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-Flutter/指令/指令"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/09/11/Flutter/%E6%8C%87%E4%BB%A4/%E6%8C%87%E4%BB%A4/"
+    >flutter指令</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/11/Flutter/%E6%8C%87%E4%BB%A4/%E6%8C%87%E4%BB%A4/" class="article-date">
+  <time datetime="2022-09-11T14:38:58.371Z" itemprop="datePublished">2022-09-11</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/flutter%E6%8C%87%E4%BB%A4/">flutter指令</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h4 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h4><ul>
+<li>flutter run –no-sound-null-safety  解决flutter插件旧版本兼容问题</li>
+<li>flutter create –template=package hello 创建pakcage</li>
+<li>flutter create -t module flutter_module 创建fluttermodule</li>
+<li>flutter create example 创建flutter项目<h4 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h4></li>
+<li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
+<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h4 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h4></li>
+<li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
+</ul>
+<h3 id="创建flutter"><a href="#创建flutter" class="headerlink" title="创建flutter"></a>创建flutter</h3><ol>
+<li>集成SDK<ul>
+<li><a target="_blank" rel="noopener" href="https://flutter.cn/docs/get-started/install/macos#get-sdk">Flutter地址</a></li>
+</ul>
+</li>
+<li>创建<code>flutter</code>项目<ul>
+<li><code>flutter create -i swift -a java --org com.flutter. test_flutter</code></li>
+</ul>
+</li>
+<li>运行<code>flutter</code>项目<ul>
+<li><code>flutter run</code><h3 id="创建packages"><a href="#创建packages" class="headerlink" title="创建packages"></a>创建packages</h3><blockquote>
+<ol>
+<li>纯flutter的<code>Dart package</code></li>
+<li>原生插件<code>Plugin packages</code></li>
+</ol>
+</blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="Dart-package"><a href="#Dart-package" class="headerlink" title="Dart package"></a><code>Dart package</code></h4><ul>
+<li><code>flutter create --template=package hello</code></li>
+<li><code>flutter pub publish --dry-run</code><ul>
+<li>发布检查包是否合法</li>
+</ul>
+</li>
+</ul>
+<h4 id="原生-plugin"><a href="#原生-plugin" class="headerlink" title="原生 plugin"></a><code>原生 plugin</code></h4><ul>
+<li><code>flutter create --org com.example --template=plugin --platforms=android,ios -a kotlin -i swift hello</code></li>
+<li>创建目录结构如下</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/iOS动画学习/详解iOS的presentViewController"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/07/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E8%AF%A6%E8%A7%A3iOS%E7%9A%84presentViewController/"
+    >详解iOS的presentViewController</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/07/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E8%AF%A6%E8%A7%A3iOS%E7%9A%84presentViewController/" class="article-date">
+  <time datetime="2021-07-23T15:11:44.000Z" itemprop="datePublished">2021-07-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>iOS中显示ViewController的方式有两种push和modal，modal也叫模态，模态显示VC是iOS的重要特性之一，其主要用于有以下场景：</p>
+<ol>
+<li>收集用户输入信息 </li>
+<li> 临时呈现一些内容 </li>
+<li>临时改变工作模式 </li>
+<li>相应设备方向变化（用于针对不同方向分别是想两个ViewController的情况）</li>
+<li> 显示一个新的view层级</li>
+</ol>
+<p>这些场景都会暂时中断APP的正常执行流程，主要作用是收集信息以及显示一些重要的提示等。当VCA模态的弹出了VCB，那么VCA就是<code>presenting view controller</code>，VCB就是<code>presented view controller</code></p>
+</blockquote>
+<h3 id="ModalPresentationStyle-amp-Presentation-Context"><a href="#ModalPresentationStyle-amp-Presentation-Context" class="headerlink" title="ModalPresentationStyle &amp; Presentation Context"></a>ModalPresentationStyle &amp; Presentation Context</h3><h4 id="ModalPresentationStyle"><a href="#ModalPresentationStyle" class="headerlink" title="ModalPresentationStyle"></a>ModalPresentationStyle</h4><p>​        <code>presented VC </code>的<code>modalPresentationStyle</code>属性决定了此次<code>presentation</code>的行为方式及UIKit寻找<code>presentation context</code>的方法，iOS提供了以下几种常用的<code>presentation style</code></p>
+<ol>
+<li><p><strong>UIModalPresentationFullScreen</strong></p>
+<p>UIKit默认的<code>presentation style</code>。 使用这种模式时，<code>presented VC</code>的宽高与屏幕相同，并且UIKit会直接使用<code>rootViewController</code>做为<code>presentation context</code>，在此次presentation完成之后，UIKit会将<code>presentation context及其子VC</code>都移出UI栈，这时候观察VC的层级关系，会发现UIWindow下只有<code>presented VC</code>（视图层级下UIWindow上只有presented VC）.</p>
+</li>
+<li><p><strong>UIModalPresentationCurrentContext</strong></p>
+<p>使用这种方式<code>present VC</code>时，<code>presented VC</code>的宽高取决于<code>presentation context</code>的宽高，并且UIKit会寻找属性<code>definesPresentationContext</code>为YES的VC作为<code>presentation context</code> 。当此次<code>presentation</code>完成之后，<code>presentation context</code>及其子VC都将被暂时移出当前的UI栈。</p>
+</li>
+<li><p><strong>UIModalPresentationCustom</strong></p>
+<p>自定义模式，需要实现UIViewControllerTransitioningDelegate的相关方法，并将presented VC的transitioningDelegate 设置为实现了UIViewControllerTransitioningDelegate协议的对象。</p>
+</li>
+<li><p><strong>UIModalPresentationOverFullScreen</strong></p>
+<p>与<code>UIModalPresentationFullScreen</code>的唯一<strong>区别</strong>在于，UIWindow下除了<code>presented VC</code>，还有其他正常的VC层级关系。也就是说该模式下，UIKit以<code>rootViewController</code>为<code>presentation context</code>，但presentation完成之后不会将<code>rootViewController移出当前的UI栈</code>。</p>
+</li>
+<li><p><strong>UIModalPresentationOverCurrentContext</strong></p>
+<p>寻找<code>presentation context</code>的方式与<code>UIModalPresentationCurrentContext</code>相同，所不同的是<code>presentation</code>完成之后，不会将<code>context及其子VC移出当前UI栈</code>。但是，这种方式只<strong>适用于transition style为UIModalTransitionStyleCoverVertical的情况</strong>(UIKit默认就是这种transition style)。其他transition style下使用这种方式将会触发异常。</p>
+</li>
+<li><p><strong>UIModalPresentationBlurOverFullScreen</strong></p>
+<p><code>presentation</code>完成之后，如果<code>presented VC</code>的背景有透明部分，会看到presented VC下面的VC会变得模糊，其他与<code>UIModalPresentationOverFullScreen</code>模式没有区别。</p>
+</li>
+<li><p><strong>UIModalPresentationPageSheet</strong></p>
+<p>在常规型设备（大屏手机，例如plus系列以及iPad系列）的水平方向，<code>presented VC</code>的高为当前屏幕的高度，宽为该设备竖直方向屏幕的宽度，其余部分用透明背景做填充。对于紧凑型设备（小屏手机）的水平方向及所有设备的竖直方向，其显示效果与<code>UIModalPresentationFullScreen</code>相同。</p>
+</li>
+<li><p><strong>UIModalPresentationFormSheet</strong></p>
+<p>在常规型设备的水平方向，<code>presented VC</code>的宽高均小于屏幕尺寸，其余部分用透明背景填充。对于紧凑型设备的水平方向及所有设备的竖直方向，其显示效果与<code>UIModalPresentationFullScreen</code>相同</p>
+</li>
+</ol>
+<p><code>UIModalPresentationFullScreen</code>、<code>UIModalPresentationCurrentContext</code>在转场完成后会将<code>context及其子VC移出当前UI栈</code>,因此转场结束后是无法看到presenting的视图的，而其他情况下的style是可以看到的</p>
+<h4 id="presentation-context"><a href="#presentation-context" class="headerlink" title="presentation context"></a>presentation context</h4><blockquote>
+<p><code>presentation context</code>是指为本次<code>present</code>提供上下文环境的类，需要指出的是，<code>presenting VC</code>通常并不是<code>presentation context</code></p>
+</blockquote>
+<p>​        当我们需要<code>present VC</code>的时候，除非我们指定了<code>context</code>，否则UIKit会优先选择<code>presenting VC</code>所属的容器类做为<code>presentation context</code>，如果没有容器类，那么会选择<code>rootViewController</code>。但是，UIKit搜索context的方式还与<code>presented VC</code>的<code>modalPresentationStyle</code>属性有关，当<code>modalPresentationStyle</code>为<code>UIModalPresentationFullScreen</code>、<code>UIModalPresentationOverFullScreen</code>等模式时，UIKit会直接选择<code>rootViewController</code>做为<code>context</code>。当<code>modalPresentationStyle</code>为<code>UIModalPresentationOverCurrentContext</code>、<code>UIModalPresentationCurrentContext</code>模式时，UIKit搜索<code>context</code>的方式如下：</p>
+<ul>
+<li><p><code>UIModalPresentationOverCurrentContext</code>、<code>UIModalPresentationCurrentContext</code>模式下，一个VC能否成为<code>presentation context</code> 是由VC的<code>definesPresentationContext</code>属性决定的，这是一个<code>BOOL</code>值，默认<code>UIViewController的definesPresentationContext</code>属性值是<code>NO</code>，而<strong>container view controller</strong>（容器控制器）的<code>definesPresentationContext</code>默认值是<code>YES</code>，这也是上文中，UIKit总是将<code>container view controller</code>做为<code>presentation context</code>的原因。如果我们想指定<code>presenting VC</code>做为<code>context</code>，只需要在<code>presenting VC</code>的<code>viewDidLoad</code>方法里添加如下代码即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.definesPresentationContext = YES</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>UIKit搜索<code>presentation context</code>的顺序为： </p>
+<ol>
+<li><code>presenting VC</code> </li>
+<li><code>presenting VC</code> 的<code>父VC </code></li>
+<li><code>presenting VC</code> 所属的<code>container VC </code></li>
+<li><code>rootViewController</code></li>
+</ol>
+<h3 id="层级关系"><a href="#层级关系" class="headerlink" title="层级关系"></a>层级关系</h3><blockquote>
+<p><strong>presented VC 总是与 presentation context 处于同一层级，而与presenting VC所在的层级无关，且同一个presentation context同时只能有一个presented VC。</strong></p>
+</blockquote>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/零碎知识点/碰到的一些问题"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/07/10/iOS%E5%AD%A6%E4%B9%A0/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%B0%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/"
+    >碰到的一些问题</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/07/10/iOS%E5%AD%A6%E4%B9%A0/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%B0%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2021-07-10T09:45:59.000Z" itemprop="datePublished">2021-07-10</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/">零碎知识点</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="场景图片的问题"><a href="#场景图片的问题" class="headerlink" title="场景图片的问题"></a>场景图片的问题</h3><ol>
+<li>从相册中导出全场景图片存在的问题<ol>
+<li>压缩图片的质量</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[[PHCachingImageManager defaultManager]</span><br><span class="line">        requestImageDataForAsset:mAsset</span><br><span class="line">                         options:nil</span><br><span class="line">                   resultHandler:^(NSData *_Nullable imageData, NSString *_Nullable dataUTI, UIImageOrientation orientation, NSDictionary *_Nullable info) &#123;</span><br><span class="line">                     UIImage *resultImage = [UIImage imageWithData:imageData];</span><br><span class="line">                     //获得的image要转换为正确的方向</span><br><span class="line">                    // 然后将该image导入到本地文件中</span><br><span class="line">                     //注意要用jpg的形式导入本地，否则，图片文件的大小会激增，有4M多变成90Mb（原因未知）</span><br><span class="line">                      BOOL result = [UIImageJPEGRepresentation(image, 0.5) writeToFile:filePath atomically:YES];</span><br><span class="line">                     //采用png的形式保存场景图片，会出现存储图片内存激增</span><br><span class="line">                     BOOL result = [UIImagePNGRepresentation(image) writeToFile:filePath atomically:YES];</span><br><span class="line">                   &#125;];</span><br></pre></td></tr></table></figure>
+
+<p>​        2. 全场景图片一般为十几万✖️几千的分辨率，上述压缩的方式可以使全场景图片在iphone6plus上显示，没有卡顿现象，但是这样的图片在iphone6上仍有有明显的卡顿，</p>
+<h3 id="单例block引用导致内存泄漏的问题"><a href="#单例block引用导致内存泄漏的问题" class="headerlink" title="单例block引用导致内存泄漏的问题"></a>单例block引用导致内存泄漏的问题</h3><ol>
+<li>注意如果block为单例的属性，那么在该block中要注意内存泄露的问题，因为单例会一直无法释放，会一直持有属性，而属性会一直持有block中的对象，那么就会导致block中捕获的对象，造成对象无法释放</li>
+<li>如果是方法中的block，那么方法在执行完毕之后，便会释放block，不会一直持有，不用担心内存泄露的问题</li>
+</ol>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-iOS学习/iOS动画学习/iOS视图控制器转场详解"
   class="article article-type-post"
   itemscope
@@ -204,451 +1096,13 @@
 </article>
 
     
-    <article
-  id="post-iOS学习/iOS动画学习/图层视觉效果"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E8%A7%86%E8%A7%89%E6%95%88%E6%9E%9C/"
-    >图层视觉效果</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E8%A7%86%E8%A7%89%E6%95%88%E6%9E%9C/" class="article-date">
-  <time datetime="2021-06-23T09:46:10.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="图层蒙板"><a href="#图层蒙板" class="headerlink" title="图层蒙板"></a>图层蒙板</h2><blockquote>
-<p><code>CALayer</code>有一个属性叫做<code>mask</code>可以解决这个问题，这个属性本身就是个<code>CALayer</code>类型，有和其他图层一样的绘制和布局属性。它类似于一个子图层，相对于父图层（即拥有该属性的图层）布局，不同于那些绘制在父图层中的子图层，<code>mask</code>图层定义了父图层的部分可见区域。</p>
-</blockquote>
-<ul>
-<li><code>mask</code>图层的Color属性是无关紧要的，真正重要的是图层的轮廓。其显示的轮廓即为图层能显示的区域</li>
-</ul> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E8%A7%86%E8%A7%89%E6%95%88%E6%9E%9C/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/音视频学习/视频H264硬编码"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/"
-    >视频H264硬编码</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/" class="article-date">
-  <time datetime="2021-06-23T08:55:35.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>像素的大小是8bit，一张1920✖️1080的图片需要1920✖️1080✖️8✖️3bit / (1024✖️1024) = 47Mbit = 5.8MB；在观看30FPS的视频时，1s需要30张图片，也就是需要47 ✖️ 30 = 1.4Gbit，也就是1.4Gbit的带宽；以我们现在的网络带宽远远不够。所以必须进行视频源压缩编码。</p>
-</blockquote> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91H264%E7%A1%AC%E7%BC%96%E7%A0%81/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/音视频学习/iOS视频采集的格式类型"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/"
-    >iOS视频采集的格式类型</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/" class="article-date">
-  <time datetime="2021-06-23T08:55:28.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>iOS定义了很多的视频格式，这里简单介绍一下它的命名规则，具体还需要看开发文档。</p>
-</blockquote> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E8%A7%86%E9%A2%91%E9%87%87%E9%9B%86%E7%9A%84%E6%A0%BC%E5%BC%8F%E7%B1%BB%E5%9E%8B/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/音视频学习/iOS拍摄流程"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/"
-    >iOS拍摄流程</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/" class="article-date">
-  <time datetime="2021-06-23T08:55:17.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>iOS相机拍摄所需框架为&lt;ACFoundation/AVFoundation.h&gt;，该框架中基本上包含了视频中所需的全部方法。</p>
-</blockquote> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/iOS%E6%8B%8D%E6%91%84%E6%B5%81%E7%A8%8B/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/iOS动画学习/图层几何学"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E5%87%A0%E4%BD%95%E5%AD%A6/"
-    >图层几何学</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E5%87%A0%E4%BD%95%E5%AD%A6/" class="article-date">
-  <time datetime="2021-06-23T08:43:16.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="图层布局"><a href="#图层布局" class="headerlink" title="图层布局"></a>图层布局</h2><blockquote>
-<p>UIView有三个比较重要的布局属性：<code>frame</code>，<code>bounds</code>和<code>center</code>，CALayer对应地叫做<code>frame</code>，<code>bounds</code>和<code>position</code>。<code>frame</code>代表了图层的外部坐标（也就是在父图层上占据的空间），<code>bounds</code>是内部坐标（{0, 0}通常是图层的左上角），<code>center</code>和<code>position</code>都代表了相对于父图层<code>anchorPoint</code>（也可以理解为中心）所在的位置。</p>
-</blockquote> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/%E5%9B%BE%E5%B1%82%E5%87%A0%E4%BD%95%E5%AD%A6/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/iOS动画学习/iOS核心动画技巧"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E6%8A%80%E5%B7%A7/"
-    >iOS核心动画技巧</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E6%8A%80%E5%B7%A7/" class="article-date">
-  <time datetime="2021-06-23T08:38:53.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="CALayer和UIView的区别"><a href="#CALayer和UIView的区别" class="headerlink" title="CALayer和UIView的区别"></a>CALayer和UIView的区别</h2><blockquote>
-<p><code>CALayer</code>类在概念上和<code>UIView</code>类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色），管理子图层的位置。它们有一些方法和属性用来做动画和变换。和<code>UIView</code>最大的不同是<code>CALayer</code>不处理用户的交互。<code>CALayer</code>并不清楚具体的<em>响应链</em>（iOS通过视图层级关系用来传送触摸事件的机制），于是它并不能够响应事件，即使它提供了一些方法来判断是否一个触点在图层的范围之内。</p>
-</blockquote> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/iOS%E6%A0%B8%E5%BF%83%E5%8A%A8%E7%94%BB%E6%8A%80%E5%B7%A7/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/零碎知识点/碎片化笔记"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%8E%E7%89%87%E5%8C%96%E7%AC%94%E8%AE%B0/"
-    >碎片化笔记</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%8E%E7%89%87%E5%8C%96%E7%AC%94%E8%AE%B0/" class="article-date">
-  <time datetime="2021-06-23T08:15:27.000Z" itemprop="datePublished">2021-06-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/">零碎知识点</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>记录偶尔发现有用的知识点</p>
-</blockquote> 
-      <a class="article-more-link" href="/2021/06/23/iOS%E5%AD%A6%E4%B9%A0/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/%E7%A2%8E%E7%89%87%E5%8C%96%E7%AC%94%E8%AE%B0/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/性能优化/卡顿优化/LXDAppFluecyMonitor-master/LXDAppFluecyMonitor/Assets.xcassets/AppIcon.appiconset/Contents"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2017/03/23/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/LXDAppFluecyMonitor-master/LXDAppFluecyMonitor/Assets.xcassets/AppIcon.appiconset/Contents/" class="article-date">
-  <time datetime="2017-03-23T11:13:30.000Z" itemprop="datePublished">2017-03-23</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  {"images":[{"idiom":"iphone","size":"29x29","scale":"2x"},{"idiom":"iphone","size":"29x29","scale":"3x"},{"idiom":"iphone","size":"40x40","scale":"2x"},{"idiom":"iphone","size":"40x40","scale":"3x"},{"idiom":"iphone","size":"60x60","scale":"2x"},{"idiom":"iphone","size":"60x60","scale":"3x"}],"info":{"version":1,"author":"xcode"}} 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
   </article>
   
 
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
+    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
   </nav>
   
 </section>
