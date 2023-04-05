@@ -65,8 +65,8 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2022/12/24/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E6%87%92%E5%8A%A0%E8%BD%BD%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/" class="article-date">
-  <time datetime="2022-12-23T16:00:00.000Z" itemprop="datePublished">2022-12-24</time>
+      <a href="/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E6%87%92%E5%8A%A0%E8%BD%BD%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/" class="article-date">
+  <time datetime="2022-12-25T16:00:00.000Z" itemprop="datePublished">2022-12-26</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a>
@@ -266,7 +266,7 @@
 </ol>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
 <ul>
-<li>懒加载类和懒加载分类，分类中的方法在编译的时候就加载到类中，其方法在<code>class_ro_t</code>中；在使用类的时候才回去加载类，一般是出发<code>objc_msgsend</code>，发送消息时</li>
+<li>懒加载类和懒加载分类，分类中的方法在编译的时候就加载到类中，其方法在<code>class_ro_t</code>中；在使用类的时候才会去加载类，一般是出发<code>objc_msgsend</code>，发送消息时</li>
 <li>非懒加载类和懒加载分类,分类中的方法在编译的时候就加载到类中，其方法在<code>class_ro_t</code>中;类的加载，在<code>runtime</code>启动时，即<code>read_image</code>中，进行加载</li>
 <li>懒加载类和非懒加载分类,分两种<ul>
 <li>一个非懒加载分类，分类中的方法在编译的时候就加载到类中，其方法在<code>class_ro_t</code>中;类的加载，在<code>runtime</code>启动时，即<code>read_image</code>中，进行加载。此时的类受分类影响，变成了非懒加载类。</li>
@@ -340,7 +340,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/12/24/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E6%87%92%E5%8A%A0%E8%BD%BD%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E6%87%92%E5%8A%A0%E8%BD%BD%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -351,19 +351,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/12/24/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/map-images/" class="article-nav-link">
+      <a href="/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/Load/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            map_images
+            Load
           
         </div>
       </a>
     
     
-      <a href="/2022/12/23/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/KVC/" class="article-nav-link">
+      <a href="/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">KVC</div>
+        <div class="article-nav-title">分类</div>
       </a>
     
   </nav>

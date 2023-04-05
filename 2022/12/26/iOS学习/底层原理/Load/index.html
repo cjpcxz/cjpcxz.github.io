@@ -77,7 +77,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">384</span>
+            <span class="post-count">737</span>
         </span>
     </span>
 
@@ -86,7 +86,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">2 min</span>
         </span>
     </span>
 </div>
@@ -101,49 +101,69 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="Load方法"><a href="#Load方法" class="headerlink" title="Load方法"></a>Load方法</h1><ul>
-<li>+load方法会在runtime加载类、分类时调用</li>
-<li>每个类、分类的+load，在程序运行过程中只调用一次<ul>
-<li>flags标识位保证类只会加载一次</li>
-<li>这里有递归，首选会先将父类添加到数组，后将自己加进去数组，因此最后，先父类，再执行子类的load方法</li>
-<li>最开始的关系时按照编译的顺序来</li>
+  <h3 id="Load方法"><a href="#Load方法" class="headerlink" title="Load方法"></a>Load方法</h3><ul>
+<li><code>+load</code>方法会在<code>runtime</code>加载类、分类时调用</li>
+<li>每个类、分类的<code>+load</code>，在程序运行过程中只调用一次<ul>
+<li><code>flags</code>标识位保证类只会加载一次</li>
+<li>首先会先将父类添加到数组，后将自己加进去数组，因此，先父类，再执行子类,再分类中的<code>load</code>方法</li>
+<li>同一级的关系时按照编译的顺序来</li>
 </ul>
 </li>
-<li>尽管load中方法在源码中只会调用一次，但实际上主动<code>[Class load]</code>也会触发load,因此在调用<code>method_exchangeImplementations</code>做hook时，会加上<code>dispatch_once</code>，保证只会执行一次。<br><img src="16720649726860.png"><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2></li>
+<li>尽管load中方法在源码中只会调用一次，但实际上主动<code>[Class load]</code>也会触发load,因此在调用<code>method_exchangeImplementations</code>做hook时，会加上<code>dispatch_once</code>，保证只会执行一次。</li>
 </ul>
+<span id="more"></span>
+
+<h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><ol>
+<li><p>这里如果此前没有将分类加载到类中，则这里会调用<code>loadAllCategories</code>方法</p>
+</li>
+<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有<code>load</code>方法<br><img src="16720646359112.png"></p>
+</li>
+<li><p>构建有类<code>load</code>方法的数组，以及有分类<code>load</code>方法的数组，整个添加顺序是</p>
 <ol>
-<li><p>在<code>load_images</code>中加载,首先会在<code>prepare_load_methods</code>方法中，找到类和分类的所有load方法<br><img src="16720646359112.png"></p>
-</li>
-<li><p>构建有类load方法的数组，以及有分类load方法的数组，整个添加顺序是</p>
-<ol>
-<li>类先按编译的顺序进行添加，其中父类会比子类先添加到数组中</li>
-<li>分类按编译的顺序进行添加的<br><img src="16720651219179.png"></li>
-</ol>
-</li>
-<li><p>先调用类中的load方法，再调用分类中的<br>load方法<br><img src="16720639325952.png"></p>
-</li>
-<li><p>再找到类中的load方法（load方法事前找到），用函数调用的方式执行，分类也是这样的，不是通过isa指针的方式（消息机制）<br><img src="16720641861246.png"></p>
-</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>调用顺序</li>
+<li>类先按编译的顺序进行添加，递归调用,其中父类会比子类先添加到数组中<ul>
+<li>这里有递归，首选会先将父类添加到数组，后将自己加进去数组，因此最后，先父类，再添加子类的load方法（获取类<code>class_ro_t</code>中的load方法）<br><img src="16720649726860.png"></li>
 </ul>
-<ol>
-<li><p>先带哦用类的+load</p>
-<ol>
-<li>按照编译先后顺序调用，先编译，先调用</li>
-<li>调用子类的+load之前会先调用父类的+load</li>
+</li>
+<li>分类按编译的顺序进行添加的，这里获取<code>category_t</code>中的<code>classMethods</code>方法<br><img src="16720651219179.png"></li>
 </ol>
 </li>
-<li><p>再调用分类的+load</p>
-<ol>
-<li>按照编译先后顺序调用，先编译，先调用</li>
+<li><p>先调用类中的<code>load</code>方法，再调用分类中的<code>load</code>方法<br><img src="16720639325952.png"></p>
+</li>
+<li><p>再找到类中的load方法（<code>prepare_load_methods</code>方法事前找到），用函数调用的方式直接执行，分类也是这样的，不是<code>objc_msg</code>的方式<br><img src="16720641861246.png"></p>
+</li>
 </ol>
+<h4 id="load-images流程"><a href="#load-images流程" class="headerlink" title="load_images流程"></a><code>load_images</code>流程</h4><ol>
+<li><code>loadAllCategories</code>,加载所有的分类，这里如果类已经<code>Realized</code>,则将分类中的方法、属性、协议加到类的<code>class_rw_t</code>中,否则将分类中类和分类映射加到<code>objc::unattachedCategories</code>存储，会在类<code>Realized</code>的时候，在添加</li>
+<li>准备<code>load</code>方法:<code>prepare_load_methods</code><ul>
+<li>以先处理类，后处理分类 以及 先处理父类，后处理子类的顺序存储到待调度的表中。<ul>
+<li>类的处理逻辑：把类对象<code>Class</code>和类对应的<code>load</code>方法的<code>IMP</code>整合成一个<code>loadable_class</code>类型的结构体对象存储在表<code>loadable_classes</code>中。</li>
+<li>分类的处理逻辑：把分类对象<code>Category</code>和对应的<code>load</code>方法<code>IMP</code>整合成一个<code>loadable_category</code>类型的结构体对象存储在表<code>loadable_categories</code>中。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>调用<code>load</code>方法:<code>call_load_methods</code><ul>
+<li>以先调用类<code>Class</code>的<code>load</code>，后处理分类<code>Category</code>，通过分类找到对应的类，然后由类调用<code>load</code>方法的顺序进行处理</li>
+<li>这个调用处理的顺序是根据准备方法<code>prepare_load_method</code>s中准备好的两张表<code>loadable_classes</code>和<code>loadable_categories</code>的顺序而来的。调用完就从表中移除，全部调用完结束循环。<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3></li>
+</ul>
 </li>
 </ol>
 <ul>
-<li></li>
+<li>调用顺序</li>
 </ul>
+<ol>
+<li><p>先调用类的<code>+load</code></p>
+<ol>
+<li>按照编译先后的顺序调用，先编译，先调用</li>
+<li>调用子类的<code>+load</code>之前会先调用父类的<code>+load</code></li>
+</ol>
+</li>
+<li><p>再调用分类的<code>+load</code></p>
+<ol>
+<li>按照编译先后顺序调用，先编译，先调用</li>
+</ol>
+</li>
+</ol>
  
       <!-- reward -->
       
@@ -231,9 +251,9 @@
       </a>
     
     
-      <a href="/2022/12/25/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E5%88%86%E7%B1%BB/" class="article-nav-link">
+      <a href="/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E6%87%92%E5%8A%A0%E8%BD%BD%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">分类</div>
+        <div class="article-nav-title">懒加载类以及分类的加载</div>
       </a>
     
   </nav>

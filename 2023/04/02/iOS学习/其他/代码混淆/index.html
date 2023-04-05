@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>Metadata分析 |  ayer</title>
+      <title>代码混淆 |  ayer</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -46,7 +46,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-Metadata分析"
+  id="post-iOS学习/其他/代码混淆"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -57,7 +57,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Metadata分析
+  代码混淆
 </h1>
  
 
@@ -65,15 +65,15 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/03/27/Metadata%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2023-03-27T15:42:08.000Z" itemprop="datePublished">2023-03-27</time>
+      <a href="/2023/04/02/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/" class="article-date">
+  <time datetime="2023-04-02T15:29:39.000Z" itemprop="datePublished">2023-04-02</time>
 </a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">0</span>
+            <span class="post-count">651</span>
         </span>
     </span>
 
@@ -82,20 +82,109 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">2 min</span>
         </span>
     </span>
 </div>
  
     </div>
       
+    <div class="tocbot"></div>
+
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-   
+  <h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><blockquote>
+<ul>
+<li>什么是加固<ul>
+<li>加固是为了增加应用的安全性，防止应用被破解、盗版、二次打包、注入、反编译等</li>
+</ul>
+</li>
+<li>常见的加固方式有<ul>
+<li>数据加密（字符串、网络数据、敏感数据等）</li>
+<li>应用加壳（二进制加密）</li>
+<li>代码混淆（类名、方法名、代码逻辑等）</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="代码混淆"><a href="#代码混淆" class="headerlink" title="代码混淆"></a>代码混淆</h3><ul>
+<li><p>iOS程序可以通过class-dump、Hopper、IDA等获取类名、方法名、以及分析程序的执行逻辑</p>
+<ul>
+<li>如果进行代码混淆，可以加大别人的分析难度</li>
+</ul>
+</li>
+<li><p>iOS的代码混淆方案</p>
+<ul>
+<li><p>源码的混淆</p>
+<ul>
+<li>类名</li>
+<li>方法名</li>
+<li>协议名</li>
+</ul>
+</li>
+<li><p>LLVM中间代码<code>IR</code>的混淆（容易产生BUG）</p>
+<ul>
+<li>自己编写<code>Pass</code></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/obfuscator-llvm/obfuscator">ollvm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="源码的混淆-通过宏定义混淆方法名、类名"><a href="#源码的混淆-通过宏定义混淆方法名、类名" class="headerlink" title="源码的混淆 - 通过宏定义混淆方法名、类名"></a>源码的混淆 - 通过宏定义混淆方法名、类名</h3><ul>
+<li><p>注意点</p>
+<ul>
+<li>不能混淆系统方法</li>
+<li>不能混淆<code>init</code>开头的等初始化方法</li>
+<li>混淆属性时需要额外注意<code>set</code>方法</li>
+<li>如果<code>xib</code>、<code>storyboard</code>中用到了混淆的内容，需要手动修正</li>
+<li>可以考虑把需要混淆的符号都加上前缀，跟系统自带的符号进行区分</li>
+<li>混淆过多可能会被<code>AppStore</code>拒绝上架，需要说明用途</li>
+</ul>
+</li>
+<li><p>建议</p>
+<ul>
+<li>给需要混淆的符号加上了一个特定的前缀</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/CoderMJLee/MJCodeObfuscation">工具参考</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="ios-class-guard"><a href="#ios-class-guard" class="headerlink" title="ios-class-guard"></a>ios-class-guard</h3><blockquote>
+<ul>
+<li>它是基于<code>class-dump</code>的扩展</li>
+<li>用<code>class-dump</code>扫描出可执行文件中的类名、方法名、属性名等并做替换，会更新<code>xib</code>和<code>storyboard</code>的名字等等<br>会将所有的类进行替换(包括系统的方法)</li>
+</ul>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Polidea/ios-class-guard">源码</a></li>
+<li>用法<ul>
+<li>安装,<code>brew install ios-class-guard</code></li>
+<li><code>ios-class-guard [options] &lt;mach-o-file&gt;</code></li>
+<li>常用参数<ul>
+<li><code>--sdk-root &lt;path&gt;</code>：用于指定SDK路径，如果是模拟器SDK，一般路径就是<br>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk</li>
+<li><code>--sdk-ios</code>：相当于指定<code>SDK</code>路径为<code>真机设备SDK</code></li>
+<li> <code>-X &lt;path&gt;</code>：用于指定<code>xib、storyboard</code>所在目录，它会递归搜索</li>
+<li><code>-O &lt;path&gt;</code>：生成的混淆头文件路径</li>
+<li><code>-m &lt;path&gt;</code>：符号映射表（默认是<code>symbols.json</code>）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="字符串加密"><a href="#字符串加密" class="headerlink" title="字符串加密"></a>字符串加密</h3><ul>
+<li>很多时候，可执行文件中的字符串信息，对破解者来说，非常关键，是破解的捷径之一</li>
+<li>为了加大破解、逆向难度，可以考虑对字符串进行加密</li>
+<li>字符串的加密技术有很多种，可以根据自己的需要自行制定算法<ul>
+<li>例如，对每个字符进行异或（^）处理，需要使用字符串时，对异或（^）过的字符再进行一次异或（^），就可以获得原字符</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/CoderMJLee/MJCodeObfuscation">工具参考</a></li>
+</ul>
+ 
       <!-- reward -->
       
     </div>
@@ -159,7 +248,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/03/27/Metadata%E5%88%86%E6%9E%90/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/04/02/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -170,10 +259,19 @@
    
   <nav class="article-nav">
     
+      <a href="/2023/04/03/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E6%B4%BE%E5%8F%91%E6%9C%BA%E5%88%B6/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            swift派发机制
+          
+        </div>
+      </a>
     
-      <a href="/2023/03/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/Metadata%E5%88%86%E6%9E%90/" class="article-nav-link">
+    
+      <a href="/2023/03/30/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/llvm%E5%AE%9E%E8%B7%B5/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Metadata分析</div>
+        <div class="article-nav-title">llvm</div>
       </a>
     
   </nav>

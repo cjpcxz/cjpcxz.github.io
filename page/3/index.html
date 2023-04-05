@@ -142,6 +142,233 @@
     
     
     <article
+  id="post-iOS学习/性能优化/耗电优化"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E8%80%97%E7%94%B5%E4%BC%98%E5%8C%96/"
+    >耗电优化</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E8%80%97%E7%94%B5%E4%BC%98%E5%8C%96/" class="article-date">
+  <time datetime="2023-02-19T13:02:08.000Z" itemprop="datePublished">2023-02-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="耗电优化"><a href="#耗电优化" class="headerlink" title="耗电优化"></a>耗电优化</h2><ul>
+<li>尽可能降低CPU、GPU功耗</li>
+<li>少用定时器</li>
+<li>优化I/O操作<ul>
+<li>尽量不要频繁写入小数据，最好批量一次性写入</li>
+<li>读写大量重要数据时，考虑用<code>dispatch_io</code>，其提供了基于<code>GCD</code>的异步操作文件<code>I/O</code>的<code>API</code>。用<code>dispatch_io</code>系统会优化磁盘访问</li>
+<li>数据量比较大的，建议使用数据库（比如<code>SQLite</code>、<code>CoreData</code>）</li>
+</ul>
+</li>
+<li>网络优化<ul>
+<li>减少、压缩网络数据</li>
+<li>如果多次请求的结果是相同的，尽量使用缓存</li>
+<li>使用断点续传，否则网络不稳定时可能多次传输相同的内容</li>
+<li>网络不可用时，不要尝试执行网络请求</li>
+<li>让用户可以取消长时间运行或者速度很慢的网络操作，设置合适的超时时间</li>
+<li>批量传输，比如，下载视频流时，不要传输很小的数据包，直接下载整个文件或者一大块一大块地下载。如果下载广告，一次性多下载一些，然后再慢慢展示。如果下载电子邮件，一次下载多封，不要一封一封地下载</li>
+</ul>
+</li>
+<li>定位优化<ul>
+<li>如果只是需要快速确定用户位置，最好用<code>CLLocationManager</code>的<code>requestLocation</code>方法。定位完成后，会自动让定位硬件断电</li>
+<li>如果不是导航应用，尽量不要实时更新位置，定位完毕就关掉定位服务</li>
+<li>尽量降低定位精度，比如尽量不要使用精度最高的<code>kCLLocationAccuracyBest</code></li>
+<li>需要后台定位时，尽量设置<code>pausesLocationUpdatesAutomatically</code>为<code>YES</code>，如果用户不太可能移动的时候系统会自动暂停位置更新</li>
+<li>尽量不要使用<code>startMonitoringSignificantLocationChanges</code>，优先考虑<code>startMonitoringForRegion</code></li>
+</ul>
+</li>
+<li>硬件检测优化<ul>
+<li>用户移动、摇晃、倾斜设备时，会产生动作(motion)事件，这些事件由加速度计、陀螺仪、磁力计等硬件检测。在不需要检测的场合，应该及时关闭这些硬件</li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
+  id="post-iOS学习/性能优化/卡顿优化"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/"
+    >卡顿优化</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/" class="article-date">
+  <time datetime="2023-02-19T09:06:19.000Z" itemprop="datePublished">2023-02-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="CPU和GPU"><a href="#CPU和GPU" class="headerlink" title="CPU和GPU"></a>CPU和GPU</h2><blockquote>
+<p>在屏幕成像的过程中，CPU和GPU起着至关重要的作用</p>
+</blockquote>
+<ul>
+<li><p><code>CPU</code>（<code>Central Processing Unit</code>，中央处理器）</p>
+<ul>
+<li>对象的创建和销毁、对象属性的调整、布局计算、文本的计算和排版、图片的格式转换和解码、图像的绘制（<code>Core Graphics</code>）</li>
+</ul>
+</li>
+<li><p><code>GPU</code>（<code>Graphics Processing Unit</code>，图形处理器）</p>
+<ul>
+<li>纹理的渲染<br><img src="1.png"></li>
+</ul>
+</li>
+<li><p>在iOS中是双缓冲机制，有前帧缓存、后帧缓存</p>
+<h3 id="卡顿产生的原因"><a href="#卡顿产生的原因" class="headerlink" title="卡顿产生的原因"></a>卡顿产生的原因</h3><p><img src="2.png"></p>
+</li>
+<li><p>卡顿解决的主要思路</p>
+<ul>
+<li>尽可能减少CPU、GPU资源消耗</li>
+<li>按照60FPS的刷帧率，每隔16ms就会有一次VSync信号<h2 id="卡顿优化"><a href="#卡顿优化" class="headerlink" title="卡顿优化"></a>卡顿优化</h2><h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3></li>
+</ul>
+</li>
+<li><p>尽量用轻量级的对象，比如用不到事件处理的地方，可以考虑使用<code>CALayer</code>取代<code>UIView</code></p>
+</li>
+<li><p>不要频繁地调用UIView的相关属性，比如<code>frame</code>、<code>bounds</code>、<code>transform</code>等属性，尽量减少不必要的修改</p>
+</li>
+<li><p>尽量提前计算好布局，在有需要时一次性调整对应的属性，不要多次修改属性</p>
+</li>
+<li><p><code>Autolayout</code>会比直接设置<code>frame</code>消耗更多的CPU资源</p>
+</li>
+<li><p>图片的<code>size</code>最好刚好跟<code>UIImageView</code>的<code>size</code>保持一致</p>
+</li>
+<li><p>控制一下线程的最大并发数量</p>
+</li>
+<li><p>尽量把耗时的操作放到子线程</p>
+<ul>
+<li>文本处理（尺寸计算、绘制）</li>
+<li>图片处理（解码、绘制）</li>
+<li>iOS10以上支持<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">UIGraphicsImageRendererFormat *uiformat = [[UIGraphicsImageRenderer alloc] init];</span><br><span class="line">uiformat.scale = image.scale;</span><br><span class="line">uiformat.opaque = !hasAlpha;</span><br><span class="line">UIGraphicsImageRenderer *uirenderer = [[UIGraphicsImageRenderer alloc] initWithSize:imageSize format:uiformat];</span><br><span class="line">UIGraphicsImageDrawingActions uiactions = ^(UIGraphicsImageRendererContext *rendererContext) &#123;</span><br><span class="line">    [image drawInRect:CGRectMake(0, 0, imageSize.width, imageSize.height)];</span><br><span class="line">&#125;;</span><br><span class="line">UIImage *decodedImage = [uirenderer imageWithActions:uiactions];</span><br></pre></td></tr></table></figure></li>
+<li>iOS10以下支持<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//redraw image using device context</span><br><span class="line">    UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, YES, 0);</span><br><span class="line">    [image drawInRect:imageView.bounds];</span><br><span class="line">    image = UIGraphicsGetImageFromCurrentImageContext();</span><br><span class="line">    UIGraphicsEndImageContext();</span><br></pre></td></tr></table></figure>
+<h3 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h3></li>
+</ul>
+</li>
+<li><p>尽量避免短时间内大量图片的显示，尽可能将多张图片合成一张进行显示</p>
+</li>
+<li><p><code>GPU</code>能处理的最大纹理尺寸是<code>4096x4096</code>，一旦超过这个尺寸，就会占用CPU资源进行处理，所以纹理尽量不要超过这个尺寸</p>
+</li>
+<li><p>尽量减少视图数量和层次</p>
+</li>
+<li><p>减少透明的视图（<code>alpha</code>&lt;1），不透明的就设置<code>opaque</code>为YES</p>
+</li>
+<li><p>尽量避免出现离屏渲染</p>
+<h4 id="离屏渲染"><a href="#离屏渲染" class="headerlink" title="离屏渲染"></a>离屏渲染</h4></li>
+<li><p>在<code>OpenGL</code>中，<code>GPU</code>有2种渲染方式</p>
+<ol>
+<li><code>On-Screen Rendering</code>：当前屏幕渲染，在当前用于显示的屏幕缓冲区进行渲染操作</li>
+<li><code>Off-Screen Rendering</code>：离屏渲染，在当前屏幕缓冲区以外新开辟一个缓冲区进行渲染操作</li>
+</ol>
+</li>
+<li><p>离屏渲染消耗性能的原因</p>
+<ul>
+<li>需要创建新的缓冲区</li>
+<li>离屏渲染的整个过程，需要多次切换上下文环境，先是从当前屏幕（<code>On-Screen</code>）切换到离屏（<code>Off-Screen</code>）；等到离屏渲染结束以后，将离屏缓冲区的渲染结果显示到屏幕上，又需要将上下文环境从离屏切换到当前屏幕</li>
+</ul>
+</li>
+<li><p>哪些操作会触发离屏渲染？</p>
+<ul>
+<li><p>光栅化，<code>layer.shouldRasterize = YES</code></p>
+</li>
+<li><p>遮罩，<code>layer.mask</code></p>
+</li>
+<li><p>圆角，同时设置<code>layer.masksToBounds = YES</code>、<code>layer.cornerRadius大于0</code></p>
+<ul>
+<li>考虑通过<code>CoreGraphics</code>绘制裁剪圆角，或者提供圆角图片</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>阴影，<code>layer.shadowXXX</code></p>
+<ul>
+<li>如果设置了<code>layer.shadowPath</code>就不会产生离屏渲染<h3 id="卡顿检测"><a href="#卡顿检测" class="headerlink" title="卡顿检测"></a>卡顿检测</h3></li>
+</ul>
+</li>
+<li><p>平时所说的“卡顿”主要是因为在主线程执行了比较耗时的操作</p>
+</li>
+<li><p>可以添加<code>Observer</code>到主线程<code>RunLoop</code>中，通过监听<code>RunLoop</code>状态切换的耗时，以达到监控卡顿的目的</p>
+<ul>
+<li>绘制操作基本都在<code>source0</code>和<code>source1</code>中处理,主要监听</li>
+<li><code>kCFRunLoopBeforeWaiting</code>,开始休眠之前，处理的事件卡顿</li>
+<li><code>kCFRunLoopBeforeSources</code>,处理source0，<code>kCFRunLoopAfterWaiting</code>，被source1唤醒处理的耗时<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">- (void)startMonitoring &#123;</span><br><span class="line">    if (_isMonitoring) &#123; return; &#125;</span><br><span class="line">    _isMonitoring = YES;</span><br><span class="line">    CFRunLoopObserverContext context = &#123;</span><br><span class="line">        0,</span><br><span class="line">        (__bridge void *)self,</span><br><span class="line">        NULL,</span><br><span class="line">        NULL</span><br><span class="line">    &#125;;</span><br><span class="line">    _observer = CFRunLoopObserverCreate(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, &amp;lxdRunLoopObserverCallback, &amp;context);</span><br><span class="line">    CFRunLoopAddObserver(CFRunLoopGetMain(), _observer, kCFRunLoopCommonModes);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(lxd_event_monitor_queue(), ^&#123;</span><br><span class="line">        while (self.isMonitoring) &#123;</span><br><span class="line">            if (self.currentActivity == kCFRunLoopBeforeWaiting) &#123;</span><br><span class="line">                __block BOOL timeOut = YES;</span><br><span class="line">                dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                    timeOut = NO;</span><br><span class="line">                    dispatch_semaphore_signal(self.eventSemphore);</span><br><span class="line">                &#125;);</span><br><span class="line">                //等待1s,看添加到主队列的block是否执行完</span><br><span class="line">                [NSThread sleepForTimeInterval: 1];</span><br><span class="line">                if (timeOut) &#123;</span><br><span class="line">                    [LXDBacktraceLogger lxd_logMain];//打印堆栈信息</span><br><span class="line">                &#125;</span><br><span class="line">                dispatch_wait(self.eventSemphore, DISPATCH_TIME_FOREVER);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(lxd_fluecy_monitor_queue(), ^&#123;</span><br><span class="line">        while (self.isMonitoring) &#123;</span><br><span class="line">        //监听信号量解锁，并进行等待</span><br><span class="line">            long waitTime = dispatch_semaphore_wait(self.semphore, dispatch_time(DISPATCH_TIME_NOW, 200 * NSEC_PER_MSEC));//解锁成功返回0</span><br><span class="line">            if (waitTime != 0) &#123;</span><br><span class="line">                if (!self.observer) &#123;</span><br><span class="line">                    self.timeOut = 0;</span><br><span class="line">                    [self stopMonitoring];</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line">                //是否当前状态一直卡处理source0和休眠唤醒状态，超过5次，就打印</span><br><span class="line">                if (self.currentActivity == kCFRunLoopBeforeSources || self.currentActivity == kCFRunLoopAfterWaiting) &#123;</span><br><span class="line">                    if (++self.timeOut &lt; 5) &#123;</span><br><span class="line">                        continue;</span><br><span class="line">                    &#125;</span><br><span class="line">                    [LXDBacktraceLogger lxd_logMain];</span><br><span class="line">                    [NSThread sleepForTimeInterval: 5];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            self.timeOut = 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)stopMonitoring &#123;</span><br><span class="line">    if (!_isMonitoring) &#123; return; &#125;</span><br><span class="line">    _isMonitoring = NO;</span><br><span class="line">    </span><br><span class="line">    CFRunLoopRemoveObserver(CFRunLoopGetMain(), _observer, kCFRunLoopCommonModes);</span><br><span class="line">    CFRelease(_observer);</span><br><span class="line">    _observer = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static void lxdRunLoopObserverCallback(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void * info) &#123;</span><br><span class="line">    [LXDAppFluecyMonitor sharedMonitor].currentActivity = activity;</span><br><span class="line">    //每次变化进行信号量的增加，在监听的队列进行减少</span><br><span class="line">    dispatch_semaphore_signal([LXDAppFluecyMonitor sharedMonitor].semphore);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+    
+</article>
+
+    
+    <article
   id="post-iOS学习/内存管理/自动释放池"
   class="article article-type-post"
   itemscope
@@ -850,253 +1077,6 @@
 <li>723以及之前的版本，用的是<code>pthread_mutex_t</code><br><img src="14.png"></li>
 <li>723之后的版本，用的是<code>os_unfair_lock</code><br><img src="12.png"><br><img src="13.png"></li>
 </ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/多线程/多线程"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/31/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"
-    >多线程的问题</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/31/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="article-date">
-  <time datetime="2023-01-31T15:54:11.000Z" itemprop="datePublished">2023-01-31</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>多线程原理是，操作系统通过<code>时间片轮转算法</code>，每次给一个线程一个时间片，让其可以执行,(如果所给的时间片足够短，则看起来是同时执行的)，进程也是这种方式</p>
-</blockquote>
-<h2 id="常见多线程方案"><a href="#常见多线程方案" class="headerlink" title="常见多线程方案"></a>常见多线程方案</h2><table>
-<thead>
-<tr>
-<th align="center">技术方案</th>
-<th align="left">简介</th>
-<th align="center">语言</th>
-<th align="center">线程生命周期</th>
-<th align="center">使用频率</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">pthread</td>
-<td align="left">一套通用的多线程API、适用于Unix\Linux\Windows等系统、跨平台\可移植、使用难度大</td>
-<td align="center">c</td>
-<td align="center">手动管理</td>
-<td align="center">几乎不用</td>
-</tr>
-<tr>
-<td align="center">NSThread</td>
-<td align="left">使用更加面向对象、简单易用，可直接操作线程对象</td>
-<td align="center">OC</td>
-<td align="center">手动管理</td>
-<td align="center">偶尔使用</td>
-</tr>
-<tr>
-<td align="center">GCD</td>
-<td align="left">旨在替代NSThread等线程技术、充分利用设备的多核</td>
-<td align="center">c</td>
-<td align="center">自动管理</td>
-<td align="center">经常使用</td>
-</tr>
-<tr>
-<td align="center">NSOperation</td>
-<td align="left">基于GCD（底层是GCD）、比GCD多了一些更简单实用的功能、使用更加面向对象</td>
-<td align="center">OC</td>
-<td align="center">自动管理</td>
-<td align="center">经常使用</td>
-</tr>
-</tbody></table>
-<h2 id="常见的死锁问题"><a href="#常见的死锁问题" class="headerlink" title="常见的死锁问题"></a>常见的死锁问题</h2><ol>
-<li>主队列中，用<code>dispatch_sync</code>同步在主队列中执行任务会有死锁，<ul>
-<li>原因是<code>sync</code>同步执行会立刻执行<code>任务二</code>，但是在主队列中，已经添加了<code>任务三</code>，必须等<code>任务3</code>(<code>viewDidLoad</code>方法)执行完之后，才能执行<code>任务二</code>,因此造成死锁</li>
-<li>改为<code>dispatch_async</code>,则不会出现死锁，会先执行<code>任务三</code>，再执行<code>任务二</code>,按主队列任务添加顺序执行<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;任务一&quot;);</span><br><span class="line">    dispatch_queue_t queue = dispatch_get_main_queue();</span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;任务二&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;任务三&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>串行队列,和1相同，任务三的执行要求任务四持行完成，而sync要求立刻执行任务三，因此出现死锁<ul>
-<li>将任务三放到另一个队列，或者采用<code>async</code>则可以避免<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;任务一&quot;);</span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;queue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;任务二&quot;);</span><br><span class="line">        dispatch_sync(queue, ^&#123;</span><br><span class="line">            NSLog(@&quot;任务三&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">        NSLog(@&quot;任务四&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;任务五&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>如果是并发队列，则不会产生死锁<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NSLog(@&quot;任务一&quot;);</span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;queue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;任务二&quot;);</span><br><span class="line">        dispatch_sync(queue, ^&#123;</span><br><span class="line">            NSLog(@&quot;任务三&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">        NSLog(@&quot;任务四&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;任务五&quot;);</span><br></pre></td></tr></table></figure>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
-<p>使用<code>sync</code>函数往当前串行队列中添加任务，会卡住当前的串行队列（产生死锁）</p>
-</blockquote>
-<h2 id="多线程的其他问题"><a href="#多线程的其他问题" class="headerlink" title="多线程的其他问题"></a>多线程的其他问题</h2></li>
-<li>下面打印结果实际为，<code>1-&gt;3</code>,其中<code>2</code>并<strong>未打印</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dispatch_async(dispatch_get_global_queue(0, 0), ^&#123;</span><br><span class="line">  NSLog(@&quot;1&quot;);</span><br><span class="line">  [self performSelector:@selector(test) withObject:nil afterDelay:0.0];</span><br><span class="line">  NSLog(@&quot;3&quot;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">- (void)test</span><br><span class="line">&#123;</span><br><span class="line">  NSLog(@&quot;2&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>直接用<code>[self performSelector:@selector(test) withObject:nil];</code>会打印<code>1-&gt;2-&gt;3</code>,因为其源码本质是通过<code>objc_msgSend</code>调用的<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (id)performSelector:(SEL)sel withObject:(id)obj &#123;</span><br><span class="line">         if (!sel) [self doesNotRecognizeSelector:sel];</span><br><span class="line">      return ((id(*)(id, SEL, id))objc_msgSend)(self, sel, obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>如果在主线程中调用,会打印出<code>1-&gt;3-&gt;2</code></li>
-<li><strong>原因</strong>:<code>[self performSelector:@selector(test) withObject:nil afterDelay:0.0];</code>的源码是在<code>Runloop</code>相关源码中定义的，其本质是添加了一个<code>Timer</code>到<code>Runloop</code>中的。而在1中通过<code>dispatch_async</code>开了一个子线程，但是实际上，子线程是没有启动<code>runloop</code>的，因此添加到的任务是无效的，因此不会打印<ul>
-<li>解决方法,增加runloop，再启动runloop后，则会打印出<code>1-&gt;3-&gt;2</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dispatch_async(dispatch_get_global_queue(0, 0), ^&#123;</span><br><span class="line">NSLog(@&quot;1&quot;);</span><br><span class="line">[self performSelector:@selector(test) withObject:nil afterDelay:0.0];</span><br><span class="line">NSLog(@&quot;3&quot;);</span><br><span class="line">[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>源码，<code>NSRunloop</code>不开源，但是可以通过<a target="_blank" rel="noopener" href="http://www.gnustep.org/resources/downloads.php%0D">GNU</a>大致了解下源码,虽然GNUstep不是苹果官方源码，但还是具有一定的参考价值</li>
-</ul>
-<ol start="2">
-<li>与1类似的问题,waitUntilDone为YES会崩溃，因为在当执行输出<code>1</code>后，线程已经退出了，不能在线程中执行，如果waitUntilDone为NO，则不会崩溃，但是不会执行<code>test</code>方法<ul>
-<li>和1类似，要在里面启动<code>Runloop</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSThread *thread = [[NSThread alloc] initWithBlock:^&#123;</span><br><span class="line">    NSLog(@&quot;1&quot;);</span><br><span class="line">    //解决问题</span><br><span class="line">    //[[NSRunLoop currentRunLoop] addPort:[[NSPort alloc] init] forMode:NSDefaultRunLoopMode];</span><br><span class="line">    //[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];</span><br><span class="line">&#125;];</span><br><span class="line">[thread start];</span><br><span class="line">[self performSelector:@selector(test) onThread:thread withObject:nil waitUntilDone:YES];</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runloop知识/runloop的运行逻辑"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/20/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9A%84%E8%BF%90%E8%A1%8C%E9%80%BB%E8%BE%91/"
-    >runloop的运行逻辑</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/20/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9A%84%E8%BF%90%E8%A1%8C%E9%80%BB%E8%BE%91/" class="article-date">
-  <time datetime="2023-01-20T11:39:49.000Z" itemprop="datePublished">2023-01-20</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/runloop/">runloop</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="运行流程"><a href="#运行流程" class="headerlink" title="运行流程"></a>运行流程</h3><ol>
-<li>通知<code>Observers</code>：进入<code>Loop</code></li>
-<li>通知<code>Observers</code>：即将处理<code>Timers</code></li>
-<li>通知<code>Observers</code>：即将处理<code>Sources</code><ul>
-<li><code>Observers</code>内，实际调用，<code>__CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__</code></li>
-</ul>
-</li>
-<li>处理<code>Blocks</code><ul>
-<li>处理通过<code>CFRunLoopPerformBlock(CFRunLoopRef rl, CFTypeRef mode, void (^block)(void))</code>添加到<code>runloop</code>的block</li>
-<li>实际调用：<code>_CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__</code></li>
-</ul>
-</li>
-<li>处理<code>Source0</code>（如果返回结果是true，可能会再次处理<code>Blocks</code>）<ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__</code></li>
-</ul>
-</li>
-<li>如果存在<code>Source1</code>，就跳转到第8步<ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__</code></li>
-</ul>
-</li>
-<li>通知<code>Observers</code>：开始休眠（等待消息唤醒）<ul>
-<li><code>__CFRunLoopServiceMachPort</code>内，用户态会下发<code>mach_msg</code>给内核态（只有内核可以真正的休眠线程（而非阻塞线程,忙等），节省CPU），切换到内核态，当内核收到消息后，再唤醒线程，节省CPU资源</li>
-</ul>
-</li>
-<li>通知<code>Observers</code>：结束休眠（被某个消息唤醒）<ol>
-<li>处理<code>Timer</code><ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_TIMER_CALLBACK_FUNCTION__</code></li>
-</ul>
-</li>
-<li>处理<code>GCD Async To Main Queue</code>,GCD异步回到主队列的任务<ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__</code>，注意只有通过<code>dispatch_async(dispatch_get_main_queue(),block);</code>，GCD异步回到主队列，才会有runloop的协助</li>
-</ul>
-</li>
-<li>处理<code>Source1</code><ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__</code></li>
-</ul>
-</li>
-</ol>
-</li>
-<li>处理<code>Blocks</code></li>
-<li>根据前面的执行结果，决定如何操作<ol>
-<li>回到第02步</li>
-<li>退出<code>Loop</code></li>
-</ol>
-</li>
-<li>通知Observers：退出Loop<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3></li>
-</ol>
-<ul>
-<li><code>CFRunLoopRunSpecific</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">   //通知Observers：进入runLoop</span><br><span class="line">if (currentMode-&gt;_observerMask &amp; kCFRunLoopEntry ) __CFRunLoopDoObservers(rl, currentMode, kCFRunLoopEntry);</span><br><span class="line">   //具体要做的事</span><br><span class="line">result = __CFRunLoopRun(rl, currentMode, seconds, returnAfterSourceHandled, previousMode);</span><br><span class="line">   //通知Observers：退出unLoop</span><br><span class="line">if (currentMode-&gt;_observerMask &amp; kCFRunLoopExit ) __CFRunLoopDoObservers(rl, currentMode, kCFRunLoopExit);</span><br></pre></td></tr></table></figure></li>
-<li><code>CFRunLoopRun</code><h3 id="runloop执行方法需要注意的地方"><a href="#runloop执行方法需要注意的地方" class="headerlink" title="runloop执行方法需要注意的地方"></a>runloop执行方法需要注意的地方</h3></li>
-</ul>
-<ol>
-<li><code>- (void)run</code><ul>
-<li><code>[[NSRunloop currentRunloop] run]</code>实际上是在一个<code>while(1)</code>中重复调用<code>-(BOOL)runMode:(NSRunLoopMode)mode beforeDate:(NSDate *)limitDate</code>方法,因此通过<code>CFRunLoopStop(CFRunLoopGetCurrent())</code>只能取消一次<code>runMode:(NSRunLoopMode)mode beforeDate:</code>的调用，</li>
-<li>但是在<code>run</code>方法中，还是会循环调用，是无法取消<code>run</code>方法的循环调用的</li>
-</ul>
-</li>
-<li><code>-(BOOL)runMode:(NSRunLoopMode)mode beforeDate:(NSDate *)limitDate</code><ul>
-<li> 注意，该方法，在执行完一次runloop的循环之后，则会退出，例如执行一次<code>performSelector:</code>方法便会释放</li>
-</ul>
-</li>
-<li>注意在启动<code>runloop</code>后，要注意<code>_strong typeof(weakSelf) strongSelf = weakSelf</code>的写法，列入通过<code>initWithBlock:</code>设置线程,在runloop运行期间，一直会有一个局部强引用持有<code>self</code>，除非将当前的<code>runloop</code>结束</li>
-<li>同时，注意,通过<code>CFRunLoopStop(CFRunLoopGetCurrent())</code>停止<code>runloop</code>之后,不要在使用，<code>performSelector:onThread:withObject:waitUntilDone:</code>在线程中执行，因为线程和runloop的生命周期是一一对应的，在waitUntilDone为<code>true</code>,不异步执行时，会出现野指针的错误，为<code>false</code>时，异步时可能内部做了处理，不会出现野指针</li>
-<li><code>CFRunLoopRunInMode(CFRunLoopMode mode, CFTimeInterval seconds, Boolean returnAfterSourceHandled)</code>,<code>returnAfterSourceHandled</code>为true代表执行完source之后，就退出runloop，类似2中的用法,设置为false则，执行一次source是不会退出的<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3></li>
-<li>runloop是怎么响应用户操作的，具体流程是什么样的？<ul>
-<li>由source1将系统事件捕获，（例如点击屏幕的事件），source1将事件包装成EventQueue，放到source0中处理</li>
-</ul>
-</li>
-<li><code>NSDefaultRunLoopMode</code>、<code>UITrackingRunLoopMode</code>才是真正存在的模式<code>NSRunLoopCommonModes</code>并不是一个真的模式，它只是一个标记</li>
-</ol>
  
       <!-- reward -->
       

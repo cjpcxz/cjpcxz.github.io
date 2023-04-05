@@ -101,34 +101,34 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="load、initialize方法的区别"><a href="#load、initialize方法的区别" class="headerlink" title="load、initialize方法的区别"></a>load、initialize方法的区别</h1><ol>
+  <h4 id="load、initialize方法的区别"><a href="#load、initialize方法的区别" class="headerlink" title="load、initialize方法的区别"></a>load、initialize方法的区别</h4><ol>
 <li><p>调用方式</p>
 <ul>
-<li> load是根据函数地址直接调用</li>
-<li> initialize是通过objc_msgSend调用</li>
+<li> <code>load</code>是根据函数地址直接调用</li>
+<li> <code>initialize</code>是通过<code>objc_msgSend</code>调用</li>
 </ul>
 </li>
 <li><p>调用时刻</p>
 <ul>
-<li>load是runtime加载类、分类的时候调用（只会调用1次）</li>
-<li>initialize是累第一次接收到消息的时候调用，每个类只会initialize一次（父类的initialize方法可能会被调用多次）</li>
+<li><code>load</code>是<code>runtime</code>加载类、分类的时候调用（只会调用1次）</li>
+<li><code>initialize</code>是类第一次发送到消息的时候调用，每个类只会<code>initialize</code>一次（父类的<code>initialize</code>方法可能会被调用多次）</li>
 </ul>
 </li>
-<li><p>load、initialize的调用顺序</p>
+<li><p><code>load</code>、<code>initialize</code>的调用顺序</p>
 <ol>
-<li>load<ul>
-<li>先调用类的load<ul>
-<li>先编译的类，优先调用load</li>
-<li>调用子类的load之前，会先调用父类的load</li>
+<li><code>load</code><ul>
+<li>先调用类的<code>load</code><ul>
+<li>先编译的类，优先调用<code>load</code></li>
+<li>调用子类的<code>load</code>之前，会先调用父类的<code>load</code></li>
 </ul>
 </li>
-<li>再调用分类的load<ul>
-<li>先编译的分类，优先调用load</li>
+<li>再调用分类的<code>load</code><ul>
+<li>先编译的分类，优先调用<code>load</code></li>
 </ul>
 </li>
 </ul>
 </li>
-<li>initialize<ul>
+<li><code>initialize</code><ul>
 <li>在，第一次使用的时候调用，先初始化父类，</li>
 <li>再初始化子类（可能最终调用的是父类的）</li>
 </ul>
