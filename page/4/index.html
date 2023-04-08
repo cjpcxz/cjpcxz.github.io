@@ -1,1598 +1,259 @@
-<!DOCTYPE html>
-
-
-<html lang="en">
-  
-
-    <head>
-      <meta charset="utf-8" />
-        
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1"
-      />
-      <title> ayer</title>
-  <meta name="generator" content="hexo-theme-ayer">
-      
-      <link rel="shortcut icon" href="/favicon.ico" />
-       
-<link rel="stylesheet" href="/dist/main.css">
-
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
-      />
-      
-<link rel="stylesheet" href="/css/custom.css">
- 
-      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-       
- 
-
-      <!-- mermaid -->
-      
-      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
-      
-    <link rel="alternate" href="/atom.xml" title="ayer" type="application/atom+xml">
-</head>
-  </html>
-</html>
-
-
-<body>
-  <div id="app">
-    
-      
-    <main class="content on">
-      
-<section class="cover">
-    
-  <div class="cover-frame">
-    <div class="bg-box">
-      <img src="/images/cover4.jpg" alt="image frame" />
-    </div>
-    <div class="cover-inner text-center text-white">
-      <h1><a href="/">ayer</a></h1>
-      <div id="subtitle-box">
-        
-        <span id="subtitle"></span>
-        
-      </div>
-      <div>
-        
-      </div>
-    </div>
-  </div>
-  <div class="cover-learn-more">
-    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
-  </div>
-</section>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
-
-
-<!-- Subtitle -->
-
-  <script>
-    try {
-      var typed = new Typed("#subtitle", {
-        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
-        startDelay: 0,
-        typeSpeed: 200,
-        loop: true,
-        backSpeed: 100,
-        showCursor: true
-      });
-    } catch (err) {
-      console.log(err)
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Ayer</title><meta name="author" content="jingbo"><meta name="copyright" content="jingbo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
+<meta property="og:title" content="Ayer">
+<meta property="og:url" content="http://example.com/page/4/index.html">
+<meta property="og:site_name" content="Ayer">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.png">
+<meta property="article:author" content="jingbo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.png"><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="http://example.com/page/4/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
     }
-  </script>
-  
-<div id="main">
-  <section class="outer">
-  
-  
-  
-
-<div class="notice" style="margin-top:50px">
-    <i class="ri-heart-fill"></i>
-    <div class="notice-content" id="broad"></div>
-</div>
-<script type="text/javascript">
-    fetch('https://v1.hitokoto.cn')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("broad").innerHTML = data.hitokoto;
-        })
-        .catch(console.error)
-</script>
-
-<style>
-    .notice {
-        padding: 20px;
-        border: 1px dashed #e6e6e6;
-        color: #969696;
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        background: #fbfbfb50;
-        border-radius: 10px;
-    }
-
-    .notice i {
-        float: left;
-        color: #999;
-        font-size: 16px;
-        padding-right: 10px;
-        vertical-align: middle;
-        margin-top: -2px;
-    }
-
-    .notice-content {
-        display: initial;
-        vertical-align: middle;
-    }
-</style>
-  
-  <article class="articles">
-    
-    
-    
-    
-    <article
-  id="post-iOS学习/多线程/多线程"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/31/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"
-    >多线程的问题</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/31/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="article-date">
-  <time datetime="2023-01-31T15:54:11.000Z" itemprop="datePublished">2023-01-31</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>多线程原理是，操作系统通过<code>时间片轮转算法</code>，每次给一个线程一个时间片，让其可以执行,(如果所给的时间片足够短，则看起来是同时执行的)，进程也是这种方式</p>
-</blockquote>
-<h2 id="常见多线程方案"><a href="#常见多线程方案" class="headerlink" title="常见多线程方案"></a>常见多线程方案</h2><table>
-<thead>
-<tr>
-<th align="center">技术方案</th>
-<th align="left">简介</th>
-<th align="center">语言</th>
-<th align="center">线程生命周期</th>
-<th align="center">使用频率</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">pthread</td>
-<td align="left">一套通用的多线程API、适用于Unix\Linux\Windows等系统、跨平台\可移植、使用难度大</td>
-<td align="center">c</td>
-<td align="center">手动管理</td>
-<td align="center">几乎不用</td>
-</tr>
-<tr>
-<td align="center">NSThread</td>
-<td align="left">使用更加面向对象、简单易用，可直接操作线程对象</td>
-<td align="center">OC</td>
-<td align="center">手动管理</td>
-<td align="center">偶尔使用</td>
-</tr>
-<tr>
-<td align="center">GCD</td>
-<td align="left">旨在替代NSThread等线程技术、充分利用设备的多核</td>
-<td align="center">c</td>
-<td align="center">自动管理</td>
-<td align="center">经常使用</td>
-</tr>
-<tr>
-<td align="center">NSOperation</td>
-<td align="left">基于GCD（底层是GCD）、比GCD多了一些更简单实用的功能、使用更加面向对象</td>
-<td align="center">OC</td>
-<td align="center">自动管理</td>
-<td align="center">经常使用</td>
-</tr>
-</tbody></table>
-<h2 id="常见的死锁问题"><a href="#常见的死锁问题" class="headerlink" title="常见的死锁问题"></a>常见的死锁问题</h2><ol>
-<li>主队列中，用<code>dispatch_sync</code>同步在主队列中执行任务会有死锁，<ul>
-<li>原因是<code>sync</code>同步执行会立刻执行<code>任务二</code>，但是在主队列中，已经添加了<code>任务三</code>，必须等<code>任务3</code>(<code>viewDidLoad</code>方法)执行完之后，才能执行<code>任务二</code>,因此造成死锁</li>
-<li>改为<code>dispatch_async</code>,则不会出现死锁，会先执行<code>任务三</code>，再执行<code>任务二</code>,按主队列任务添加顺序执行<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;任务一&quot;);</span><br><span class="line">    dispatch_queue_t queue = dispatch_get_main_queue();</span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;任务二&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;任务三&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>串行队列,和1相同，任务三的执行要求任务四持行完成，而sync要求立刻执行任务三，因此出现死锁<ul>
-<li>将任务三放到另一个队列，或者采用<code>async</code>则可以避免<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;任务一&quot;);</span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;queue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;任务二&quot;);</span><br><span class="line">        dispatch_sync(queue, ^&#123;</span><br><span class="line">            NSLog(@&quot;任务三&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">        NSLog(@&quot;任务四&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;任务五&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>如果是并发队列，则不会产生死锁<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NSLog(@&quot;任务一&quot;);</span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;queue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;任务二&quot;);</span><br><span class="line">        dispatch_sync(queue, ^&#123;</span><br><span class="line">            NSLog(@&quot;任务三&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">        NSLog(@&quot;任务四&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;任务五&quot;);</span><br></pre></td></tr></table></figure>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
-<p>使用<code>sync</code>函数往当前串行队列中添加任务，会卡住当前的串行队列（产生死锁）</p>
-</blockquote>
-<h2 id="多线程的其他问题"><a href="#多线程的其他问题" class="headerlink" title="多线程的其他问题"></a>多线程的其他问题</h2></li>
-<li>下面打印结果实际为，<code>1-&gt;3</code>,其中<code>2</code>并<strong>未打印</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dispatch_async(dispatch_get_global_queue(0, 0), ^&#123;</span><br><span class="line">  NSLog(@&quot;1&quot;);</span><br><span class="line">  [self performSelector:@selector(test) withObject:nil afterDelay:0.0];</span><br><span class="line">  NSLog(@&quot;3&quot;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">- (void)test</span><br><span class="line">&#123;</span><br><span class="line">  NSLog(@&quot;2&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>直接用<code>[self performSelector:@selector(test) withObject:nil];</code>会打印<code>1-&gt;2-&gt;3</code>,因为其源码本质是通过<code>objc_msgSend</code>调用的<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (id)performSelector:(SEL)sel withObject:(id)obj &#123;</span><br><span class="line">         if (!sel) [self doesNotRecognizeSelector:sel];</span><br><span class="line">      return ((id(*)(id, SEL, id))objc_msgSend)(self, sel, obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>如果在主线程中调用,会打印出<code>1-&gt;3-&gt;2</code></li>
-<li><strong>原因</strong>:<code>[self performSelector:@selector(test) withObject:nil afterDelay:0.0];</code>的源码是在<code>Runloop</code>相关源码中定义的，其本质是添加了一个<code>Timer</code>到<code>Runloop</code>中的。而在1中通过<code>dispatch_async</code>开了一个子线程，但是实际上，子线程是没有启动<code>runloop</code>的，因此添加到的任务是无效的，因此不会打印<ul>
-<li>解决方法,增加runloop，再启动runloop后，则会打印出<code>1-&gt;3-&gt;2</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dispatch_async(dispatch_get_global_queue(0, 0), ^&#123;</span><br><span class="line">NSLog(@&quot;1&quot;);</span><br><span class="line">[self performSelector:@selector(test) withObject:nil afterDelay:0.0];</span><br><span class="line">NSLog(@&quot;3&quot;);</span><br><span class="line">[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li>源码，<code>NSRunloop</code>不开源，但是可以通过<a target="_blank" rel="noopener" href="http://www.gnustep.org/resources/downloads.php%0D">GNU</a>大致了解下源码,虽然GNUstep不是苹果官方源码，但还是具有一定的参考价值</li>
-</ul>
-<ol start="2">
-<li>与1类似的问题,waitUntilDone为YES会崩溃，因为在当执行输出<code>1</code>后，线程已经退出了，不能在线程中执行，如果waitUntilDone为NO，则不会崩溃，但是不会执行<code>test</code>方法<ul>
-<li>和1类似，要在里面启动<code>Runloop</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSThread *thread = [[NSThread alloc] initWithBlock:^&#123;</span><br><span class="line">    NSLog(@&quot;1&quot;);</span><br><span class="line">    //解决问题</span><br><span class="line">    //[[NSRunLoop currentRunLoop] addPort:[[NSPort alloc] init] forMode:NSDefaultRunLoopMode];</span><br><span class="line">    //[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];</span><br><span class="line">&#125;];</span><br><span class="line">[thread start];</span><br><span class="line">[self performSelector:@selector(test) onThread:thread withObject:nil waitUntilDone:YES];</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runloop知识/runloop的运行逻辑"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/20/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9A%84%E8%BF%90%E8%A1%8C%E9%80%BB%E8%BE%91/"
-    >runloop的运行逻辑</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/20/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9A%84%E8%BF%90%E8%A1%8C%E9%80%BB%E8%BE%91/" class="article-date">
-  <time datetime="2023-01-20T11:39:49.000Z" itemprop="datePublished">2023-01-20</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/runloop/">runloop</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="运行流程"><a href="#运行流程" class="headerlink" title="运行流程"></a>运行流程</h3><ol>
-<li>通知<code>Observers</code>：进入<code>Loop</code></li>
-<li>通知<code>Observers</code>：即将处理<code>Timers</code></li>
-<li>通知<code>Observers</code>：即将处理<code>Sources</code><ul>
-<li><code>Observers</code>内，实际调用，<code>__CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__</code></li>
-</ul>
-</li>
-<li>处理<code>Blocks</code><ul>
-<li>处理通过<code>CFRunLoopPerformBlock(CFRunLoopRef rl, CFTypeRef mode, void (^block)(void))</code>添加到<code>runloop</code>的block</li>
-<li>实际调用：<code>_CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__</code></li>
-</ul>
-</li>
-<li>处理<code>Source0</code>（如果返回结果是true，可能会再次处理<code>Blocks</code>）<ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__</code></li>
-</ul>
-</li>
-<li>如果存在<code>Source1</code>，就跳转到第8步<ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__</code></li>
-</ul>
-</li>
-<li>通知<code>Observers</code>：开始休眠（等待消息唤醒）<ul>
-<li><code>__CFRunLoopServiceMachPort</code>内，用户态会下发<code>mach_msg</code>给内核态（只有内核可以真正的休眠线程（而非阻塞线程,忙等），节省CPU），切换到内核态，当内核收到消息后，再唤醒线程，节省CPU资源</li>
-</ul>
-</li>
-<li>通知<code>Observers</code>：结束休眠（被某个消息唤醒）<ol>
-<li>处理<code>Timer</code><ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_TIMER_CALLBACK_FUNCTION__</code></li>
-</ul>
-</li>
-<li>处理<code>GCD Async To Main Queue</code>,GCD异步回到主队列的任务<ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__</code>，注意只有通过<code>dispatch_async(dispatch_get_main_queue(),block);</code>，GCD异步回到主队列，才会有runloop的协助</li>
-</ul>
-</li>
-<li>处理<code>Source1</code><ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__</code></li>
-</ul>
-</li>
-</ol>
-</li>
-<li>处理<code>Blocks</code></li>
-<li>根据前面的执行结果，决定如何操作<ol>
-<li>回到第02步</li>
-<li>退出<code>Loop</code></li>
-</ol>
-</li>
-<li>通知Observers：退出Loop<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3></li>
-</ol>
-<ul>
-<li><code>CFRunLoopRunSpecific</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">   //通知Observers：进入runLoop</span><br><span class="line">if (currentMode-&gt;_observerMask &amp; kCFRunLoopEntry ) __CFRunLoopDoObservers(rl, currentMode, kCFRunLoopEntry);</span><br><span class="line">   //具体要做的事</span><br><span class="line">result = __CFRunLoopRun(rl, currentMode, seconds, returnAfterSourceHandled, previousMode);</span><br><span class="line">   //通知Observers：退出unLoop</span><br><span class="line">if (currentMode-&gt;_observerMask &amp; kCFRunLoopExit ) __CFRunLoopDoObservers(rl, currentMode, kCFRunLoopExit);</span><br></pre></td></tr></table></figure></li>
-<li><code>CFRunLoopRun</code><h3 id="runloop执行方法需要注意的地方"><a href="#runloop执行方法需要注意的地方" class="headerlink" title="runloop执行方法需要注意的地方"></a>runloop执行方法需要注意的地方</h3></li>
-</ul>
-<ol>
-<li><code>- (void)run</code><ul>
-<li><code>[[NSRunloop currentRunloop] run]</code>实际上是在一个<code>while(1)</code>中重复调用<code>-(BOOL)runMode:(NSRunLoopMode)mode beforeDate:(NSDate *)limitDate</code>方法,因此通过<code>CFRunLoopStop(CFRunLoopGetCurrent())</code>只能取消一次<code>runMode:(NSRunLoopMode)mode beforeDate:</code>的调用，</li>
-<li>但是在<code>run</code>方法中，还是会循环调用，是无法取消<code>run</code>方法的循环调用的</li>
-</ul>
-</li>
-<li><code>-(BOOL)runMode:(NSRunLoopMode)mode beforeDate:(NSDate *)limitDate</code><ul>
-<li> 注意，该方法，在执行完一次runloop的循环之后，则会退出，例如执行一次<code>performSelector:</code>方法便会释放</li>
-</ul>
-</li>
-<li>注意在启动<code>runloop</code>后，要注意<code>_strong typeof(weakSelf) strongSelf = weakSelf</code>的写法，列入通过<code>initWithBlock:</code>设置线程,在runloop运行期间，一直会有一个局部强引用持有<code>self</code>，除非将当前的<code>runloop</code>结束</li>
-<li>同时，注意,通过<code>CFRunLoopStop(CFRunLoopGetCurrent())</code>停止<code>runloop</code>之后,不要在使用，<code>performSelector:onThread:withObject:waitUntilDone:</code>在线程中执行，因为线程和runloop的生命周期是一一对应的，在waitUntilDone为<code>true</code>,不异步执行时，会出现野指针的错误，为<code>false</code>时，异步时可能内部做了处理，不会出现野指针</li>
-<li><code>CFRunLoopRunInMode(CFRunLoopMode mode, CFTimeInterval seconds, Boolean returnAfterSourceHandled)</code>,<code>returnAfterSourceHandled</code>为true代表执行完source之后，就退出runloop，类似2中的用法,设置为false则，执行一次source是不会退出的<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3></li>
-<li>runloop是怎么响应用户操作的，具体流程是什么样的？<ul>
-<li>由source1将系统事件捕获，（例如点击屏幕的事件），source1将事件包装成EventQueue，放到source0中处理</li>
-</ul>
-</li>
-<li><code>NSDefaultRunLoopMode</code>、<code>UITrackingRunLoopMode</code>才是真正存在的模式<code>NSRunLoopCommonModes</code>并不是一个真的模式，它只是一个标记</li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runloop知识/runloop相关的类"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/"
-    >runloop相关的类</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/" class="article-date">
-  <time datetime="2023-01-12T14:29:38.000Z" itemprop="datePublished">2023-01-12</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/runloop/">runloop</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="runloop的结构"><a href="#runloop的结构" class="headerlink" title="runloop的结构"></a>runloop的结构</h2><blockquote>
-<ul>
-<li>Core Foundation中关于RunLoop的5个类<ul>
-<li>CFRunLoopRef</li>
-<li>CFRunLoopModeRef</li>
-<li>CFRunLoopSourceRef</li>
-<li>CFRunLoopTimerRef</li>
-<li>CFRunLoopObserverRef</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><h3 id="CFRunLoop"><a href="#CFRunLoop" class="headerlink" title="__CFRunLoop"></a>__CFRunLoop</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">struct __CFRunLoop &#123;</span><br><span class="line">    CFRuntimeBase _base;</span><br><span class="line">    pthread_mutex_t _lock;			/* locked for accessing mode list */</span><br><span class="line">    __CFPort _wakeUpPort;			// used for CFRunLoopWakeUp </span><br><span class="line">    Boolean _unused;</span><br><span class="line">    volatile _per_run_data *_perRunData;              // reset for runs of the run loop</span><br><span class="line">    pthread_t _pthread; //相对应地线程</span><br><span class="line">    uint32_t _winthread;</span><br><span class="line">    CFMutableSetRef _commonModes; // </span><br><span class="line">    CFMutableSetRef _commonModeItems;</span><br><span class="line">    CFRunLoopModeRef _currentMode; //Mode</span><br><span class="line">    CFMutableSetRef _modes;</span><br><span class="line">    struct _block_item *_blocks_head;</span><br><span class="line">    struct _block_item *_blocks_tail;</span><br><span class="line">    CFAbsoluteTime _runTime;</span><br><span class="line">    CFAbsoluteTime _sleepTime;</span><br><span class="line">    CFTypeRef _counterpart;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>简化版<br><img src="1.png"></li>
-</ul>
-<h3 id="CFRunLoopModeRef"><a href="#CFRunLoopModeRef" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">typedef struct __CFRunLoopMode *CFRunLoopModeRef;</span><br><span class="line"></span><br><span class="line">struct __CFRunLoopMode &#123;</span><br><span class="line">    CFRuntimeBase _base;</span><br><span class="line">    pthread_mutex_t _lock;	/* must have the run loop locked before locking this */</span><br><span class="line">    CFStringRef _name;</span><br><span class="line">    Boolean _stopped;</span><br><span class="line">    char _padding[3];</span><br><span class="line">    CFMutableSetRef _sources0; </span><br><span class="line">    CFMutableSetRef _sources1;</span><br><span class="line">    CFMutableArrayRef _observers;</span><br><span class="line">    CFMutableArrayRef _timers;</span><br><span class="line">    CFMutableDictionaryRef _portToV1SourceMap;</span><br><span class="line">    __CFPortSet _portSet;</span><br><span class="line">    CFIndex _observerMask;</span><br><span class="line">#if USE_DISPATCH_SOURCE_FOR_TIMERS</span><br><span class="line">    dispatch_source_t _timerSource;</span><br><span class="line">    dispatch_queue_t _queue;</span><br><span class="line">    Boolean _timerFired; // set to true by the source when a timer has fired</span><br><span class="line">    Boolean _dispatchTimerArmed;</span><br><span class="line">#endif</span><br><span class="line">#if USE_MK_TIMER_TOO</span><br><span class="line">    mach_port_t _timerPort;</span><br><span class="line">    Boolean _mkTimerArmed;</span><br><span class="line">#endif</span><br><span class="line">#if DEPLOYMENT_TARGET_WINDOWS</span><br><span class="line">    DWORD _msgQMask;</span><br><span class="line">    void (*_msgPump)(void);</span><br><span class="line">#endif</span><br><span class="line">    uint64_t _timerSoftDeadline; /* TSR */</span><br><span class="line">    uint64_t _timerHardDeadline; /* TSR */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>简化版<br><img src="2.png"><h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3></li>
-<li>一个runLoop中有很多模式，存在modes中，但是每次只会选择一种模式,作为当前模式<br><img src="3.png"></li>
-<li>CFRunLoopModeRef代表RunLoop的运行模式</li>
-<li>一个RunLoop包含若干个Mode，每个Mode又包含若干个Source0/Source1/Timer/Observer</li>
-<li>RunLoop启动时只能选择其中一个Mode，作为currentMode</li>
-<li>如果需要切换Mode，只能退出当前Loop，再重新选择一个Mode进入<ul>
-<li>不同组的Source0/Source1/Timer/Observer能分隔开来，互不影响</li>
-</ul>
-</li>
-<li>如果Mode里没有任何Source0/Source1/Timer/Observer，RunLoop会立马退出<h2 id="CFRunLoopModeRef-1"><a href="#CFRunLoopModeRef-1" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h2></li>
-</ul>
-<ol>
-<li><code>Source0</code><ul>
-<li>触摸事件处理<br><img src="4.png"></li>
-<li><code>performSelector:onThread:</code>,线程之前的通信</li>
-</ul>
-</li>
-<li><code>Source1</code><ul>
-<li>基于<code>Port</code>的线程间通信,</li>
-<li>系统事件捕捉，例如，屏幕点击，最开始是source1</li>
-</ul>
-</li>
-<li><code>Timers</code><ul>
-<li><code>NSTimer</code></li>
-<li><code>performSelector:withObject:afterDelay:</code>,本质会加到runloop的timer</li>
-</ul>
-</li>
-<li><code>Observers</code><ul>
-<li>用于监听<code>RunLoop</code>的状态</li>
-<li><code>UI</code>刷新（<code>BeforeWaiting</code>）,在线程休眠之前，设置UI</li>
-<li><code>Autorelease pool</code>（<code>BeforeWaiting</code>）,在休眠之前释放自动释放池对象，唤醒后新建新的自动释放池<h2 id="CFRunLoopObserverRef"><a href="#CFRunLoopObserverRef" class="headerlink" title="CFRunLoopObserverRef"></a>CFRunLoopObserverRef</h2></li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><code>RunLoop</code>的状态改变流程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/* Run Loop Observer Activities */</span><br><span class="line">typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) &#123;</span><br><span class="line">    kCFRunLoopEntry = (1UL &lt;&lt; 0),</span><br><span class="line">    kCFRunLoopBeforeTimers = (1UL &lt;&lt; 1),</span><br><span class="line">    kCFRunLoopBeforeSources = (1UL &lt;&lt; 2),</span><br><span class="line">    kCFRunLoopBeforeWaiting = (1UL &lt;&lt; 5),</span><br><span class="line">    kCFRunLoopAfterWaiting = (1UL &lt;&lt; 6),</span><br><span class="line">    kCFRunLoopExit = (1UL &lt;&lt; 7),</span><br><span class="line">    kCFRunLoopAllActivities = 0x0FFFFFFFU</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
-<li>监听RunLoop的状态<ul>
-<li>切换mode之后，会先<code>kCFRunLoopExit - kCFRunLoopDefaultMode</code>，之后再<code>kCFRunLoopEntry - UITrackingRunLoopMode</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity) &#123;</span><br><span class="line">    switch (activity) &#123;</span><br><span class="line">       case kCFRunLoopEntry:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopEntry&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeTimers:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeTimers&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeSources:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeSources&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopBeforeWaiting:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopBeforeWaiting&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopAfterWaiting:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopAfterWaiting&quot;);</span><br><span class="line">            break;</span><br><span class="line">        case kCFRunLoopExit:</span><br><span class="line">            NSLog(@&quot;kCFRunLoopExit&quot;);</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    // 添加Observer到RunLoop中</span><br><span class="line">CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);</span><br><span class="line">    // 释放</span><br><span class="line">CFRelease(observer);</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runloop知识/runloop"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/10/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop/"
-    >runloop</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/10/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop/" class="article-date">
-  <time datetime="2023-01-10T15:09:41.000Z" itemprop="datePublished">2023-01-10</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/runloop/">runloop</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="什么是RunLoop"><a href="#什么是RunLoop" class="headerlink" title="什么是RunLoop"></a>什么是RunLoop</h2><ul>
-<li>顾名思义<ul>
-<li>运行循环</li>
-<li>在程序运行过程中循环做一些事情</li>
-</ul>
-</li>
-<li>基本作用<ul>
-<li>保持程序的持续运行</li>
-<li>处理App中的各种事件（比如触摸事件、定时器事件等）</li>
-<li>节省CPU资源，提高程序性能：该做事时做事，该休息时休息</li>
-</ul>
-</li>
-<li>应用范畴<ul>
-<li>定时器（Timer）、PerformSelector</li>
-<li>GCD Async Main Queue</li>
-<li>事件响应、手势识别、界面刷新</li>
-<li>网络请求</li>
-<li><code>AutoreleasePool</code></li>
-</ul>
-</li>
-<li><code>RunLoop</code>与线程<ul>
-<li>每条线程都有唯一的一个与之对应的RunLoop对象<ul>
-<li><code>CFRunLoopGetCurrent()</code>和<code>[NSRunLoop currentRunLoop]</code>,在当前线程中获取runloop</li>
-<li>从字典中获取，如果没有的话，则会创建，并存放在字典中，key是线程的指针地址<br><img src="1.png"></li>
-</ul>
-</li>
-<li>RunLoop保存在一个全局的Dictionary里，线程作为key，RunLoop作为value</li>
-<li>线程刚创建时并没有RunLoop对象，RunLoop会在第一次获取它时创建</li>
-<li>RunLoop会在线程结束时销毁</li>
-<li>主线程的RunLoop已经自动获取（创建），子线程默认没有开启RunLoop</li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runtime/中间代码"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/"
-    >中间代码（IR）</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/" class="article-date">
-  <time datetime="2023-01-09T14:29:54.000Z" itemprop="datePublished">2023-01-09</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>Objective-C在变为机器代码之前，会被LLVM编译器转换为中间代码（Intermediate Representation）,ir中间代码代码相比于转成C++更接近底层（但是肯定无法和汇编相比）</p>
-</blockquote>
-<ul>
-<li>可以使用以下命令行指令生成中间代码<ul>
-<li><code>clang -emit-llvm -S main.m</code></li>
-</ul>
-</li>
-<li>语法简介<ul>
-<li><code>@</code> - 全局变量</li>
-<li><code>%</code> - 局部变量</li>
-<li><code>alloca</code> - 在当前执行的函数的堆栈帧中分配内存，当该函数返回到其调用者时，将自动释放内存</li>
-<li><code>i32</code> - 32位4字节的整数</li>
-<li><code>align</code> - 对齐</li>
-<li><code>load</code> - 读出，<code>store</code> 写入</li>
-<li><code>icmp</code> - 两个整数值比较，返回布尔值</li>
-<li><code>br</code> - 选择分支，根据条件来转向<code>label</code>，不根据条件跳转的话类似 <code>goto</code></li>
-<li><code>label</code> - 代码标签</li>
-<li><code>call</code> - 调用函数</li>
-</ul>
-</li>
-<li>示例<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">main.m</span><br><span class="line">int a = 10;</span><br><span class="line">int b = 20;</span><br><span class="line">int c = a + b;</span><br><span class="line">test(c);</span><br><span class="line">//转成main.ll</span><br><span class="line">  store i32 10, i32* %8, align 4  //将10存储到局部变量 %8</span><br><span class="line">  store i32 20, i32* %9, align 4  //将20存储到局部变量 %9</span><br><span class="line">  %19 = load i32, i32* %8, align 4 //将%8加载到%19</span><br><span class="line">  %20 = load i32, i32* %9, align 4 //将%9加载到%20</span><br><span class="line">  %21 = add nsw i32 %19, %20    // %19和%20的值相加</span><br><span class="line">  store i32 %21, i32* %10, align 4 //将%21的值存储到%10</span><br><span class="line">  %22 = load i32, i32* %10, align 4  //将 %10的值加载到%22</span><br><span class="line">  call void @test(i32 %22) //调用函数，参数是 %22</span><br></pre></td></tr></table></figure></li>
-<li><a target="_blank" rel="noopener" href="https://llvm.org/docs/LangRef.html">具体文档</a></li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runtime/runtime特殊问题"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/"
-    >runtime特殊问题</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2023-01-08T14:41:07.000Z" itemprop="datePublished">2023-01-08</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="第一个问题"><a href="#第一个问题" class="headerlink" title="第一个问题"></a>第一个问题</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">@interface Person:NSObject</span><br><span class="line">@property (copy, nonatomic) NSString *name;</span><br><span class="line">- (void)print;</span><br><span class="line">@end</span><br><span class="line">@implementation Person</span><br><span class="line">- (void)print</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;my name is %@&quot;, self-&gt;_name);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//ViewController中</span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    //NSString *test = @&quot;123&quot;;如果，前面有这个text对象，则实际会输出my name is 123</span><br><span class="line">    id cls = [Person class];</span><br><span class="line"></span><br><span class="line">    void *obj = &amp;cls;</span><br><span class="line"></span><br><span class="line">    [(__bridge id)obj print];</span><br><span class="line">    //实际输出my name is &lt;ViewController: 0x104b08020&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="print为什么能够调用成功？"><a href="#print为什么能够调用成功？" class="headerlink" title="print为什么能够调用成功？"></a><code>print</code>为什么能够调用成功？</h3><ul>
-<li><p>示意图<br><img src="1.jpg"></p>
-</li>
-<li><p>将<code>[Person class]</code>的类对象cls的地址赋值给obj之后，在obj地址上的<code>前8个字节</code>的东西是cls的类对象的地址。这和正常实例化后的对象person一样，person所指向的地址在内存上前8个字节的地址是isa(类对象的地址)</p>
-</li>
-<li><p>在调用<code>print</code>方法的时候，就会去obj内存的前8个字节，取出该内存上的对象（正常结构体，则是其内存上前8个字节的isa指针），刚好是类对象，因此最终和调用实例对象方法一样可以调用成功。</p>
-</li>
-<li><p>在（__bridge id）的时候，实际上讲objc指针，转换成了<code>objc_object</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct objc_object &#123;</span><br><span class="line">    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">&#125;;</span><br><span class="line">typedef struct objc_object *id;</span><br></pre></td></tr></table></figure>
-<h3 id="为什么self-name变成了ViewController等其他内容"><a href="#为什么self-name变成了ViewController等其他内容" class="headerlink" title="为什么self.name变成了ViewController等其他内容"></a>为什么self.name变成了ViewController等其他内容</h3></li>
-<li><p>栈上分配的临时对象的地址，是有高向低进行分配的,下面字符串的指针均指向常量区，其指针均相同，但是，栈给对象分配的指针地址，是不同的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 0x0000000100998070 @&quot;123&quot;</span><br><span class="line">NSString *test = @&quot;123&quot;; //&amp;test 0x000000016f46cc20</span><br><span class="line">NSString *test1 = @&quot;123&quot;; // &amp;test1 0x000000016f46cc18</span><br><span class="line">NSString *test2 = @&quot;123&quot;; // &amp;test2 0x000000016f46cc10</span><br></pre></td></tr></table></figure></li>
-<li><p>实际分配的示意图<br><img src="2.jpg"></p>
-</li>
-<li><p><code>Person</code>结构体的类型</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct MJPerson_IMPL</span><br><span class="line"> &#123;</span><br><span class="line">    Class isa;</span><br><span class="line">     NSString *_name;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure></li>
-<li><p><code>NSLog(@&quot;my name is %@&quot;, self-&gt;_name);</code>调用该方法的本质，实际<code>person</code>的前8个字节是<code>cls</code>,而在<code>isa上加8个字节</code>后去取_name变量(结构体越往后面的地址会越高)，则根据分配的原则，会取到<code>test</code>,因此加test后，则会输出<code>my name is 123</code></p>
-</li>
-<li><p>不加局部对象，则会输出<code>my name is &lt;ViewController: 0x104b08020&gt;</code>,是由于<code>[super viewDidLoad]</code>造成的，因此在没有<code>test</code>局部变量后，实际上<code>isa上加8个字节</code>后，取到的是<code>self</code>的地址。最终则会输出<code>my name is &lt;ViewController: 0x104b08020&gt;</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> //[super viewDidLoad] ,源码实际</span><br><span class="line"> struct abc = &#123;</span><br><span class="line">       self,</span><br><span class="line">       [ViewController class]</span><br><span class="line">   &#125;;</span><br><span class="line">//注意这里调用的是objc_msgSendSuper2，并非objc_msgSendSuper(这个要传入父类对象)</span><br><span class="line">objc_msgSendSuper2(abc, sel_registerName(&quot;viewDidLoad&quot;));</span><br><span class="line">//因此会隐式的生成abc结构体变量，其低地址是self，高地址是[ViewController class]</span><br></pre></td></tr></table></figure></li>
-<li><p>注意，如果将<code>[super viewDidLoad]</code>屏蔽，则由于<code>isa地址加8字节后</code>，找不到任何东西，则会出现野指针的错误</p>
-</li>
-<li><p><code>objc_msgSendSuper2</code>可以通过调试发现,(x/4g,打出$1地址上每8个字节存的东西，打印4个),通过调试发现，后续的内存中,第一个是self，第二个是[ViewController class]，而非父类。</p>
-<ul>
-<li>但实际在源码中，<code>objc_msgSendSuper2</code>最终还是会取父类去调用</li>
-<li>调试汇编<br><img src="5.png"></li>
-<li>源码中，还是会取父类去调用<br><img src="4.png"></li>
-<li>实际调试代码，确定是用objc_msgSendSuper2<br><img src="3.png"><h2 id="第二个问题"><a href="#第二个问题" class="headerlink" title="第二个问题"></a>第二个问题</h2><blockquote>
-<p><code>&lt;objc/runtime.h&gt;</code>的APi</p>
-</blockquote>
-<h3 id="类相关"><a href="#类相关" class="headerlink" title="类相关"></a>类相关</h3></li>
-<li>Class object_getClass(id obj)<ul>
-<li>获取isa指向的Class</li>
-</ul>
-</li>
-<li>Class object_setClass(id obj, Class cls)<ul>
-<li>设置isa指向的Class,<strong>可以更改当前对象指向的isa</strong></li>
-</ul>
-</li>
-<li>BOOL object_isClass(id obj)<ul>
-<li>判断一个OC对象是否为Class</li>
-</ul>
-</li>
-<li>BOOL class_isMetaClass(Class cls)<ul>
-<li>判断一个Class是否为元类</li>
-</ul>
-</li>
-<li>Class class_getSuperclass(Class cls)<ul>
-<li>获取父类<h3 id="动态创建类"><a href="#动态创建类" class="headerlink" title="动态创建类"></a>动态创建类</h3></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><code>Class objc_allocateClassPair(Class superclass, const char *name, size_t extraBytes)</code></p>
-<ul>
-<li>动态创建一个类（参数：父类，类名，额外的内存空间）</li>
-</ul>
-</li>
-<li><p><code>void objc_registerClassPair(Class cls)</code></p>
-<ul>
-<li>注册一个类（要在类注册之前添加成员变量），在你需要动态创建的类中，加入方法，协议，成员变量后，再去注册</li>
-<li>注意，类注册完之后，类的成员变量会在<code>class_ro_t</code>中是不可变的，而方法，协议是在<code>class_rw_t</code>中，任何时候都是可以添加的<h4 id="成员变量"><a href="#成员变量" class="headerlink" title="成员变量"></a>成员变量</h4></li>
-</ul>
-</li>
-<li><p><code>BOOL class_addIvar(Class cls, const char * name, size_t size, uint8_t alignment, const char * types)</code></p>
-<ul>
-<li>动态添加成员变量（<strong>已经注册的类是不能动态添加成员变量的</strong>）</li>
-<li>例如<code>class_addIvar(newCls, &quot;_age&quot;, 4, 1, @encode(int));</code>添加一个age的成员变量,设置和取值，可以通过kvc实现<code>[dog setValue:@10 forKey:@&quot;_age&quot;];</code><h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4></li>
-</ul>
-</li>
-<li><p><code>BOOL class_addProperty(Class cls, const char *name, const objc_property_attribute_t *attributes,unsigned int attributeCount)</code></p>
-<ul>
-<li>动态添加属性</li>
-</ul>
-</li>
-<li><p><code>void class_replaceProperty(Class cls, const char *name, const objc_property_attribute_t *attributes,unsigned int attributeCount)</code></p>
-<ul>
-<li>动态替换属性<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4></li>
-</ul>
-</li>
-<li><p><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types)</code></p>
-<ul>
-<li>动态添加方法</li>
-</ul>
-</li>
-<li><p><code>IMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types)</code></p>
-<ul>
-<li>动态替换方法<h3 id="成员变量相关"><a href="#成员变量相关" class="headerlink" title="成员变量相关"></a>成员变量相关</h3></li>
-</ul>
-</li>
-<li><p><code>Ivar class_getInstanceVariable(Class cls, const char *name)</code></p>
-<ul>
-<li>获取一个实例变量信息</li>
-<li>获取成员变量的相关信息<ul>
-<li><code>const char *ivar_getName(Ivar v)</code></li>
-<li><code>const char *ivar_getTypeEncoding(Ivar v)</code></li>
-</ul>
-</li>
-<li>设置和获取成员变量的值<ul>
-<li><code>void object_setIvar(id obj, Ivar ivar, id value)</code><ul>
-<li>如果设置基本变量,<code>object_setIvar(person, weightVar, (__bridge id)(void *)20)</code>将基本类型转成对象</li>
-</ul>
-</li>
-<li><code>id object_getIvar(id obj, Ivar ivar)</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><code>Ivar *class_copyIvarList(Class cls, unsigned int *outCount)</code></p>
-<ul>
-<li>拷贝实例变量列表（最后需要调用free释放）<h3 id="属性相关"><a href="#属性相关" class="headerlink" title="属性相关"></a>属性相关</h3></li>
-</ul>
-</li>
-<li><p><code>objc_property_t class_getProperty(Class cls, const char *name)</code></p>
-<ul>
-<li>获取一个属性</li>
-<li>获取属性的一些信息<ul>
-<li><code>const char *property_getName(objc_property_t property)</code></li>
-<li><code>const char *property_getAttributes(objc_property_t property)</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><code>objc_property_t *class_copyPropertyList(Class cls, unsigned int *outCount)</code></p>
-<ul>
-<li>拷贝属性列表（最后需要调用free释放）<h3 id="方法相关"><a href="#方法相关" class="headerlink" title="方法相关"></a>方法相关</h3></li>
-</ul>
-</li>
-<li><p>获得一个实例方法、类方法</p>
-<ul>
-<li><code>Method class_getInstanceMethod(Class cls, SEL name)</code></li>
-<li><code>Method class_getClassMethod(Class cls, SEL name)</code></li>
-<li>获取方法的相关信息（带有copy的需要调用free去释放）<ul>
-<li><code>SEL method_getName(Method m)</code></li>
-<li><code>IMP method_getImplementation(Method m)</code></li>
-<li><code>const char *method_getTypeEncoding(Method m)</code></li>
-<li><code>unsigned int method_getNumberOfArguments(Method m)</code></li>
-<li><code>char *method_copyReturnType(Method m)</code></li>
-<li><code>char *method_copyArgumentType(Method m, unsigned int index)</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>方法实现相关操作</p>
-<ul>
-<li><code>IMP class_getMethodImplementation(Class cls, SEL name) </code></li>
-<li><code>IMP method_setImplementation(Method m, IMP imp)</code></li>
-<li><code>void method_exchangeImplementations(Method m1, Method m2) </code><ul>
-<li>源码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">void method_exchangeImplementations(Method m1Signed, Method m2Signed)</span><br><span class="line">&#123;</span><br><span class="line"> if (!m1Signed  ||  !m2Signed) return;</span><br><span class="line"></span><br><span class="line">method_t *m1 = _method_auth(m1Signed);</span><br><span class="line"> method_t *m2 = _method_auth(m2Signed);</span><br><span class="line"></span><br><span class="line">mutex_locker_t lock(runtimeLock);</span><br><span class="line"></span><br><span class="line">//进行imp的交换</span><br><span class="line">IMP imp1 = m1-&gt;imp(false);</span><br><span class="line">IMP imp2 = m2-&gt;imp(false);</span><br><span class="line">SEL sel1 = m1-&gt;name();</span><br><span class="line">SEL sel2 = m2-&gt;name();</span><br><span class="line"></span><br><span class="line">m1-&gt;setImp(imp2);</span><br><span class="line">m2-&gt;setImp(imp1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// RR/AWZ updates are slow because class is unknown</span><br><span class="line">// Cache updates are slow because class is unknown</span><br><span class="line">// fixme build list of classes whose Methods are known externally?</span><br><span class="line">//这里会清除方法内的所有缓存</span><br><span class="line">flushCaches(nil, __func__, [sel1, sel2, imp1, imp2](Class c)&#123;</span><br><span class="line">  return c-&gt;cache.shouldFlush(sel1, imp1) || c-         &gt;cache.shouldFlush(sel2, imp2);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">adjustCustomFlagsForMethodChange(nil, m1);</span><br><span class="line">adjustCustomFlagsForMethodChange(nil, m2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>拷贝方法列表（最后需要调用free释放）</p>
-</li>
-<li><p><code>Method *class_copyMethodList(Class cls, unsigned int *outCount)</code></p>
-</li>
-<li><p>选择器相关</p>
-<ul>
-<li><code>const char *sel_getName(SEL sel)</code></li>
-<li><code>SEL sel_registerName(const char *str)</code></li>
-</ul>
-</li>
-<li><p>用block作为方法实现</p>
-<ul>
-<li><code>IMP imp_implementationWithBlock(id block)</code></li>
-<li><code>id imp_getBlock(IMP anImp)</code></li>
-<li><code>BOOL imp_removeBlock(IMP anImp)</code></li>
-</ul>
-</li>
-</ul>
-<h4 id="一些获取方法特殊的地方"><a href="#一些获取方法特殊的地方" class="headerlink" title="一些获取方法特殊的地方"></a>一些获取方法特殊的地方</h4><ul>
-<li><code>class_getInstanceMethod</code>,去类对象中查找方法列表</li>
-<li><code>class_getClassMethod</code>,注意，其底层还是调用<code>class_getInstanceMethod</code>,（<code>class_ro_t</code>只有方法列表，没有类方法和实例方法的区别，区别在于是存在类对象，还是元类中）<ul>
-<li>如果当前调用的是元类，则元类去调用<code>class_getInstanceMethod</code></li>
-<li>如果当前调用的是类对象，则从类对象获取元类后，去调用<code>class_getInstanceMethod</code></li>
-</ul>
-</li>
-<li><code>class_getMethodImplementation</code>,该方法永远会返回<code>IMP</code>,和前两个会返回<code>nil</code>不同，如果当前接收者，没有实现该方法，则会返回<code>_objc_msgForward</code>,即消息转发的<code>IMP</code>,因此永远有值<h3 id="runtime面试题"><a href="#runtime面试题" class="headerlink" title="runtime面试题"></a>runtime面试题</h3></li>
-</ul>
-<ol>
-<li>什么是Runtime<ul>
-<li>OC是一门动态性比较强的编程语言，允许很多操作推迟到程序运行时再进行OC的动态性就是由Runtime来支撑和实现的，<code>Runtime</code>是一套C语言的API，封装了很多动态性相关的函数平时编写的OC代码，底层都是转换成了<code>Runtime API</code>进行调用</li>
-</ul>
-</li>
-<li>具体应用<ol>
-<li>利用关联对象（AssociatedObject）给分类添加属性</li>
-<li>遍历类的所有成员变量（利用kvc修改私有属性，字典转模型，自动归档接档）</li>
-<li>交换方法实现（交换系统的方法）</li>
-<li>利用消息转发机制解决方法找不到的异常问题，(重写<code>forwardInvocation:</code>实现)</li>
-</ol>
-</li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runtime/isKindofclass和isMemberofClass"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/isKindofclass%E5%92%8CisMemberofClass/"
-    >isKindofClass和isMemberofClass</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/isKindofclass%E5%92%8CisMemberofClass/" class="article-date">
-  <time datetime="2023-01-08T11:49:59.000Z" itemprop="datePublished">2023-01-08</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<ul>
-<li>isKindofClass是判断是否是当前类,或者其子类</li>
-<li>isMemberOfClass是否是当前类</li>
-</ul>
-</blockquote> 
-      <a class="article-more-link" href="/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/isKindofclass%E5%92%8CisMemberofClass/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runtime/super"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/06/iOS%E5%AD%A6%E4%B9%A0/Runtime/super/"
-    >super</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/06/iOS%E5%AD%A6%E4%B9%A0/Runtime/super/" class="article-date">
-  <time datetime="2023-01-05T16:49:17.000Z" itemprop="datePublished">2023-01-06</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <span id="more"></span>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><ul>
-<li>方法中子类调用<code>[super class]</code>实际输出还是子类的对象，和一般语言中的有所不同<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@interface Student:Person</span><br><span class="line">@implementation Student</span><br><span class="line">- (instancetype)init</span><br><span class="line">&#123;</span><br><span class="line">    if (self = [super init]) &#123;</span><br><span class="line">        NSLog(@&quot;[self class] = %@&quot;, [self class]); // Student</span><br><span class="line">        NSLog(@&quot;[self superclass] = %@&quot;, [self superclass]); // Person</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;[super class] = %@&quot;, [super class]); // 实际输出 Student</span><br><span class="line">        NSLog(@&quot;[super superclass] = %@&quot;, [super superclass]); // MJPerson</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<h2 id="原因解答"><a href="#原因解答" class="headerlink" title="原因解答"></a>原因解答</h2></li>
-<li>调用super方法，其实际会调用,方法<ul>
-<li>实际调用的方法,<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/** </span><br><span class="line"> * Sends a message with a simple return value to the superclass of an instance of a class.</span><br><span class="line"> * </span><br><span class="line"> * @param super A pointer to an \c objc_super data structure. Pass values identifying the</span><br><span class="line"> *  context the message was sent to, including the instance of the class that is to receive the</span><br><span class="line"> *  message and the superclass at which to start searching for the method implementation.</span><br><span class="line"> * @param op A pointer of type SEL. Pass the selector of the method that will handle the message.</span><br><span class="line"> * @param ...</span><br><span class="line"> *   A variable argument list containing the arguments to the method.</span><br><span class="line"> * </span><br><span class="line"> * @return The return value of the method identified by \e op.</span><br><span class="line"> * </span><br><span class="line"> * @see objc_msgSend</span><br><span class="line"> */</span><br><span class="line">objc_msgSendSuper(struct objc_super * _Nonnull super, SEL _Nonnull op, ...)</span><br></pre></td></tr></table></figure></li>
-<li>objc_super的结构体是<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct objc_super &#123;</span><br><span class="line">/// Specifies an instance of a class.</span><br><span class="line">__unsafe_unretained _Nonnull id receiver;</span><br><span class="line"></span><br><span class="line">/// Specifies the particular superclass of the instance to message. </span><br><span class="line">__unsafe_unretained _Nonnull Class super_class;</span><br><span class="line"></span><br><span class="line">/* super_class is the first class to search */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
-<li>编译后的代码,其方法的实际<code>receiver</code>，实际上仍然是self<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSendSuper((__rw_objc_super)&#123;(id)self, (id)class_getSuperclass(objc_getClass(&quot;Student&quot;))&#125;, sel_registerName(&quot;class&quot;)));</span><br></pre></td></tr></table></figure></li>
-<li>也就是[super message]的底层实现<ol>
-<li>其消息接收者仍然是子类对象，</li>
-<li>是从父类开始查找方法的实现</li>
-</ol>
-</li>
-</ul>
-</li>
-<li><code>- (Class)class</code>方法是在<code>NSObject</code>上实现的，因此不管是<code>[self class]</code>,还是<code>[super class]</code>从父类开始查找方法，实际上都是在<code>NSObject</code>上实现的，因此最终和<code>[self class]</code>一样，还是会返回<code>Student</code></li>
-<li>注意在查看汇编时，实际调用的是<code>objc_msgSendSuper2</code>,其第二个参数是当前类对象，而非父类对象，但是在实际源码中<code>objc_msgSendSuper2</code>内，最终还是会取父类去调用。因此最终和编译后的<code>objc_msgSendSuper</code>实现实际是一样的<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct abc = &#123;</span><br><span class="line">      self,</span><br><span class="line">      [ViewController class]</span><br><span class="line">  &#125;;</span><br><span class="line">objc_msgSendSuper2(abc, sel_registerName(&quot;viewDidLoad&quot;));</span><br></pre></td></tr></table></figure></li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runtime/objc-msgSend"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-msgSend/"
-    >objc_msgSend</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-msgSend/" class="article-date">
-  <time datetime="2023-01-02T10:48:31.000Z" itemprop="datePublished">2023-01-02</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="objc-msgSend"><a href="#objc-msgSend" class="headerlink" title="objc_msgSend"></a>objc_msgSend</h1><blockquote>
-<ul>
-<li>OC中的方法调用，其实都是转换为objc_msgSend函数的调用</li>
-<li>objc_msgSend的执行流程可以分为3大阶段<ul>
-<li>消息发送</li>
-<li>动态方法解析</li>
-<li>消息转发</li>
-</ul>
-</li>
-</ul>
-</blockquote> 
-      <a class="article-more-link" href="/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-msgSend/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/Runtime/objc-class"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-class/"
-    >objc_class</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-class/" class="article-date">
-  <time datetime="2023-01-01T13:53:01.000Z" itemprop="datePublished">2023-01-01</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Runtime/">Runtime</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <span id="more"></span>
-<h2 id="Class的结构"><a href="#Class的结构" class="headerlink" title="Class的结构"></a>Class的结构</h2><p><img src="1.png"></p>
-<h3 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h3><blockquote>
-<p>class_rw_t里面的methods、properties、protocols是二维数组，是可读可写的，包含了类的初始内容、分类的内容</p>
-</blockquote>
-<p><img src="2.png"></p>
-<h3 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h3><blockquote>
-<p>class_ro_t里面的baseMethodList、baseProtocols、ivars、baseProperties是一维数组，是只读的，包含了类的初始内容</p>
-</blockquote>
-<p><img src="3.png"></p>
-<h3 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h3><blockquote>
-<p>method_t是对方法\函数的封装</p>
-</blockquote>
-<p><img src="4.png"></p>
-<ul>
-<li>IMP代表函数的具体实现<ul>
-<li><code>typedef id _Nullable (*IMP)(id _Nonnull,SEL _Nonnull,...)</code></li>
-</ul>
-</li>
-<li>SEL代表方法\函数名，一般叫做选择器，底层结构跟char *类似 <ul>
-<li>可以通过@selector()和sel_registerName()获得</li>
-<li>可以通过sel_getName()和NSStringFromSelector()转成字符串</li>
-<li>不同类中相同名字的方法，所对应的方法选择器是相同的 </li>
-</ul>
-</li>
-<li>types包含了函数返回值、参数编码的字符串<ul>
-<li>方法位objc_msgSend(id self,SEL,…)</li>
-<li>i-&gt;int,@-&gt;id,@-&gt;SEL,f-&gt;float</li>
-<li>24参数总字节，0从0字节开始，8从第8字节开始…<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">types:i24@0:8i16f20</span><br><span class="line"> i 24 @ 0 : 8 i 16 f 20</span><br><span class="line">- (int)test:(int)age height:(float)height;</span><br></pre></td></tr></table></figure>
-<h3 id="方法缓存"><a href="#方法缓存" class="headerlink" title="方法缓存"></a>方法缓存</h3><blockquote>
-<p>Class内部结构中有个方法缓存（cache_t），用散列表（哈希表）来缓存曾经调用过的方法，可以提高方法的查找速度</p>
-</blockquote>
-</li>
-</ul>
-</li>
-<li>mask存储的是散列表的长度减1<br><img src="5.png"></li>
-<li>缓存查找<ul>
-<li><code>objc-cache.mm</code></li>
-<li><code>void cache_t::insert(SEL sel, IMP imp, id receiver)</code></li>
-</ul>
-</li>
-<li>插入之前，会先判断是否需要扩容，扩容为条件为，大于之前的3/4倍,扩容为2倍扩容，不超过最大缓存尺寸<br><img src="8.png"></li>
-<li>当扩容时，会清除之前缓存的方法，也就是说，之前缓存的方法，不过传给新的扩容缓存，会全部释放。新缓存又重新开始计数<br><img src="9.png"></li>
-<li>向缓存中插入方法<br><img src="6.png"></li>
-<li>hash的方式，直接用SEL &amp; mask得到key的方式,会存在，冲突，根据取到的sel判断是不是同一方法<br><img src="10.png"><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bucket_t *buckets = cache._buckets;</span><br><span class="line">bucket_t bucket = buckets[(long long)@selector(studentTest) &amp; cache._mask];</span><br><span class="line">//即可拿到缓存中的选择器，和实现，可能会有hash冲突，源码中会根据拿到的sel看是不是一致的</span><br><span class="line">NSLog(@&quot;%s %p&quot;, bucket._key, bucket._imp);</span><br></pre></td></tr></table></figure></li>
-<li>解决hash冲突的方式，开放地址法，线性探测<br><img src="7.png"></li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OC%E7%B1%BB%E7%BB%93%E6%9E%84/" rel="tag">OC类结构</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-  </article>
-  
-
-  
-  <nav class="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
-  </nav>
-  
-</section>
-</div>
-
-      <footer class="footer">
-  <div class="outer">
-    <ul>
-      <li>
-        Copyrights &copy;
-        2021-2023
-        <i class="ri-heart-fill heart_icon"></i> jingbo
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-        
-        
-        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-        <span class="division">|</span>
-        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
-        
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-        
-        <span>
-  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
-  <span class="division">|</span>
-  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
-</span>
-        
-      </li>
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      <li>
-        <!-- cnzz统计 -->
-        
-        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
-        
-      </li>
-    </ul>
-  </div>
-</footer>
-      <div class="float_btns">
-        <div class="totop" id="totop">
-  <i class="ri-arrow-up-line"></i>
-</div>
-
-<div class="todark" id="todark">
-  <i class="ri-moon-line"></i>
-</div>
-
-      </div>
-    </main>
-    <aside class="sidebar on">
-      <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/ayer-side.svg" alt="ayer"></a>
-  </div>
-  
-  <ul class="nav nav-main">
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">主页</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">归档</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/categories">分类</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/tags">标签</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/photos">相册</a>
-    </li>
-    
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      
-      <a class="nav-item-link nav-item-search"  title="Search">
-        <i class="ri-search-line"></i>
-      </a>
-      
-      
-      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
-        <i class="ri-rss-line"></i>
-      </a>
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-    </aside>
-    <div id="mask"></div>
-
-<!-- #reward -->
-<div id="reward">
-  <span class="close"><i class="ri-close-line"></i></span>
-  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
-  <div class="reward-box">
-    
-    <div class="reward-item">
-      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
-      <span class="reward-type">支付宝</span>
-    </div>
-    
-    
-    <div class="reward-item">
-      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
-      <span class="reward-type">微信</span>
-    </div>
-    
-  </div>
-</div>
-    
-<script src="/js/jquery-2.0.3.min.js"></script>
- 
-<script src="/js/lazyload.min.js"></script>
-
-<!-- Tocbot -->
-
-<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
-/>
-<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
-
-<script src="/dist/main.js"></script>
-
-<!-- ImageViewer -->
- <!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
-
-<script>
-    function viewer_init() {
-        let pswpElement = document.querySelectorAll('.pswp')[0];
-        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
-
-        $imgArr.forEach(($em, i) => {
-            $em.onclick = () => {
-                // slider展开状态
-                // todo: 这样不好，后面改成状态
-                if (document.querySelector('.left-col.show')) return
-                let items = []
-                $imgArr.forEach(($em2, i2) => {
-                    let img = $em2.getAttribute('data-idx', i2)
-                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
-                    let title = $em2.getAttribute('alt')
-                    // 获得原图尺寸
-                    const image = new Image()
-                    image.src = src
-                    items.push({
-                        src: src,
-                        w: image.width || $em2.width,
-                        h: image.height || $em2.height,
-                        title: title
-                    })
-                })
-                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
-                    index: parseInt(i)
-                });
-                gallery.init()
-            }
-        })
-    }
-    viewer_init()
-</script> 
-<!-- MathJax -->
- <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-  });
-
-  MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for(i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-  });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-  var ayerConfig = {
-    mathjax: true,
-  };
-</script>
-
-<!-- Katex -->
-
-<!-- busuanzi  -->
- 
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
- 
-<!-- ClickLove -->
- 
-<script src="/js/clickLove.js"></script>
- 
-<!-- ClickBoom1 -->
-
-<!-- ClickBoom2 -->
-
-<!-- CodeCopy -->
- 
-<link rel="stylesheet" href="/css/clipboard.css">
- <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-<script>
-  function wait(callback, seconds) {
-    var timelag = null;
-    timelag = window.setTimeout(callback, seconds);
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
   }
-  !function (e, t, a) {
-    var initCopyCode = function(){
-      var copyHtml = '';
-      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
-      copyHtml += '</button>';
-      $(".highlight .code pre").before(copyHtml);
-      $(".article pre code").before(copyHtml);
-      var clipboard = new ClipboardJS('.btn-copy', {
-        target: function(trigger) {
-          return trigger.nextElementSibling;
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Ayer',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: true,
+  isToc: false,
+  postUpdate: '2023-04-08 19:01:11'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
         }
-      });
-      clipboard.on('success', function(e) {
-        let $btn = $(e.trigger);
-        $btn.addClass('copied');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-checkbox-circle-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPIED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-checkbox-circle-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
-      clipboard.on('error', function(e) {
-        e.clearSelection();
-        let $btn = $(e.trigger);
-        $btn.addClass('copy-failed');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-time-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPY FAILED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-time-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
     }
-    initCopyCode();
-  }(window, document);
-</script>
- 
-<!-- CanvasBackground -->
- 
-<script src="/js/dz.js"></script>
- 
-<script>
-  if (window.mermaid) {
-    mermaid.initialize({ theme: "forest" });
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/modify.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Ayer" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
   }
-</script>
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">71</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/banner.jpeg')"><nav id="nav"><span id="blog-info"><a href="/" title="Ayer"><span class="site-name">Ayer</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Ayer</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/xxxxx" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/JavaScript/">JavaScript</a><span class="categoryBar-list-count">2</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/Runtime/">Runtime</a><span class="categoryBar-list-count">7</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/flutter%E5%92%8C%E5%8E%9F%E7%94%9F%E4%BA%A4%E4%BA%92/">flutter和原生交互</a><span class="categoryBar-list-count">1</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/flutter%E6%8C%87%E4%BB%A4/">flutter指令</a><span class="categoryBar-list-count">1</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a><span class="categoryBar-list-count">5</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/iOS%E8%B6%8A%E7%8B%B1/">iOS越狱</a><span class="categoryBar-list-count">2</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/runloop/">runloop</a><span class="categoryBar-list-count">3</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a><span class="categoryBar-list-count">17</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="categoryBar-list-count">1</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a><span class="categoryBar-list-count">4</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a><span class="categoryBar-list-count">3</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a><span class="categoryBar-list-count">13</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a><span class="categoryBar-list-count">4</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/">零碎知识点</a><span class="categoryBar-list-count">2</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a><span class="categoryBar-list-count">3</span></li></ul></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2023/03/06/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%88%9D%E5%A7%8B%E5%8C%96/" title="类的初始化">     <img class="post_bg" src="/img/banner.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="类的初始化"></a></div><div class="recent-post-info"><div class="recent-post-info-top"><a class="article-title" href="/2023/03/06/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%88%9D%E5%A7%8B%E5%8C%96/" title="类的初始化">类的初始化</a><div class="content">初始化器
+类、结构体、枚举都可以定义初始化器
+类有2种初始化器：指定初始化器 (designated initializer）、便捷初始化器 (convenience initializer)
+每个类至少有一个指定初始化器，指定初始化器是类的主要初始化器
+默认初始化器总是类的指定初始化器
+类偏向于少量指定初始化器，一个类通常只有一个指定初始化器
+初始化器的相互调用规则
+指定初始化器必须从它的直系父类调用指定初始化器
+便捷初始化器必须从相同的类里调用另一个初始化器
+便捷初始化器最终必须调用一个指定初始化器两段式初始化
 
 
-    
-    <div id="music">
-    
-    
-    
-    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
-        src="//music.163.com/outchain/player?type=2&id=22707022&auto=1&height=66"></iframe>
-</div>
+swift在编码安全方面是煞费苦心，为了保证初始化过程的安全，设定了两段式初始化、 安全检查
+两段式初始化
+第1阶段：初始化所有存储属性
+外层调用指定\便捷初始化器
+分配内存给实例，但未初始化
+指定初始化器确保当前类定义的存储属性都初始化
+指定初始化器调用父类的初始化器，不断向上调用，形成初始化器链
 
-<style>
-    #music {
-        position: fixed;
-        right: 15px;
-        bottom: 0;
-        z-index: 998;
+
+第2阶段：设置新的存储属性值
+从顶部初始化器往下，链中的每一个指定初始化器都有机会进一步定制实例
+初始化器现在能够使用self（访问、修改它的属性 ，调用它的实例方法等 ...</div></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2023-03-06T13:44:56.000Z" title="Created 2023-03-06 21:44:56">2023-03-06</time></span></div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2023/03/05/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E4%B8%8B%E6%A0%87/" title="下标、重写">     <img class="post_bg" src="/img/banner.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="下标、重写"></a></div><div class="recent-post-info"><div class="recent-post-info-top"><a class="article-title" href="/2023/03/05/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E4%B8%8B%E6%A0%87/" title="下标、重写">下标、重写</a><div class="content">subscript下标
+结构体,对结构体设置，必须要有set方法，才能改结构体内的值12345678910111213141516struct Point &#123;    var x = 0.0,y = 0.0&#125;struct Person &#123;    var point = Point()    subscript(index:String) -&gt; Point &#123;        set &#123; point = newValue &#125;        get &#123; point &#125;    &#125;&#125;var p = Person()p[&quot;0&quot;].x = 11 //本质上是 p[&quot;0&quot;].x = Point(11,p[&quot;0&quot;].y)p[&quot;0&quot;].y = 12
+类，返回的是引用类型，因此不需要set也能设置1234567891011121314class Point &#123;    var x = 0.0,y = 0.0&#125; ...</div></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2023-03-05T07:46:11.000Z" title="Created 2023-03-05 15:46:11">2023-03-05</time></span></div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/" title="闭包">     <img class="post_bg" src="/img/banner.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="闭包"></a></div><div class="recent-post-info"><div class="recent-post-info-top"><a class="article-title" href="/2023/02/27/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%97%AD%E5%8C%85/" title="闭包">闭包</a><div class="content">
+一个函数和它所捕获的变量\常量环境组合起来，称为闭包
+
+一般指定义在函数内部的函数
+一般它捕获的是外层西数的局部变量\常量
+
+
+
+闭包本质查看不捕获变量
+源码12345678func getFun() -&gt;(Int)-&gt;Int &#123;    func plus(i:Int) -&gt; Int &#123;        return i    &#125;    return plus(i:)&#125;var fu = getFun()print(MemoryLayout.stride(ofValue: fu)) //16
+汇编
+rax一般最为返回值，很明显将0xe5(%rip)的地址存放在计算器rax中，返回12345678SwiftDText`getFun():-&gt;  0x100004e10 &lt;+0&gt;:  pushq  %rbp    0x100004e11 &lt;+1&gt;:  movq   %rsp, %rbp    0x100004e14 &lt;+4&gt;:  leaq   0xe5(%rip), %rax           ...</div></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2023-02-26T16:28:40.000Z" title="Created 2023-02-27 00:28:40">2023-02-27</time></span></div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2023/02/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/class/" title="结构体与类">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/akilar-candyassets/image/cover1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="结构体与类"></a></div><div class="recent-post-info"><div class="recent-post-info-top"><a class="article-title" href="/2023/02/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/class/" title="结构体与类">结构体与类</a><div class="content">结构体是值类型（枚举也是值类型），类是引用类型（指针类型）
+
+例子1234567891011121314class Size &#123;    var width = 1    var height = 1&#125;struct Point &#123;    var x = 3    var y = 4&#125;func test() &#123;    var size = Size()    var point = Point()&#125;
+执行test()方法，时的内存地址,(64位)
+内存地址由高到低在栈中赋值，结构体直接存储在栈上，类在栈上存的是8字节的指针地址
+堆空间的Size对象占32位，其中16位存width，height数据，8位存引用计数，8位类型信息的地址
+
+
+注意，类的指针和结构体存的地方不一定在栈，
+如果在全局区生成，则类的指针和结构体在全局区，
+如果结构体变量为类的属性，则会和该类一起在堆区生成
+如果在函数内生成，则类的指针和结构体在栈区类和结构体的大小
+
+
+类中用MemoryLayout获取的大小，实际是指针大小始终位812print(Memor ...</div></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2023-02-26T09:38:45.000Z" title="Created 2023-02-26 17:38:45">2023-02-26</time></span></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/3/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#content-inner">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/#content-inner">18</a><a class="extend next" rel="next" href="/page/5/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">jingbo</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">71</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xxxxx" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">欢迎来的bo的博客<div class="twopeople"></div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/03/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E6%B4%BE%E5%8F%91%E6%9C%BA%E5%88%B6/" title="swift派发机制"><img src="https://cdn.jsdelivr.net/npm/akilar-candyassets/image/cover1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="swift派发机制"/></a><div class="content"><a class="title" href="/2023/04/03/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E6%B4%BE%E5%8F%91%E6%9C%BA%E5%88%B6/" title="swift派发机制">swift派发机制</a><time datetime="2023-04-03T07:26:05.000Z" title="Created 2023-04-03 15:26:05">2023-04-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/02/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/" title="代码混淆"><img src="https://cdn.jsdelivr.net/npm/akilar-candyassets/image/cover1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码混淆"/></a><div class="content"><a class="title" href="/2023/04/02/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/" title="代码混淆">代码混淆</a><time datetime="2023-04-02T15:29:39.000Z" title="Created 2023-04-02 23:29:39">2023-04-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/30/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/llvm%E5%AE%9E%E8%B7%B5/" title="llvm"><img src="https://cdn.jsdelivr.net/npm/akilar-candyassets/image/cover1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="llvm"/></a><div class="content"><a class="title" href="/2023/03/30/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/llvm%E5%AE%9E%E8%B7%B5/" title="llvm">llvm</a><time datetime="2023-03-29T16:01:06.000Z" title="Created 2023-03-30 00:01:06">2023-03-30</time></div></div></div></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>Tags</span></div><div class="card-tag-cloud"><a href="/tags/Mach-o/" style="font-size: 1.1em; color: #999">Mach-o</a> <a href="/tags/hook/" style="font-size: 1.1em; color: #999">hook</a> <a href="/tags/KVC/" style="font-size: 1.1em; color: #999">KVC</a> <a href="/tags/Block/" style="font-size: 1.1em; color: #999">Block</a> <a href="/tags/load%E3%80%81initialize/" style="font-size: 1.37em; color: #99a4b2">load、initialize</a> <a href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" style="font-size: 1.5em; color: #99a9bf">类的结构</a> <a href="/tags/KVO/" style="font-size: 1.1em; color: #999">KVO</a> <a href="/tags/OC%E7%B1%BB%E7%BB%93%E6%9E%84/" style="font-size: 1.23em; color: #999ea6">OC类结构</a> <a href="/tags/%E5%88%86%E7%B1%BB/" style="font-size: 1.1em; color: #999">分类</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span><a class="card-more-btn" href="/archives/" title="More">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/04/"><span class="card-archive-list-date">April 2023</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/03/"><span class="card-archive-list-date">March 2023</span><span class="card-archive-list-count">12</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">February 2023</span><span class="card-archive-list-count">16</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">January 2023</span><span class="card-archive-list-count">11</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">December 2022</span><span class="card-archive-list-count">14</span></a></li></ul></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By jingbo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: (str) => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, {"source":true}))
+  },
+  run: (subtitleType) => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
     }
-</style>
-    
-  </div>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"show":true,"jsonPath":"ak12_3302"},"display":{"position":"right","width":150,"height":300,"vOffset":100},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
-
-</html>
+  }
+}
+</script><script>function subtitleType () {
+  if (true) {
+    typedJSFn.init(["没什么好说的"])
+  } else {
+    document.getElementById("subtitle").innerHTML = '没什么好说的'
+  }
+}
+typedJSFn.run(subtitleType)</script></div><script async src="/js/title.js"></script><script defer src="https://cdn.jsdelivr.net/combine/npm/jquery@latest/dist/jquery.min.js,gh/weilining/jsdelivr/jquery/circlemagic/circlemagic.min.js,gh/weilining/jsdelivr@latest/jquery/circlemagic/butterflycirclemagic.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"live2dw"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body></html>

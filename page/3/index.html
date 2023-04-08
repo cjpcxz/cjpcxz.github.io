@@ -1,1498 +1,262 @@
-<!DOCTYPE html>
-
-
-<html lang="en">
-  
-
-    <head>
-      <meta charset="utf-8" />
-        
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1"
-      />
-      <title> ayer</title>
-  <meta name="generator" content="hexo-theme-ayer">
-      
-      <link rel="shortcut icon" href="/favicon.ico" />
-       
-<link rel="stylesheet" href="/dist/main.css">
-
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
-      />
-      
-<link rel="stylesheet" href="/css/custom.css">
- 
-      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-       
- 
-
-      <!-- mermaid -->
-      
-      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
-      
-    <link rel="alternate" href="/atom.xml" title="ayer" type="application/atom+xml">
-</head>
-  </html>
-</html>
-
-
-<body>
-  <div id="app">
-    
-      
-    <main class="content on">
-      
-<section class="cover">
-    
-  <div class="cover-frame">
-    <div class="bg-box">
-      <img src="/images/cover4.jpg" alt="image frame" />
-    </div>
-    <div class="cover-inner text-center text-white">
-      <h1><a href="/">ayer</a></h1>
-      <div id="subtitle-box">
-        
-        <span id="subtitle"></span>
-        
-      </div>
-      <div>
-        
-      </div>
-    </div>
-  </div>
-  <div class="cover-learn-more">
-    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
-  </div>
-</section>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
-
-
-<!-- Subtitle -->
-
-  <script>
-    try {
-      var typed = new Typed("#subtitle", {
-        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
-        startDelay: 0,
-        typeSpeed: 200,
-        loop: true,
-        backSpeed: 100,
-        showCursor: true
-      });
-    } catch (err) {
-      console.log(err)
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Ayer</title><meta name="author" content="jingbo"><meta name="copyright" content="jingbo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
+<meta property="og:title" content="Ayer">
+<meta property="og:url" content="http://example.com/page/3/index.html">
+<meta property="og:site_name" content="Ayer">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/avatar.png">
+<meta property="article:author" content="jingbo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.png"><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="http://example.com/page/3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
     }
-  </script>
-  
-<div id="main">
-  <section class="outer">
-  
-  
-  
-
-<div class="notice" style="margin-top:50px">
-    <i class="ri-heart-fill"></i>
-    <div class="notice-content" id="broad"></div>
-</div>
-<script type="text/javascript">
-    fetch('https://v1.hitokoto.cn')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("broad").innerHTML = data.hitokoto;
-        })
-        .catch(console.error)
-</script>
-
-<style>
-    .notice {
-        padding: 20px;
-        border: 1px dashed #e6e6e6;
-        color: #969696;
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        background: #fbfbfb50;
-        border-radius: 10px;
-    }
-
-    .notice i {
-        float: left;
-        color: #999;
-        font-size: 16px;
-        padding-right: 10px;
-        vertical-align: middle;
-        margin-top: -2px;
-    }
-
-    .notice-content {
-        display: initial;
-        vertical-align: middle;
-    }
-</style>
-  
-  <article class="articles">
-    
-    
-    
-    
-    <article
-  id="post-iOS学习/性能优化/耗电优化"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E8%80%97%E7%94%B5%E4%BC%98%E5%8C%96/"
-    >耗电优化</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E8%80%97%E7%94%B5%E4%BC%98%E5%8C%96/" class="article-date">
-  <time datetime="2023-02-19T13:02:08.000Z" itemprop="datePublished">2023-02-19</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="耗电优化"><a href="#耗电优化" class="headerlink" title="耗电优化"></a>耗电优化</h2><ul>
-<li>尽可能降低CPU、GPU功耗</li>
-<li>少用定时器</li>
-<li>优化I/O操作<ul>
-<li>尽量不要频繁写入小数据，最好批量一次性写入</li>
-<li>读写大量重要数据时，考虑用<code>dispatch_io</code>，其提供了基于<code>GCD</code>的异步操作文件<code>I/O</code>的<code>API</code>。用<code>dispatch_io</code>系统会优化磁盘访问</li>
-<li>数据量比较大的，建议使用数据库（比如<code>SQLite</code>、<code>CoreData</code>）</li>
-</ul>
-</li>
-<li>网络优化<ul>
-<li>减少、压缩网络数据</li>
-<li>如果多次请求的结果是相同的，尽量使用缓存</li>
-<li>使用断点续传，否则网络不稳定时可能多次传输相同的内容</li>
-<li>网络不可用时，不要尝试执行网络请求</li>
-<li>让用户可以取消长时间运行或者速度很慢的网络操作，设置合适的超时时间</li>
-<li>批量传输，比如，下载视频流时，不要传输很小的数据包，直接下载整个文件或者一大块一大块地下载。如果下载广告，一次性多下载一些，然后再慢慢展示。如果下载电子邮件，一次下载多封，不要一封一封地下载</li>
-</ul>
-</li>
-<li>定位优化<ul>
-<li>如果只是需要快速确定用户位置，最好用<code>CLLocationManager</code>的<code>requestLocation</code>方法。定位完成后，会自动让定位硬件断电</li>
-<li>如果不是导航应用，尽量不要实时更新位置，定位完毕就关掉定位服务</li>
-<li>尽量降低定位精度，比如尽量不要使用精度最高的<code>kCLLocationAccuracyBest</code></li>
-<li>需要后台定位时，尽量设置<code>pausesLocationUpdatesAutomatically</code>为<code>YES</code>，如果用户不太可能移动的时候系统会自动暂停位置更新</li>
-<li>尽量不要使用<code>startMonitoringSignificantLocationChanges</code>，优先考虑<code>startMonitoringForRegion</code></li>
-</ul>
-</li>
-<li>硬件检测优化<ul>
-<li>用户移动、摇晃、倾斜设备时，会产生动作(motion)事件，这些事件由加速度计、陀螺仪、磁力计等硬件检测。在不需要检测的场合，应该及时关闭这些硬件</li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/性能优化/卡顿优化"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/"
-    >卡顿优化</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/19/iOS%E5%AD%A6%E4%B9%A0/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/" class="article-date">
-  <time datetime="2023-02-19T09:06:19.000Z" itemprop="datePublished">2023-02-19</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="CPU和GPU"><a href="#CPU和GPU" class="headerlink" title="CPU和GPU"></a>CPU和GPU</h2><blockquote>
-<p>在屏幕成像的过程中，CPU和GPU起着至关重要的作用</p>
-</blockquote>
-<ul>
-<li><p><code>CPU</code>（<code>Central Processing Unit</code>，中央处理器）</p>
-<ul>
-<li>对象的创建和销毁、对象属性的调整、布局计算、文本的计算和排版、图片的格式转换和解码、图像的绘制（<code>Core Graphics</code>）</li>
-</ul>
-</li>
-<li><p><code>GPU</code>（<code>Graphics Processing Unit</code>，图形处理器）</p>
-<ul>
-<li>纹理的渲染<br><img src="1.png"></li>
-</ul>
-</li>
-<li><p>在iOS中是双缓冲机制，有前帧缓存、后帧缓存</p>
-<h3 id="卡顿产生的原因"><a href="#卡顿产生的原因" class="headerlink" title="卡顿产生的原因"></a>卡顿产生的原因</h3><p><img src="2.png"></p>
-</li>
-<li><p>卡顿解决的主要思路</p>
-<ul>
-<li>尽可能减少CPU、GPU资源消耗</li>
-<li>按照60FPS的刷帧率，每隔16ms就会有一次VSync信号<h2 id="卡顿优化"><a href="#卡顿优化" class="headerlink" title="卡顿优化"></a>卡顿优化</h2><h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3></li>
-</ul>
-</li>
-<li><p>尽量用轻量级的对象，比如用不到事件处理的地方，可以考虑使用<code>CALayer</code>取代<code>UIView</code></p>
-</li>
-<li><p>不要频繁地调用UIView的相关属性，比如<code>frame</code>、<code>bounds</code>、<code>transform</code>等属性，尽量减少不必要的修改</p>
-</li>
-<li><p>尽量提前计算好布局，在有需要时一次性调整对应的属性，不要多次修改属性</p>
-</li>
-<li><p><code>Autolayout</code>会比直接设置<code>frame</code>消耗更多的CPU资源</p>
-</li>
-<li><p>图片的<code>size</code>最好刚好跟<code>UIImageView</code>的<code>size</code>保持一致</p>
-</li>
-<li><p>控制一下线程的最大并发数量</p>
-</li>
-<li><p>尽量把耗时的操作放到子线程</p>
-<ul>
-<li>文本处理（尺寸计算、绘制）</li>
-<li>图片处理（解码、绘制）</li>
-<li>iOS10以上支持<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">UIGraphicsImageRendererFormat *uiformat = [[UIGraphicsImageRenderer alloc] init];</span><br><span class="line">uiformat.scale = image.scale;</span><br><span class="line">uiformat.opaque = !hasAlpha;</span><br><span class="line">UIGraphicsImageRenderer *uirenderer = [[UIGraphicsImageRenderer alloc] initWithSize:imageSize format:uiformat];</span><br><span class="line">UIGraphicsImageDrawingActions uiactions = ^(UIGraphicsImageRendererContext *rendererContext) &#123;</span><br><span class="line">    [image drawInRect:CGRectMake(0, 0, imageSize.width, imageSize.height)];</span><br><span class="line">&#125;;</span><br><span class="line">UIImage *decodedImage = [uirenderer imageWithActions:uiactions];</span><br></pre></td></tr></table></figure></li>
-<li>iOS10以下支持<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//redraw image using device context</span><br><span class="line">    UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, YES, 0);</span><br><span class="line">    [image drawInRect:imageView.bounds];</span><br><span class="line">    image = UIGraphicsGetImageFromCurrentImageContext();</span><br><span class="line">    UIGraphicsEndImageContext();</span><br></pre></td></tr></table></figure>
-<h3 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h3></li>
-</ul>
-</li>
-<li><p>尽量避免短时间内大量图片的显示，尽可能将多张图片合成一张进行显示</p>
-</li>
-<li><p><code>GPU</code>能处理的最大纹理尺寸是<code>4096x4096</code>，一旦超过这个尺寸，就会占用CPU资源进行处理，所以纹理尽量不要超过这个尺寸</p>
-</li>
-<li><p>尽量减少视图数量和层次</p>
-</li>
-<li><p>减少透明的视图（<code>alpha</code>&lt;1），不透明的就设置<code>opaque</code>为YES</p>
-</li>
-<li><p>尽量避免出现离屏渲染</p>
-<h4 id="离屏渲染"><a href="#离屏渲染" class="headerlink" title="离屏渲染"></a>离屏渲染</h4></li>
-<li><p>在<code>OpenGL</code>中，<code>GPU</code>有2种渲染方式</p>
-<ol>
-<li><code>On-Screen Rendering</code>：当前屏幕渲染，在当前用于显示的屏幕缓冲区进行渲染操作</li>
-<li><code>Off-Screen Rendering</code>：离屏渲染，在当前屏幕缓冲区以外新开辟一个缓冲区进行渲染操作</li>
-</ol>
-</li>
-<li><p>离屏渲染消耗性能的原因</p>
-<ul>
-<li>需要创建新的缓冲区</li>
-<li>离屏渲染的整个过程，需要多次切换上下文环境，先是从当前屏幕（<code>On-Screen</code>）切换到离屏（<code>Off-Screen</code>）；等到离屏渲染结束以后，将离屏缓冲区的渲染结果显示到屏幕上，又需要将上下文环境从离屏切换到当前屏幕</li>
-</ul>
-</li>
-<li><p>哪些操作会触发离屏渲染？</p>
-<ul>
-<li><p>光栅化，<code>layer.shouldRasterize = YES</code></p>
-</li>
-<li><p>遮罩，<code>layer.mask</code></p>
-</li>
-<li><p>圆角，同时设置<code>layer.masksToBounds = YES</code>、<code>layer.cornerRadius大于0</code></p>
-<ul>
-<li>考虑通过<code>CoreGraphics</code>绘制裁剪圆角，或者提供圆角图片</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>阴影，<code>layer.shadowXXX</code></p>
-<ul>
-<li>如果设置了<code>layer.shadowPath</code>就不会产生离屏渲染<h3 id="卡顿检测"><a href="#卡顿检测" class="headerlink" title="卡顿检测"></a>卡顿检测</h3></li>
-</ul>
-</li>
-<li><p>平时所说的“卡顿”主要是因为在主线程执行了比较耗时的操作</p>
-</li>
-<li><p>可以添加<code>Observer</code>到主线程<code>RunLoop</code>中，通过监听<code>RunLoop</code>状态切换的耗时，以达到监控卡顿的目的</p>
-<ul>
-<li>绘制操作基本都在<code>source0</code>和<code>source1</code>中处理,主要监听</li>
-<li><code>kCFRunLoopBeforeWaiting</code>,开始休眠之前，处理的事件卡顿</li>
-<li><code>kCFRunLoopBeforeSources</code>,处理source0，<code>kCFRunLoopAfterWaiting</code>，被source1唤醒处理的耗时<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">- (void)startMonitoring &#123;</span><br><span class="line">    if (_isMonitoring) &#123; return; &#125;</span><br><span class="line">    _isMonitoring = YES;</span><br><span class="line">    CFRunLoopObserverContext context = &#123;</span><br><span class="line">        0,</span><br><span class="line">        (__bridge void *)self,</span><br><span class="line">        NULL,</span><br><span class="line">        NULL</span><br><span class="line">    &#125;;</span><br><span class="line">    _observer = CFRunLoopObserverCreate(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, &amp;lxdRunLoopObserverCallback, &amp;context);</span><br><span class="line">    CFRunLoopAddObserver(CFRunLoopGetMain(), _observer, kCFRunLoopCommonModes);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(lxd_event_monitor_queue(), ^&#123;</span><br><span class="line">        while (self.isMonitoring) &#123;</span><br><span class="line">            if (self.currentActivity == kCFRunLoopBeforeWaiting) &#123;</span><br><span class="line">                __block BOOL timeOut = YES;</span><br><span class="line">                dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                    timeOut = NO;</span><br><span class="line">                    dispatch_semaphore_signal(self.eventSemphore);</span><br><span class="line">                &#125;);</span><br><span class="line">                //等待1s,看添加到主队列的block是否执行完</span><br><span class="line">                [NSThread sleepForTimeInterval: 1];</span><br><span class="line">                if (timeOut) &#123;</span><br><span class="line">                    [LXDBacktraceLogger lxd_logMain];//打印堆栈信息</span><br><span class="line">                &#125;</span><br><span class="line">                dispatch_wait(self.eventSemphore, DISPATCH_TIME_FOREVER);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    dispatch_async(lxd_fluecy_monitor_queue(), ^&#123;</span><br><span class="line">        while (self.isMonitoring) &#123;</span><br><span class="line">        //监听信号量解锁，并进行等待</span><br><span class="line">            long waitTime = dispatch_semaphore_wait(self.semphore, dispatch_time(DISPATCH_TIME_NOW, 200 * NSEC_PER_MSEC));//解锁成功返回0</span><br><span class="line">            if (waitTime != 0) &#123;</span><br><span class="line">                if (!self.observer) &#123;</span><br><span class="line">                    self.timeOut = 0;</span><br><span class="line">                    [self stopMonitoring];</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line">                //是否当前状态一直卡处理source0和休眠唤醒状态，超过5次，就打印</span><br><span class="line">                if (self.currentActivity == kCFRunLoopBeforeSources || self.currentActivity == kCFRunLoopAfterWaiting) &#123;</span><br><span class="line">                    if (++self.timeOut &lt; 5) &#123;</span><br><span class="line">                        continue;</span><br><span class="line">                    &#125;</span><br><span class="line">                    [LXDBacktraceLogger lxd_logMain];</span><br><span class="line">                    [NSThread sleepForTimeInterval: 5];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            self.timeOut = 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)stopMonitoring &#123;</span><br><span class="line">    if (!_isMonitoring) &#123; return; &#125;</span><br><span class="line">    _isMonitoring = NO;</span><br><span class="line">    </span><br><span class="line">    CFRunLoopRemoveObserver(CFRunLoopGetMain(), _observer, kCFRunLoopCommonModes);</span><br><span class="line">    CFRelease(_observer);</span><br><span class="line">    _observer = nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static void lxdRunLoopObserverCallback(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void * info) &#123;</span><br><span class="line">    [LXDAppFluecyMonitor sharedMonitor].currentActivity = activity;</span><br><span class="line">    //每次变化进行信号量的增加，在监听的队列进行减少</span><br><span class="line">    dispatch_semaphore_signal([LXDAppFluecyMonitor sharedMonitor].semphore);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/内存管理/自动释放池"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E8%87%AA%E5%8A%A8%E9%87%8A%E6%94%BE%E6%B1%A0/"
-    >自动释放池</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E8%87%AA%E5%8A%A8%E9%87%8A%E6%94%BE%E6%B1%A0/" class="article-date">
-  <time datetime="2023-02-18T11:33:56.000Z" itemprop="datePublished">2023-02-18</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@autoreleasepool &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>编译后发现,<code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/* @autoreleasepool */ &#123; __AtAutoreleasePool __autoreleasepool; </span><br><span class="line">    //创建的时候调用构造函数，即 objc_autoreleasePoolPush();</span><br><span class="line">    &#125;</span><br><span class="line">    //代码块结束的时候析构函数,即 objc_autoreleasePoolPop(atautoreleasepoolobj)</span><br><span class="line">struct __AtAutoreleasePool &#123;</span><br><span class="line">    //构造函数，在创建结构体的时候调用</span><br><span class="line">  __AtAutoreleasePool() &#123; </span><br><span class="line">  atautoreleasepoolobj = objc_autoreleasePoolPush();</span><br><span class="line">  &#125;</span><br><span class="line">    //析构函数，在结构体销毁的时候调用</span><br><span class="line">  ~__AtAutoreleasePool() &#123;</span><br><span class="line">  objc_autoreleasePoolPop(atautoreleasepoolobj);</span><br><span class="line">  &#125;</span><br><span class="line">  void * atautoreleasepoolobj;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">void *</span><br><span class="line">objc_autoreleasePoolPush(void)</span><br><span class="line">&#123;</span><br><span class="line">    return AutoreleasePoolPage::push();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">NEVER_INLINE</span><br><span class="line">void</span><br><span class="line">objc_autoreleasePoolPop(void *ctxt)</span><br><span class="line">&#123;</span><br><span class="line">    AutoreleasePoolPage::pop(ctxt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>自动释放池的主要底层数据结构是：<code>__AtAutoreleasePool</code>、<code>AutoreleasePoolPage</code></li>
-<li>用了<code>autorelease</code>的对象最终都是通过<code>AutoreleasePoolPage</code>对象来管理的<h4 id="AutoreleasePoolPage"><a href="#AutoreleasePoolPage" class="headerlink" title="AutoreleasePoolPage"></a>AutoreleasePoolPage</h4></li>
-<li>主要结构<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class AutoreleasePoolPage : private AutoreleasePoolPageData &#123; .... &#125;</span><br><span class="line">struct AutoreleasePoolPageData &#123;</span><br><span class="line">static size_t const SIZE =</span><br><span class="line">#if PROTECT_AUTORELEASEPOOL</span><br><span class="line">		PAGE_MAX_SIZE;  // must be multiple of vm page size</span><br><span class="line">#else</span><br><span class="line">		PAGE_MIN_SIZE;  // size and alignment, power of 2</span><br><span class="line">		//(1 &lt;&lt; 12) //4096</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    magic_t const magic;</span><br><span class="line">	__unsafe_unretained id *next;</span><br><span class="line">	objc_thread_t const thread;</span><br><span class="line">	AutoreleasePoolPage * const parent;</span><br><span class="line">	AutoreleasePoolPage *child;</span><br><span class="line">	uint32_t const depth;</span><br><span class="line">	uint32_t hiwat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>每个AutoreleasePoolPage对象占用4096字节内存，除了用来存放它内部的成员变量(主要成员大概占用56字节)，剩下的空间用来存放autorelease对象的地址<ul>
-<li>剩下空间不够了，则会创建一个新的</li>
-</ul>
-</li>
-<li>所有的AutoreleasePoolPage对象通过双向链表的形式连接在一起<h3 id="源码-1"><a href="#源码-1" class="headerlink" title="源码"></a>源码</h3></li>
-<li>所有的<code>AutoreleasePoolPage</code>对象通过双向链表的形式连接在一起</li>
-</ul>
-<ol>
-<li><code>objc_autoreleasePoolPush</code>调用push方法会将一个<code>POOL_BOUNDARY</code>(实际是个nil)入栈，并且返回其存放的内存地址<ul>
-<li>后续调用<code>autorelease</code>加入释放值,也是调用<code>autoreleaseFast</code>方法添加到释放池，page不够，则创建新的，此时新的不用加<code>POOL_BOUNDARY</code>标记<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">static inline void *push() </span><br><span class="line">    &#123;</span><br><span class="line">        ReturnAutoreleaseInfo info = getReturnAutoreleaseInfo();</span><br><span class="line">        moveTLSAutoreleaseToPool(info);</span><br><span class="line"></span><br><span class="line">        id *dest;</span><br><span class="line">        if (slowpath(DebugPoolAllocation)) &#123;</span><br><span class="line">            // Each autorelease pool starts on a new pool page.</span><br><span class="line">            dest = autoreleaseNewPage(POOL_BOUNDARY);//新建的页，第一个地址假上一个POOL_BOUNDARY</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            dest = autoreleaseFast(POOL_BOUNDARY);</span><br><span class="line">        &#125;</span><br><span class="line">        ASSERT(dest == (id *)EMPTY_POOL_PLACEHOLDER || *dest == POOL_BOUNDARY);</span><br><span class="line">        return dest;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><code>objc_autoreleasePoolPop(atautoreleasepoolobj)</code>,调用pop时，则会对所有添加的值调用<code>release</code>方法，直到遇到<code>POOL_BOUNDARY</code>为止,<code>holdPage</code>为当前页面<br><img src="1.png"><ol>
-<li>存放的类型是<code>AutoreleasePoolEntry</code>,<code>ptr</code>是对象地址，<code>count</code>则是释放池内，该对象调用<code>autorelease</code>的次数<ul>
-<li>当前页面没了，则会调整到父页，并设置父页面为当前页面，继续<code>release</code>，直到碰到<code>POOL_BOUNDARY</code></li>
-<li>id *next指向了下一个能存放<code>autorelease</code>对象地址的区域<br><img src="2.png"></li>
-</ul>
-</li>
-</ol>
-</li>
-<li><code>autorelease</code>方法实际内部调用的是<code>autoreleaseFast</code>，其传入的值是对象<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">static inline id *autoreleaseFast(id obj)</span><br><span class="line">    &#123;</span><br><span class="line">        AutoreleasePoolPage *page = hotPage();</span><br><span class="line">        if (page &amp;&amp; !page-&gt;full()) &#123;</span><br><span class="line">            return page-&gt;add(obj);</span><br><span class="line">        &#125; else if (page) &#123;</span><br><span class="line">            return autoreleaseFullPage(obj, page);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return autoreleaseNoPage(obj);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ol>
-<ul>
-<li><code>add</code>添加到释放值，如果已经存在则增加次数，否则增加一个<code>AutoreleasePoolEntry</code><ul>
-<li>这里增加次数只会在4个偏移内，如果超过了这个偏移，则当新的</li>
-<li>在找到新存在的后，会将其移动到存储的最后一个<br><img src="3.png"><h3 id="查看释放值信息"><a href="#查看释放值信息" class="headerlink" title="查看释放值信息"></a>查看释放值信息</h3></li>
-</ul>
-</li>
-<li><code>_objc_autoreleasePoolPrint</code>,该方法是一个私有方法,MRC环境下</li>
-<li>p1在距离上一个p1在4的范围内，则数量增加1，并且移动到最后<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">extern void _objc_autoreleasePoolPrint(void);</span><br><span class="line">@autoreleasepool &#123;  </span><br><span class="line">    CJPerson *p1 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p2 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p3 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p4 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    [p1 retain];</span><br><span class="line">    [p1 autorelease];</span><br><span class="line">    CJPerson *p5 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    @autoreleasepool &#123; </span><br><span class="line">            CJPerson *p6 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">             _objc_autoreleasePoolPrint();</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">objc[5867]: ##############</span><br><span class="line">objc[5867]: AUTORELEASE POOLS for thread 0x7ff856aee640</span><br><span class="line">objc[5867]: 10 releases pending.</span><br><span class="line">objc[5867]: [0x10080b000]  ................  PAGE  (hot) (cold)</span><br><span class="line">objc[5867]: [0x10080b038]  ################  POOL 0x10080b038</span><br><span class="line">//每个AutoreleasePoolEntry`指针占8位</span><br><span class="line">objc[5867]: [0x10080b040]    0x600000004060  CJPerson</span><br><span class="line">objc[5867]: [0x10080b048]    0x600000004070  CJPerson</span><br><span class="line">objc[5867]: [0x10080b050]    0x600000004080  CJPerson</span><br><span class="line">//移动到最后，并且会打印数量</span><br><span class="line">objc[5867]: [0x10080b058]    0x600000004050  CJPerson  autorelease count 2 </span><br><span class="line">objc[5867]: [0x10080b060]    0x600000004090  CJPerson</span><br><span class="line">objc[5867]: [0x10080b068]  ################  POOL 0x10080b068</span><br><span class="line">objc[5867]: [0x10080b070]    0x6000000040a0  CJPerson</span><br><span class="line">objc[5867]: ##############</span><br><span class="line">*/</span><br></pre></td></tr></table></figure></li>
-<li>p1在距离上一个p1在4的范围之外，则会另新增一个，尽管他们存的内存地址是一样的<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">extern void _objc_autoreleasePoolPrint(void);</span><br><span class="line">@autoreleasepool &#123;  </span><br><span class="line">    CJPerson *p1 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p2 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p3 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p4 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    CJPerson *p5 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">    [p1 retain];</span><br><span class="line">    [p1 autorelease];</span><br><span class="line">    @autoreleasepool &#123; </span><br><span class="line">            CJPerson *p6 = [[[CJPerson alloc] init] autorelease];</span><br><span class="line">             _objc_autoreleasePoolPrint();</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">objc[6090]: ##############</span><br><span class="line">objc[6090]: AUTORELEASE POOLS for thread 0x7ff856aee640</span><br><span class="line">objc[6090]: 11 releases pending.</span><br><span class="line">objc[6090]: [0x102009000]  ................  PAGE  (hot) (cold)</span><br><span class="line">objc[6090]: [0x102009038]  ################  POOL 0x102009038</span><br><span class="line">objc[6090]: [0x102009040]    0x60000000c020  CJPerson</span><br><span class="line">objc[6090]: [0x102009048]    0x60000000c030  CJPerson</span><br><span class="line">objc[6090]: [0x102009050]    0x60000000c040  CJPerson</span><br><span class="line">objc[6090]: [0x102009058]    0x60000000c050  CJPerson</span><br><span class="line">objc[6090]: [0x102009060]    0x60000000c060  CJPerson</span><br><span class="line">objc[6090]: [0x102009068]    0x60000000c020  CJPerson</span><br><span class="line">objc[6090]: [0x102009070]  ################  POOL 0x102009070</span><br><span class="line">objc[6090]: [0x102009078]    0x60000000c070  CJPerson</span><br><span class="line">objc[6090]: [0x102009080]  ################  POOL 0x102009080</span><br><span class="line">objc[6090]: [0x102009088]    0x60000000c080  CJPerson</span><br><span class="line">objc[6090]: ##############</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
-<h3 id="autorelease时机"><a href="#autorelease时机" class="headerlink" title="autorelease时机"></a>autorelease时机</h3></li>
-<li>iOS在主线程的Runloop中注册了2个Observer<ul>
-<li>第1个<code>Observer</code>监听了<code>kCFRunLoopEntry</code>事件，会调用<code>objc_autoreleasePoolPush()</code></li>
-<li>第2个<code>Observer</code>监听了<code>kCFRunLoopBeforeWaiting</code>事件，会调用<code>objc_autoreleasePoolPop()</code>、<code>objc_autoreleasePoolPush()</code></li>
-<li>  监听了<code>kCFRunLoopBeforeExit</code>事件，会调用<code>objc_autoreleasePoolPop()</code></li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/内存管理/dealloc"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/dealloc/"
-    >dealloc</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/18/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/dealloc/" class="article-date">
-  <time datetime="2023-02-18T10:31:44.000Z" itemprop="datePublished">2023-02-18</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="引用计数存储"><a href="#引用计数存储" class="headerlink" title="引用计数存储"></a>引用计数存储</h3><blockquote>
-<ul>
-<li>在iOS中，使用引用计数来管理OC对象的内存</li>
-<li>一个新创建的OC对象引用计数默认是1，当引用计数减为0，OC对象就会销毁，释放其占用的内存空间</li>
-<li>调用retain会让OC对象的引用计数+1，调用release会让OC对象的引用计数-1</li>
-<li>内存管理的经验总结<ul>
-<li>当调用alloc、new、copy、mutableCopy方法返回了一个对象，在不需要这个对象时，要调用release或者autorelease来释放它</li>
-<li>想拥有某个对象，就让它的引用计数+1；不想再拥有某个对象，就让它的引用计数-1</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<ul>
-<li>从arm64架构开始，对isa进行了优化，变成了一个共用体（union）结构，还使用位域来存储更多的信息<ul>
-<li>其中has_sidetable_rc为1引用计数器是否过大无法存储在isa中<ul>
-<li>如果为1，那么引用计数会存储在一个叫SideTable的类的属性中</li>
-</ul>
-</li>
-<li>extra_rc里面里面存储的值是引用计数器减1,818源码之前是减1，之后则不是了</li>
-</ul>
-</li>
-</ul>
-<p><img src="1.png"></p>
-<ul>
-<li>SideTable<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct SideTable &#123;</span><br><span class="line">    spinlock_t slock;</span><br><span class="line">    RefcountMap refcnts; //refcnts是一个存放着对象引用计数的散列表</span><br><span class="line">    weak_table_t weak_table;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>retainCount<ul>
-<li>818源码<br><img src="2.png"></li>
-<li>781源码<br><img src="2.png"></li>
-<li>根据key从SideTables中获取sidetable，再从refcnts获取迭代器，从中取出引用计数<br>  <img src="4.png"></li>
-</ul>
-</li>
-<li>refcnts，在每次引用计数增减，是一个SIDE_TABLE_RC_ONE<ul>
-<li>relese，引用计数释放完了，则会调用delloc方法<br><img src="5.png"></li>
-<li>retain<br><img src="6.png"></li>
-<li>每次引用计数改变的值<code>0B100</code>，后两位分别判断是否有弱引用，是否正在释放<br><img src="7.png"><h3 id="dealloc"><a href="#dealloc" class="headerlink" title="dealloc"></a>dealloc</h3></li>
-</ul>
-</li>
-<li>当一个对象要释放时，会自动调用dealloc，接下的调用轨迹是<ol>
-<li>dealloc</li>
-<li>_objc_rootDealloc</li>
-<li>rootDealloc</li>
-<li>object_dispose</li>
-<li>objc_destructInstance、free</li>
-</ol>
-</li>
-</ul>
-<ol>
-<li><p>会判断是否是弱引用、关联对象、c++析构函数、引用计数表，都没有的话直接free释放</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">objc_object::rootDealloc()</span><br><span class="line">&#123;</span><br><span class="line">    if (isTaggedPointer()) return;  // fixme necessary?</span><br><span class="line"></span><br><span class="line">    if (fastpath(isa().nonpointer                     &amp;&amp;</span><br><span class="line">                 !isa().weakly_referenced             &amp;&amp;</span><br><span class="line">                 !isa().has_assoc                     &amp;&amp;</span><br><span class="line">#if ISA_HAS_CXX_DTOR_BIT</span><br><span class="line">                 !isa().has_cxx_dtor                  &amp;&amp;</span><br><span class="line">#else</span><br><span class="line">                 !isa().getClass(false)-&gt;hasCxxDtor() &amp;&amp;</span><br><span class="line">#endif</span><br><span class="line">                 !isa().has_sidetable_rc))</span><br><span class="line">    &#123;</span><br><span class="line">        assert(!sidetable_present());</span><br><span class="line">        free(this);</span><br><span class="line">    &#125; </span><br><span class="line">    else &#123;</span><br><span class="line">        object_dispose((id)this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>按顺序先处理后，再去释放</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">void *objc_destructInstance(id obj)</span><br><span class="line">&#123;</span><br><span class="line">    if (obj) &#123;</span><br><span class="line">        // Read all of the flags at once for performance.</span><br><span class="line">        bool cxx = obj-&gt;hasCxxDtor();</span><br><span class="line">        bool assoc = obj-&gt;hasAssociatedObjects();</span><br><span class="line"></span><br><span class="line">        // This order is important.</span><br><span class="line">        if (cxx) object_cxxDestruct(obj);//调用c++析构函数</span><br><span class="line">        if (assoc) _object_remove_associations(obj, /*deallocating*/true);//删删除关联对象</span><br><span class="line">        obj-&gt;clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br><span class="line">//清除弱引用和sidetable</span><br><span class="line">objc_object::clearDeallocating()</span><br><span class="line">&#123;</span><br><span class="line">    if (slowpath(!isa().nonpointer)) &#123;</span><br><span class="line">        // Slow path for raw pointer isa.</span><br><span class="line">        sidetable_clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line">    else if (slowpath(isa().weakly_referenced  ||  isa().has_sidetable_rc)) &#123;</span><br><span class="line">        // Slow path for non-pointer isa with weak refs and/or side table data.</span><br><span class="line">        clearDeallocating_slow();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    assert(!sidetable_present());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">objc_object::clearDeallocating_slow()</span><br><span class="line">&#123;</span><br><span class="line">    ASSERT(isa().nonpointer  &amp;&amp;  (isa().weakly_referenced || isa().has_sidetable_rc));</span><br><span class="line"></span><br><span class="line">    SideTable&amp; table = SideTables()[this];</span><br><span class="line">    table.lock();</span><br><span class="line">    if (isa().weakly_referenced) &#123;</span><br><span class="line">        weak_clear_no_lock(&amp;table.weak_table, (id)this); //清楚弱引用</span><br><span class="line">    &#125;</span><br><span class="line">    if (isa().has_sidetable_rc) &#123;</span><br><span class="line">        table.refcnts.erase(this); //清楚sidetable</span><br><span class="line">    &#125;</span><br><span class="line">    table.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>weak指针释放</p>
-<ol>
-<li>获取到<code>weak_entry_t</code>，从中获取存放的弱引用指针，将其置为nil<br><img src="8.png"></li>
-<li>从<code>weak_table_t</code>，查找的方式，是通过hash表，线性查找的方式<br><img src="9.png"></li>
-<li><code>weak_entry_t</code>的结构，会根据数组长度的不同，结构有所不同<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">struct weak_table_t &#123;</span><br><span class="line">weak_entry_t *weak_entries;</span><br><span class="line">size_t    num_entries;</span><br><span class="line">uintptr_t mask;</span><br><span class="line">uintptr_t max_hash_displacement;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct weak_entry_t &#123;</span><br><span class="line">    DisguisedPtr&lt;objc_object&gt; referent;</span><br><span class="line"> union &#123;</span><br><span class="line">      struct &#123;</span><br><span class="line">          weak_referrer_t *referrers;</span><br><span class="line">          uintptr_t        out_of_line_ness : 2;</span><br><span class="line">          uintptr_t        num_refs : PTR_MINUS_2;</span><br><span class="line">          uintptr_t        mask;</span><br><span class="line">         uintptr_t        max_hash_displacement;</span><br><span class="line">      &#125;;</span><br><span class="line">     struct &#123;</span><br><span class="line">        // out_of_line_ness field is low bits of inline_referrers[1]</span><br><span class="line">        weak_referrer_t  inline_referrers[WEAK_INLINE_COUNT];</span><br><span class="line">    &#125;;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-js的学习/js的基础学习（二）"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/18/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/"
-    >js的基础学习（二）</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/18/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/" class="article-date">
-  <time datetime="2023-02-18T06:47:32.000Z" itemprop="datePublished">2023-02-18</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="内置对象"><a href="#内置对象" class="headerlink" title="内置对象"></a>内置对象</h2><h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><blockquote>
-<p>Math中的方法，都会隐式转换成Number</p>
-</blockquote>
-<h4 id="max"><a href="#max" class="headerlink" title="max"></a>max</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ar numArr = [1,2,3,4,1]</span><br><span class="line">console.log(Math.max(...numArr)); // 4</span><br><span class="line">console.log(Math.max(0,1,&#x27;张三&#x27;)); // NaN</span><br><span class="line">console.log(Math.max(0,1,&#x27;张三&#x27;)); // -Infinity</span><br></pre></td></tr></table></figure>
-<h4 id="abs"><a href="#abs" class="headerlink" title="abs"></a>abs</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">console.log(Math.abs(-0.13));   // 0.13</span><br><span class="line">console.log(Math.abs(&#x27;-0.13&#x27;)); // -0.13隐式转换</span><br><span class="line">console.log(Math.abs(&#x27;数字&#x27;)); // NaN</span><br></pre></td></tr></table></figure>
-<h4 id="round"><a href="#round" class="headerlink" title="round"></a>round</h4><blockquote>
-<p>四舍五入，其他数字都是四舍五入，但是.5特殊，它是往大了取</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">console.log(Math.round(1.5)); // 2</span><br><span class="line">console.log(Math.round(&#x27;-1.5&#x27;)); // -1 .5特殊，它是往大了取</span><br><span class="line">console.log(Math.round(-1.4)); // -1</span><br><span class="line">console.log(Math.round(-1.6)); // -2</span><br></pre></td></tr></table></figure>
-<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><blockquote>
-<p>字符串本身是不可变的，指的是里面的值不可变，虽然看上去可以改变内容，但其实是地址变了，内存中新开辟了一个内存空间</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var str = &#x27;abc&#x27;</span><br><span class="line">str = &#x27;hello&#x27;</span><br><span class="line">//当重新给str赋值的时候，常量`abc`不会被修改，依然在内存中</span><br><span class="line">//重新给字符串赋予值没回重新在内存中开辟空间，这个特点就是字符串的不可变</span><br><span class="line">//由于字符串的不可变，咋子大量拼接字符串的时候会有效率问题</span><br></pre></td></tr></table></figure>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-js的学习/js的基础学习（一）"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/15/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/"
-    >js的基础学习（一）</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/15/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/" class="article-date">
-  <time datetime="2023-02-15T13:39:52.000Z" itemprop="datePublished">2023-02-15</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>只记录js中特殊的写法</p>
-</blockquote> 
-      <a class="article-more-link" href="/2023/02/15/js%E7%9A%84%E5%AD%A6%E4%B9%A0/js%E7%9A%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/内存管理/TaggedPointer"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/15/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/TaggedPointer/"
-    >Tagged Pointer</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/15/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/TaggedPointer/" class="article-date">
-  <time datetime="2023-02-14T16:36:47.000Z" itemprop="datePublished">2023-02-15</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="Tagged-Pointer"><a href="#Tagged-Pointer" class="headerlink" title="Tagged Pointer"></a>Tagged Pointer</h1><blockquote>
-<ul>
-<li>从64bit开始，iOS引入了Tagged Pointer技术，用于优化NSNumber、NSDate、NSString等小对象的存储</li>
-<li>在没有使用Tagged Pointer之前， NSNumber等对象需要动态分配内存、维护引用计数等，NSNumber指针存储的是堆中NSNumber对象的地址值</li>
-<li>使用Tagged Pointer之后，NSNumber指针里面存储的数据变成了：Tag + Data，也就是将数据直接存储在了指针中</li>
-<li>当指针不够存储数据时，才会使用动态分配内存的方式来存储数据</li>
-<li><code>objc_msgSend</code>能识别<code>Tagged Pointer</code>，比如<code>NSNumber</code>的<code>intValue</code>方法，直接从指针提取数据，节省了以前的调用开销(因为没有<code>isa</code>存在，不是<code>OC</code>对象，不会走方法调用流程)</li>
-</ul>
-</blockquote>
-<h2 id="如何判断一个指针是否为Tagged-Pointer？"><a href="#如何判断一个指针是否为Tagged-Pointer？" class="headerlink" title="如何判断一个指针是否为Tagged Pointer？"></a>如何判断一个指针是否为Tagged Pointer？</h2><p><img src="1.png"><br><img src="2.png"></p>
-<ul>
-<li>iOS平台，最高有效位是1（第64bit）</li>
-<li>Mac平台，最低有效位是1</li>
-</ul>
-<h2 id="Tagged-Pointer存储地方思考"><a href="#Tagged-Pointer存储地方思考" class="headerlink" title="Tagged Pointer存储地方思考"></a>Tagged Pointer存储地方思考</h2><ul>
-<li>解码<code>extern</code>调用私有函数<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">extern uintptr_t objc_debug_taggedpointer_obfuscator;</span><br><span class="line">uintptr_t _objc_decodeTaggedPointer_(const void * _Nullable  ptr) &#123;</span><br><span class="line">    return (uintptr_t)ptr ^ objc_debug_taggedpointer_obfuscator;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">NSNumber *number1 = @4;</span><br><span class="line">NSNumber *number2 = @5;</span><br><span class="line">NSNumber *number3 = @100;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;%p  %p  %p&quot;,number1,number2,number3);</span><br><span class="line">///0xc96fede699842146  0xc96fede699842786  0xc96fede699861216</span><br><span class="line">NSLog(@&quot;0x%lx   0x%lx   0x%lx&quot;,_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number1)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number2)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(number3)));</span><br><span class="line">///0xb000000000000042   0xb000000000000052   0xb000000000000642</span><br><span class="line"></span><br><span class="line">NSString *str1 = [NSString stringWithFormat:@&quot;sd&quot;];</span><br><span class="line">NSString *str2 = [NSString stringWithFormat:@&quot;sdadad&quot;];</span><br><span class="line">NSLog(@&quot;%p  %p&quot;,str1,str2);</span><br><span class="line">//0xbaf35d65b6463f52  0xbaf51b73f0563f56</span><br><span class="line">NSLog(@&quot;0x%lx 0x%lx&quot;,_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(str1)),_objc_decodeTaggedPointer_((__bridge const void * _Nullable)(str2)));</span><br><span class="line">//0xa000000000064732   0xa006461646164736</span><br></pre></td></tr></table></figure></li>
-<li>分析,注意上面的数据是在<code>x86</code>模拟器上的数据<ul>
-<li>前面的0xb明显是tag,为<code>0xb -&gt; 1011</code>, <code>0xa -&gt; 1010</code>,<ul>
-<li>在iOS中最高位为1表明是<code>Tagged Pointer</code></li>
-<li>后三位代表数据类型，<code>011</code>代表int（如果是带小数点的无法不会转出tag），<code>010</code>代表字符串</li>
-</ul>
-</li>
-<li><code>42 -&gt; 100 0010</code>,<code>52 -&gt;101 0010</code><ul>
-<li>前四位代表存储的内容</li>
-<li>后4位代表数据长度(一般是字符串长度)，后四位<code>sd -&gt; 0010</code>长度2、<code>sdadad -&gt; 0110</code>长度6</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>如果是iOS，<code>arm64</code>下，数据格式不同,需要注意<ul>
-<li><code>@5 -&gt; 0x8000000000000291</code>,<code>@8 -&gt; 0x8000000000000411</code>,最高位1是标识，低7位是标识和数据长度</li>
-</ul>
-</li>
-<li>在iOS中，<code>Tagged Pointer</code>中间56位用来存东西，前4位是tag，后4位是数据长度<h2 id="Tagged-Pointer的题目思考"><a href="#Tagged-Pointer的题目思考" class="headerlink" title="Tagged Pointer的题目思考"></a>Tagged Pointer的题目思考</h2><h3 id="关于野指针的问题"><a href="#关于野指针的问题" class="headerlink" title="关于野指针的问题"></a>关于野指针的问题</h3></li>
-<li>崩溃地方在<code>objc_release</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">dispatch_queue_t queue = dispatch_get_global_queue(0, 0);</span><br><span class="line">    for (int i = 0; i &lt; 1000; i++) &#123;</span><br><span class="line">        dispatch_async(queue, ^&#123;</span><br><span class="line">            // 加锁</span><br><span class="line">            self.name = [NSString stringWithFormat:@&quot;abcdefghijk&quot;];</span><br><span class="line">            // 解锁</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    for (int i = 0; i &lt; 1000; i++) &#123;</span><br><span class="line">        dispatch_async(queue, ^&#123;</span><br><span class="line">            self.name = [NSString stringWithFormat:@&quot;abc&quot;];</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
-<li>原因：设置<code>name</code>方法本质为如下方法，（ARC下也会有<code>release</code>引用释放）,因此在多线程下调用很可能会出现野指针问题<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (void)setName:(NSString *)name</span><br><span class="line">&#123;</span><br><span class="line">    if (_name != name) &#123;</span><br><span class="line">        [name retain];// 保留新对象</span><br><span class="line">        [_name release];//原先的引用计数减1</span><br><span class="line">        _name = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>但实际上，将赋值的对象设置仅为<code>[NSString stringWithFormat:@&quot;abc&quot;]</code>，或者为<code>@&quot;abcdefghijk&quot;</code>字面量时，不会出现野指针的问题。<ul>
-<li>原因在于，<code>[NSString stringWithFormat:@&quot;abc&quot;]</code>类型为<code>NSTaggedPointerString</code>,不是OC对象不会有实际的<code>release</code>方法</li>
-<li><code>@&quot;abcdefghijk&quot;</code>字面量为<code>__NSCFConstantString</code>，是字符串常量，<code>release</code>不会使其释放</li>
-<li><code>[NSString stringWithFormat:@&quot;abcdefghijk&quot;]</code>,在超过<code>Tagged Pointer</code>,数据限制后，其类型为<code>__NSCFString</code>,字符串的OC对象，存在引用计数，因此会出现野指针问题</li>
-</ul>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/内存管理/定时器"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E5%AE%9A%E6%97%B6%E5%99%A8/"
-    >定时器</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E5%AE%9A%E6%97%B6%E5%99%A8/" class="article-date">
-  <time datetime="2023-02-12T15:00:11.000Z" itemprop="datePublished">2023-02-12</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<p>定时器通过addTarget添加的时候，会强引用target，如果此时target持有了定时器，则会出现循环引用</p>
-</blockquote>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//__weak typeof(self) weakSelf = self;将target的self,换成weakSelf，一样会出现 __weak typeof(self) weakSelf = self；</span><br><span class="line">//和block不一样，block内部会根据weak还是strong，去引用对象</span><br><span class="line"></span><br><span class="line">//而NSTimer中，经过传人的是weakSelf，但其内部，仍然会强引用self</span><br><span class="line">self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerTest) userInfo:nil repeats:YES];</span><br><span class="line"></span><br><span class="line">//出现循环引用，无法释放</span><br><span class="line">- (void)dealloc</span><br><span class="line">&#123;</span><br><span class="line">    [self.timer invalidate];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="NSObjec的代理转发"><a href="#NSObjec的代理转发" class="headerlink" title="NSObjec的代理转发"></a>NSObjec的代理转发</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:[JPProxy proxyWithTarget:self] selector:@selector(timerTest) userInfo:nil repeats:YES];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@interface JPProxy : NSObject</span><br><span class="line">+ (instancetype)proxyWithTarget:(id)target;</span><br><span class="line">@property </span><br><span class="line"></span><br><span class="line">@implementation JPProxy</span><br><span class="line"></span><br><span class="line">+ (instancetype)proxyWithTarget:(id)target</span><br><span class="line">&#123;</span><br><span class="line">    JPProxy *proxy = [[JPProxy alloc] init];</span><br><span class="line">    proxy.target = target;</span><br><span class="line">    return proxy;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)forwardingTargetForSelector:(SEL)aSelector</span><br><span class="line">&#123;</span><br><span class="line">    return self.target;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<ul>
-<li>通过一个代理类proxy，弱引用持有self，而定时器的target为该代理类，则可打破该循环引用，并且，定时器在代理类中查询<code>timerTest</code>方法时,会通过消息转发机制，由self来处理</li>
-<li><code>CADisplayLink</code>一样的解决方式<h4 id="NSProxy的代理转发"><a href="#NSProxy的代理转发" class="headerlink" title="NSProxy的代理转发"></a>NSProxy的代理转发</h4><blockquote>
-<p>NSProxy和NSObject一样，同样是一种基类,NSProxy没有<code>forwardingTargetForSelector:</code>,因此要走<code>methodSignatureForSelector</code>,<code>forwardInvocation:</code>最后一步方法转发流程</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">@interface JPProxy : NSProxy</span><br><span class="line">+ (instancetype)proxyWithTarget:(id)target;</span><br><span class="line">@property (weak, nonatomic) id target;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation JPProxy</span><br><span class="line"></span><br><span class="line">+ (instancetype)proxyWithTarget:(id)target</span><br><span class="line">&#123;</span><br><span class="line">    // NSProxy对象不需要调用init，因为它本来就没有init方法</span><br><span class="line">    JPProxy *proxy = [JPProxy alloc];</span><br><span class="line">    proxy.target = target;</span><br><span class="line">    return proxy;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel</span><br><span class="line">&#123;</span><br><span class="line">    return [self.target methodSignatureForSelector:sel];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)invocation</span><br><span class="line">&#123;</span><br><span class="line">    [invocation invokeWithTarget:self.target];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li>继承自NSObject的代理，需要先查询方法-&gt;方法解析-&gt;最后才是方法转发。而继承自NSProxy，会直接走向方法转发，对于转发来说，效率要比NSObject要快。<h3 id="CGD定时器"><a href="#CGD定时器" class="headerlink" title="CGD定时器"></a>CGD定时器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dispatch_source_t timer = dispatch_source_create(DISPATCH_TIME_NOW, 0, 0, dispatch_get_main_queue());</span><br><span class="line">// 设置时间（start是几秒后开始执行，interval是时间间隔）</span><br><span class="line">dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(start * NSEC_PER_SEC)), (uint64_t)(interval * NSEC_PER_SEC), 0);</span><br><span class="line">// 设置回调</span><br><span class="line">dispatch_source_set_event_handler(timer, ^&#123;</span><br><span class="line">        </span><br><span class="line">&#125;);</span><br><span class="line">// 启动定时器</span><br><span class="line">dispatch_resume(timer);</span><br></pre></td></tr></table></figure></li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/多线程/读写锁"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E8%AF%BB%E5%86%99%E9%94%81/"
-    >读写锁</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/12/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E8%AF%BB%E5%86%99%E9%94%81/" class="article-date">
-  <time datetime="2023-02-12T09:28:35.000Z" itemprop="datePublished">2023-02-12</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <blockquote>
-<ul>
-<li>读写锁的应用场景<ul>
-<li>同一时间，只能有1个线程进行写的操作</li>
-<li>同一时间，允许有多个线程进行读的操作</li>
-<li>同一时间，不允许既有写的操作，又有读的操作</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<h3 id="读写锁的方案"><a href="#读写锁的方案" class="headerlink" title="读写锁的方案"></a>读写锁的方案</h3><ul>
-<li>pthread_rwlock：读写锁</li>
-<li>dispatch_barrier_async：异步栅栏调用<h3 id="pthread-rwlock"><a href="#pthread-rwlock" class="headerlink" title="pthread_rwlock"></a>pthread_rwlock</h3><h4 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h4><blockquote>
-<p>读用pthread_rwlock_rdlock，写用pthread_rwlock_wrlock，运行读同时并发进行，写必须按顺序进行</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">pthread_rwlock_t _lock;</span><br><span class="line">pthread_rwlock_init(&amp;_lock, NULL);</span><br><span class="line"></span><br><span class="line">- (void)read &#123;</span><br><span class="line">    pthread_rwlock_rdlock(&amp;_lock);</span><br><span class="line">    //读加锁    </span><br><span class="line">    pthread_rwlock_unlock(&amp;_lock);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)write</span><br><span class="line">&#123;</span><br><span class="line">    pthread_rwlock_wrlock(&amp;_lock);</span><br><span class="line">    </span><br><span class="line">     //写加锁    </span><br><span class="line">    pthread_rwlock_unlock(&amp;_lock);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dealloc</span><br><span class="line">&#123;</span><br><span class="line">    pthread_rwlock_destroy(&amp;_lock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="dispatch-barrier-async"><a href="#dispatch-barrier-async" class="headerlink" title="dispatch_barrier_async"></a>dispatch_barrier_async</h3><h4 id="使用方法-1"><a href="#使用方法-1" class="headerlink" title="使用方法"></a>使用方法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">self.queue = dispatch_queue_create(&quot;rw_queue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">dispatch_async(self.queue, ^&#123;</span><br><span class="line">    //读操作</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//使用栅栏添加到队列的任务，会等之前的读任务执行完，再执行该任务，并且之后添加到该队列的读任务，必须等到该任务执行完，才能执行。</span><br><span class="line">dispatch_barrier_async(self.queue, ^&#123;</span><br><span class="line">    //写操作</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4></li>
-<li><strong>注意</strong>，<code>dispatch_barrier_async</code>传入的并发队列必须是自己通过<code>dispatch_queue_cretate</code> 创建的如果传入的是一个<code>串行</code>或是一个<code>全局的并发队列</code>，那这个函数便等同于<code>dispatch_async</code>函数的效果.</li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-    <article
-  id="post-iOS学习/多线程/多线程和锁"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/02/02/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E9%94%81/"
-    >多线程和锁</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/02/iOS%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E9%94%81/" class="article-date">
-  <time datetime="2023-02-02T15:53:50.000Z" itemprop="datePublished">2023-02-02</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="多线程的安全隐患"><a href="#多线程的安全隐患" class="headerlink" title="多线程的安全隐患"></a>多线程的安全隐患</h2><ul>
-<li>资源共享<ul>
-<li>1块资源可能会被多个线程共享，也就是多个线程可能会访问同一块资源</li>
-<li>比如多个线程访问同一个对象、同一个变量、同一个文件</li>
-</ul>
-</li>
-<li>当多个线程访问同一块资源时，很容易引发数据错乱和数据安全问题<h2 id="OS中的线程同步方案"><a href="#OS中的线程同步方案" class="headerlink" title="OS中的线程同步方案"></a>OS中的线程同步方案</h2></li>
-</ul>
-<ol>
-<li>OSSpinLock</li>
-<li>os_unfair_lock</li>
-<li>pthread_mutex</li>
-<li>dispatch_semaphore</li>
-<li>dispatch_queue(DISPATCH_QUEUE_SERIAL)</li>
-<li>NSLock</li>
-<li>NSRecursiveLock</li>
-<li>NSCondition</li>
-<li>NSConditionLock</li>
-<li>@synchronized<h3 id="OSSpinLock"><a href="#OSSpinLock" class="headerlink" title="OSSpinLock"></a>OSSpinLock</h3><blockquote>
-<p>OSSpinLock叫做”自旋锁”，等待锁的线程会处于忙等（busy-wait）状态，一直占用着CPU资源</p>
-<ul>
-<li>目前已经不再安全，可能会出现优先级反转问题<ul>
-<li>如果等待锁的线程优先级较高，它会一直占用着CPU资源；获得锁的优先级低的线程，没有CPU资源，分配不到时间片，无法执行完，就无法释放锁<ul>
-<li>多线程原理是，操作系统通过<code>时间片轮转算法</code>，每次给一个线程一个时间片，让其可以执行,(如果所给的时间片足够短，则看起来是同时执行的</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<h4 id="使用教程"><a href="#使用教程" class="headerlink" title="使用教程"></a>使用教程</h4><blockquote>
-<p>iOS10以上由于优先级反转的问题，导致被废弃，系统建议使用os_unfair_lock</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;libkern/OSAtomic.h&gt;</span><br><span class="line"></span><br><span class="line">OSSpinLock _lock = OS_SPINLOCK_INIT;//多个线程持有同一个锁</span><br><span class="line"></span><br><span class="line">OSSpinLockLock(&amp;_lock);</span><br><span class="line">//需要同步的代码</span><br><span class="line">OSSpinLockUnlock(&amp;_lock)</span><br></pre></td></tr></table></figure>
-<h4 id="自旋锁逻辑查看"><a href="#自旋锁逻辑查看" class="headerlink" title="自旋锁逻辑查看"></a>自旋锁逻辑查看</h4></li>
-</ol>
-<ul>
-<li>汇编源码查看线程等待锁时，所做的事，通过lldb的<code>s</code>是代码级别的,<code>si</code>(stepi)是汇编级别的，一步步查看汇编执行，<code>ni</code>(next)指令遇到函数级别的调用会跳过<ul>
-<li>如果可以获取到锁，则不会走<code>_OSSPinLockLockSlow</code>,直接执行同步代码<br><img src="2.png"></li>
-<li>如果没有无法获取到锁，则会走<code>_OSSPinLockLockSlow</code>方法中，类似while循环调用，线程不会休眠<br><img src="1.png"></li>
-</ul>
-</li>
-</ul>
-<h3 id="pthread-mutex"><a href="#pthread-mutex" class="headerlink" title="pthread_mutex"></a>pthread_mutex</h3><blockquote>
-<ul>
-<li>mutex叫做”互斥锁”，等待锁的线程会处于休眠状态<ul>
-<li>pthread_mutex可以在多个平台上使用(window、linux、macos)都可以使用</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<h4 id="使用教程-1"><a href="#使用教程-1" class="headerlink" title="使用教程"></a>使用教程</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;pthread/pthread.h&gt;</span><br><span class="line"></span><br><span class="line">pthread_mutex_t _pthreadMutex;</span><br><span class="line">//初始化属性</span><br><span class="line">pthread_mutexattr_t attr;</span><br><span class="line">pthread_mutexattr_init(&amp;attr);</span><br><span class="line">pthread_mutexattr_settype(&amp;attr, PTHREAD_MUTEX_NORMAL);</span><br><span class="line">//初始化锁</span><br><span class="line">pthread_mutex_init(&amp;_pthreadMutex, &amp;attr);</span><br><span class="line">//pthread_mutex_init(&amp;_pthreadMutex, NULL);传null为DEFALT，即NORMAL</span><br><span class="line">//销毁属性</span><br><span class="line">pthread_mutexattr_destroy(&amp;attr);</span><br><span class="line">//不用锁之后需要销毁</span><br><span class="line">pthread_mutex_destroy(&amp;_pthreadMutex);</span><br></pre></td></tr></table></figure>
-<h4 id="属性类型"><a href="#属性类型" class="headerlink" title="属性类型"></a>属性类型</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#define PTHREAD_MUTEX_NORMAL		0</span><br><span class="line">#define PTHREAD_MUTEX_ERRORCHECK	1</span><br><span class="line">#define PTHREAD_MUTEX_RECURSIVE	  2</span><br></pre></td></tr></table></figure>
-<h4 id="递归锁，"><a href="#递归锁，" class="headerlink" title="递归锁，"></a>递归锁，</h4><blockquote>
-<p>允许<code>**同一个线程**</code>对<code>**一把锁**</code>重复多次加锁，而不会造成死锁,<br>    - 注意，多个线程访问的话，一个线程持有之后，另一个线程访问，同样会被阻塞，休眠，直到递归锁被释放。</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pthread_mutexattr_settype(&amp;attr, PTHREAD_MUTEX_RECURSIVE);</span><br><span class="line">//初始化递归锁</span><br><span class="line">pthread_mutex_init(&amp;_pthreadMutex, &amp;attr);</span><br></pre></td></tr></table></figure>
-<h4 id="条件锁"><a href="#条件锁" class="headerlink" title="条件锁"></a>条件锁</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">// 初始化条件</span><br><span class="line">pthread_cond_t _cond;</span><br><span class="line">pthread_cond_init(&amp;_cond, NULL);</span><br><span class="line">//销毁</span><br><span class="line">pthread_cond_destroy(&amp;_cond);</span><br><span class="line"></span><br><span class="line">//执行</span><br><span class="line">[[[NSThread alloc] initWithTarget:self selector:@selector(__remove) object:nil] start];</span><br><span class="line">[[[NSThread alloc] initWithTarget:self selector:@selector(__add) object:nil] start];</span><br><span class="line">//删除方法</span><br><span class="line">- (void)__remove &#123;</span><br><span class="line">    pthread_mutex_lock(&amp;_mutex);</span><br><span class="line">    if (self.data.count == 0) &#123;</span><br><span class="line">      // 等待，线程进行休眠，并且会释放该锁</span><br><span class="line">     pthread_cond_wait(&amp;_cond, &amp;_mutex);</span><br><span class="line">     //当被signal唤醒之后，继续加锁，然后由后面unlock进行解锁</span><br><span class="line">    &#125;</span><br><span class="line">    [self.data removeLastObject];</span><br><span class="line">     pthread_mutex_unlock(&amp;_mutex); </span><br><span class="line">&#125;</span><br><span class="line">- (void)__add &#123;</span><br><span class="line">    //添加方法</span><br><span class="line">    pthread_mutex_lock(&amp;_mutex);</span><br><span class="line">    [self.data addObject:@&quot;Test&quot;]; </span><br><span class="line">    // 信号，会唤醒一个等待的线程，让删除方法的线程继续执行</span><br><span class="line">    pthread_cond_signal(&amp;_cond);//放在unlock前面，则wait会先唤醒，并且在等待锁释放</span><br><span class="line">    // 广播，唤醒所有等待的线程</span><br><span class="line">    //pthread_cond_broadcast(&amp;_cond);</span><br><span class="line">    pthread_mutex_unlock(&amp;_mutex);</span><br><span class="line">    //pthread_cond_signal(&amp;_cond);//放在unlock后面，则wait唤醒之后，可以立刻获取锁</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-<h4 id="互斥锁逻辑查看"><a href="#互斥锁逻辑查看" class="headerlink" title="互斥锁逻辑查看"></a>互斥锁逻辑查看</h4><ul>
-<li>汇编源码查看线程等待锁时，所做的事<ol>
-<li>在<code>pthread_mutex_lock</code>方法中,如果可以获取到锁，则会直接retq返回，没有则会执行<code>_pthread_mutex_firstfit_lock_slow</code>方法<br> <img src="6.png"></li>
-<li>在这个方法中最总会执行到<code>_pthread_mutex_firstfit_lock_wait</code>方法中<br> <img src="3.png"></li>
-<li>调用__psynch_mutexwait方法<br><img src="4.png"></li>
-<li>在该方法中，最后会走到<code>**syscall**</code>方法，系统调用方法，<code>si</code>执行终止，由系统调用让线程进入了休眠的状态。<br><img src="5.png"></li>
-</ol>
-</li>
-</ul>
-<h3 id="os-unfair-lock"><a href="#os-unfair-lock" class="headerlink" title="os_unfair_lock"></a>os_unfair_lock</h3><blockquote>
-<ul>
-<li>os_unfair_lock用于取代不安全的OSSpinLock ，从iOS10开始才支持<ul>
-<li>从底层调用看，等待os_unfair_lock锁的线程会处于休眠状态，并非忙等</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<ul>
-<li>使用教程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;os/lock.h&gt;</span><br><span class="line"></span><br><span class="line">os_unfair_lock _lock = OS_UNFAIR_LOCK_INIT;</span><br><span class="line"></span><br><span class="line">os_unfair_lock_lock(&amp;_lock);</span><br><span class="line"> //需要同步的代码</span><br><span class="line"> os_unfair_lock_unlock(&amp;_lock);</span><br></pre></td></tr></table></figure></li>
-<li>汇编发现是一种互斥锁,和<code>pthread_mutex</code>一样，等待锁会走到<code>**syscall**</code>方法,系统调用使得线程进入休眠状态<br><img src="7.png"><h3 id="NSLOCK、NSRecursiveLock"><a href="#NSLOCK、NSRecursiveLock" class="headerlink" title="NSLOCK、NSRecursiveLock"></a>NSLOCK、NSRecursiveLock</h3><blockquote>
-<p>NSLock是对mutex普通锁的封装<br>NSRecursiveLock也是对mutex递归锁的封装，API跟NSLock基本一致</p>
-</blockquote>
-</li>
-<li>使用教程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NSLock *_lock = [[NSLock alloc] init];</span><br><span class="line">//NSRecursiveLock *_lock = [[NSRecursiveLock alloc] init];</span><br><span class="line">//均实现了&lt;NSLocking&gt;协议</span><br><span class="line">[_lock lock]</span><br><span class="line">//[_lock tryLock]</span><br><span class="line">[_lock unlock]</span><br></pre></td></tr></table></figure>
-<h3 id="NSCondition"><a href="#NSCondition" class="headerlink" title="NSCondition"></a>NSCondition</h3><blockquote>
-<p>NSCondition是对mutex和cond的封装</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@interface NSCondition : NSObject &lt;NSLocking&gt;</span><br><span class="line">- (void)wait</span><br><span class="line">- (BOOL)waitUntilDate:(NSDate *)limit N</span><br><span class="line">- (void)signal </span><br><span class="line">- (void)broadcast;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<h3 id="NSConditionLock"><a href="#NSConditionLock" class="headerlink" title="NSConditionLock"></a>NSConditionLock</h3><blockquote>
-<p>NSConditionLock是对NSCondition的进一步封装，可以设置具体的条件值.</p>
-<ul>
-<li><code>lockWhenCondition:</code>只有满足具体条件值的才能获取到锁，<code>unlockWithCondition:</code>解锁可以重新设定(如果不传值，初始化，默认是0)</li>
-<li><code>lock</code>和之前一样直接加锁，不会根据条件值来判断</li>
-</ul>
-</blockquote>
-</li>
-</ul>
-<p><img src="8.png"></p>
-<h3 id="dispatch-queue-DISPATCH-QUEUE-SERIAL"><a href="#dispatch-queue-DISPATCH-QUEUE-SERIAL" class="headerlink" title="dispatch_queue(DISPATCH_QUEUE_SERIAL)"></a>dispatch_queue(DISPATCH_QUEUE_SERIAL)</h3><blockquote>
-<p>直接使用GCD的串行队列，也是可以实现线程同步的</p>
-</blockquote>
-<p><img src="9.png"></p>
-<h3 id="dispatch-semaphore"><a href="#dispatch-semaphore" class="headerlink" title="dispatch_semaphore"></a>dispatch_semaphore</h3><blockquote>
-<ul>
-<li>semaphore叫做”信号量”<ul>
-<li>信号量的初始值，可以用来控制线程并发访问的最大数量</li>
-<li>信号量的初始值为1，代表同时只允许1条线程访问资源，保证线程同步</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<p><img src="10.png"></p>
-<h3 id="synchronized"><a href="#synchronized" class="headerlink" title="@synchronized"></a>@synchronized</h3><blockquote>
-<p>@synchronized是对mutex递归锁的封装,在最新版本中，锁已经改为os_unfair_lock了，但仍可实现递归，（os_unfair_lock是不支持递归的，代码做了优化，未开源）<br>源码查看：objc4中的objc-sync.mm文件<br>@synchronized(obj)内部会生成obj对应的递归锁，然后进行加锁、解锁操作</p>
-</blockquote>
-<ul>
-<li>使用<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@synchronized (self) &#123;</span><br><span class="line">       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>重要数据结构<br><img src="11.png"></li>
-<li>723以及之前的版本，用的是<code>pthread_mutex_t</code><br><img src="14.png"></li>
-<li>723之后的版本，用的是<code>os_unfair_lock</code><br><img src="12.png"><br><img src="13.png"></li>
-</ul>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-    
-</article>
-
-    
-  </article>
-  
-
-  
-  <nav class="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
-  </nav>
-  
-</section>
-</div>
-
-      <footer class="footer">
-  <div class="outer">
-    <ul>
-      <li>
-        Copyrights &copy;
-        2021-2023
-        <i class="ri-heart-fill heart_icon"></i> jingbo
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-        
-        
-        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-        <span class="division">|</span>
-        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
-        
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-        
-        <span>
-  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
-  <span class="division">|</span>
-  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
-</span>
-        
-      </li>
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      <li>
-        <!-- cnzz统计 -->
-        
-        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
-        
-      </li>
-    </ul>
-  </div>
-</footer>
-      <div class="float_btns">
-        <div class="totop" id="totop">
-  <i class="ri-arrow-up-line"></i>
-</div>
-
-<div class="todark" id="todark">
-  <i class="ri-moon-line"></i>
-</div>
-
-      </div>
-    </main>
-    <aside class="sidebar on">
-      <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/ayer-side.svg" alt="ayer"></a>
-  </div>
-  
-  <ul class="nav nav-main">
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">主页</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">归档</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/categories">分类</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/tags">标签</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/photos">相册</a>
-    </li>
-    
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      
-      <a class="nav-item-link nav-item-search"  title="Search">
-        <i class="ri-search-line"></i>
-      </a>
-      
-      
-      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
-        <i class="ri-rss-line"></i>
-      </a>
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-    </aside>
-    <div id="mask"></div>
-
-<!-- #reward -->
-<div id="reward">
-  <span class="close"><i class="ri-close-line"></i></span>
-  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
-  <div class="reward-box">
-    
-    <div class="reward-item">
-      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
-      <span class="reward-type">支付宝</span>
-    </div>
-    
-    
-    <div class="reward-item">
-      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
-      <span class="reward-type">微信</span>
-    </div>
-    
-  </div>
-</div>
-    
-<script src="/js/jquery-2.0.3.min.js"></script>
- 
-<script src="/js/lazyload.min.js"></script>
-
-<!-- Tocbot -->
-
-<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
-/>
-<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
-
-<script src="/dist/main.js"></script>
-
-<!-- ImageViewer -->
- <!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
-
-<script>
-    function viewer_init() {
-        let pswpElement = document.querySelectorAll('.pswp')[0];
-        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
-
-        $imgArr.forEach(($em, i) => {
-            $em.onclick = () => {
-                // slider展开状态
-                // todo: 这样不好，后面改成状态
-                if (document.querySelector('.left-col.show')) return
-                let items = []
-                $imgArr.forEach(($em2, i2) => {
-                    let img = $em2.getAttribute('data-idx', i2)
-                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
-                    let title = $em2.getAttribute('alt')
-                    // 获得原图尺寸
-                    const image = new Image()
-                    image.src = src
-                    items.push({
-                        src: src,
-                        w: image.width || $em2.width,
-                        h: image.height || $em2.height,
-                        title: title
-                    })
-                })
-                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
-                    index: parseInt(i)
-                });
-                gallery.init()
-            }
-        })
-    }
-    viewer_init()
-</script> 
-<!-- MathJax -->
- <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-  });
-
-  MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for(i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-  });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-  var ayerConfig = {
-    mathjax: true,
-  };
-</script>
-
-<!-- Katex -->
-
-<!-- busuanzi  -->
- 
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
- 
-<!-- ClickLove -->
- 
-<script src="/js/clickLove.js"></script>
- 
-<!-- ClickBoom1 -->
-
-<!-- ClickBoom2 -->
-
-<!-- CodeCopy -->
- 
-<link rel="stylesheet" href="/css/clipboard.css">
- <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-<script>
-  function wait(callback, seconds) {
-    var timelag = null;
-    timelag = window.setTimeout(callback, seconds);
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
   }
-  !function (e, t, a) {
-    var initCopyCode = function(){
-      var copyHtml = '';
-      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
-      copyHtml += '</button>';
-      $(".highlight .code pre").before(copyHtml);
-      $(".article pre code").before(copyHtml);
-      var clipboard = new ClipboardJS('.btn-copy', {
-        target: function(trigger) {
-          return trigger.nextElementSibling;
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Ayer',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: true,
+  isToc: false,
+  postUpdate: '2023-04-08 19:01:11'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
         }
-      });
-      clipboard.on('success', function(e) {
-        let $btn = $(e.trigger);
-        $btn.addClass('copied');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-checkbox-circle-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPIED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-checkbox-circle-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
-      clipboard.on('error', function(e) {
-        e.clearSelection();
-        let $btn = $(e.trigger);
-        $btn.addClass('copy-failed');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-time-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPY FAILED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-time-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
     }
-    initCopyCode();
-  }(window, document);
-</script>
- 
-<!-- CanvasBackground -->
- 
-<script src="/js/dz.js"></script>
- 
-<script>
-  if (window.mermaid) {
-    mermaid.initialize({ theme: "forest" });
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/modify.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Ayer" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
   }
-</script>
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">71</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/banner.jpeg')"><nav id="nav"><span id="blog-info"><a href="/" title="Ayer"><span class="site-name">Ayer</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Ayer</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/xxxxx" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/JavaScript/">JavaScript</a><span class="categoryBar-list-count">2</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/Runtime/">Runtime</a><span class="categoryBar-list-count">7</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/flutter%E5%92%8C%E5%8E%9F%E7%94%9F%E4%BA%A4%E4%BA%92/">flutter和原生交互</a><span class="categoryBar-list-count">1</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/flutter%E6%8C%87%E4%BB%A4/">flutter指令</a><span class="categoryBar-list-count">1</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/iOS%E5%8A%A8%E7%94%BB%E5%AD%A6%E4%B9%A0/">iOS动画学习</a><span class="categoryBar-list-count">5</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/iOS%E8%B6%8A%E7%8B%B1/">iOS越狱</a><span class="categoryBar-list-count">2</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/runloop/">runloop</a><span class="categoryBar-list-count">3</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/swift%E7%AC%94%E8%AE%B0/">swift笔记</a><span class="categoryBar-list-count">17</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="categoryBar-list-count">1</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a><span class="categoryBar-list-count">4</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a><span class="categoryBar-list-count">3</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a><span class="categoryBar-list-count">13</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a><span class="categoryBar-list-count">4</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/">零碎知识点</a><span class="categoryBar-list-count">2</span></li><li class="categoryBar-list-item"><a class="categoryBar-list-link" href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/">音视频学习</a><span class="categoryBar-list-count">3</span></li></ul></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2023/03/15/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E3%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E3%80%81%E6%8C%87%E9%92%88/" title="内存管理、作用域、指针">     <img class="post_bg" src="/img/banner.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="内存管理、作用域、指针"></a></div><div class="recent-post-info"><div class="recent-post-info-top"><a class="article-title" href="/2023/03/15/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E3%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E3%80%81%E6%8C%87%E9%92%88/" title="内存管理、作用域、指针">内存管理、作用域、指针</a><div class="content">内存管理
+跟OC一样，Swift也是采取基于引用计数的ARC内存管理方案(针对堆空间）
+Swift的ARC中有3种引用
+强引用 (strong reference ）：默认情况下，引用都是强引用
+弱引用(weak reference）：通过weak定义弱引用
+必须是可选类型的var，因为实例销毁后，ARC会自动将弱引用设置为nil
+ARC自动给弱引用设置nil时，不会触发属性观察器
 
 
-    
-    <div id="music">
-    
-    
-    
-    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
-        src="//music.163.com/outchain/player?type=2&id=22707022&auto=1&height=66"></iframe>
-</div>
+无主引用 (unowned reference）：通过unowned定义无主引用
+不会产生强引用，实例销毁后仍然存储着实例的内存地址（类似于OC中的unsafe_unretained）
+试图在实例销毀后访问无主引用，会产生运行时错误（野指针）
 
-<style>
-    #music {
-        position: fixed;
-        right: 15px;
-        bottom: 0;
-        z-index: 998;
+
+
+
+weak、unowned只能用在类实例上面内存访问冲突
+内存访问冲突会在两个访问满足下列条件时发生：
+至少一个是写入操作
+它们访问的是同一块内存
+它们的访问时间重叠（比如在同一个函数内）
+
+
+例子1234567var ad = 1//出现内存访问冲突//Thread 1: Simultaneous accesses to 0x10000c870, but  ...</div></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2023-03-15T15:52:37.000Z" title="Created 2023-03-15 23:52:37">2023-03-15</time></span></div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2023/03/14/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%AB%98%E7%BA%A7%E8%BF%90%E7%AE%97%E7%AC%A6/" title="高级运算符和扩展">     <img class="post_bg" src="/img/banner.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="高级运算符和扩展"></a></div><div class="recent-post-info"><div class="recent-post-info-top"><a class="article-title" href="/2023/03/14/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E9%AB%98%E7%BA%A7%E8%BF%90%E7%AE%97%E7%AC%A6/" title="高级运算符和扩展">高级运算符和扩展</a><div class="content">自定义运算符
+在全局作用域使用operator进行声明
+prefix operator 前缀运算符
+postfix operator 后缀运算符
+infix operator 中缀运算符：优先级组
+
+
+自定义优先组
+associativity,结合性，指多个运算符能否一起用，类似1 + 1 + 1,left和right指多个运算符，从哪个方向开始算
+higherThan和1owerThan,比系统的优先级高或低，系统运算符参考
+assignment支持出现可选链出现nil的情况，例如p1?.point +- Point(x: 1, y: 3)123456precedenceqroup 优先级组&#123;    associativity：结合性(left\rightinone)    higherThan：比谁的优先级高    1owerThan：比谁的优先級低    assignment：true 代表在可选链操作中拥有跟赋值运算符一样的优先級&#125;
+
+
+
+扩展
+Swif中的扩展，有点类似于OC中的分类 (Category)
+
+
+扩展可以为枚举、结构体、类、协议添加新功能
+
+ ...</div></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2023-03-13T16:19:25.000Z" title="Created 2023-03-14 00:19:25">2023-03-14</time></span></div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2023/03/13/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/Array/" title="Array">     <img class="post_bg" src="/img/banner.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Array"></a></div><div class="recent-post-info"><div class="recent-post-info-top"><a class="article-title" href="/2023/03/13/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/Array/" title="Array">Array</a><div class="content">Array的内存12var arr = [1,2,3,4,4]print(MemoryLayout.stride(ofValue: arr)) //8
+
+数组是结构体，但其内存占用是8字节，而并非，其数组内int存储的总和，
+实际上数组生成在堆空间，其8字节是堆空间
+汇编查看,显然在数组初始化的时候，调用了alloc，在堆空间创建了内存12345  * thread #1, queue = &#x27;com.apple.main-thread&#x27;, stop reason = breakpoint 4.1* frame #0: 0x00007ff81a193e62 libswiftCore.dylib`swift_allocObject + 34  frame #1: 0x00007ff819e9e533 libswiftCore.dylib`Swift._allocateUninitializedArray&lt;τ_0_0&gt;(Builtin.Word) -&gt; (Swift.Array&lt;τ_0_0&gt;, Builtin.RawPointer) + 83 ...</div></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2023-03-12T16:02:14.000Z" title="Created 2023-03-13 00:02:14">2023-03-13</time></span></div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2023/03/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">     <img class="post_bg" src="/img/banner.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="字符串"></a></div><div class="recent-post-info"><div class="recent-post-info-top"><a class="article-title" href="/2023/03/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><div class="content">一个字符串变量占用多少内存
+显然一个字符串占有16个字节
+
+12345var str1 = &quot;0123456789&quot;var str2 = &quot;0123456789ABCDEFGHIGK&quot;MemoryLayout&lt;String&gt;.stride. //16MemoryLayout.stride(ofValue: str1) //16MemoryLayout.stride(ofValue: str2) //16
+字符串的底层存储小于长度0xF的字符串1var str1 = &quot;0123456789&quot;
+
+汇编查看1230x10000dfd9 &lt;+25&gt;:  callq  0x10000e1c2               ; symbol stub for: Swift.String.init(_builtinStringLiteral: Builtin.RawPointer, utf8CodeUnitCount: Builtin.Word, isASCII: Builtin.Int1) -&gt; Swift.S ...</div></div><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2023-03-12T08:02:28.000Z" title="Created 2023-03-12 16:02:28">2023-03-12</time></span></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/2/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#content-inner">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#content-inner">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/#content-inner">18</a><a class="extend next" rel="next" href="/page/4/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">jingbo</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">71</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xxxxx" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">欢迎来的bo的博客<div class="twopeople"></div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/03/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E6%B4%BE%E5%8F%91%E6%9C%BA%E5%88%B6/" title="swift派发机制"><img src="https://cdn.jsdelivr.net/npm/akilar-candyassets/image/cover1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="swift派发机制"/></a><div class="content"><a class="title" href="/2023/04/03/iOS%E5%AD%A6%E4%B9%A0/Swift%E7%AC%94%E8%AE%B0/swift%E6%B4%BE%E5%8F%91%E6%9C%BA%E5%88%B6/" title="swift派发机制">swift派发机制</a><time datetime="2023-04-03T07:26:05.000Z" title="Created 2023-04-03 15:26:05">2023-04-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/04/02/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/" title="代码混淆"><img src="https://cdn.jsdelivr.net/npm/akilar-candyassets/image/cover1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码混淆"/></a><div class="content"><a class="title" href="/2023/04/02/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86/" title="代码混淆">代码混淆</a><time datetime="2023-04-02T15:29:39.000Z" title="Created 2023-04-02 23:29:39">2023-04-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/30/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/llvm%E5%AE%9E%E8%B7%B5/" title="llvm"><img src="https://cdn.jsdelivr.net/npm/akilar-candyassets/image/cover1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="llvm"/></a><div class="content"><a class="title" href="/2023/03/30/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/llvm%E5%AE%9E%E8%B7%B5/" title="llvm">llvm</a><time datetime="2023-03-29T16:01:06.000Z" title="Created 2023-03-30 00:01:06">2023-03-30</time></div></div></div></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>Tags</span></div><div class="card-tag-cloud"><a href="/tags/Mach-o/" style="font-size: 1.1em; color: #999">Mach-o</a> <a href="/tags/hook/" style="font-size: 1.1em; color: #999">hook</a> <a href="/tags/KVC/" style="font-size: 1.1em; color: #999">KVC</a> <a href="/tags/Block/" style="font-size: 1.1em; color: #999">Block</a> <a href="/tags/load%E3%80%81initialize/" style="font-size: 1.37em; color: #99a4b2">load、initialize</a> <a href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84/" style="font-size: 1.5em; color: #99a9bf">类的结构</a> <a href="/tags/KVO/" style="font-size: 1.1em; color: #999">KVO</a> <a href="/tags/OC%E7%B1%BB%E7%BB%93%E6%9E%84/" style="font-size: 1.23em; color: #999ea6">OC类结构</a> <a href="/tags/%E5%88%86%E7%B1%BB/" style="font-size: 1.1em; color: #999">分类</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span><a class="card-more-btn" href="/archives/" title="More">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/04/"><span class="card-archive-list-date">April 2023</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/03/"><span class="card-archive-list-date">March 2023</span><span class="card-archive-list-count">12</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">February 2023</span><span class="card-archive-list-count">16</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">January 2023</span><span class="card-archive-list-count">11</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">December 2022</span><span class="card-archive-list-count">14</span></a></li></ul></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By jingbo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: (str) => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, {"source":true}))
+  },
+  run: (subtitleType) => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
     }
-</style>
-    
-  </div>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"show":true,"jsonPath":"ak12_3302"},"display":{"position":"right","width":150,"height":300,"vOffset":100},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
-
-</html>
+  }
+}
+</script><script>function subtitleType () {
+  if (true) {
+    typedJSFn.init(["没什么好说的"])
+  } else {
+    document.getElementById("subtitle").innerHTML = '没什么好说的'
+  }
+}
+typedJSFn.run(subtitleType)</script></div><script async src="/js/title.js"></script><script defer src="https://cdn.jsdelivr.net/combine/npm/jquery@latest/dist/jquery.min.js,gh/weilining/jsdelivr/jquery/circlemagic/circlemagic.min.js,gh/weilining/jsdelivr@latest/jquery/circlemagic/butterflycirclemagic.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"live2dw"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body></html>

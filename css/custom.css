@@ -1,42 +1,243 @@
-body {
-  cursor: url("/images/mouse.cur"), auto;
+<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>/* 文章页H1-H6图标样式效果 */
+#content-inner.layout h1::before {
+    color: #ef50a8 ;
+    margin-left: -1.55rem;
+    font-size: 1.3rem;
+    margin-top: -0.23rem;
 }
-.sidebar {
-  left: -8rem;
-  width: 8rem;
+#content-inner.layout h2::before {
+    color: #fb7061 ;
+    margin-left: -1.35rem;
+    font-size: 1.1rem;
+    margin-top: -0.12rem;
 }
-.sidebar.on {
-  left: 0;
+#content-inner.layout h3::before {
+    color: #ffbf00 ;
+    margin-left: -1.22rem;
+    font-size: 0.95rem;
+    margin-top: -0.09rem;
 }
-.content.on {
-  margin-left: 0 !important;
+#content-inner.layout h4::before {
+    color: #a9e000 ;
+    margin-left: -1.05rem;
+    font-size: 0.8rem;
+    margin-top: -0.09rem;
 }
-.navbar-toggle {
-  left: 9.5rem;
+#content-inner.layout h5::before {
+    color: #57c850 ;
+    margin-left: -0.9rem;
+    font-size: 0.7rem;
+    margin-top: 0.0rem;
 }
-.search-form-wrap {
-  right: 8rem;
+#content-inner.layout h6::before {
+    color: #5ec1e0 ;
+    margin-left: -0.9rem;
+    font-size: 0.66rem;
+    margin-top: 0.0rem;
 }
-@media (min-width: 768px) {
-  .outer,
-  .wrap {
-    width: 80rem !important;
-  }
+#content-inner.layout h1:hover, #content-inner.layout h2:hover, #content-inner.layout h3:hover, #content-inner.layout h4:hover, #content-inner.layout h5:hover, #content-inner.layout h6:hover {
+    color: #49b1f5 ;
 }
-@media (max-width: 768px) {
-  .tocbot {
-    display: none !important;
-  }
-  .sidebar {
-    left: 0;
-  }
-  .sidebar.on {
-    left: -8rem;
-  }
-  .content {
-    transform: translateX(8rem);
-  }
-  .content.on {
-    transform: translateX(0);
-  }
+#content-inner.layout h1:hover::before, #content-inner.layout h2:hover::before, #content-inner.layout h3:hover::before, #content-inner.layout h4:hover::before, #content-inner.layout h5:hover::before, #content-inner.layout h6:hover::before {
+    color: #49b1f5 ;
+    -webkit-animation: ccc 3.2s linear infinite ;
+    animation: ccc 3.2s linear infinite ;
+}
+
+/* 页面设置icon转动速度调整 */
+#rightside_config i.fas.fa-cog.fa-spin {
+    animation: fa-spin 5s linear infinite ;
+}
+
+h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
+    -webkit-animation: ccc 1.6s linear infinite ;
+    animation: ccc 1.6s linear infinite ;
+}
+@-webkit-keyframes ccc {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+    to {
+        -webkit-transform: rotate(-1turn);
+        transform: rotate(-1turn)
+    }
+}
+@keyframes ccc {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+    to {
+        -webkit-transform: rotate(-1turn);
+        transform: rotate(-1turn)
+    }
+}
+
+#web_bg {
+  background: var(--card-bg) !important; /* 慎用!important */
+}
+
+.jg-caption {
+    text-align: center !important;
+}
+
+
+/*
+    Name:     Kimbie (dark)
+    Author:   Jan T. Sott
+    License:  Creative Commons Attribution-ShareAlike 4.0 Unported License
+    URL:      https://github.com/idleberg/Kimbie-highlight.js
+*/
+
+/* 新添加的内容
+  ------------------------------------- 
+  --hl-color                  代码框字体顔色 【必须】 (把下面.hljs的 color复制到这里来)
+  --hl-bg                     代码框背景色 【必须】 (把下面.hljs的 background复制到这里来)
+  --hltools-bg: #321a0f       代码框顶部工具栏背景色 【可选】(如果你关掉了 copy、lang 和 shrink,可不用配置这个）
+  --hltools-color: #fff       代码框顶部工具栏字体顔色 【可选】(如果你关掉了 copy、lang 和 shrink,可不用配置这个）
+  --hlnumber-bg: #221a0f      代码框行数背景色 【可选】(如果已经关掉 line_number,可以不用配置这个)
+  --hlnumber-color: #fff      代码框行数字体顔色 【可选】 (如果已经关掉 line_number,可以不用配置这个)
+  --hlscrollbar-bg: #d3af86   代码框滚动条顔色 【可选】（默认为主题主顔色）
+  --hlexpand-bg: #d3af86      代码框底部展开背景色 【可选】(如果已经关掉 highlight_height_limit,可以不用配置这个)
+*/
+
+:root {
+  --hl-color: #000;
+  --hl-bg: #fff;
+  --hltools-bg: #bbb6b268;
+  --hltools-color: #434B54;
+  --hlnumber-bg: ##fff;
+  --hlnumber-color: #56606B;
+  --hlscrollbar-bg: #f4cfa5;
+  --hlexpand-bg: #a9a39f68;
+}
+
+.hljs {
+  color: #000;
+  background: #fff;
+}
+
+.hljs-subst,
+.hljs-title {
+  font-weight: normal;
+  color: #0F68A0;
+}
+
+.hljs-title.function_ {
+  color: #3B7F89;
+}
+
+.hljs-code,
+.hljs-comment,
+.hljs-quote {
+  color: #362b8b;
+  font-style: italic;
+}
+
+.hljs-meta {
+  color: #9E880D;
+}
+
+.hljs-section {
+  color: #871094;
+}
+
+.hljs-variable.language_,
+.hljs-symbol {
+  color: #944910;
+}
+
+.hljs-selector-class,
+.hljs-selector-id,
+.hljs-selector-tag,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: #b30000;
+}
+
+
+
+.hljs-template-tag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-literal {
+  color: #B40062;
+}
+
+.hljs-name,
+.hljs-built_in,
+.hljs-type {
+  color: #5C2699;
+}
+
+.hljs-property,
+.hljs-attr {
+  color: #871094;
+}
+
+.hljs-attribute {
+  color: #174AD4;
+}
+
+.hljs-number {
+  color: #1750EB;
+}
+
+.hljs-regexp {
+  color: #264EFF;
+}
+
+.hljs-link {
+  text-decoration: underline;
+  color: #006DCC;
+}
+
+.hljs-meta .hljs-string,
+.hljs-string {
+  color: #067D17;
+}
+
+.hljs-char.escape_ {
+  color: #0037A6;
+}
+
+.hljs-doctag {
+  text-decoration: underline;
+}
+
+.hljs-template-variable {
+  color: #248F8F;
+}
+
+.hljs-addition {
+  background: #BEE6BE;
+}
+
+.hljs-deletion {
+  background: #D6D6D6;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-variable,
+.hljs-operator,
+.hljs-punctuation,
+.hljs-title.class_.inherited__,
+.hljs-title.class_,
+.hljs-bullet,
+.hljs-formula,
+.hljs-tag {
+  /* purposely ignored */
+  color: #248F8F;
+}
+
+.hljs-params {
+  color: #643820;
 }
