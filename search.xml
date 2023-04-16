@@ -4601,15 +4601,15 @@
     <url>/2022/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
 <h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
-<li>ssh <a href="mailto:&#114;&#111;&#x6f;&#116;&#x40;&#49;&#57;&#50;&#x2e;&#49;&#x36;&#x38;&#x2e;&#49;&#x2e;&#49;&#52;">&#114;&#111;&#x6f;&#116;&#x40;&#49;&#57;&#50;&#x2e;&#49;&#x36;&#x38;&#x2e;&#49;&#x2e;&#49;&#52;</a>,跳转到指定ip的命令</li>
+<li>ssh <a href="mailto:&#x72;&#111;&#x6f;&#116;&#64;&#49;&#x39;&#50;&#46;&#x31;&#x36;&#56;&#x2e;&#x31;&#46;&#x31;&#x34;">&#x72;&#111;&#x6f;&#116;&#64;&#49;&#x39;&#50;&#46;&#x31;&#x36;&#56;&#x2e;&#x31;&#46;&#x31;&#x34;</a>,跳转到指定ip的命令</li>
 <li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
 </ul>
 <ol>
 <li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
-<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#111;&#x6f;&#116;&#64;&#x31;&#57;&#50;&#x2e;&#x31;&#54;&#56;&#x2e;&#x31;&#x2e;&#49;&#52;">&#x72;&#111;&#x6f;&#116;&#64;&#x31;&#57;&#50;&#x2e;&#x31;&#54;&#56;&#x2e;&#x31;&#x2e;&#49;&#52;</a>，追加到当前ip服务器授权文件的尾部</li>
+<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#111;&#111;&#x74;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#56;&#46;&#x31;&#46;&#x31;&#52;">&#x72;&#111;&#111;&#x74;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#56;&#46;&#x31;&#46;&#x31;&#52;</a>，追加到当前ip服务器授权文件的尾部</li>
 </ul>
 </li>
-<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#x72;&#x6f;&#x6f;&#x74;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#54;&#x38;&#x2e;&#49;&#46;&#49;&#52;">&#x72;&#x6f;&#x6f;&#x74;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#54;&#x38;&#x2e;&#49;&#46;&#49;&#52;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
+<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x39;&#50;&#46;&#x31;&#54;&#x38;&#x2e;&#49;&#x2e;&#x31;&#x34;">&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x39;&#50;&#46;&#x31;&#54;&#x38;&#x2e;&#49;&#x2e;&#x31;&#x34;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
 <li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
 </ul>
 </li>
@@ -4635,6 +4635,54 @@
 ]]></content>
       <categories>
         <category>iOS越狱</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>flutter指令</title>
+    <url>/2022/09/11/Flutter/%E6%8C%87%E4%BB%A4/%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h4 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h4><ul>
+<li>flutter run –no-sound-null-safety  解决flutter插件旧版本兼容问题</li>
+<li>flutter create –template=package hello 创建pakcage</li>
+<li>flutter create -t module flutter_module 创建fluttermodule</li>
+<li>flutter create example 创建flutter项目<h4 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h4></li>
+<li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
+<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h4 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h4></li>
+<li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
+</ul>
+<h3 id="创建flutter"><a href="#创建flutter" class="headerlink" title="创建flutter"></a>创建flutter</h3><ol>
+<li>集成SDK<ul>
+<li><a href="https://flutter.cn/docs/get-started/install/macos#get-sdk">Flutter地址</a></li>
+</ul>
+</li>
+<li>创建<code>flutter</code>项目<ul>
+<li><code>flutter create -i swift -a java --org com.flutter. test_flutter</code></li>
+</ul>
+</li>
+<li>运行<code>flutter</code>项目<ul>
+<li><code>flutter run</code><h3 id="创建packages"><a href="#创建packages" class="headerlink" title="创建packages"></a>创建packages</h3><blockquote>
+<ol>
+<li>纯flutter的<code>Dart package</code></li>
+<li>原生插件<code>Plugin packages</code></li>
+</ol>
+</blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="Dart-package"><a href="#Dart-package" class="headerlink" title="Dart package"></a><code>Dart package</code></h4><ul>
+<li><code>flutter create --template=package hello</code></li>
+<li><code>flutter pub publish --dry-run</code><ul>
+<li>发布检查包是否合法</li>
+</ul>
+</li>
+</ul>
+<h4 id="原生-plugin"><a href="#原生-plugin" class="headerlink" title="原生 plugin"></a><code>原生 plugin</code></h4><ul>
+<li><code>flutter create --org com.example --template=plugin --platforms=android,ios -a kotlin -i swift hello</code></li>
+<li>创建目录结构如下</li>
+</ul>
+]]></content>
+      <categories>
+        <category>flutter指令</category>
       </categories>
   </entry>
   <entry>
@@ -4731,54 +4779,6 @@
 ]]></content>
       <categories>
         <category>flutter和原生交互</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>flutter指令</title>
-    <url>/2022/09/11/Flutter/%E6%8C%87%E4%BB%A4/%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h4 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h4><ul>
-<li>flutter run –no-sound-null-safety  解决flutter插件旧版本兼容问题</li>
-<li>flutter create –template=package hello 创建pakcage</li>
-<li>flutter create -t module flutter_module 创建fluttermodule</li>
-<li>flutter create example 创建flutter项目<h4 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h4></li>
-<li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
-<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h4 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h4></li>
-<li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
-</ul>
-<h3 id="创建flutter"><a href="#创建flutter" class="headerlink" title="创建flutter"></a>创建flutter</h3><ol>
-<li>集成SDK<ul>
-<li><a href="https://flutter.cn/docs/get-started/install/macos#get-sdk">Flutter地址</a></li>
-</ul>
-</li>
-<li>创建<code>flutter</code>项目<ul>
-<li><code>flutter create -i swift -a java --org com.flutter. test_flutter</code></li>
-</ul>
-</li>
-<li>运行<code>flutter</code>项目<ul>
-<li><code>flutter run</code><h3 id="创建packages"><a href="#创建packages" class="headerlink" title="创建packages"></a>创建packages</h3><blockquote>
-<ol>
-<li>纯flutter的<code>Dart package</code></li>
-<li>原生插件<code>Plugin packages</code></li>
-</ol>
-</blockquote>
-</li>
-</ul>
-</li>
-</ol>
-<h4 id="Dart-package"><a href="#Dart-package" class="headerlink" title="Dart package"></a><code>Dart package</code></h4><ul>
-<li><code>flutter create --template=package hello</code></li>
-<li><code>flutter pub publish --dry-run</code><ul>
-<li>发布检查包是否合法</li>
-</ul>
-</li>
-</ul>
-<h4 id="原生-plugin"><a href="#原生-plugin" class="headerlink" title="原生 plugin"></a><code>原生 plugin</code></h4><ul>
-<li><code>flutter create --org com.example --template=plugin --platforms=android,ios -a kotlin -i swift hello</code></li>
-<li>创建目录结构如下</li>
-</ul>
-]]></content>
-      <categories>
-        <category>flutter指令</category>
       </categories>
   </entry>
   <entry>
