@@ -1,6 +1,350 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>arm64汇编</title>
+    <url>/2023/04/18/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/arm64%E6%B1%87%E7%BC%96/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p>汇编主要了解三个方面</p>
+<ul>
+<li>寄存器</li>
+<li>指令</li>
+<li>堆栈</li>
+</ul>
+</blockquote>
+<h2 id="arm64汇编"><a href="#arm64汇编" class="headerlink" title="arm64汇编"></a>arm64汇编</h2><ul>
+<li><p>生成汇编文件</p>
+<ul>
+<li><code>xcrun --sdk iphoneos clang -S -arch arm64 main.c -o main.s</code><h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3></li>
+</ul>
+</li>
+<li><p>汇编代码,<code>test.s</code>,汇编中<code>;</code>使注解，等于<code>//</code></p>
+<figure class="highlight as"><table><tr><td class="code"><pre><code class="hljs as">.text ;函数位置，在代码端<br>.global _test,_add ;使函数函数公有，外界可以访问<br>_test:<br>mov x0,#<span class="hljs-number">0x8</span>  ;将<span class="hljs-number">8</span>赋值给寄存器x0<br>ret   ;函数返回<br><br>;add函数的调用<br>_add:<br>add x0,x0,x1 ;x0 = x0 + x1<br>ret<br></code></pre></td></tr></table></figure></li>
+<li><p>调用,汇编中的方法会多个<code>_</code></p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">test();<br>add(<span class="hljs-number">2</span>,<span class="hljs-number">9</span>); <span class="hljs-comment">//输出11</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><h3 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h3><ul>
+<li><code>64bit</code>的: <code>x0 ~ x28</code></li>
+<li><code>32bit</code>的: <code>w0 ~ w28</code>(属于<code>x0 ~ x28</code>的低<code>32bit</code>)</li>
+<li><code>x0 ~ x7</code>通常拿来存放<strong>函数的参数</strong>，更多的阐述使用<strong>堆栈</strong>来传递</li>
+<li><code>x0</code>通常拿来存放函数的<strong>返回值</strong></li>
+</ul>
+<h3 id="程序状态寄存器"><a href="#程序状态寄存器" class="headerlink" title="程序状态寄存器"></a>程序状态寄存器</h3><blockquote>
+<ul>
+<li><code>cpsr</code> <code>(Current Program Status Register)</code></li>
+<li><code>spsr(Saved Program Status Register)</code>,异常状态下使用</li>
+</ul>
+</blockquote>
+<h4 id="cpsr寄存器"><a href="#cpsr寄存器" class="headerlink" title="cpsr寄存器"></a><span id="jump"><code>cpsr</code>寄存器</span></h4><p><img src="1.png"></p>
+<table>
+<thead>
+<tr>
+<th align="center">标志位</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">N</td>
+<td align="center">当用两个补码表示的带符 号数进行运算时，N=1 表示运算的结果为负数；N=0 表示运算的结果为正数或零；</td>
+</tr>
+<tr>
+<td align="center">Z</td>
+<td align="center">Z=1 表示运算的结果为零；z=0 表示运算的结果为非零；</td>
+</tr>
+<tr>
+<td align="center">C</td>
+<td align="center">可以有4种方法设置C的值：1. 加法运算(包括比较指令 CMN）：当运算结果产生了进位时（无符号数溢出），C=1，否则 C=0。2. 减法运算（包括比较指令CMP）：当运算时产生了借位（无符号数溢出），C=0，否则 C=1。3. 对于包含移位操作的非加/减运算指令，C为移出值的最后一位。4. 对于其他的韭加/减运算指令，c的值通常不改变。</td>
+</tr>
+<tr>
+<td align="center">V</td>
+<td align="center">可以有2种方法设置 V的值：1. 对于加/减法运算指令，当操作数和运算结果为二进制的补码表示的带符号数时，V=1 表示符号位溢出。2. 对于其他的非加/减运算指令，V的值通常不改变。</td>
+</tr>
+<tr>
+<td align="center">Q</td>
+<td align="center">在 ARM N5 及以上版本的已系列处理器中，用Q标志位指示增强的 DSP 运算指令是否发生了溢出。在其他版本的处理器中，Q标志位无定义。</td>
+</tr>
+</tbody></table>
+<h2 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a><span id="jump2">寻址方式</span></h2><h3 id="立即寻址"><a href="#立即寻址" class="headerlink" title="立即寻址"></a>立即寻址</h3><blockquote>
+<p>立即寻址也叫立即数寻址，这是一种特殊的寻址方式，操作数本身就在*指令中给出，只要取出指令也就取到了操作数。这个操作数被称为<strong>立即数</strong>，对应的寻址方式也就叫做<strong>立即寻址</strong>。例如以下</p>
+</blockquote>
+<ul>
+<li>指令：<ul>
+<li><code>ADD xO, xO，＃1</code> : <code>xO = xO+1</code></li>
+<li><code>ADD xO, x0， #0x3f</code> :  <code>xO = xO+0x3f</code></li>
+<li>在以上两条指令中，第二个源操作数即为立即数，要求以<code>＃</code>为前缀，对于以十六进制表示的立即数，还要求在<code>＃</code> 后加上<code>0x</code>或<code>＆</code>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="寄存器寻址"><a href="#寄存器寻址" class="headerlink" title="寄存器寻址"></a>寄存器寻址</h3><blockquote>
+<p>奇存器寻址就是利用寄存器中的数值作为操作数，这种寻址方式是各类微处理器经常采用的一种方式，也是一种执行效率较高的寻址方式。</p>
+</blockquote>
+<ul>
+<li>以下指令：<ul>
+<li><code>ADD xO, x1, x2 </code> : <code>xO = x1+x2</code></li>
+<li>该指令的执行效果是将寄存器<code>x1</code>和<code>x2</code>的内容相加，其结果存放在寄存器<code>xO</code>中。</li>
+</ul>
+</li>
+</ul>
+<h3 id="寄存器间接寻址"><a href="#寄存器间接寻址" class="headerlink" title="寄存器间接寻址"></a>寄存器间接寻址</h3><blockquote>
+<p>寄存器问接寻址就是以奇存器中的值作为操作数的地址，而操作数本身存放在存储器中.</p>
+</blockquote>
+<ul>
+<li>以下指令：<ul>
+<li><code>ADD x0, x1, [x2]</code> : <code>xO = x1+[x2]</code>,以寄存器<code>x2</code>的值作为操作数的地址，在存储器中取得一个操作数后与<code>x1</code>相加，结果存入寄存器<code>xO</code>中。</li>
+<li><code>LDR xO, [x1]</code> : <code>xO = [x1]</code>,将以 <code>x1</code> 的值为地址的存储器中的数据传送到<code>xO </code>中</li>
+<li><code>STR xO, [x1]</code> : <code>[x1] = xO</code>,将<code>xO</code> 的值传送到以 <code>x1</code> 的值为地址的存储器中。</li>
+</ul>
+</li>
+</ul>
+<h3 id="基址变址寻址"><a href="#基址变址寻址" class="headerlink" title="基址变址寻址"></a>基址变址寻址</h3><blockquote>
+<p>基址变址寻址就是将寄存器(该寄存器一般称作基址寄存器）的内容与指令中给出的地址偏移量相加，从而得到一个操作数的有效地址。变址寻址方式常用于访问某基地址附近的地址单元。采用变址寻址方式的指令常见有以下几种形式，</p>
+</blockquote>
+<ul>
+<li>如下所示：<ul>
+<li><code>LDR xO, [x1，#4]</code> : <code>xO = [x1+4J</code>,将寄存器 <code>x1</code> 的内容加上<code>4</code>形成操作数的<strong>有效地址</strong>，从而取得操作数存入寄存器RO中。</li>
+<li><code>LDR xO, [x1, #4]!</code> :<code>xO = [x1+4]</code>、<code>x1 = x1+4</code>,将寄存器 <code>x1</code> 的内容加上 <code>4 </code>形成操作数的<strong>有效地址</strong>，从而取得操作数存入寄存器<code>xO</code> 中，然后，<code>x1</code> 的内容自增<code>4</code>个字节。</li>
+<li><code>LDR xO, [x1]，＃4</code> : <code>xO = [x1]、x1 = x1+4</code>,以寄存器<code>x1</code>的内容作为操作数的<strong>有效地址</strong>，从而取得操作数存入寄存器 <code>xO</code>中，然后，<code>x1</code>的内容自增<code>4</code>个字节。</li>
+<li><code>LDR xO, [x1, x2]</code> : <code>xO = [x1+x2]</code>,将寄存器 <code>x1</code> 的内容加上寄存器<code>x2</code>的内容形成操作数的<strong>有效地址</strong>，从而取得操作数存入寄存器<code>xO</code>中。</li>
+</ul>
+</li>
+</ul>
+<h3 id="多寄存器寻址"><a href="#多寄存器寻址" class="headerlink" title="多寄存器寻址"></a>多寄存器寻址</h3><blockquote>
+<p>采用多寄存器寻址方式，一条指令可以完成多个寄存器值的传送。这种寻址方式可以用一条指令完成传送最多16个通用寄存器的值。</p>
+</blockquote>
+<ul>
+<li>以下指令：<ul>
+<li><code>LDMIA xO, &#123;x1, x2, x3， x4&#125;</code>: <code>x1 = [x0]</code>、<code>x2 = [x0 + 4]</code>、<code>x3 = [x0 + 8]</code>、<code>x4 = [x0 + 12]</code></li>
+<li>该指令的后缀<code>IA</code> 表示在每次执行完加载/存储操作后，<code>xO</code> 按字长度增加，因此，指令可将连续存储单元的值传送到<code>x1</code>~`x4`。</li>
+</ul>
+</li>
+</ul>
+<h3 id="相对寻址"><a href="#相对寻址" class="headerlink" title="相对寻址"></a>相对寻址</h3><blockquote>
+<p>与基址变址寻址方式相类似，相对寻址以程序计数器 PC 的当前值为基地址，指令中的地址标号作为偏移量，将两者相加之后得到操作数的有效地址。</p>
+</blockquote>
+<ul>
+<li>以下程序段完成子程序的调用和返回，跳转指令 <code>BL</code>采用了相对寻址方式：  <figure class="highlight as"><table><tr><td class="code"><pre><code class="hljs as">    BL, NEXT ; 跳转到子程序 `NEXT` 处执行<br>    ......<br>NEXT<br>    ......<br>    MOV PC. LR ; 从子程序返回<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="堆栈寻址"><a href="#堆栈寻址" class="headerlink" title="堆栈寻址"></a>堆栈寻址</h3><blockquote>
+<ul>
+<li>堆栈是一种数据结构，按先进后出 (<code>First In Last Out, FILO</code>）的方式工作，使用一个称作堆栈指针的专用寄存器指示当前的操作位置，堆栈指针总是指向栈顶。</li>
+<li>当堆栈指针指向最后压入堆栈的数据时，称为满堆栈 (<code>Full Stack</code>），而当堆栈指针指向下一个将要放入数据的空位置时，称为空堆栈 <code>(Empty Stack</code>)。</li>
+<li>同时，根据堆栈的生成方式，又可以分为递增堆栈 (<code>Ascending Stack</code>）和递减堆栈 (<code>DecendingStack</code>），当堆栈由低地址向高地址生成时，称为递增堆栈，当堆栈由高地址向低地址生成时，称为递减堆栈。</li>
+</ul>
+</blockquote>
+<ul>
+<li>这样就有四种类型的堆栈工作方式，<code>ARM</code> 微处理器支持这四种类型的堆栈工作方式，即：<ul>
+<li>满递增堆栈：堆栈指针指向最后压入的数据，且由低地址向高地址生成。</li>
+<li>满递减堆栈：堆栈指针指向最后压入的数据，且由高地址向低地址生成。</li>
+<li>空递增堆栈：堆栈指针指向下一个将要放入数据的空位置，且由低地址向高地址生成。</li>
+<li>空递减堆栈：堆栈指针指向下一个将要放入数据的空位置，且由高地址向低地址生成。</li>
+</ul>
+</li>
+</ul>
+<h2 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h2><h3 id="指令的条件域"><a href="#指令的条件域" class="headerlink" title="指令的条件域"></a><span id="jump1">指令的条件域</span></h3><ul>
+<li>当处理器工作在<code>ARM</code>状态时，几乎所有的指令均根据<code>CPSR</code>中条件码的状态和指令的条件域有<br>条件的执行。当指令的执行条件满足时，指令被执行，否则指令被忽略。</li>
+<li>每一条<code>ARM</code>指令包含<code>4</code>位的条件码(条件码是指令的，而非<code>cpsr</code>寄存器的)，位于指令的最高<code>4</code>位<code>[31:28]</code>。条件码共有<code>16</code>种，每种条件码可用两个字符表示，这两个字符可以添加在<code>指令助记符</code>的后面和指令同时使用。例如，跳转指令<code>B</code>可以加上后缀<code>EQ</code>变为<code>BEQ</code>表示<strong>相等则跳转</strong>，即当<code>CPSR</code>中的<code>Z</code>标志置位时发生跳转。</li>
+<li>在<code>16</code>种条件标志码中，只有<code>15</code>种可以使用，如下表所示，第<code>16</code>种（<code>1111</code>）为系统保留，</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">条件码</th>
+<th align="center">助记符后缀</th>
+<th align="center">标 志</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0000</td>
+<td align="center">EQ</td>
+<td align="center">Z置位</td>
+<td align="center">相等</td>
+</tr>
+<tr>
+<td align="center">0001</td>
+<td align="center">NE</td>
+<td align="center">Z清零</td>
+<td align="center">不相等</td>
+</tr>
+<tr>
+<td align="center">0011</td>
+<td align="center">CS</td>
+<td align="center">C置位</td>
+<td align="center">无符号数大于或等于</td>
+</tr>
+<tr>
+<td align="center">0100</td>
+<td align="center">MI</td>
+<td align="center">N置位</td>
+<td align="center">负数</td>
+</tr>
+<tr>
+<td align="center">0101</td>
+<td align="center">PL</td>
+<td align="center">N清零</td>
+<td align="center">正数或零</td>
+</tr>
+<tr>
+<td align="center">0110</td>
+<td align="center">VS</td>
+<td align="center">V置位</td>
+<td align="center">溢出</td>
+</tr>
+<tr>
+<td align="center">0111</td>
+<td align="center">VC</td>
+<td align="center">V清零</td>
+<td align="center">未溢出</td>
+</tr>
+<tr>
+<td align="center">1000</td>
+<td align="center">HI</td>
+<td align="center">C置位Z清零</td>
+<td align="center">无符号数大于</td>
+</tr>
+<tr>
+<td align="center">1001</td>
+<td align="center">LS</td>
+<td align="center">C清零Z置位</td>
+<td align="center">无符号数小于或等于</td>
+</tr>
+<tr>
+<td align="center">1010</td>
+<td align="center">GE</td>
+<td align="center">N等于V</td>
+<td align="center">带符号数大于或等于</td>
+</tr>
+<tr>
+<td align="center">1011</td>
+<td align="center">LT</td>
+<td align="center">N 不等于V</td>
+<td align="center">带符号数小于</td>
+</tr>
+<tr>
+<td align="center">1100</td>
+<td align="center">GT</td>
+<td align="center">Z清零且(N等于V)</td>
+<td align="center">带符号数大于</td>
+</tr>
+<tr>
+<td align="center">1101</td>
+<td align="center">LE</td>
+<td align="center">Z置位或(N不等于V)</td>
+<td align="center">带符号数小于或等于</td>
+</tr>
+<tr>
+<td align="center">1110</td>
+<td align="center">AL</td>
+<td align="center">忽略</td>
+<td align="center">无条件执行</td>
+</tr>
+</tbody></table>
+<h3 id="move指令"><a href="#move指令" class="headerlink" title="move指令"></a>move指令</h3><ul>
+<li><code>MOV</code>指令的格式为：<ul>
+<li><code>MOV&#123;条件&#125;&#123;S&#125;目的寄存器，源操作数</code></li>
+<li><code>MOV</code> 指令可完成从另一个寄存器、被移位的寄存器或将一个立即数加载到目的寄存器。其中<code>S</code>选项决定指令的操作是否影响 <code>CPSR</code> 中条件标志位的值，当没有<code>S</code>时指令不更新<code>CPSR </code>中条件标志位的值。</li>
+</ul>
+</li>
+<li>指令示例：<ul>
+<li><code>mov x1,x0</code> :将寄存器<code> x0</code> 的值传送到寄存器 <code>x1</code>。</li>
+<li><code>mov x1,x0,LSL#0x3</code> : 将寄存器<code>x0</code>的值左移<code>3</code>位后传送到<code>x1</code>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="add指令"><a href="#add指令" class="headerlink" title="add指令"></a>add指令</h3><ul>
+<li><code>ADD</code> 指令的格式为：<ul>
+<li><code>ADD&#123;条件&#125;&#123;S&#125; 目的备存器，操作数1，操作数2</code></li>
+<li><code>ADD</code> 指令用于把两个操作数相加，并将结果存放到目的寄存器中。<code>操作数1</code>应是一个寄存器，<code>操作数2</code>可以是一个寄存器，被<code>移位的寄存器</code>，或<code>一个立即数</code>。</li>
+</ul>
+</li>
+<li>指令示例：<ul>
+<li><code>ADD xO, x1, x2</code> : <code>xO = x1+x2</code></li>
+<li><code>ADD xO, x1, #256</code> : <code>xO = x1+256</code></li>
+<li><code>ADD xO, x2, x3, LSL#1</code> : <code>xO = x2 + (x3 &lt;&lt; 1)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="sub-指令"><a href="#sub-指令" class="headerlink" title="sub 指令"></a>sub 指令</h3><ul>
+<li><code>SUB</code> 指令的格式为：<ul>
+<li><code>SUB&#123;条件&#125;&#123;S&#125; 目的寄存器，操作数1，操作数2</code></li>
+<li><code>SUB</code> 指令用于把<code>操作数1</code>减去<code>操作数2</code>，并将结果存放到<code>目的寄存器</code>中。<code>操作数1</code>应是一个<code>寄存存器</code>，<code>操作数2</code>可以是一个<code>寄存器</code>，<code>被移位的寄存器</code>，或一个<code>立即数</code>。该指令可用于<code>有符号数</code>或<code>无符号数</code>的减法运算。</li>
+</ul>
+</li>
+<li>指令示例：<ul>
+<li><code>sub xO, x1,x2</code> :<code>xO =x1- x2</code>。</li>
+<li><code>sub xO, x1,#0x8</code> :<code>xO =x1- 8</code>。</li>
+<li><code>sub xO, x2，x3，LSL#1</code> : <code>xO =x2- (x3 &lt;&lt; 1)</code>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="CMP-指令"><a href="#CMP-指令" class="headerlink" title="CMP 指令"></a>CMP 指令</h3><ul>
+<li><code>CMP 指令的格式为</code><ul>
+<li><code>CMP&#123;条件&#125;操作数1，操作数 2</code></li>
+<li><code>CMP</code>指令用于把一个<code>寄存器</code>的内容和另一个<code>奇存器</code>的内容或<code>立即数</code>进行比较，同时更新 <a href="#jump">CPSR</a>中条件标志位的值。</li>
+<li>该指令进行一次<strong>减法运算</strong>，但不存储结果，只更改条件标志位。标志位表示的是<code>操作数1</code>与<code>操作数2</code>的关系（大、小、相等），例如，当<code>操作数1</code>大于<code>操作数2</code>，则此后的有GT后缀的指令将可以执行。</li>
+</ul>
+</li>
+<li>指令示例：<ul>
+<li><code>cmp x1, xO</code> : 将寄存器 <code>x1</code> 的值与寄存器<code>xO</code> 的值相减，并根据结果设置 <a href="#jump">CPSR</a>的标志位</li>
+<li><code>cmp x1, #100</code> :将寄存器 <code>x1</code> 的值与立即数 100相减，并根据结果设置 <a href="#jump">CPSR</a> 的标志位</li>
+</ul>
+</li>
+</ul>
+<h3 id="跳转指令"><a href="#跳转指令" class="headerlink" title="跳转指令"></a>跳转指令</h3><h4 id="B指令"><a href="#B指令" class="headerlink" title="B指令"></a>B指令</h4><ul>
+<li><code>B</code>指令的格式为：<ul>
+<li><code>B&#123;条件&#125;  目标地址</code></li>
+<li><code>B</code>指令是最简单的跳转指令。一旦遇到一个<code>B</code>指令，<code>ARM</code> 处理器将立即跳转到给定的目标地址，从那里继续执行。</li>
+<li><strong>注意</strong>,存储在跳转指令中的实际值是相对当前<code>PC</code>值的一个偏移量，而不是一个绝对地址，它的值由汇编器来计算（参考寻址方式中的相对寻址）。它是<code>24</code>位有符号数，左移两位后有符号扩展为 <code>32</code> 位，表示的有效偏移为 <code>26</code>位(前后 <code>32MB</code> 的地址空间）。以下指令：</li>
+</ul>
+</li>
+<li>指令示例：<ul>
+<li><code>B Label</code> : 程序无条件跳转到标号 <code>Label</code> 处执行  <figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">CMP x1，#0<br>b.eq Label<br></code></pre></td></tr></table></figure></li>
+<li>上面指令是当 <code>CPSR</code> 寄存器中的<code>z</code>条件码置位时，程序跳转到标号 <code>Label</code> 处执行,见<a href="#jump1">条件</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="BL指令"><a href="#BL指令" class="headerlink" title="BL指令"></a>BL指令</h4><ul>
+<li><code>BL</code>指令的格式为：<ul>
+<li><code>BL&#123;条件&#125;目标地址</code></li>
+<li><code>BL</code> 是另一个跳转指令，但跳转之前，会在寄存器<code>x14</code>中保存 <code>PC</code> 的当前内容，因此，可以通过将<code>x14</code> 的内容重新加载到 <code>PC</code> 中，来返回到跳转指令之后的那个指令处执行。该指令是实现子程序调用的一个基本但常用的手段。</li>
+<li><strong>注意</strong>，只有使用<code>BL</code>调用有<code>ret</code>返回的才会回到原来的位置，类似函数调用。<code>B</code>指令是没有这个效果的。</li>
+</ul>
+</li>
+<li>指令示例：<ul>
+<li><code>BL Labe1</code> : 当程序无条件跳转到标号 <code>Label</code> 处执行时，同时将当前的 <code>PC</code>值保存到 <code>x14</code>中</li>
+</ul>
+</li>
+</ul>
+<h3 id="内存操作"><a href="#内存操作" class="headerlink" title="内存操作"></a>内存操作</h3><blockquote>
+<p>从内存中读取数据</p>
+</blockquote>
+<h4 id="ldr指令"><a href="#ldr指令" class="headerlink" title="ldr指令"></a>ldr指令</h4><ul>
+<li><code>LDR</code> 指令的格式为：<ul>
+<li><code>LDR&#123;条件&#125; 日的寄存器，&lt;存储器地址〉</code></li>
+<li><code>LDR</code> 指令用于从存储器中将一个<code>32</code>位的字数据传送到目的的寄存器中。该指令通常用于从存储器中读取 <code>32</code> 位的字数据到通用寄存器，然后对数据进行处理。当程序计数器<code>PC</code> 作为目的寄存器时，指令从存储器中读取的字数据被当作目的地址，从而可以实现程序流程的跳转。该指令在程序设计中比较常用，且<a href="#jump2">寻址方式</a>灵活多样</li>
+</ul>
+</li>
+<li>指令示例：<ul>
+<li><code>ldr xO, [x1]</code> : 将存储器地址为 <code>x1</code> 的8字节数据读入寄存器<code>xO</code>。</li>
+<li><code>ldr wO, [w1]</code> : 将存储器地址为 <code>w1</code> 的4字节数据读入寄存器<code>wO</code>。//根据寄存器是8字节取值还是4字节</li>
+<li><code>ldr xO, [x1, x2]</code> : 将存储器地址为 <code>x1+x2</code> 的字数据读入寄存器<code>xO</code>。</li>
+<li><code>ldr xO, [x1, #8]</code> : 将存储器地址为 <code>x1+8</code> 的字数据读入寄存器<code>xO</code>。</li>
+<li><code>LDR xO,[x1, x2]!</code> : 将存储器地址为 <code>x1+x2</code> 的字数据读入寄存器<code>xO</code>，并将新地址 <code>x1 + x2</code>写入<code>x1</code></li>
+<li><code>LDR xO, [x1. #8]!</code> : 将存储器地址为 <code>x1+8</code> 的字数据读入寄存器<code>xO</code>，并将新地址 <code>x1 + 8</code>写入<code>x1</code></li>
+<li><code>LDR xO. [x1],x2</code> : 将存储器地址为 <code>x1</code> 的字数据读入寄存器<code>xO</code>，并将新地址<code>x1+x2</code>写入<code>x1</code></li>
+<li><code>LDR xO, [x1，x2，LSL#2]!</code> : 将存储器地址为<code>x1+x2x4</code>字数据读入寄存器<code>xO</code>，并将新地址<code>x1+x2×4</code>写入<code>x1</code>,<code>LSL#2</code>即 <code>&lt;&lt; 2</code>。</li>
+<li><code>LDR xO, [x1]，x2，LSL＃2</code> : 将存储器地址为 <code>x1</code> 的字数据读入寄存器<code>xO</code>，并将新地址 <code>x1+x2x4</code>写入<code>x1</code></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>汇编</category>
+      </categories>
+      <tags>
+        <tag>汇编指令</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>lldb指令</title>
     <url>/2023/04/10/iOS%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96/%E5%B8%B8%E7%94%A8lldb%E6%8C%87%E4%BB%A4/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="lldb指令"><a href="#lldb指令" class="headerlink" title="lldb指令"></a>lldb指令</h1><ul>
@@ -1411,7 +1755,7 @@
       </categories>
   </entry>
   <entry>
-    <title>汇编基本认识</title>
+    <title>汇编基本认识，x86汇编</title>
     <url>/2023/02/25/iOS%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/%E6%B1%87%E7%BC%96%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%86/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><ul>
 <li>软件、程序的执行过程<br><img src="1.png"></li>
@@ -1454,7 +1798,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="常见的汇编指令"><a href="#常见的汇编指令" class="headerlink" title="常见的汇编指令"></a>常见的汇编指令</h3><table>
+<h3 id="常见的x86汇编指令"><a href="#常见的x86汇编指令" class="headerlink" title="常见的x86汇编指令"></a>常见的x86汇编指令</h3><table>
 <thead>
 <tr>
 <th>项目</th>
@@ -2636,7 +2980,8 @@
   <entry>
     <title>runloop的运行逻辑</title>
     <url>/2023/01/20/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9A%84%E8%BF%90%E8%A1%8C%E9%80%BB%E8%BE%91/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="运行流程"><a href="#运行流程" class="headerlink" title="运行流程"></a>运行流程</h3><ol>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="运行流程"><a href="#运行流程" class="headerlink" title="运行流程"></a>运行流程</h2><h3 id="运行流程分析"><a href="#运行流程分析" class="headerlink" title="运行流程分析"></a>运行流程分析</h3><p><img src="1.png"></p>
+<ol>
 <li>通知<code>Observers</code>：进入<code>Loop</code></li>
 <li>通知<code>Observers</code>：即将处理<code>Timers</code></li>
 <li>通知<code>Observers</code>：即将处理<code>Sources</code><ul>
@@ -2644,12 +2989,13 @@
 </ul>
 </li>
 <li>处理<code>Blocks</code><ul>
-<li>处理通过<code>CFRunLoopPerformBlock(CFRunLoopRef rl, CFTypeRef mode, void (^block)(void))</code>添加到<code>runloop</code>的block</li>
+<li>处理通过<code>CFRunLoopPerformBlock(CFRunLoopRef rl, CFTypeRef mode, void (^block)(void))</code>添加到<code>runloop</code>的<code>block</code></li>
 <li>实际调用：<code>_CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__</code></li>
 </ul>
 </li>
-<li>处理<code>Source0</code>（如果返回结果是true，可能会再次处理<code>Blocks</code>）<ul>
+<li>处理<code>Source0</code>（如果返回结果是<code>true</code>，可能会再次处理<code>Blocks</code>）<ul>
 <li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__</code></li>
+<li>只有被<code>Signal</code>的<code>source0</code>才会去处理</li>
 </ul>
 </li>
 <li>如果存在<code>Source1</code>，就跳转到第8步<ul>
@@ -2657,16 +3003,16 @@
 </ul>
 </li>
 <li>通知<code>Observers</code>：开始休眠（等待消息唤醒）<ul>
-<li><code>__CFRunLoopServiceMachPort</code>内，用户态会下发<code>mach_msg</code>给内核态（只有内核可以真正的休眠线程（而非阻塞线程,忙等），节省CPU），切换到内核态，当内核收到消息后，再唤醒线程，节省CPU资源</li>
+<li><code>__CFRunLoopServiceMachPort</code>内，用户态会下发<code>mach_msg</code>给内核态（只有内核可以<code>真正的休眠线程</code>（而<code>非阻塞线程</code>,<code>忙等</code>），节省<code>CPU</code>），切换到内核态，当内核收到消息后，再唤醒线程，节省<code>CPU</code>资源<br><img src="2.png"></li>
 </ul>
 </li>
-<li>通知<code>Observers</code>：结束休眠（被某个消息唤醒）<ol>
+<li>通知<code>Observers</code>：结束休眠（被下面某个消息唤醒）<ol>
 <li>处理<code>Timer</code><ul>
 <li>实际调用：<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_TIMER_CALLBACK_FUNCTION__</code></li>
 </ul>
 </li>
-<li>处理<code>GCD Async To Main Queue</code>,GCD异步回到主队列的任务<ul>
-<li>实际调用：<code>__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__</code>，注意只有通过<code>dispatch_async(dispatch_get_main_queue(),block);</code>，GCD异步回到主队列，才会有runloop的协助</li>
+<li>处理<code>GCD Async To Main Queue</code>,<code>GCD</code>异步回到主队列的任务<ul>
+<li>实际调用：<code>__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__</code>，注意只有通过<code>dispatch_async(dispatch_get_main_queue(),block);</code>，<code>GCD</code>异步回到主队列，才会有<code>runloop</code>的协助</li>
 </ul>
 </li>
 <li>处理<code>Source1</code><ul>
@@ -2677,17 +3023,91 @@
 </li>
 <li>处理<code>Blocks</code></li>
 <li>根据前面的执行结果，决定如何操作<ol>
-<li>回到第02步</li>
+<li>回到第<code>02</code>步</li>
 <li>退出<code>Loop</code></li>
 </ol>
 </li>
-<li>通知Observers：退出Loop<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3></li>
+<li>通知<code>Observers：</code>退出<code>Loop</code></li>
 </ol>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><h4 id="CFRunLoopRunSpecific"><a href="#CFRunLoopRunSpecific" class="headerlink" title="CFRunLoopRunSpecific"></a><code>CFRunLoopRunSpecific</code></h4><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function">SInt32 <span class="hljs-title">CFRunLoopRunSpecific</span><span class="hljs-params">(CFRunLoopRef rl, CFStringRef modeName, CFTimeInterval seconds, Boolean returnAfterSourceHandled)</span> </span>&#123;     <span class="hljs-comment">/* DOES CALLOUT */</span><br>    CHECK_FOR_FORK();<br>    <span class="hljs-keyword">if</span> (__CFRunLoopIsDeallocating(rl)) <span class="hljs-keyword">return</span> kCFRunLoopRunFinished;<br>    __CFRunLoopLock(rl);<br>    CFRunLoopModeRef currentMode = __CFRunLoopFindMode(rl, modeName, <span class="hljs-literal">false</span>);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-literal">NULL</span> == currentMode || __CFRunLoopModeIsEmpty(rl, currentMode, rl-&gt;_currentMode)) &#123;<br>	Boolean did = <span class="hljs-literal">false</span>;<br>	<span class="hljs-keyword">if</span> (currentMode) __CFRunLoopModeUnlock(currentMode);<br>	__CFRunLoopUnlock(rl);<br>	<span class="hljs-keyword">return</span> did ? kCFRunLoopRunHandledSource : kCFRunLoopRunFinished;<br>    &#125;<br>    <span class="hljs-comment">// 1.这里会记录下当前mode的状态运行状态</span><br>    <span class="hljs-keyword">volatile</span> _per_run_data *previousPerRun = __CFRunLoopPushPerRunData(rl);<br>    CFRunLoopModeRef previousMode = rl-&gt;_currentMode;<br>    rl-&gt;_currentMode = currentMode;<br>    <span class="hljs-keyword">int32_t</span> result = kCFRunLoopRunFinished;<br>    <span class="hljs-comment">// 2. CFRunLoopRunSpecific会保持前一次mode的状态属性（stopped和currentMode）然后发出即将要进入新的mode通知</span><br>	<span class="hljs-keyword">if</span> (currentMode-&gt;_observerMask &amp; kCFRunLoopEntry ) __CFRunLoopDoObservers(rl, currentMode, kCFRunLoopEntry);<br>	result = __CFRunLoopRun(rl, currentMode, seconds, returnAfterSourceHandled, previousMode);<br>	<span class="hljs-keyword">if</span> (currentMode-&gt;_observerMask &amp; kCFRunLoopExit ) __CFRunLoopDoObservers(rl, currentMode, kCFRunLoopExit);<br>    <span class="hljs-comment">// 3 . __CFRunLoopRun(__CFRunLoopRun会创建一个循环)，然后这个mode运行结束后再发已退出mode通知。再恢复前一次的stopped和currentMode</span><br>        __CFRunLoopModeUnlock(currentMode);<br>    <span class="hljs-comment">// 4 .这里会恢复之前记录mode的状态</span><br>        __CFRunLoopPopPerRunData(rl, previousPerRun);<br>	rl-&gt;_currentMode = previousMode;<br>    __CFRunLoopUnlock(rl);<br>    <span class="hljs-keyword">return</span> result;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li><code>CFRunLoopRunSpecific</code><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">   //通知Observers：进入runLoop<br>if (currentMode-&gt;_observerMask &amp; kCFRunLoopEntry ) __CFRunLoopDoObservers(rl, currentMode, kCFRunLoopEntry);<br>   //具体要做的事<br>result = __CFRunLoopRun(rl, currentMode, seconds, returnAfterSourceHandled, previousMode);<br>   //通知Observers：退出unLoop<br>if (currentMode-&gt;_observerMask &amp; kCFRunLoopExit ) __CFRunLoopDoObservers(rl, currentMode, kCFRunLoopExit);<br></code></pre></td></tr></table></figure></li>
-<li><code>CFRunLoopRun</code><h3 id="runloop执行方法需要注意的地方"><a href="#runloop执行方法需要注意的地方" class="headerlink" title="runloop执行方法需要注意的地方"></a>runloop执行方法需要注意的地方</h3></li>
+<li>分析<ol>
+<li>首先<code>Runloop</code>进入的是<code>kCFRunLoopDefaultMode</code> 会无限执行</li>
+<li><code>CFRunLoopRunSpecific</code>会保持前一次<code>mode</code>的状态属性,并且会记录下当前<code>mode</code>的运行状态 </li>
+<li>然后发出即将要进入新的<code>mode</code>通知，然后进入<code>__CFRunLoopRun</code>(<code>__CFRunLoopRun</code>会创建一个循环)</li>
+<li>这个<code>mode</code>运行结束后再发已退出<code>mode</code>通知,再恢复前一次的<code>currentmode</code>,和2中记录的运行状态</li>
+</ol>
+</li>
+<li>如果<code>CFRunLoopRunSpecific</code>被调用多次会怎么样？ <ul>
+<li>因为函数调用时栈，前一次<code>mode</code>信息都是被记录在栈<code>stack</code>中，新的<code>Mode</code>开启新的<code>__CFRunLoopRun</code>(<code>do-while</code>)事件处理循环。但是所有<code>Runloop</code>的第一个<code>mode</code>，都是<code>kCFRunLoopDefaultMode</code></li>
 </ul>
-<ol>
+</li>
+</ul>
+<h4 id="CFRunLoopRun"><a href="#CFRunLoopRun" class="headerlink" title="CFRunLoopRun"></a><code>CFRunLoopRun</code></h4><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int32_t</span> __CFRunLoopRun(CFRunLoopRef rl, CFRunLoopModeRef rlm, CFTimeInterval seconds, Boolean stopAfterHandle, CFRunLoopModeRef previousMode) &#123;<br>    <span class="hljs-comment">//获取系统启动后的CPU运行时间，用于控制超时时间</span><br>    <span class="hljs-keyword">uint64_t</span> startTSR = mach_absolute_time();<br><br>    <span class="hljs-comment">//1. 判断runloop和runloopmode是否是已经结束，如果已经结束就直接返回</span><br>    <span class="hljs-keyword">if</span> (__CFRunLoopIsStopped(rl)) &#123;<br>        __CFRunLoopUnsetStopped(rl);<br>	<span class="hljs-keyword">return</span> kCFRunLoopRunStopped;<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (rlm-&gt;_stopped) &#123;<br>	rlm-&gt;_stopped = <span class="hljs-literal">false</span>;<br>	<span class="hljs-keyword">return</span> kCFRunLoopRunStopped;<br>    &#125;<br>    <br>    <span class="hljs-comment">//2. 如果当前runloop是主线程runloop就获取dispatchPort ，dispatchPort 用来接收主队列的任务和事件</span><br>    <span class="hljs-keyword">mach_port_name_t</span> dispatchPort = MACH_PORT_NULL;<br>    Boolean libdispatchQSafe = pthread_main_np() &amp;&amp; ((HANDLE_DISPATCH_ON_BASE_INVOCATION_ONLY &amp;&amp; <span class="hljs-literal">NULL</span> == previousMode) || (!HANDLE_DISPATCH_ON_BASE_INVOCATION_ONLY &amp;&amp; <span class="hljs-number">0</span> == _CFGetTSD(__CFTSDKeyIsInGCDMainQ)));<br>    <span class="hljs-comment">////如果在主线程 &amp;&amp; runloop是主线程的runloop &amp;&amp; 该mode是commonMode，则给mach端口赋值为主线程收发消息的端口</span><br>    <span class="hljs-keyword">if</span> (libdispatchQSafe &amp;&amp; (CFRunLoopGetMain() == rl) &amp;&amp; CFSetContainsValue(rl-&gt;_commonModes, rlm-&gt;_name)) dispatchPort = _dispatch_get_main_queue_port_4CF();<br>    <br>    <span class="hljs-keyword">mach_port_name_t</span> modeQueuePort = MACH_PORT_NULL;<br>    <span class="hljs-keyword">if</span> (rlm-&gt;_queue) &#123;<br>        modeQueuePort = _dispatch_runloop_root_queue_get_port_4CF(rlm-&gt;_queue);<br>        <span class="hljs-keyword">if</span> (!modeQueuePort) &#123;<br>            CRASH(<span class="hljs-string">&quot;Unable to get port for run loop mode queue (%d)&quot;</span>, <span class="hljs-number">-1</span>);<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">//3. 根据seconds参数，设置一个GCD定时器</span><br>    <span class="hljs-keyword">dispatch_source_t</span> timeout_timer = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">timeout_context</span> *<span class="hljs-title">timeout_context</span> =</span> (struct __timeout_context *)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(*timeout_context));<br>    <span class="hljs-comment">//立即超时</span><br>    <span class="hljs-keyword">if</span> (seconds &lt;= <span class="hljs-number">0.0</span>) &#123; <span class="hljs-comment">// instant timeout</span><br>        seconds = <span class="hljs-number">0.0</span>;<br>        timeout_context-&gt;termTSR = <span class="hljs-number">0ULL</span>;<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (seconds &lt;= TIMER_INTERVAL_LIMIT) &#123;<br>        <span class="hljs-comment">//seconds为超时时间，超时时执行__CFRunLoopTimeout函数</span><br>	<span class="hljs-keyword">dispatch_queue_t</span> <span class="hljs-built_in">queue</span> = pthread_main_np() ? __CFDispatchQueueGetGenericMatchingMain() : __CFDispatchQueueGetGenericBackground();<br>	timeout_timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-built_in">queue</span>);<br>        dispatch_retain(timeout_timer);<br>	timeout_context-&gt;ds = timeout_timer;<br>	timeout_context-&gt;rl = (CFRunLoopRef)CFRetain(rl);<br>	timeout_context-&gt;termTSR = startTSR + __CFTimeIntervalToTSR(seconds);<br>	dispatch_set_context(timeout_timer, timeout_context); <span class="hljs-comment">// source gets ownership of context</span><br>    <span class="hljs-comment">// 4. 超时后执行__CFRunLoopTimeout</span><br>	dispatch_source_set_event_handler_f(timeout_timer, __CFRunLoopTimeout);<br>    <span class="hljs-comment">// 5. __CFRunLoopTimeoutCancel释放runloop内存和定时器相关的环境内存</span><br>    dispatch_source_set_cancel_handler_f(timeout_timer, __CFRunLoopTimeoutCancel);<br>    <span class="hljs-keyword">uint64_t</span> ns_at = (<span class="hljs-keyword">uint64_t</span>)((__CFTSRToTimeInterval(startTSR) + seconds) * <span class="hljs-number">1000000000ULL</span>);<br>    dispatch_source_set_timer(timeout_timer, dispatch_time(<span class="hljs-number">1</span>, ns_at), DISPATCH_TIME_FOREVER, <span class="hljs-number">1000ULL</span>);<br>    dispatch_resume(timeout_timer);<br>    &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// infinite timeout</span><br>        <span class="hljs-comment">//永不超时</span><br>        seconds = <span class="hljs-number">9999999999.0</span>;<br>        timeout_context-&gt;termTSR = UINT64_MAX;<br>    &#125;<br>    <span class="hljs-comment">//上一次是否是dispatch，默认为true</span><br>    Boolean didDispatchPortLastTime = <span class="hljs-literal">true</span>;<br>    <span class="hljs-comment">//记录最后runloop的状态</span><br>    <span class="hljs-keyword">int32_t</span> retVal = <span class="hljs-number">0</span>;<br>     <span class="hljs-comment">// 6.进入do-while循环</span><br>    <span class="hljs-keyword">do</span> &#123;<br>        <span class="hljs-keyword">voucher_mach_msg_state_t</span> voucherState = VOUCHER_MACH_MSG_STATE_UNCHANGED;<br>        <span class="hljs-keyword">voucher_t</span> voucherCopy = <span class="hljs-literal">NULL</span>;<br><br>        <span class="hljs-comment">//初始化一个存放内核消息的缓冲池</span><br>        <span class="hljs-keyword">uint8_t</span> msg_buffer[<span class="hljs-number">3</span> * <span class="hljs-number">1024</span>];<br>        <span class="hljs-keyword">mach_msg_header_t</span> *msg = <span class="hljs-literal">NULL</span>;<br>        <span class="hljs-keyword">mach_port_t</span> livePort = MACH_PORT_NULL;<br><br>        <span class="hljs-comment">//取所有需要监听的port</span><br>	__CFPortSet waitSet = rlm-&gt;_portSet;<br>        <span class="hljs-comment">// 设置Runloop为可以被唤醒状态</span><br>        __CFRunLoopUnsetIgnoreWakeUps(rl);<br><br>         <span class="hljs-comment">// 7.条件判断是否有定时器和source的相关观察，发出定时器执行之前相关的观察者事件和发出source执行之前相关的观察者事件</span><br>        <span class="hljs-keyword">if</span> (rlm-&gt;_observerMask &amp; kCFRunLoopBeforeTimers) __CFRunLoopDoObservers(rl, rlm, kCFRunLoopBeforeTimers);<br>        <span class="hljs-keyword">if</span> (rlm-&gt;_observerMask &amp; kCFRunLoopBeforeSources) __CFRunLoopDoObservers(rl, rlm, kCFRunLoopBeforeSources);<br>         <span class="hljs-comment">// 8, 执行Runloop的Block任务</span><br>	__CFRunLoopDoBlocks(rl, rlm);<br>         <span class="hljs-comment">//9. 处理suoce0，并且返回sourceHandledThisLoop</span><br>        Boolean sourceHandledThisLoop = __CFRunLoopDoSources0(rl, rlm, stopAfterHandle);<br>         <span class="hljs-comment">// 10, 再次执行Runloop的Block任务</span><br>        <span class="hljs-keyword">if</span> (sourceHandledThisLoop) &#123;<br>            __CFRunLoopDoBlocks(rl, rlm);<br>	     &#125;<br>         <br>         <span class="hljs-comment">// 11. 是否处理了source0，或者没有设置超时</span><br>        Boolean poll = sourceHandledThisLoop || (<span class="hljs-number">0ULL</span> == timeout_context-&gt;termTSR);<br><br>         <span class="hljs-comment">// 12. 如果当前是主线程，并且didDispatchPortLastTime为false，则会去看是否存在端口间的通信，source1，结束后就会标记didDispatchPortLastTime=false,默认是true，如果上次循环是处理GCD会设置为true</span><br>        <span class="hljs-keyword">if</span> (MACH_PORT_NULL != dispatchPort &amp;&amp; !didDispatchPortLastTime) &#123;<br>            msg = (<span class="hljs-keyword">mach_msg_header_t</span> *)msg_buffer;<br>            <span class="hljs-comment">// 12 。如果有 Source1 (基于port) 处于 ready 状态，直接处理这个 Source1 然后跳转去处理消息。</span><br>            <span class="hljs-comment">//超时时间是0.因此实际不会休眠线程，是直接从缓冲区读取消息的，因此是主线程端口，一般是source1</span><br>            <span class="hljs-keyword">if</span> (__CFRunLoopServiceMachPort(dispatchPort, &amp;msg, <span class="hljs-keyword">sizeof</span>(msg_buffer), &amp;livePort, <span class="hljs-number">0</span>, &amp;voucherState, <span class="hljs-literal">NULL</span>)) &#123;<br>                <br>               <span class="hljs-comment">// 如果有触发消息直接去处理消息</span><br>                <span class="hljs-keyword">goto</span> handle_msg;<br>            &#125;<br>        &#125;<br><br>        didDispatchPortLastTime = <span class="hljs-literal">false</span>;<br><br>         <span class="hljs-comment">// 13. 没有处理事件或者超时，则会通知线程即将进入休眠</span><br>	<span class="hljs-keyword">if</span> (!poll &amp;&amp; (rlm-&gt;_observerMask &amp; kCFRunLoopBeforeWaiting)) __CFRunLoopDoObservers(rl, rlm, kCFRunLoopBeforeWaiting);<br>         <span class="hljs-comment">// 14. 标记runloop的属性为睡眠标记，设置runloop为可以唤醒</span><br>	__CFRunLoopSetSleeping(rl);<br>	<span class="hljs-comment">// do not do any user callouts after this point (after notifying of sleeping)</span><br><br>        <span class="hljs-comment">// Must push the local-to-this-activation ports in on every loop</span><br>        <span class="hljs-comment">// iteration, as this mode could be run re-entrantly and we don&#x27;t</span><br>        <span class="hljs-comment">// want these ports to get serviced.</span><br>         <span class="hljs-comment">//15. 把dispatchPort添加到waitPort，解锁runloop和runloop mode</span><br>        __CFPortSetInsert(dispatchPort, waitSet);<br>        <br>	__CFRunLoopModeUnlock(rlm);<br>	__CFRunLoopUnlock(rl);<br>        <span class="hljs-comment">//睡眠开始的时间</span><br>        CFAbsoluteTime sleepStart = poll ? <span class="hljs-number">0.0</span> : CFAbsoluteTimeGetCurrent();<br>         <span class="hljs-comment">// 16. 进入_CFRunLoopServiceMachPort，会进入内核的等待mach_msg，并且while循环等待正确的唤醒</span><br>        <span class="hljs-keyword">do</span> &#123;<br>            <span class="hljs-keyword">if</span> (kCFUseCollectableAllocator) &#123;<br>                <span class="hljs-comment">// objc_clear_stack(0);</span><br>                <span class="hljs-comment">// &lt;rdar://problem/16393959&gt;</span><br>                <span class="hljs-built_in">memset</span>(msg_buffer, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(msg_buffer));<br>            &#125;<br>            msg = (<span class="hljs-keyword">mach_msg_header_t</span> *)msg_buffer;<br>            <br>            <span class="hljs-comment">//等待唤醒,livePort接收是哪个端口唤醒的</span><br>            __CFRunLoopServiceMachPort(waitSet, &amp;msg, <span class="hljs-keyword">sizeof</span>(msg_buffer), &amp;livePort, poll ? <span class="hljs-number">0</span> : TIMEOUT_INFINITY, &amp;voucherState, &amp;voucherCopy);<br>            <br>            <span class="hljs-keyword">if</span> (modeQueuePort != MACH_PORT_NULL &amp;&amp; livePort == modeQueuePort) &#123;<br>                <span class="hljs-comment">// Drain the internal queue. If one of the callout blocks sets the timerFired flag, break out and service the timer.</span><br>                <span class="hljs-keyword">while</span> (_dispatch_runloop_root_queue_perform_4CF(rlm-&gt;_queue));<br>                <span class="hljs-keyword">if</span> (rlm-&gt;_timerFired) &#123;<br>                    <span class="hljs-comment">// Leave livePort as the queue port, and service timers below</span><br>                    rlm-&gt;_timerFired = <span class="hljs-literal">false</span>;<br>                    <span class="hljs-keyword">break</span>;<br>                &#125; <span class="hljs-keyword">else</span> &#123;<br>                    <span class="hljs-keyword">if</span> (msg &amp;&amp; msg != (<span class="hljs-keyword">mach_msg_header_t</span> *)msg_buffer) <span class="hljs-built_in">free</span>(msg);<br>                &#125;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-comment">// Go ahead and leave the inner loop.</span><br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125; <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>);<br>        <br>        <br>         <span class="hljs-comment">// 18. 对Runloop和runloop mode进行加锁，抢夺Runloop的资源运行，保证唯一操作</span><br>        __CFRunLoopLock(rl);<br>        __CFRunLoopModeLock(rlm);<br><br>        rl-&gt;_sleepTime += (poll ? <span class="hljs-number">0.0</span> : (CFAbsoluteTimeGetCurrent() - sleepStart));<br><br>        <span class="hljs-comment">// Must remove the local-to-this-activation ports in on every loop</span><br>        <span class="hljs-comment">// iteration, as this mode could be run re-entrantly and we don&#x27;t</span><br>        <span class="hljs-comment">// want these ports to get serviced. Also, we don&#x27;t want them left</span><br>        <span class="hljs-comment">// in there if this function returns.</span><br>    <br>         <span class="hljs-comment">// 19. 把dispatchPort从waitPort移除，这里dispatchPort（主线的dispatchPort不在原有mode中的，是临时添加的）</span><br>        __CFPortSetRemove(dispatchPort, waitSet);<br>        <br>        __CFRunLoopSetIgnoreWakeUps(rl);<br><br>        <span class="hljs-comment">// user callouts now OK again</span><br>	__CFRunLoopUnsetSleeping(rl);<br>        <span class="hljs-comment">// 20, 如果没有处理事件或者超时，则会通知结束休眠</span><br>	<span class="hljs-keyword">if</span> (!poll &amp;&amp; (rlm-&gt;_observerMask &amp; kCFRunLoopAfterWaiting)) __CFRunLoopDoObservers(rl, rlm, kCFRunLoopAfterWaiting);<br><br>        handle_msg:;<br>        __CFRunLoopSetIgnoreWakeUps(rl);<br><br>        <span class="hljs-comment">// 21. 获取livePort，消息事件来源</span><br>        <span class="hljs-keyword">if</span> (MACH_PORT_NULL == livePort) &#123;<br>            CFRUNLOOP_WAKEUP_FOR_NOTHING();<br>            <span class="hljs-comment">// handle nothing</span><br>            <span class="hljs-comment">// 22.唤醒操作，什么也不做</span><br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (livePort == rl-&gt;_wakeUpPort) &#123;<br>            CFRUNLOOP_WAKEUP_FOR_WAKEUP();<br>            <span class="hljs-comment">// do nothing on Mac OS</span><br>            <span class="hljs-comment">// 22.唤醒操作，什么也不做</span><br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (modeQueuePort != MACH_PORT_NULL &amp;&amp; livePort == modeQueuePort) &#123;<br>            CFRUNLOOP_WAKEUP_FOR_TIMER();<br>            <span class="hljs-comment">//23. 处理定时任务，modeQueuePort定时器相关的端口，启动下一个定时器任务</span><br>            <span class="hljs-keyword">if</span> (!__CFRunLoopDoTimers(rl, rlm, mach_absolute_time())) &#123;<br>                <span class="hljs-comment">// Re-arm the next timer, because we apparently fired early</span><br>                __CFArmNextTimerInMode(rlm, rl);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (livePort == dispatchPort) &#123;<br>            CFRUNLOOP_WAKEUP_FOR_DISPATCH();<br>            <span class="hljs-comment">// 24. 处理GCD的时间，并设置didDispatchPortLastTime = true;也就是下一个循环的时候，不会去判断source1,这是为了保证dispatch中加入的block能及时执行</span><br>            __CFRunLoopModeUnlock(rlm);<br>            __CFRunLoopUnlock(rl);<br>            _CFSetTSD(__CFTSDKeyIsInGCDMainQ, (<span class="hljs-keyword">void</span> *)<span class="hljs-number">6</span>, <span class="hljs-literal">NULL</span>);<br>            __CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__(msg);<br>            _CFSetTSD(__CFTSDKeyIsInGCDMainQ, (<span class="hljs-keyword">void</span> *)<span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);<br>            __CFRunLoopLock(rl);<br>            __CFRunLoopModeLock(rlm);<br>            sourceHandledThisLoop = <span class="hljs-literal">true</span>;<br>            didDispatchPortLastTime = <span class="hljs-literal">true</span>;<br>            <br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            CFRUNLOOP_WAKEUP_FOR_SOURCE();<br>            <span class="hljs-comment">// If we received a voucher from this mach_msg, then put a copy of the new voucher into TSD. CFMachPortBoost will look in the TSD for the voucher. By using the value in the TSD we tie the CFMachPortBoost to this received mach_msg explicitly without a chance for anything in between the two pieces of code to set the voucher again.</span><br>            <span class="hljs-keyword">voucher_t</span> previousVoucher = _CFSetTSD(__CFTSDKeyMachMessageHasVoucher, (<span class="hljs-keyword">void</span> *)voucherCopy, os_release);<br><br>            <span class="hljs-comment">// Despite the name, this works for windows handles as well</span><br>            CFRunLoopSourceRef rls = __CFRunLoopModeFindSourceForMachPort(rl, rlm, livePort);<br>            <span class="hljs-keyword">if</span> (rls) &#123;<br>                <span class="hljs-comment">// 25处理Source1：如果一个 Source1 (基于port) 发出事件了，处理这个事件</span><br>		<span class="hljs-keyword">mach_msg_header_t</span> *reply = <span class="hljs-literal">NULL</span>;<br>		sourceHandledThisLoop = __CFRunLoopDoSource1(rl, rlm, rls, msg, msg-&gt;msgh_size, &amp;reply) || sourceHandledThisLoop;<br>		<span class="hljs-keyword">if</span> (<span class="hljs-literal">NULL</span> != reply) &#123;<br>		    (<span class="hljs-keyword">void</span>)mach_msg(reply, MACH_SEND_MSG, reply-&gt;msgh_size, <span class="hljs-number">0</span>, MACH_PORT_NULL, <span class="hljs-number">0</span>, MACH_PORT_NULL);<br>		    CFAllocatorDeallocate(kCFAllocatorSystemDefault, reply);<br>		&#125;<br>	    &#125;<br>            <br>            <span class="hljs-comment">// Restore the previous voucher</span><br>            _CFSetTSD(__CFTSDKeyMachMessageHasVoucher, previousVoucher, os_release);<br>            <br>        &#125;<br>        <span class="hljs-keyword">if</span> (msg &amp;&amp; msg != (<span class="hljs-keyword">mach_msg_header_t</span> *)msg_buffer) <span class="hljs-built_in">free</span>(msg);<br>        <br>        <span class="hljs-comment">//26. 最后处理一次blocks</span><br>	__CFRunLoopDoBlocks(rl, rlm);<br>        <br>        <span class="hljs-comment">//27. 根据前面的处理结果，决定流程</span><br>	<span class="hljs-keyword">if</span> (sourceHandledThisLoop &amp;&amp; stopAfterHandle) &#123;<br>        <span class="hljs-comment">//stopAfterHandle为true，并且当前runloop处理了事件sourceHandledThisLoop，处理了source0或者GCD</span><br>	    retVal = kCFRunLoopRunHandledSource;<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (timeout_context-&gt;termTSR &lt; mach_absolute_time()) &#123;<br>        <span class="hljs-comment">//超出传入参数标记的超时时间了</span><br>        retVal = kCFRunLoopRunTimedOut;<br>	&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (__CFRunLoopIsStopped(rl)) &#123;<br>            __CFRunLoopUnsetStopped(rl);<br>        <span class="hljs-comment">// 当前RunLoop已经被外部调用者强制停止了</span><br>	    retVal = kCFRunLoopRunStopped;<br>	&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (rlm-&gt;_stopped) &#123;<br>        <span class="hljs-comment">//  当前运行模式已经被停止</span><br>	    rlm-&gt;_stopped = <span class="hljs-literal">false</span>;<br>	    retVal = kCFRunLoopRunStopped;<br>	&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (__CFRunLoopModeIsEmpty(rl, rlm, previousMode)) &#123;<br>        <span class="hljs-comment">// source/timer/observer一个都没有了</span><br>	    retVal = kCFRunLoopRunFinished;<br>	&#125;<br>        <br>    voucher_mach_msg_revert(voucherState);<br>    os_release(voucherCopy);<br>        <span class="hljs-comment">// 如果没超时，mode里不为空也没停止，loop也没被停止，那继续loop。</span><br>    &#125; <span class="hljs-keyword">while</span> (<span class="hljs-number">0</span> == retVal);<br><br>    <span class="hljs-keyword">if</span> (timeout_timer) &#123;<br>        dispatch_source_cancel(timeout_timer);<br>        dispatch_release(timeout_timer);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-built_in">free</span>(timeout_context);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> retVal;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>分析<ol>
+<li>判断<code>runloop</code>和<code>runloopmode</code>是否是已经结束，如果已经结束就直接返回<ul>
+<li>这是线程安全的设计，<code>CFRunLoopRef</code>中存在各种加锁解锁的操作，它提供了纯 C 函数的 <code>API</code>，这些 <code>API</code> 都是<strong>线程安全</strong>的。</li>
+<li>而<code>NSRunLoop</code>是基于 <code>CFRunLoopRef</code> 的封装，提供了面向对象的 <code>API</code>，这些 <code>API</code> 不是<strong>线程安全</strong>的</li>
+</ul>
+</li>
+<li>如果当前<code>runloop</code>是主线程<code>runloop</code>就获取<code>dispatchPort</code> ，<code>dispatchPort</code> 用来接收主队列的任务和事件</li>
+<li>根据<code>seconds</code>参数，设置一个<code>GCD</code>定时器<ol>
+<li>定时器超时后执行<code>__CFRunLoopTimeout</code>,执行<code>__CFRunLoopTimeout</code>设置超时<code>context-&gt;termTSR = 0LL</code>，并且唤醒<code>Runloop</code>。 <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> __CFRunLoopTimeout(<span class="hljs-keyword">void</span> *arg) &#123;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">timeout_context</span> *<span class="hljs-title">context</span> =</span> (struct __timeout_context *)arg;<br>    context-&gt;termTSR = <span class="hljs-number">0ULL</span>;<br>    CFRUNLOOP_WAKEUP_FOR_TIMEOUT();<br>    CFRunLoopWakeUp(context-&gt;rl);<br>    <span class="hljs-comment">// The interval is DISPATCH_TIME_FOREVER, so this won&#x27;t fire again</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>__CFRunLoopTimeoutCancel</code>释放<code>runloop</code>内存和定时器相关的环境内存 <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> __CFRunLoopTimeoutCancel(<span class="hljs-keyword">void</span> *arg) &#123;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">timeout_context</span> *<span class="hljs-title">context</span> =</span> (struct __timeout_context *)arg;<br>    CFRelease(context-&gt;rl);<br>    dispatch_release(context-&gt;ds);<br>    <span class="hljs-built_in">free</span>(context);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>进入<code>do-while</code>的<code>Runloop</code>循环</li>
+<li>条件判断是否有<code>定时器</code>和<code>source</code>的相关观察，发出定时器执行之前相关的观察者事件和发出<code>source</code>执行之前</li>
+<li>执行<code>Runloop</code>的<code>Block</code>任务</li>
+<li>处理<code>suoce0</code>，并且返回<code>sourceHandledThisLoop</code><ol>
+<li>在每一次<code>Do-while</code>结束后，会判断是否是处理<code>stopAfterHandle</code>是否为<code>true</code>，然后结合<code>sourceHandledThisLoop</code>来退出<code>Runloop</code>，目的是为了处理单次的事件后就退出.<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C">    <span class="hljs-keyword">static</span> Boolean __CFRunLoopDoSources0(CFRunLoopRef rl, CFRunLoopModeRef rlm, Boolean stopAfterHandle) &#123;<br>        ....<br>        CFRunLoopSourceRef rls = (CFRunLoopSourceRef)sources;<br> __CFRunLoopSourceLock(rls);<br>        <span class="hljs-keyword">if</span> (__CFRunLoopSourceIsSignaled(rls)) &#123;<br>     __CFRunLoopSourceUnsetSignaled(rls);<br>     <span class="hljs-keyword">if</span> (__CFIsValid(rls)) &#123;<br>         __CFRunLoopSourceUnlock(rls);<br>                __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__(rls-&gt;_context.version0.perform, rls-&gt;_context.version0.info);<br>         CHECK_FOR_FORK();<br>         sourceHandled = <span class="hljs-literal">true</span>;<br>     &#125; <span class="hljs-keyword">else</span> &#123;<br>         __CFRunLoopSourceUnlock(rls);<br>     &#125;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            __CFRunLoopSourceUnlock(rls);<br>        &#125;<br>        ....<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>source0</code>被<code>Signale</code>，并且<strong>有效</strong>才会去处理。在<code>__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__</code>函数中去处理<code>source0</code>，实际去执行<code>rls-&gt;_context.version0.perform</code>中的方法。并执行完后将<code>sourceHandled</code>设置为<code>true</code></li>
+</ol>
+</li>
+<li>再次执行<code>Runloop</code>的<code>Block</code>任务,可能会有新的<code>block</code>在执行<code>source0</code>的时候被添加了</li>
+<li><code>poll</code>表明是否处理了<code>source0</code>，或者没有设置超时</li>
+<li>如果当前是主线程，并且<code>didDispatchPortLastTime</code>为<code>false</code>，则会去看是否存在端口间的通信<code>source1</code>，结束后就会标记<code>didDispatchPortLastTime=false</code>,默认是<code>true</code>，如果上次循环是处理<code>GCD</code>会设置为<code>true</code><ul>
+<li>如果有 <code>Source1</code> (基于<code>port</code>) 处于 <code>ready</code> 状态，直接处理这个 <code>Source1</code> 然后跳转去处理消息。（主线程基于端口的通信，一般是<code>source1</code>）</li>
+<li><code>__CFRunLoopServiceMachPort(dispatchPort, &amp;msg, sizeof(msg_buffer), &amp;livePort, 0, &amp;voucherState, NULL))</code>,超时时间是<code>0</code>，而非<code>INFINITY</code>永远，因此认为是从缓存中去，已经<code>ready</code> 状态的</li>
+<li><strong>注意</strong>上次循环是处理<code>GCD</code>会<code>didDispatchPortLastTime</code>设置为<code>true</code>,这是为了保证加入到主线程的<code>GCD</code>任务，能及时处理。因此下次循环，先不查询<code>source1</code></li>
+</ul>
+</li>
+<li><strong>没有处理事件source0或者超时</strong>，则会通知线程即将进入休眠，即上面<code>9</code>的<code>poll</code>为<code>false</code></li>
+<li>标记<code>runloop</code>为睡眠标记，设置<code>runloop</code>为可以唤醒。把<code>dispatchPort</code>添加到<code>waitPort</code>，解锁<code>runloop</code>和<code>runloop mode</code></li>
+<li>进入<code>_CFRunLoopServiceMachPort</code>，会进入内核的等待<code>mach_msg</code>，并且<code>while</code>循环等待正确的唤醒。<code>livePort</code>接收是哪个端口唤醒的<ul>
+<li>注意如果<code>poll</code>为<code>true</code>,表明之前处理了<code>source0</code>，或者没有设置超时。则超时时间是<code>0</code>,只会快速从缓存中查询后，进入下一次循环</li>
+<li>如果<code>poll</code>为<code>false</code>,则超时时间为<code>INFINITY</code>，等待唤醒</li>
+</ul>
+</li>
+<li>对<code>Runloop</code>和<code>runloop mode</code>进行加锁，抢夺<code>Runloop</code>的资源运行，保证唯一操作</li>
+<li>把<code>dispatchPort</code>从<code>waitPort</code>移除，这里<code>dispatchPort</code>（主线的<code>dispatchPort</code>不在原有<code>mode</code>中的，是临时添加的）</li>
+<li><strong>没有处理事件source0或者超时</strong>，则会通知线程结束入休眠，即上面<code>9</code>的<code>poll</code>为<code>false</code></li>
+<li>获取<code>livePort</code>，判断消息来源消息事件来源<ol>
+<li><code>liveport</code>是空或者是<code>rl-&gt;wakeUpPort</code>，那么就什么都不做，这是<strong>唤醒操作</strong>。跳过<code>livePort</code>的判断逻辑</li>
+<li><code>livePort</code>是<code>rlm-&gt;timerPort</code>,那么就执行<code>Timer</code>的事件处理，<code>modeQueuePort</code>定时器相关的端口，并启动下一个定时器任务</li>
+<li><code>livePort</code>是<code>dispatchPort</code>，那么就解锁<code>Runloop</code>和<code>RunloopMode</code>，然后处理<code>dispatch_main_queue_callback_4CF</code>的<code>GCD</code>调度任务，完成后加锁<code>Runloop</code>和<code>RunloopMode</code>。<ul>
+<li>处理<code>GCD</code>的时，并设置<code>didDispatchPortLastTime = true</code>;也就是下一个循环的时候，不会去判断<code>source1</code>,这是为了保证加到主线程的<code>GCD</code>能及时执行</li>
+</ul>
+</li>
+<li>其他情况，处理<code>Source1</code>：如果一个 <code>Source1</code> (基于<code>port</code>) 发出事件了，处理这个事件</li>
+</ol>
+</li>
+<li>最后再直接处理<code>_CFRunLoopDoBlocks</code>，再重新进入<code>do-while</code>循环处理<code>Timer</code>和<code>source0</code>的观察者逻辑等</li>
+<li>最后根据前面的处理结果，决定下一次的流程<ol>
+<li><code>stopAfterHandle</code>为<code>true</code>，并且当前<code>runloop</code>处理了事件<code>sourceHandledThisLoop</code>，处理了<code>source0</code>或者<code>GCD</code></li>
+<li>超出传入参数标记的超时时间了</li>
+<li>当前<code>RunLoop</code>已经被外部调用者强制停止了</li>
+<li>当前运行模式已经被停止</li>
+<li><code>source</code>/<code>timer</code>/<code>observer</code>一个都没有了</li>
+</ol>
+</li>
+<li>如果没超时，<code>mode</code>里不为空也没停止，<code>loop</code>也没被停止，那继续<code>loop</code>。</li>
+</ol>
+</li>
+</ul>
+<h3 id="runloop执行方法需要注意的地方"><a href="#runloop执行方法需要注意的地方" class="headerlink" title="runloop执行方法需要注意的地方"></a>runloop执行方法需要注意的地方</h3><ol>
 <li><code>- (void)run</code><ul>
 <li><code>[[NSRunloop currentRunloop] run]</code>实际上是在一个<code>while(1)</code>中重复调用<code>-(BOOL)runMode:(NSRunLoopMode)mode beforeDate:(NSDate *)limitDate</code>方法,因此通过<code>CFRunLoopStop(CFRunLoopGetCurrent())</code>只能取消一次<code>runMode:(NSRunLoopMode)mode beforeDate:</code>的调用，</li>
 <li>但是在<code>run</code>方法中，还是会循环调用，是无法取消<code>run</code>方法的循环调用的</li>
@@ -2697,11 +3117,23 @@
 <li> 注意，该方法，在执行完一次runloop的循环之后，则会退出，例如执行一次<code>performSelector:</code>方法便会释放</li>
 </ul>
 </li>
-<li>注意在启动<code>runloop</code>后，要注意<code>_strong typeof(weakSelf) strongSelf = weakSelf</code>的写法，列入通过<code>initWithBlock:</code>设置线程,在runloop运行期间，一直会有一个局部强引用持有<code>self</code>，除非将当前的<code>runloop</code>结束</li>
-<li>同时，注意,通过<code>CFRunLoopStop(CFRunLoopGetCurrent())</code>停止<code>runloop</code>之后,不要在使用，<code>performSelector:onThread:withObject:waitUntilDone:</code>在线程中执行，因为线程和runloop的生命周期是一一对应的，在waitUntilDone为<code>true</code>,不异步执行时，会出现野指针的错误，为<code>false</code>时，异步时可能内部做了处理，不会出现野指针</li>
-<li><code>CFRunLoopRunInMode(CFRunLoopMode mode, CFTimeInterval seconds, Boolean returnAfterSourceHandled)</code>,<code>returnAfterSourceHandled</code>为true代表执行完source之后，就退出runloop，类似2中的用法,设置为false则，执行一次source是不会退出的<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3></li>
-<li>runloop是怎么响应用户操作的，具体流程是什么样的？<ul>
-<li>由source1将系统事件捕获，（例如点击屏幕的事件），source1将事件包装成EventQueue，放到source0中处理</li>
+<li><strong>注意</strong>,在启动<code>runloop</code>后，要注意<code>_strong typeof(weakSelf) strongSelf = weakSelf</code>的写法。<ul>
+<li>例如通过<code>initWithBlock:</code>设置线程,在回调中启动r<code>unloop</code>。如果再回调中存在这种写法，则在<code>runloop</code>运行期间，一直会有一个局部强引用持有<code>self</code>，除非将当前的<code>runloop</code>结束</li>
+</ul>
+</li>
+<li><strong>注意</strong>,通过<code>CFRunLoopStop(CFRunLoopGetCurrent())</code>停止<code>runloop</code>之后。<ul>
+<li>不要再使用，<code>performSelector:onThread:withObject:waitUntilDone:</code>在线程中执行。因为线程和<code>runloop</code>的生命周期是一一对应的。</li>
+<li>在<code>waitUntilDone</code>为<code>true</code>,不异步执行时，会出现野指针的错误，为<code>false</code>时，异步时可能内部做了处理，不会出现野指针的问题</li>
+</ul>
+</li>
+<li><code>CFRunLoopRunInMode(CFRunLoopMode mode, CFTimeInterval seconds, Boolean returnAfterSourceHandled)</code>,<code>returnAfterSourceHandled</code>为<code>true</code>代表执行完<code>source</code>之后，就退出<code>runloop</code>，类似2中的用法,设置为<code>false</code>则，执行一次<code>source</code>后，是不会退出的。<ul>
+<li>和<code>1</code>中不同可以通过<code>CFRunLoopStop(CFRunLoopGetCurrent())</code>取消当前循环的<code>runloop</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li><code>runloop</code>是怎么响应用户操作的，具体流程是什么样的？<ul>
+<li>由<code>source1</code>将系统事件捕获，（例如点击屏幕的事件），<code>source1</code>将事件包装成<code>EventQueue</code>，放到<code>source0</code>中处理</li>
 </ul>
 </li>
 <li><code>NSDefaultRunLoopMode</code>、<code>UITrackingRunLoopMode</code>才是真正存在的模式<code>NSRunLoopCommonModes</code>并不是一个真的模式，它只是一个标记</li>
@@ -2716,60 +3148,115 @@
     <url>/2023/01/12/iOS%E5%AD%A6%E4%B9%A0/Runloop%E7%9F%A5%E8%AF%86/runloop%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B1%BB/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="runloop的结构"><a href="#runloop的结构" class="headerlink" title="runloop的结构"></a>runloop的结构</h2><blockquote>
 <ul>
-<li>Core Foundation中关于RunLoop的5个类<ul>
-<li>CFRunLoopRef</li>
-<li>CFRunLoopModeRef</li>
-<li>CFRunLoopSourceRef</li>
-<li>CFRunLoopTimerRef</li>
-<li>CFRunLoopObserverRef</li>
+<li><code>Core Foundation</code>中关于<code>RunLoop</code>的5个类<ul>
+<li><code>CFRunLoopRef</code></li>
+<li><code>CFRunLoopModeRef</code></li>
+<li><code>CFRunLoopSourceRef</code></li>
+<li><code>CFRunLoopTimerRef</code></li>
+<li><code>CFRunLoopObserverRef</code></li>
 </ul>
 </li>
 </ul>
 </blockquote>
-<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><h3 id="CFRunLoop"><a href="#CFRunLoop" class="headerlink" title="__CFRunLoop"></a>__CFRunLoop</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">struct __CFRunLoop &#123;<br>    CFRuntimeBase _base;<br>    pthread_mutex_t _lock;			/* locked for accessing mode list */<br>    __CFPort _wakeUpPort;			// used for CFRunLoopWakeUp <br>    Boolean _unused;<br>    volatile _per_run_data *_perRunData;              // reset for runs of the run loop<br>    pthread_t _pthread; //相对应地线程<br>    uint32_t _winthread;<br>    CFMutableSetRef _commonModes; // <br>    CFMutableSetRef _commonModeItems;<br>    CFRunLoopModeRef _currentMode; //Mode<br>    CFMutableSetRef _modes;<br>    struct _block_item *_blocks_head;<br>    struct _block_item *_blocks_tail;<br>    CFAbsoluteTime _runTime;<br>    CFAbsoluteTime _sleepTime;<br>    CFTypeRef _counterpart;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h3 id="CFRunLoop"><a href="#CFRunLoop" class="headerlink" title="__CFRunLoop"></a>__CFRunLoop</h3><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">struct</span> __CFRunLoop &#123;<br>    <span class="hljs-built_in">CFRuntimeBase</span> _base;<br>    pthread_mutex_t _lock;			<span class="hljs-comment">/* locked for accessing mode list */</span><br>    __CFPort _wakeUpPort;			<span class="hljs-comment">// 通过该函数CFRunLoopWakeUp内核向该端口发送消息可以唤醒runloop</span><br>    Boolean _unused;<br>    <span class="hljs-keyword">volatile</span> _per_run_data *_perRunData;              <span class="hljs-comment">// reset for runs of the run loop</span><br>    pthread_t _pthread; <span class="hljs-comment">//RunLoop相对应地线程</span><br>    uint32_t _winthread;<br>    <span class="hljs-built_in">CFMutableSetRef</span> _commonModes; <span class="hljs-comment">// 存储的是字符串，记录所有标记为common的mode</span><br>    <span class="hljs-built_in">CFMutableSetRef</span> _commonModeItems; <span class="hljs-comment">// 存储所有commonMode的item(source、timer、observer)</span><br>    <span class="hljs-built_in">CFRunLoopModeRef</span> _currentMode; <span class="hljs-comment">//当前运行的mode</span><br>    <span class="hljs-built_in">CFMutableSetRef</span> _modes; <span class="hljs-comment">// 存储的是CFRunLoopModeRef</span><br>    <span class="hljs-keyword">struct</span> _block_item *_blocks_head; <span class="hljs-comment">// do blocks的时候用到</span><br>    <span class="hljs-keyword">struct</span> _block_item *_blocks_tail;<br>    <span class="hljs-built_in">CFAbsoluteTime</span> _runTime;<br>    <span class="hljs-built_in">CFAbsoluteTime</span> _sleepTime;<br>    <span class="hljs-built_in">CFTypeRef</span> _counterpart;<br>&#125;;<br></code></pre></td></tr></table></figure>
 <ul>
 <li>简化版<br><img src="1.png"></li>
 </ul>
-<h3 id="CFRunLoopModeRef"><a href="#CFRunLoopModeRef" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">typedef struct __CFRunLoopMode *CFRunLoopModeRef;<br><br>struct __CFRunLoopMode &#123;<br>    CFRuntimeBase _base;<br>    pthread_mutex_t _lock;	/* must have the run loop locked before locking this */<br>    CFStringRef _name;<br>    Boolean _stopped;<br>    char _padding[3];<br>    CFMutableSetRef _sources0; <br>    CFMutableSetRef _sources1;<br>    CFMutableArrayRef _observers;<br>    CFMutableArrayRef _timers;<br>    CFMutableDictionaryRef _portToV1SourceMap;<br>    __CFPortSet _portSet;<br>    CFIndex _observerMask;<br>#if USE_DISPATCH_SOURCE_FOR_TIMERS<br>    dispatch_source_t _timerSource;<br>    dispatch_queue_t _queue;<br>    Boolean _timerFired; // set to true by the source when a timer has fired<br>    Boolean _dispatchTimerArmed;<br>#endif<br>#if USE_MK_TIMER_TOO<br>    mach_port_t _timerPort;<br>    Boolean _mkTimerArmed;<br>#endif<br>#if DEPLOYMENT_TARGET_WINDOWS<br>    DWORD _msgQMask;<br>    void (*_msgPump)(void);<br>#endif<br>    uint64_t _timerSoftDeadline; /* TSR */<br>    uint64_t _timerHardDeadline; /* TSR */<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h3 id="CFRunLoopModeRef"><a href="#CFRunLoopModeRef" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h3><h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> __CFRunLoopMode *<span class="hljs-built_in">CFRunLoopModeRef</span>;<br><br><span class="hljs-keyword">struct</span> __CFRunLoopMode &#123;<br>    <span class="hljs-built_in">CFRuntimeBase</span> _base;<br>    pthread_mutex_t _lock;	<span class="hljs-comment">/* must have the run loop locked before locking this */</span><br>    <span class="hljs-built_in">CFStringRef</span> _name; <span class="hljs-comment">// mode名称，运行模式是通过名称来识别的</span><br>    Boolean _stopped; <span class="hljs-comment">// mode是否被终止</span><br>    <span class="hljs-keyword">char</span> _padding[<span class="hljs-number">3</span>];<br>    <span class="hljs-built_in">CFMutableSetRef</span> _sources0; <br>    <span class="hljs-built_in">CFMutableSetRef</span> _sources1;<br>    <span class="hljs-built_in">CFMutableArrayRef</span> _observers;<br>    <span class="hljs-built_in">CFMutableArrayRef</span> _timers;<br>    <span class="hljs-built_in">CFMutableDictionaryRef</span> _portToV1SourceMap;<br>    __CFPortSet _portSet; <span class="hljs-comment">// 保存所有需要监听的port，比如_wakeUpPort，_timerPort都保存在这个数组中</span><br>    <span class="hljs-built_in">CFIndex</span> _observerMask;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> USE_DISPATCH_SOURCE_FOR_TIMERS</span><br>    dispatch_source_t _timerSource;<br>    <span class="hljs-built_in">dispatch_queue_t</span> _queue;<br>    Boolean _timerFired; <span class="hljs-comment">// set to true by the source when a timer has fired</span><br>    Boolean _dispatchTimerArmed;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> USE_MK_TIMER_TOO</span><br>    mach_port_t _timerPort;<br>    Boolean _mkTimerArmed;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> DEPLOYMENT_TARGET_WINDOWS</span><br>    DWORD _msgQMask;<br>    <span class="hljs-keyword">void</span> (*_msgPump)(<span class="hljs-keyword">void</span>);<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br>    uint64_t _timerSoftDeadline; <span class="hljs-comment">/* TSR */</span><br>    uint64_t _timerHardDeadline; <span class="hljs-comment">/* TSR */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <ul>
-<li>简化版<br><img src="2.png"><h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3></li>
-<li>一个runLoop中有很多模式，存在modes中，但是每次只会选择一种模式,作为当前模式<br><img src="3.png"></li>
-<li>CFRunLoopModeRef代表RunLoop的运行模式</li>
-<li>一个RunLoop包含若干个Mode，每个Mode又包含若干个Source0/Source1/Timer/Observer</li>
-<li>RunLoop启动时只能选择其中一个Mode，作为currentMode</li>
-<li>如果需要切换Mode，只能退出当前Loop，再重新选择一个Mode进入<ul>
-<li>不同组的Source0/Source1/Timer/Observer能分隔开来，互不影响</li>
+<li>简化版<br><img src="2.png"></li>
 </ul>
-</li>
-<li>如果Mode里没有任何Source0/Source1/Timer/Observer，RunLoop会立马退出<h2 id="CFRunLoopModeRef-1"><a href="#CFRunLoopModeRef-1" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h2></li>
-</ul>
-<ol>
-<li><code>Source0</code><ul>
-<li>触摸事件处理<br><img src="4.png"></li>
-<li><code>performSelector:onThread:</code>,线程之前的通信</li>
-</ul>
-</li>
-<li><code>Source1</code><ul>
-<li>基于<code>Port</code>的线程间通信,</li>
-<li>系统事件捕捉，例如，屏幕点击，最开始是source1</li>
-</ul>
-</li>
-<li><code>Timers</code><ul>
-<li><code>NSTimer</code></li>
-<li><code>performSelector:withObject:afterDelay:</code>,本质会加到runloop的timer</li>
-</ul>
-</li>
-<li><code>Observers</code><ul>
-<li>用于监听<code>RunLoop</code>的状态</li>
-<li><code>UI</code>刷新（<code>BeforeWaiting</code>）,在线程休眠之前，设置UI</li>
-<li><code>Autorelease pool</code>（<code>BeforeWaiting</code>）,在休眠之前释放自动释放池对象，唤醒后新建新的自动释放池<h2 id="CFRunLoopObserverRef"><a href="#CFRunLoopObserverRef" class="headerlink" title="CFRunLoopObserverRef"></a>CFRunLoopObserverRef</h2></li>
-</ul>
-</li>
+<h4 id="一些常见的Mode"><a href="#一些常见的Mode" class="headerlink" title="一些常见的Mode"></a>一些常见的Mode</h4><ol>
+<li><code>kCFRunLoopDefaultMode</code>: <code>App</code>的默认 <code>Mode</code>，通常主线程是在这个 <code>Mode</code> 下运行的。</li>
+<li><code>UITrackingRunLoopMode</code>: 界面跟踪 <code>Mode</code>，用于 <code>ScrollView</code> 追踪触摸滑动，保证界面滑动时不受其他 <code>Mode</code> 影响。</li>
+<li><code>UIInitializationRunLoopMode</code>: 在刚启动 <code>App</code> 时进入的第一个 <code>Mode</code>，启动完成后就不再使用。</li>
+<li><code>GSEventReceiveRunLoopMode</code>: 接受系统事件的内部 <code>Mode</code>，通常用不到。</li>
+<li><code>kCFRunLoopCommonModes</code>: 这是一个占位的 <code>Mode</code>，没有实际作用</li>
 </ol>
+<h4 id="切换mode逻辑"><a href="#切换mode逻辑" class="headerlink" title="切换mode逻辑"></a>切换mode逻辑</h4><ul>
+<li><code>CFRunLoopRunSpecific</code>是启动<code>Runloop</code>和指定<code>Runloop</code>在那个<code>mode</code>下执行的。 </li>
+<li>这个函数一般是操作系统进行<code>mode</code>的切换。比如滑动的时候，<code>Runloop</code>会进入<code>UITrackingRunLoopMode</code>,而<code>app</code>启动的时候<code>UIInitializationRunLoopMode</code>。</li>
+<li>每一个<code>mode</code>处理完成后，如果<code>runloop</code>没有退出，就会返回之前的<code>mode</code>，初始<code>mode</code>是<code>default</code>。<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3></li>
+<li>一个<code>runLoop</code>中有很多模式，存在<code>modes</code>中，但是每次只会选择一种模式,作为当前模式<br><img src="3.png"></li>
+<li><code>CFRunLoopModeRef</code>代表<code>RunLoop</code>的运行模式<ul>
+<li>一个<code>RunLoop</code>包含若干个<code>Mode</code>，每个<code>Mode</code>又包含若干个<code>Source0</code>/<code>Source1</code>/<code>Timer</code>/<code>Observer</code></li>
+<li><code>RunLoop</code>启动时只能选择其中一个<code>Mode</code>，作为<code>currentMode</code></li>
+<li>如果需要切换<code>Mode</code>，只能退出当前<code>Loop</code>，再重新选择一个<code>Mode</code>进入</li>
+<li>不同组的<code>Source0</code>/<code>Source1</code>/<code>Timer</code>/<code>Observer</code>能分隔开来，互不影响</li>
+<li>如果<code>Mode</code>里没有任何<code>Source0</code>/<code>Source1</code>/<code>Timer</code>/<code>Observer</code>，<code>RunLoop</code>会立马退出</li>
+</ul>
+</li>
+</ul>
+<h2 id="CFRunLoopModeRef-1"><a href="#CFRunLoopModeRef-1" class="headerlink" title="CFRunLoopModeRef"></a>CFRunLoopModeRef</h2><h3 id="CFRunLoopSourceRef"><a href="#CFRunLoopSourceRef" class="headerlink" title="CFRunLoopSourceRef"></a>CFRunLoopSourceRef</h3><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">CFRunLoopSource</span> * <span class="hljs-title">CFRunLoopSourceRef</span>;</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">CFRunLoopSource</span> &#123;</span><br>    CFRuntimeBase _base;<br>    <span class="hljs-keyword">uint32_t</span> _bits;<br>    <span class="hljs-keyword">pthread_mutex_t</span> _lock;<br>    CFIndex _order;<span class="hljs-comment">//执行顺序</span><br>    CFMutableBagRef _runLoops;<span class="hljs-comment">//包含多个RunLoop</span><br>  	<span class="hljs-comment">//版本</span><br>    <span class="hljs-class"><span class="hljs-keyword">union</span> &#123;</span><br>        CFRunLoopSourceContext version0;	<span class="hljs-comment">/* immutable, except invalidation */</span><br>        CFRunLoopSourceContext1 version1;	<span class="hljs-comment">/* immutable, except invalidation */</span><br>    &#125; _context;<br>&#125;;<br></code></pre></td></tr></table></figure>
 <ul>
-<li><code>RunLoop</code>的状态改变流程<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">/* Run Loop Observer Activities */<br>typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) &#123;<br>    kCFRunLoopEntry = (1UL &lt;&lt; 0),<br>    kCFRunLoopBeforeTimers = (1UL &lt;&lt; 1),<br>    kCFRunLoopBeforeSources = (1UL &lt;&lt; 2),<br>    kCFRunLoopBeforeWaiting = (1UL &lt;&lt; 5),<br>    kCFRunLoopAfterWaiting = (1UL &lt;&lt; 6),<br>    kCFRunLoopExit = (1UL &lt;&lt; 7),<br>    kCFRunLoopAllActivities = 0x0FFFFFFFU<br>&#125;;<br></code></pre></td></tr></table></figure></li>
-<li>监听RunLoop的状态<ul>
-<li>切换mode之后，会先<code>kCFRunLoopExit - kCFRunLoopDefaultMode</code>，之后再<code>kCFRunLoopEntry - UITrackingRunLoopMode</code><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, kCFRunLoopAllActivities, YES, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity) &#123;<br>    switch (activity) &#123;<br>       case kCFRunLoopEntry:<br>            NSLog(@&quot;kCFRunLoopEntry&quot;);<br>            break;<br>        case kCFRunLoopBeforeTimers:<br>            NSLog(@&quot;kCFRunLoopBeforeTimers&quot;);<br>            break;<br>        case kCFRunLoopBeforeSources:<br>            NSLog(@&quot;kCFRunLoopBeforeSources&quot;);<br>            break;<br>        case kCFRunLoopBeforeWaiting:<br>            NSLog(@&quot;kCFRunLoopBeforeWaiting&quot;);<br>            break;<br>        case kCFRunLoopAfterWaiting:<br>            NSLog(@&quot;kCFRunLoopAfterWaiting&quot;);<br>            break;<br>        case kCFRunLoopExit:<br>            NSLog(@&quot;kCFRunLoopExit&quot;);<br>            break;<br>        default:<br>            break;<br>        &#125;<br>    &#125;);<br>    // 添加Observer到RunLoop中<br>CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);<br>    // 释放<br>CFRelease(observer);<br></code></pre></td></tr></table></figure></li>
+<li>存在两个版本<ul>
+<li><code>Source0</code> 只包含了一个回调（函数指针），它并不能主动触发事件。使用时，你需要先调用 <code>CFRunLoopSourceSignal (source)</code>，将这个 <code>Source</code> 标记为待处理，然后手动调用 <code>CFRunLoopWakeUp (runloop)</code> 来唤醒 <code>RunLoop</code>，让其处理这个事件。  <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>    CFIndex	version;<br>    <span class="hljs-keyword">void</span> *	info;<br>    <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *(*retain)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info);<br>    <span class="hljs-keyword">void</span>	(*release)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info);<br>    CFStringRef	(*copyDescription)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info);<br>    Boolean	(*equal)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info1, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info2);<br>    CFHashCode	(*hash)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info);<br>    <span class="hljs-keyword">void</span>	(*schedule)(<span class="hljs-keyword">void</span> *info, CFRunLoopRef rl, CFRunLoopMode mode);<br>    <span class="hljs-keyword">void</span>	(*cancel)(<span class="hljs-keyword">void</span> *info, CFRunLoopRef rl, CFRunLoopMode mode);<br>    <span class="hljs-keyword">void</span>	(*perform)(<span class="hljs-keyword">void</span> *info);<br>&#125; CFRunLoopSourceContext;<br></code></pre></td></tr></table></figure></li>
+<li><code>Source1</code>包含了一个 <code>mach_port</code> 和一个回调（函数指针），被用于通过内核和其他线程相互发送消息。这种<code>Source</code> 能主动唤醒<code> RunLoop</code> 的线程  <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>    CFIndex	version;<br>    <span class="hljs-keyword">void</span> *	info;<br>    <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *(*retain)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info);<br>    <span class="hljs-keyword">void</span>	(*release)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info);<br>    CFStringRef	(*copyDescription)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info);<br>    Boolean	(*equal)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info1, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info2);<br>    CFHashCode	(*hash)(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *info);<br>    <span class="hljs-keyword">mach_port_t</span>	(*getPort)(<span class="hljs-keyword">void</span> *info);<br>    <span class="hljs-keyword">void</span> *	(*perform)(<span class="hljs-keyword">void</span> *msg, CFIndex size, CFAllocatorRef allocator, <span class="hljs-keyword">void</span> *info);<br> &#125; CFRunLoopSourceContext1;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="Timers"><a href="#Timers" class="headerlink" title="Timers"></a><code>Timers</code></h3><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">CFRunLoopTimer</span> &#123;</span><br>    CFRuntimeBase _base;<br>    <span class="hljs-keyword">uint16_t</span> _bits;<br>    <span class="hljs-keyword">pthread_mutex_t</span> _lock;<br>    CFRunLoopRef _runLoop;<br>    CFMutableSetRef _rlModes;<br>    CFAbsoluteTime _nextFireDate;<br>    CFTimeInterval _interval;		<span class="hljs-comment">/* immutable */</span><br>    CFTimeInterval _tolerance;          <span class="hljs-comment">/* mutable */</span><br>    <span class="hljs-keyword">uint64_t</span> _fireTSR;			<span class="hljs-comment">/* TSR units */</span><br>    CFIndex _order;			<span class="hljs-comment">/* immutable */</span><br>    CFRunLoopTimerCallBack _callout;	<span class="hljs-comment">/* immutable */</span><br>    CFRunLoopTimerContext _context;	<span class="hljs-comment">/* immutable, except invalidation */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>CFRunLoopTimerRef</code> 是基于时间的触发器，它和 <code>NSTimer</code> 是 <code>toll-free bridged</code> 的，可以混用。其包含一个时间长度和一个回调（函数指针）。当其加入到 <code>RunLoop</code> 时，<code>RunLoop</code> 会注册对应的时间点，当时间点到时，<code>RunLoop</code> 会被唤醒以执行那个回调。</li>
+<li><code>NSTimer</code>,新建定时器，需要添加到<code>runloop</code>才会执行</li>
+<li><code>performSelector:withObject:afterDelay:</code>,<strong>本质</strong>会加到<code>runloop</code>的<code>timer</code></li>
+</ul>
+<h3 id="Observers"><a href="#Observers" class="headerlink" title="Observers"></a><code>Observers</code></h3><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">CFRunLoopObserver</span> &#123;</span><br>    CFRuntimeBase _base;<br>    <span class="hljs-keyword">pthread_mutex_t</span> _lock;<br>    CFRunLoopRef _runLoop; <span class="hljs-comment">//监听的RunLoop</span><br>    CFIndex _rlCount; <span class="hljs-comment">// 添加该Observer的RunLoop对象个数</span><br>    CFOptionFlags _activities;		<span class="hljs-comment">/* immutable */</span><br>    CFIndex _order;			<span class="hljs-comment">//同时间最多只能监听一个</span><br>    CFRunLoopObserverCallBack _callout; <span class="hljs-comment">// 监听的回调	/* immutable */</span><br>    CFRunLoopObserverContext _context; <span class="hljs-comment">// 上下文用于内存管理	/* immutable, except invalidation */</span><br>&#125;;<br><br></code></pre></td></tr></table></figure>
+<ul>
+<li>用于监听<code>RunLoop</code>的状态</li>
+<li><code>UI</code>刷新（<code>BeforeWaiting</code>）,在<strong>线程休眠之前</strong>，设置<code>UI</code></li>
+<li><code>Autorelease pool</code>（<code>BeforeWaiting</code>）,在<strong>休眠之前</strong>释放自动释放池对象，<strong>唤醒后</strong>新建新的自动释放池</li>
+</ul>
+<h4 id="CFRunLoopObserverRef"><a href="#CFRunLoopObserverRef" class="headerlink" title="CFRunLoopObserverRef"></a>CFRunLoopObserverRef</h4><ul>
+<li><code>RunLoop</code>的状态改变流程<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">/* Run Loop Observer Activities */</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-built_in">CF_OPTIONS</span>(<span class="hljs-built_in">CFOptionFlags</span>, <span class="hljs-built_in">CFRunLoopActivity</span>) &#123;<br>    kCFRunLoopEntry = (<span class="hljs-number">1</span>UL &lt;&lt; <span class="hljs-number">0</span>),<br>    kCFRunLoopBeforeTimers = (<span class="hljs-number">1</span>UL &lt;&lt; <span class="hljs-number">1</span>),<br>    kCFRunLoopBeforeSources = (<span class="hljs-number">1</span>UL &lt;&lt; <span class="hljs-number">2</span>),<br>    kCFRunLoopBeforeWaiting = (<span class="hljs-number">1</span>UL &lt;&lt; <span class="hljs-number">5</span>),<br>    kCFRunLoopAfterWaiting = (<span class="hljs-number">1</span>UL &lt;&lt; <span class="hljs-number">6</span>),<br>    kCFRunLoopExit = (<span class="hljs-number">1</span>UL &lt;&lt; <span class="hljs-number">7</span>),<br>    kCFRunLoopAllActivities = <span class="hljs-number">0x0FFFFFFF</span>U<br>&#125;;<br></code></pre></td></tr></table></figure></li>
+<li>监听<code>RunLoop的</code>状态<ul>
+<li>切换<code>mode</code>之后，会先<code>kCFRunLoopExit - kCFRunLoopDefaultMode</code>，之后再<code>kCFRunLoopEntry - UITrackingRunLoopMode</code><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-built_in">CFRunLoopObserverRef</span> observer = <span class="hljs-built_in">CFRunLoopObserverCreateWithHandler</span>(kCFAllocatorDefault, kCFRunLoopAllActivities, <span class="hljs-literal">YES</span>, <span class="hljs-number">0</span>, ^(<span class="hljs-built_in">CFRunLoopObserverRef</span> observer, <span class="hljs-built_in">CFRunLoopActivity</span> activity) &#123;<br>    <span class="hljs-keyword">switch</span> (activity) &#123;<br>       <span class="hljs-keyword">case</span> kCFRunLoopEntry:<br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;kCFRunLoopEntry&quot;</span>);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> kCFRunLoopBeforeTimers:<br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;kCFRunLoopBeforeTimers&quot;</span>);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> kCFRunLoopBeforeSources:<br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;kCFRunLoopBeforeSources&quot;</span>);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> kCFRunLoopBeforeWaiting:<br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;kCFRunLoopBeforeWaiting&quot;</span>);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> kCFRunLoopAfterWaiting:<br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;kCFRunLoopAfterWaiting&quot;</span>);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> kCFRunLoopExit:<br>            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;kCFRunLoopExit&quot;</span>);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">default</span>:<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;);<br>    <span class="hljs-comment">// 添加Observer到RunLoop中</span><br><span class="hljs-built_in">CFRunLoopAddObserver</span>(<span class="hljs-built_in">CFRunLoopGetMain</span>(), observer, kCFRunLoopCommonModes);<br>    <span class="hljs-comment">// 释放</span><br><span class="hljs-built_in">CFRelease</span>(observer);<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="RunLoop的内部逻辑"><a href="#RunLoop的内部逻辑" class="headerlink" title="RunLoop的内部逻辑"></a>RunLoop的内部逻辑</h3><ul>
+<li>运行逻辑<br><img src="5.png"><h4 id="来源按同步异步分类"><a href="#来源按同步异步分类" class="headerlink" title="来源按同步异步分类"></a>来源按同步异步分类</h4></li>
+<li><code>Input sources</code>,输入源传递异步事件，通常消息来自于其他线程或程序，按照是否来源于内核也分为下面几种：<ul>
+<li><code>Port-Based Sources</code>，基于<code>Port</code> 的 事件，系统底层的，一般由内核自动发出信号。例如 <code>CFSocketRef</code> ，在应用层基本用不到。</li>
+<li><code>Custom Input Sources</code>，非基于 <code>Port</code> 事件，用户手动创建的 <code>Source</code>，则必须从其他线程手动发送信号。</li>
+<li><code>Cocoa Perform Selector Sources</code>， <code>Cocoa</code> 提供的 <code>performSelector</code> 系列方法，也是一种事件源。和基于端口的源一样，执行 <code>selector</code> 请求会在目标线程上序列化，减缓许多在线程上允许多个方法容易引起的同步问题。不像基于端口的源，一个 <code>selector</code> 执行完后会自动从 <code>Run Loop</code> 里面<strong>移除</strong>。</li>
+</ul>
+</li>
+<li><code>Timer sources</code>,定时源则传递同步事件，发生在特定时间或者重复的时间间隔。<ul>
+<li>定时器可以产生基于时间的通知，但它并不是<code>实时机制</code>。和输入源一样，定时器也和你的 <code>Run Loop</code> 的特定模式相关。如果定时器所在的模式当前未被 <code>Run Loop</code> 监视，那么定时器将不会开始直到 <code>Run Loop</code> 运行在相应的模式下。</li>
+<li>主要有<code>NSTimer</code>和<code>performSelector:withObject:afterDelay:</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="来源按对象分类"><a href="#来源按对象分类" class="headerlink" title="来源按对象分类"></a>来源按对象分类</h4><ul>
+<li><p><code>Source1</code>,对应于 <code>Port-Based Sources</code>，即基于 <code>Port</code> 的，通过内核和其他线程通信。</p>
+<ul>
+<li>常用于接收、分发系统事件，大部分屏幕交互事件都是由 <code>Source1</code> 接收，包装成 <code>Event</code>，然后分发下去，最后由 <code>Source0</code> 去处理。</li>
+<li>包括:<ul>
+<li>基于<code>Port</code>的线程间通信,</li>
+<li>系统事件捕捉，例如，屏幕点击，最开始是<code>source1</code>,传给具体的应用，后面会分发包装成<code>source0</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Source0</code>,是非 <code>Port</code> 事件。在应用中，触摸事件的最终处理，以及 <code>perforSelector:onThread</code> 都是包装成该类型对象，最后由开发者指定回调函数，手动处理该事件。</p>
+<ul>
+<li><p>需要注意的是 <code>perforSelector:onThread</code> 是否有 <code>delay</code>，即是否延迟函数或者定时函数等类型。</p>
+<ul>
+<li><p><code>perforSelector:onThread</code> 不是 <code>delay</code> 函数时， 是 <code>Source0</code> 事件。</p>
+</li>
+<li><p><code>performSelector:withObject:afterDelay</code> 有 <code>delay</code> 时，则属于 <code>Timers </code>事件。</p>
+</li>
+</ul>
+</li>
+<li><p>包括:</p>
+<ul>
+<li>触摸事件处理<br><img src="4.png"></li>
+</ul>
+</li>
+<li><p><code>performSelector:onThread:</code>,线程之间的通信</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -2789,28 +3276,28 @@
 </li>
 <li>基本作用<ul>
 <li>保持程序的持续运行</li>
-<li>处理App中的各种事件（比如触摸事件、定时器事件等）</li>
-<li>节省CPU资源，提高程序性能：该做事时做事，该休息时休息</li>
+<li>处理<code>App</code>中的各种事件（比如触摸事件、定时器事件等）</li>
+<li>节省<code>CPU</code>资源，提高程序性能：该做事时做事，该休息时休息</li>
 </ul>
 </li>
 <li>应用范畴<ul>
-<li>定时器（Timer）、PerformSelector</li>
-<li>GCD Async Main Queue</li>
+<li>定时器（<code>Timer</code>）、<code>PerformSelector</code></li>
+<li><code>GCD Async Main Queue</code></li>
 <li>事件响应、手势识别、界面刷新</li>
 <li>网络请求</li>
 <li><code>AutoreleasePool</code></li>
 </ul>
 </li>
 <li><code>RunLoop</code>与线程<ul>
-<li>每条线程都有唯一的一个与之对应的RunLoop对象<ul>
-<li><code>CFRunLoopGetCurrent()</code>和<code>[NSRunLoop currentRunLoop]</code>,在当前线程中获取runloop</li>
-<li>从字典中获取，如果没有的话，则会创建，并存放在字典中，key是线程的指针地址<br><img src="1.png"></li>
+<li>每条线程都有唯一的一个与之对应的<code>RunLoop</code>对象<ul>
+<li><code>CFRunLoopGetCurrent()</code>和<code>[NSRunLoop currentRunLoop]</code>,在当前线程中获取<code>runloop</code></li>
+<li>从字典中获取，如果没有的话，则会创建，并存放在字典中，<code>key</code>是线程的指针地址<br><img src="1.png"></li>
 </ul>
 </li>
-<li>RunLoop保存在一个全局的Dictionary里，线程作为key，RunLoop作为value</li>
-<li>线程刚创建时并没有RunLoop对象，RunLoop会在第一次获取它时创建</li>
-<li>RunLoop会在线程结束时销毁</li>
-<li>主线程的RunLoop已经自动获取（创建），子线程默认没有开启RunLoop</li>
+<li><code>RunLoop</code>保存在一个全局的<code>Dictionary</code>里，线程作为<code>key</code>，<code>RunLoop</code>作为<code>value</code></li>
+<li>线程刚创建时并没有<code>RunLoop</code>对象，<code>RunLoop</code>会在<strong>第一次</strong>获取它时创建</li>
+<li><code>RunLoop</code>会在线程结束时销毁</li>
+<li>主线程的<code>RunLoop</code>已经自动获取（创建），子线程默认没有开启<code>RunLoop</code>,需要手动开启</li>
 </ul>
 </li>
 </ul>
@@ -2823,7 +3310,7 @@
     <title>中间代码（IR）</title>
     <url>/2023/01/09/iOS%E5%AD%A6%E4%B9%A0/Runtime/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
-<p>Objective-C在变为机器代码之前，会被LLVM编译器转换为中间代码（Intermediate Representation）,ir中间代码代码相比于转成C++更接近底层（但是肯定无法和汇编相比）</p>
+<p><code>Objective-C</code>在变为机器代码之前，会被<code>LLVM</code>编译器转换为中间代码（<code>Intermediate Representation</code>）,<code>ir</code>中间代码代码相比于转成<code>C++</code>更接近底层（但是肯定无法和汇编相比）</p>
 </blockquote>
 <ul>
 <li>可以使用以下命令行指令生成中间代码<ul>
@@ -2834,7 +3321,7 @@
 <li><code>@</code> - 全局变量</li>
 <li><code>%</code> - 局部变量</li>
 <li><code>alloca</code> - 在当前执行的函数的堆栈帧中分配内存，当该函数返回到其调用者时，将自动释放内存</li>
-<li><code>i32</code> - 32位4字节的整数</li>
+<li><code>i32</code> - <code>32</code>位<code>4</code>字节的整数</li>
 <li><code>align</code> - 对齐</li>
 <li><code>load</code> - 读出，<code>store</code> 写入</li>
 <li><code>icmp</code> - 两个整数值比较，返回布尔值</li>
@@ -2843,7 +3330,7 @@
 <li><code>call</code> - 调用函数</li>
 </ul>
 </li>
-<li>示例<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">main.m<br>int a = 10;<br>int b = 20;<br>int c = a + b;<br>test(c);<br>//转成main.ll<br>  store i32 10, i32* %8, align 4  //将10存储到局部变量 %8<br>  store i32 20, i32* %9, align 4  //将20存储到局部变量 %9<br>  %19 = load i32, i32* %8, align 4 //将%8加载到%19<br>  %20 = load i32, i32* %9, align 4 //将%9加载到%20<br>  %21 = add nsw i32 %19, %20    // %19和%20的值相加<br>  store i32 %21, i32* %10, align 4 //将%21的值存储到%10<br>  %22 = load i32, i32* %10, align 4  //将 %10的值加载到%22<br>  call void @test(i32 %22) //调用函数，参数是 %22<br></code></pre></td></tr></table></figure></li>
+<li>示例<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">main.m<br><span class="hljs-keyword">int</span> a = <span class="hljs-number">10</span>;<br><span class="hljs-keyword">int</span> b = <span class="hljs-number">20</span>;<br><span class="hljs-keyword">int</span> c = a + b;<br>test(c);<br><span class="hljs-comment">//转成main.ll</span><br>  store i32 <span class="hljs-number">10</span>, i32* %<span class="hljs-number">8</span>, align <span class="hljs-number">4</span>  <span class="hljs-comment">//将10存储到局部变量 %8</span><br>  store i32 <span class="hljs-number">20</span>, i32* %<span class="hljs-number">9</span>, align <span class="hljs-number">4</span>  <span class="hljs-comment">//将20存储到局部变量 %9</span><br>  %<span class="hljs-number">19</span> = load i32, i32* %<span class="hljs-number">8</span>, align <span class="hljs-number">4</span> <span class="hljs-comment">//将%8加载到%19</span><br>  %<span class="hljs-number">20</span> = load i32, i32* %<span class="hljs-number">9</span>, align <span class="hljs-number">4</span> <span class="hljs-comment">//将%9加载到%20</span><br>  %<span class="hljs-number">21</span> = add nsw i32 %<span class="hljs-number">19</span>, %<span class="hljs-number">20</span>    <span class="hljs-comment">// %19和%20的值相加</span><br>  store i32 %<span class="hljs-number">21</span>, i32* %<span class="hljs-number">10</span>, align <span class="hljs-number">4</span> <span class="hljs-comment">//将%21的值存储到%10</span><br>  %<span class="hljs-number">22</span> = load i32, i32* %<span class="hljs-number">10</span>, align <span class="hljs-number">4</span>  <span class="hljs-comment">//将 %10的值加载到%22</span><br>  call <span class="hljs-keyword">void</span> @test(i32 %<span class="hljs-number">22</span>) <span class="hljs-comment">//调用函数，参数是 %22</span><br></code></pre></td></tr></table></figure></li>
 <li><a href="https://llvm.org/docs/LangRef.html">具体文档</a></li>
 </ul>
 ]]></content>
@@ -2854,97 +3341,92 @@
   <entry>
     <title>runtime特殊问题</title>
     <url>/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/runtime%E7%89%B9%E6%AE%8A%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="第一个问题"><a href="#第一个问题" class="headerlink" title="第一个问题"></a>第一个问题</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">@interface Person:NSObject<br>@property (copy, nonatomic) NSString *name;<br>- (void)print;<br>@end<br>@implementation Person<br>- (void)print<br>&#123;<br>    NSLog(@&quot;my name is %@&quot;, self-&gt;_name);<br>&#125;<br>@end<br><br>//ViewController中<br>- (void)viewDidLoad &#123;<br>    [super viewDidLoad];<br>    //NSString *test = @&quot;123&quot;;如果，前面有这个text对象，则实际会输出my name is 123<br>    id cls = [Person class];<br><br>    void *obj = &amp;cls;<br><br>    [(__bridge id)obj print];<br>    //实际输出my name is &lt;ViewController: 0x104b08020&gt;<br>&#125;<br></code></pre></td></tr></table></figure>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="第一个问题"><a href="#第一个问题" class="headerlink" title="第一个问题"></a>第一个问题</h2><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Person</span>:<span class="hljs-title">NSObject</span></span><br><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">copy</span>, <span class="hljs-keyword">nonatomic</span>) <span class="hljs-built_in">NSString</span> *name;<br>- (<span class="hljs-keyword">void</span>)print;<br><span class="hljs-keyword">@end</span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Person</span></span><br>- (<span class="hljs-keyword">void</span>)print<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;my name is %@&quot;</span>, <span class="hljs-keyword">self</span>-&gt;_name);<br>&#125;<br><span class="hljs-keyword">@end</span><br><br><span class="hljs-comment">//ViewController中</span><br>- (<span class="hljs-keyword">void</span>)viewDidLoad &#123;<br>    [<span class="hljs-keyword">super</span> viewDidLoad];<br>    <span class="hljs-comment">//NSString *test = @&quot;123&quot;;如果，前面有这个text对象，则实际会输出my name is 123</span><br>    <span class="hljs-keyword">id</span> cls = [Person <span class="hljs-keyword">class</span>];<br><br>    <span class="hljs-keyword">void</span> *obj = &amp;cls;<br><br>    [(__bridge <span class="hljs-keyword">id</span>)obj print];<br>    <span class="hljs-comment">//实际输出my name is &lt;ViewController: 0x104b08020&gt;</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <h3 id="print为什么能够调用成功？"><a href="#print为什么能够调用成功？" class="headerlink" title="print为什么能够调用成功？"></a><code>print</code>为什么能够调用成功？</h3><ul>
-<li><p>示意图<br><img src="1.jpg"></p>
+<li>示意图<br><img src="1.jpg"></li>
+<li>将<code>[Person class]</code>的类对象<code>cls</code>的地址赋值给<code>obj</code>之后，在<code>obj</code>地址上的<code>前8个字节</code>的东西是<code>cls</code>的类对象的地址。这和正常实例化后的对象<code>person</code>一样，<code>person</code>所指向的地址在内存上前<code>8</code>个字节的地址是<code>isa</code>(类对象的地址)</li>
+<li>在调用<code>print</code>方法的时候，就会去<code>obj</code>内存的前<code>8</code>个字节，取出该内存上的对象（正常结构体，则是其内存上前<code>8</code>个字节的<code>isa</code>指针），刚好是类对象，因此最终和调用实例对象方法一样可以调用成功。</li>
+<li>在<code>(__bridge id)</code>的时候，实际上将<code>objc</code>指针，转换成了<code>objc_object</code>  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">struct</span> objc_object &#123;<br>    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;<br>&#125;;<br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> objc_object *<span class="hljs-keyword">id</span>;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="为什么self-name变成了ViewController等其他内容"><a href="#为什么self-name变成了ViewController等其他内容" class="headerlink" title="为什么self.name变成了ViewController等其他内容"></a>为什么<code>self.name</code>变成了<code>ViewController</code>等其他内容</h3><ul>
+<li>栈上分配的临时对象的地址，是由<code>高</code>向<code>低</code>进行分配的,下面字符串的指针均指向常量区，其指针均相同，但是，栈给对象分配的指针地址，是不同的  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">// 0x0000000100998070 @&quot;123&quot;</span><br><span class="hljs-built_in">NSString</span> *test = <span class="hljs-string">@&quot;123&quot;</span>; <span class="hljs-comment">//&amp;test 0x000000016f46cc20</span><br><span class="hljs-built_in">NSString</span> *test1 = <span class="hljs-string">@&quot;123&quot;</span>; <span class="hljs-comment">// &amp;test1 0x000000016f46cc18</span><br><span class="hljs-built_in">NSString</span> *test2 = <span class="hljs-string">@&quot;123&quot;</span>; <span class="hljs-comment">// &amp;test2 0x000000016f46cc10</span><br></code></pre></td></tr></table></figure></li>
+<li>实际分配的示意图<br><img src="2.jpg"></li>
+<li><code>Person</code>结构体的类型<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">struct</span> MJPerson_IMPL<br> &#123;<br>    Class isa;<br>     <span class="hljs-built_in">NSString</span> *_name;<br> &#125;;<br></code></pre></td></tr></table></figure></li>
+<li><code>NSLog(@&quot;my name is %@&quot;, self-&gt;_name);</code>调用该方法的本质，实际<code>person</code>的前8个字节是<code>cls</code>,而在<code>isa上加8个字节</code>后去取<code>_name</code>变量(结构体越往后面的<strong>地址会越高</strong>)，则根据分配的原则，会取到<code>test</code>,因此加<code>test</code>后，则会输出<code>my name is 123</code></li>
+<li>不加局部对象，则会输出<code>my name is &lt;ViewController: 0x104b08020&gt;</code>,是由于<code>[super viewDidLoad]</code>造成的，因此在没有<code>test</code>局部变量后，实际上<code>isa上加8个字节</code>后，取到的是<code>self</code>的地址。最终则会输出<code>my name is &lt;ViewController: 0x104b08020&gt;</code>  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"> <span class="hljs-comment">//[super viewDidLoad] ,源码实际</span><br> <span class="hljs-keyword">struct</span> abc = &#123;<br>       <span class="hljs-keyword">self</span>,<br>       [ViewController <span class="hljs-keyword">class</span>]<br>   &#125;;<br><span class="hljs-comment">//注意这里调用的是objc_msgSendSuper2，并非objc_msgSendSuper(这个要传入父类对象)</span><br>objc_msgSendSuper2(abc, sel_registerName(<span class="hljs-string">&quot;viewDidLoad&quot;</span>));<br><span class="hljs-comment">//因此会隐式的生成abc结构体变量，其低地址是self，高地址是[ViewController class]</span><br></code></pre></td></tr></table></figure></li>
+<li><strong>注意</strong>，如果将<code>[super viewDidLoad]</code>屏蔽，则由于<code>isa地址加8字节后</code>，找不到任何东西，则会出现<strong>野指针的错误</strong></li>
+<li><code>objc_msgSendSuper2</code>可以通过调试发现,<code>(x/4g</code>,打出$1地址上每8个字节存的东西，打印4个),通过调试发现，后续的内存中,第一个是<code>self</code>，第二个是<code>[ViewController class]</code>，而<strong>非父类</strong>。<ul>
+<li>但实际在源码中，<code>objc_msgSendSuper2</code>最终还是会去父类去调用</li>
+<li><code>lldb</code>调试<br><img src="3.png"></li>
+<li>源码中，还是会去父类去调用<br><img src="4.png"></li>
+<li>实际调试代码，确定是用<code>objc_msgSendSuper2</code><br><img src="5.png"></li>
+</ul>
 </li>
-<li><p>将<code>[Person class]</code>的类对象cls的地址赋值给obj之后，在obj地址上的<code>前8个字节</code>的东西是cls的类对象的地址。这和正常实例化后的对象person一样，person所指向的地址在内存上前8个字节的地址是isa(类对象的地址)</p>
-</li>
-<li><p>在调用<code>print</code>方法的时候，就会去obj内存的前8个字节，取出该内存上的对象（正常结构体，则是其内存上前8个字节的isa指针），刚好是类对象，因此最终和调用实例对象方法一样可以调用成功。</p>
-</li>
-<li><p>在（__bridge id）的时候，实际上讲objc指针，转换成了<code>objc_object</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">struct objc_object &#123;<br>    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;<br>&#125;;<br>typedef struct objc_object *id;<br></code></pre></td></tr></table></figure>
-<h3 id="为什么self-name变成了ViewController等其他内容"><a href="#为什么self-name变成了ViewController等其他内容" class="headerlink" title="为什么self.name变成了ViewController等其他内容"></a>为什么self.name变成了ViewController等其他内容</h3></li>
-<li><p>栈上分配的临时对象的地址，是有高向低进行分配的,下面字符串的指针均指向常量区，其指针均相同，但是，栈给对象分配的指针地址，是不同的</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">// 0x0000000100998070 @&quot;123&quot;<br>NSString *test = @&quot;123&quot;; //&amp;test 0x000000016f46cc20<br>NSString *test1 = @&quot;123&quot;; // &amp;test1 0x000000016f46cc18<br>NSString *test2 = @&quot;123&quot;; // &amp;test2 0x000000016f46cc10<br></code></pre></td></tr></table></figure></li>
-<li><p>实际分配的示意图<br><img src="2.jpg"></p>
-</li>
-<li><p><code>Person</code>结构体的类型</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">struct MJPerson_IMPL<br> &#123;<br>    Class isa;<br>     NSString *_name;<br> &#125;;<br></code></pre></td></tr></table></figure></li>
-<li><p><code>NSLog(@&quot;my name is %@&quot;, self-&gt;_name);</code>调用该方法的本质，实际<code>person</code>的前8个字节是<code>cls</code>,而在<code>isa上加8个字节</code>后去取_name变量(结构体越往后面的地址会越高)，则根据分配的原则，会取到<code>test</code>,因此加test后，则会输出<code>my name is 123</code></p>
-</li>
-<li><p>不加局部对象，则会输出<code>my name is &lt;ViewController: 0x104b08020&gt;</code>,是由于<code>[super viewDidLoad]</code>造成的，因此在没有<code>test</code>局部变量后，实际上<code>isa上加8个字节</code>后，取到的是<code>self</code>的地址。最终则会输出<code>my name is &lt;ViewController: 0x104b08020&gt;</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext"> //[super viewDidLoad] ,源码实际<br> struct abc = &#123;<br>       self,<br>       [ViewController class]<br>   &#125;;<br>//注意这里调用的是objc_msgSendSuper2，并非objc_msgSendSuper(这个要传入父类对象)<br>objc_msgSendSuper2(abc, sel_registerName(&quot;viewDidLoad&quot;));<br>//因此会隐式的生成abc结构体变量，其低地址是self，高地址是[ViewController class]<br></code></pre></td></tr></table></figure></li>
-<li><p>注意，如果将<code>[super viewDidLoad]</code>屏蔽，则由于<code>isa地址加8字节后</code>，找不到任何东西，则会出现野指针的错误</p>
-</li>
-<li><p><code>objc_msgSendSuper2</code>可以通过调试发现,(x/4g,打出$1地址上每8个字节存的东西，打印4个),通过调试发现，后续的内存中,第一个是self，第二个是[ViewController class]，而非父类。</p>
-<ul>
-<li>但实际在源码中，<code>objc_msgSendSuper2</code>最终还是会取父类去调用</li>
-<li>调试汇编<br><img src="5.png"></li>
-<li>源码中，还是会取父类去调用<br><img src="4.png"></li>
-<li>实际调试代码，确定是用objc_msgSendSuper2<br><img src="3.png"><h2 id="第二个问题"><a href="#第二个问题" class="headerlink" title="第二个问题"></a>第二个问题</h2><blockquote>
-<p><code>&lt;objc/runtime.h&gt;</code>的APi</p>
+</ul>
+<h2 id="第二个问题"><a href="#第二个问题" class="headerlink" title="第二个问题"></a>第二个问题</h2><blockquote>
+<p><code>&lt;objc/runtime.h&gt;</code>的<code>APi</code></p>
 </blockquote>
-<h3 id="类相关"><a href="#类相关" class="headerlink" title="类相关"></a>类相关</h3></li>
-<li>Class object_getClass(id obj)<ul>
-<li>获取isa指向的Class</li>
+<h3 id="类相关"><a href="#类相关" class="headerlink" title="类相关"></a>类相关</h3><ul>
+<li><code>Class object_getClass(id obj)</code><ul>
+<li>获取<code>isa</code>指向的<code>Class</code></li>
 </ul>
 </li>
-<li>Class object_setClass(id obj, Class cls)<ul>
-<li>设置isa指向的Class,<strong>可以更改当前对象指向的isa</strong></li>
+<li><code>Class object_setClass(id obj, Class cls)</code><ul>
+<li>设置<code>isa</code>指向的<code>Class</code>,<strong>可以更改当前对象指向的<code>isa</code></strong></li>
 </ul>
 </li>
-<li>BOOL object_isClass(id obj)<ul>
-<li>判断一个OC对象是否为Class</li>
+<li><code>BOOL object_isClass(id obj)</code><ul>
+<li>判断一个<code>OC</code>对象是否为<code>Class</code></li>
 </ul>
 </li>
-<li>BOOL class_isMetaClass(Class cls)<ul>
-<li>判断一个Class是否为元类</li>
+<li><code>BOOL class_isMetaClass(Class cls)</code><ul>
+<li>判断一个<code>Class</code>是否为元类</li>
 </ul>
 </li>
-<li>Class class_getSuperclass(Class cls)<ul>
-<li>获取父类<h3 id="动态创建类"><a href="#动态创建类" class="headerlink" title="动态创建类"></a>动态创建类</h3></li>
+<li><code>Class class_getSuperclass(Class cls)</code><ul>
+<li>获取父类</li>
 </ul>
 </li>
 </ul>
-</li>
-<li><p><code>Class objc_allocateClassPair(Class superclass, const char *name, size_t extraBytes)</code></p>
-<ul>
+<h3 id="动态创建类"><a href="#动态创建类" class="headerlink" title="动态创建类"></a>动态创建类</h3><ul>
+<li><code>Class objc_allocateClassPair(Class superclass, const char *name, size_t extraBytes)</code><ul>
 <li>动态创建一个类（参数：父类，类名，额外的内存空间）</li>
 </ul>
 </li>
-<li><p><code>void objc_registerClassPair(Class cls)</code></p>
-<ul>
+<li><code>void objc_registerClassPair(Class cls)</code><ul>
 <li>注册一个类（要在类注册之前添加成员变量），在你需要动态创建的类中，加入方法，协议，成员变量后，再去注册</li>
-<li>注意，类注册完之后，类的成员变量会在<code>class_ro_t</code>中是不可变的，而方法，协议是在<code>class_rw_t</code>中，任何时候都是可以添加的<h4 id="成员变量"><a href="#成员变量" class="headerlink" title="成员变量"></a>成员变量</h4></li>
+<li>注意，类注册完之后，类的成员变量会在<code>class_ro_t</code>中是不可变的，而方法，协议是在<code>class_rw_t</code>中，任何时候都是可以添加的</li>
 </ul>
 </li>
-<li><p><code>BOOL class_addIvar(Class cls, const char * name, size_t size, uint8_t alignment, const char * types)</code></p>
-<ul>
+</ul>
+<h4 id="成员变量"><a href="#成员变量" class="headerlink" title="成员变量"></a>成员变量</h4><ul>
+<li><code>BOOL class_addIvar(Class cls, const char * name, size_t size, uint8_t alignment, const char * types)</code><ul>
 <li>动态添加成员变量（<strong>已经注册的类是不能动态添加成员变量的</strong>）</li>
-<li>例如<code>class_addIvar(newCls, &quot;_age&quot;, 4, 1, @encode(int));</code>添加一个age的成员变量,设置和取值，可以通过kvc实现<code>[dog setValue:@10 forKey:@&quot;_age&quot;];</code><h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4></li>
+<li>例如<code>class_addIvar(newCls, &quot;_age&quot;, 4, 1, @encode(int));</code>添加一个<code>age</code>的成员变量,设置和取值，可以通过<code>kvc</code>实现<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">[dog setValue:@<span class="hljs-number">10</span> forKey:<span class="hljs-string">@&quot;_age&quot;</span>];<br></code></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li><p><code>BOOL class_addProperty(Class cls, const char *name, const objc_property_attribute_t *attributes,unsigned int attributeCount)</code></p>
-<ul>
+</ul>
+<h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><ul>
+<li><code>BOOL class_addProperty(Class cls, const char *name, const objc_property_attribute_t *attributes,unsigned int attributeCount)</code><ul>
 <li>动态添加属性</li>
 </ul>
 </li>
-<li><p><code>void class_replaceProperty(Class cls, const char *name, const objc_property_attribute_t *attributes,unsigned int attributeCount)</code></p>
-<ul>
-<li>动态替换属性<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4></li>
+<li><code>void class_replaceProperty(Class cls, const char *name, const objc_property_attribute_t *attributes,unsigned int attributeCount)</code><ul>
+<li>动态替换属性</li>
 </ul>
 </li>
-<li><p><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types)</code></p>
-<ul>
+</ul>
+<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><ul>
+<li><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types)</code><ul>
 <li>动态添加方法</li>
 </ul>
 </li>
-<li><p><code>IMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types)</code></p>
-<ul>
-<li>动态替换方法<h3 id="成员变量相关"><a href="#成员变量相关" class="headerlink" title="成员变量相关"></a>成员变量相关</h3></li>
+<li><code>IMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types)</code><ul>
+<li>动态替换方法</li>
 </ul>
 </li>
+</ul>
+<h3 id="成员变量相关"><a href="#成员变量相关" class="headerlink" title="成员变量相关"></a>成员变量相关</h3><ul>
 <li><p><code>Ivar class_getInstanceVariable(Class cls, const char *name)</code></p>
 <ul>
 <li>获取一个实例变量信息</li>
@@ -2965,11 +3447,12 @@
 </li>
 <li><p><code>Ivar *class_copyIvarList(Class cls, unsigned int *outCount)</code></p>
 <ul>
-<li>拷贝实例变量列表（最后需要调用free释放）<h3 id="属性相关"><a href="#属性相关" class="headerlink" title="属性相关"></a>属性相关</h3></li>
+<li>拷贝实例变量列表（最后需要调用<code>free</code>释放）</li>
 </ul>
 </li>
-<li><p><code>objc_property_t class_getProperty(Class cls, const char *name)</code></p>
-<ul>
+</ul>
+<h3 id="属性相关"><a href="#属性相关" class="headerlink" title="属性相关"></a>属性相关</h3><ul>
+<li><code>objc_property_t class_getProperty(Class cls, const char *name)</code><ul>
 <li>获取一个属性</li>
 <li>获取属性的一些信息<ul>
 <li><code>const char *property_getName(objc_property_t property)</code></li>
@@ -2978,16 +3461,16 @@
 </li>
 </ul>
 </li>
-<li><p><code>objc_property_t *class_copyPropertyList(Class cls, unsigned int *outCount)</code></p>
-<ul>
-<li>拷贝属性列表（最后需要调用free释放）<h3 id="方法相关"><a href="#方法相关" class="headerlink" title="方法相关"></a>方法相关</h3></li>
+<li><code>objc_property_t *class_copyPropertyList(Class cls, unsigned int *outCount)</code><ul>
+<li>拷贝属性列表（最后需要调用<code>free</code>释放）</li>
 </ul>
 </li>
-<li><p>获得一个实例方法、类方法</p>
-<ul>
+</ul>
+<h3 id="方法相关"><a href="#方法相关" class="headerlink" title="方法相关"></a>方法相关</h3><ul>
+<li>获得一个实例方法、类方法<ul>
 <li><code>Method class_getInstanceMethod(Class cls, SEL name)</code></li>
 <li><code>Method class_getClassMethod(Class cls, SEL name)</code></li>
-<li>获取方法的相关信息（带有copy的需要调用free去释放）<ul>
+<li>获取方法的相关信息（带有<code>copy</code>的需要调用<code>free</code>去释放）<ul>
 <li><code>SEL method_getName(Method m)</code></li>
 <li><code>IMP method_getImplementation(Method m)</code></li>
 <li><code>const char *method_getTypeEncoding(Method m)</code></li>
@@ -2998,28 +3481,23 @@
 </li>
 </ul>
 </li>
-<li><p>方法实现相关操作</p>
-<ul>
+<li>方法实现相关操作<ul>
 <li><code>IMP class_getMethodImplementation(Class cls, SEL name) </code></li>
 <li><code>IMP method_setImplementation(Method m, IMP imp)</code></li>
 <li><code>void method_exchangeImplementations(Method m1, Method m2) </code><ul>
-<li>源码<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">void method_exchangeImplementations(Method m1Signed, Method m2Signed)<br>&#123;<br> if (!m1Signed  ||  !m2Signed) return;<br><br>method_t *m1 = _method_auth(m1Signed);<br> method_t *m2 = _method_auth(m2Signed);<br><br>mutex_locker_t lock(runtimeLock);<br><br>//进行imp的交换<br>IMP imp1 = m1-&gt;imp(false);<br>IMP imp2 = m2-&gt;imp(false);<br>SEL sel1 = m1-&gt;name();<br>SEL sel2 = m2-&gt;name();<br><br>m1-&gt;setImp(imp2);<br>m2-&gt;setImp(imp1);<br><br><br>// RR/AWZ updates are slow because class is unknown<br>// Cache updates are slow because class is unknown<br>// fixme build list of classes whose Methods are known externally?<br>//这里会清除方法内的所有缓存<br>flushCaches(nil, __func__, [sel1, sel2, imp1, imp2](Class c)&#123;<br>  return c-&gt;cache.shouldFlush(sel1, imp1) || c-         &gt;cache.shouldFlush(sel2, imp2);<br>&#125;);<br><br>adjustCustomFlagsForMethodChange(nil, m1);<br>adjustCustomFlagsForMethodChange(nil, m2);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>源码<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">void</span> method_exchangeImplementations(Method m1Signed, Method m2Signed)<br>&#123;<br> <span class="hljs-keyword">if</span> (!m1Signed  ||  !m2Signed) <span class="hljs-keyword">return</span>;<br><br>method_t *m1 = _method_auth(m1Signed);<br> method_t *m2 = _method_auth(m2Signed);<br><br>mutex_locker_t lock(runtimeLock);<br><br><span class="hljs-comment">//进行imp的交换</span><br>IMP imp1 = m1-&gt;imp(<span class="hljs-literal">false</span>);<br>IMP imp2 = m2-&gt;imp(<span class="hljs-literal">false</span>);<br>SEL sel1 = m1-&gt;name();<br>SEL sel2 = m2-&gt;name();<br><br>m1-&gt;setImp(imp2);<br>m2-&gt;setImp(imp1);<br><br><br><span class="hljs-comment">// RR/AWZ updates are slow because class is unknown</span><br><span class="hljs-comment">// Cache updates are slow because class is unknown</span><br><span class="hljs-comment">// fixme build list of classes whose Methods are known externally?</span><br><span class="hljs-comment">//这里会清除方法内的所有缓存</span><br>flushCaches(<span class="hljs-literal">nil</span>, __func__, [sel1, sel2, imp1, imp2](Class c)&#123;<br>  <span class="hljs-keyword">return</span> c-&gt;cache.shouldFlush(sel1, imp1) || c-         &gt;cache.shouldFlush(sel2, imp2);<br>&#125;);<br><br>adjustCustomFlagsForMethodChange(<span class="hljs-literal">nil</span>, m1);<br>adjustCustomFlagsForMethodChange(<span class="hljs-literal">nil</span>, m2);<br>&#125;<br></code></pre></td></tr></table></figure></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>拷贝方法列表（最后需要调用free释放）</p>
-</li>
-<li><p><code>Method *class_copyMethodList(Class cls, unsigned int *outCount)</code></p>
-</li>
-<li><p>选择器相关</p>
-<ul>
+<li>拷贝方法列表（最后需要调用<code>free</code>释放）</li>
+<li><code>Method *class_copyMethodList(Class cls, unsigned int *outCount)</code></li>
+<li>选择器相关<ul>
 <li><code>const char *sel_getName(SEL sel)</code></li>
 <li><code>SEL sel_registerName(const char *str)</code></li>
 </ul>
 </li>
-<li><p>用block作为方法实现</p>
-<ul>
+<li>用block作为方法实现<ul>
 <li><code>IMP imp_implementationWithBlock(id block)</code></li>
 <li><code>id imp_getBlock(IMP anImp)</code></li>
 <li><code>BOOL imp_removeBlock(IMP anImp)</code></li>
@@ -3039,25 +3517,26 @@
 <p>交换方法，一般认为交换的方法<code>toMethod</code>，是一定存在的</p>
 </blockquote>
 <ol>
-<li>一般交换方法,交换两个方法的Imp</li>
+<li>一般交换方法,交换两个方法的<code>Imp</code></li>
 <li>交换自己没有实现的方法:<ul>
 <li>给自己添加要交换的方法；</li>
-<li>然后再将父类的Imp给要交换的方法</li>
+<li>然后再将父类的<code>Imp</code>给要交换的方法</li>
 </ul>
 </li>
 <li>交换父类和子类均未实现的方法<ul>
 <li>给自己添加要交换的方法；</li>
-<li>给交换的方法增加一个空的实现<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">Method fromMethod = class_getInstanceMethod(class, fromSelector);<br>Method toMethod = class_getInstanceMethod(class, toSelector);<br>//3. 交换父类和子类均未实现的方法<br>if (!fromMethod) &#123;<br>        class_addMethod(class, fromSelector, method_getImplementation(toMethod), method_getTypeEncoding(toMethod));<br>        method_setImplementation(toMethod, imp_implementationWithBlock(^(id self,SEL _cmd) &#123; &#125;));<br>    return;<br>&#125;<br>if(class_addMethod(class, fromSelector, method_getImplementation(toMethod), method_getTypeEncoding(toMethod))) &#123;<br>//2. 交换自己没有实现的方法 <br>class_replaceMethod(class, toSelector, method_getImplementation(fromMethod), method_getTypeEncoding(fromMethod));<br>&#125; else &#123;<br>    //1. 一般交换方法<br>    method_exchangeImplementations(fromMethod, toMethod);<br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="runtime面试题"><a href="#runtime面试题" class="headerlink" title="runtime面试题"></a>runtime面试题</h3></li>
+<li>给交换的方法增加一个空的实现<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">Method fromMethod = class_getInstanceMethod(<span class="hljs-keyword">class</span>, fromSelector);<br>Method toMethod = class_getInstanceMethod(<span class="hljs-keyword">class</span>, toSelector);<br><span class="hljs-comment">//3. 交换父类和子类均未实现的方法</span><br><span class="hljs-keyword">if</span> (!fromMethod) &#123;<br>        class_addMethod(<span class="hljs-keyword">class</span>, <br>        fromSelector, <br>        method_getImplementation(toMethod), <br>        method_getTypeEncoding(toMethod));<br>        method_setImplementation(toMethod, <br>        imp_implementationWithBlock(^(<span class="hljs-keyword">id</span> <span class="hljs-keyword">self</span>,SEL _cmd) &#123; &#125;));<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br><span class="hljs-keyword">if</span>(class_addMethod(<span class="hljs-keyword">class</span>, <br>fromSelector, <br>method_getImplementation(toMethod), <br>method_getTypeEncoding(toMethod))) &#123;<br><span class="hljs-comment">//2. 交换自己没有实现的方法 </span><br>class_replaceMethod(<span class="hljs-keyword">class</span>, <br>toSelector, <br>method_getImplementation(fromMethod), <br>method_getTypeEncoding(fromMethod));<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">//1. 一般交换方法</span><br>    method_exchangeImplementations(fromMethod, toMethod);<br>&#125;<br></code></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li>什么是Runtime<ul>
-<li>OC是一门动态性比较强的编程语言，允许很多操作推迟到程序运行时再进行OC的动态性就是由Runtime来支撑和实现的，<code>Runtime</code>是一套C语言的API，封装了很多动态性相关的函数平时编写的OC代码，底层都是转换成了<code>Runtime API</code>进行调用</li>
+</ol>
+<h3 id="runtime面试题"><a href="#runtime面试题" class="headerlink" title="runtime面试题"></a>runtime面试题</h3><ol>
+<li>什么是<code>Runtime</code><ul>
+<li><code>OC</code>是一门动态性比较强的编程语言，允许很多操作推迟到程序运行时再进行<code>OC</code>的动态性就是由<code>Runtime</code>来支撑和实现的，<code>Runtime</code>是一套<code>C语言的API</code>，封装了很多动态性相关的函数平时编写的<code>OC</code>代码，底层都是转换成了<code>Runtime API</code>进行调用</li>
 </ul>
 </li>
 <li>具体应用<ol>
-<li>利用关联对象（AssociatedObject）给分类添加属性</li>
-<li>遍历类的所有成员变量（利用kvc修改私有属性，字典转模型，自动归档接档）</li>
+<li>利用关联对象(<code>AssociatedObject</code>)给分类添加属性</li>
+<li>遍历类的所有成员变量（利用<code>kvc</code>修改私有属性，字典转模型，自动归档接档）</li>
 <li>交换方法实现（交换系统的方法）</li>
 <li>利用消息转发机制解决方法找不到的异常问题，(重写<code>forwardInvocation:</code>实现)</li>
 </ol>
@@ -3073,14 +3552,14 @@
     <url>/2023/01/08/iOS%E5%AD%A6%E4%B9%A0/Runtime/isKindofclass%E5%92%8CisMemberofClass/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
 <ul>
-<li>isKindofClass是判断是否是当前类,或者其子类</li>
-<li>isMemberOfClass是否是当前类</li>
+<li><code>isKindofClass</code>是判断是否是当前类,或者其子类</li>
+<li><code>isMemberOfClass</code>是否是当前类</li>
 </ul>
 </blockquote>
 <span id="more"></span>
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">//判断是否是元类成员<br>+ (BOOL)isMemberOfClass:(Class)cls &#123;<br>    //取出元类<br>    return self-&gt;ISA() == cls;<br>&#125;<br><br>- (BOOL)isMemberOfClass:(Class)cls &#123;<br>    return [self class] == cls;<br>&#125;<br><br>//判断元类<br>// [LGPerson isKindOfClass:object_getClass([LGPerson class])] 返回true<br>+ (BOOL)isKindOfClass:(Class)cls &#123;<br>    //取出元类，取出元类<br>    for (Class tcls = self-&gt;ISA(); tcls; tcls = tcls-&gt;getSuperclass()) &#123;<br>        if (tcls == cls) return YES;<br>    &#125;<br>    return NO;<br>&#125;<br><br>// [[LGPerson new] isKindOfClass:[LGPerson class]] 返回true<br>- (BOOL)isKindOfClass:(Class)cls &#123;<br>    for (Class tcls = [self class]; tcls; tcls = tcls-&gt;getSuperclass()) &#123;<br>        if (tcls == cls) return YES;<br>    &#125;<br>    return NO;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">//判断是否是元类成员</span><br>+ (<span class="hljs-built_in">BOOL</span>)isMemberOfClass:(Class)cls &#123;<br>    <span class="hljs-comment">//取出元类</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>-&gt;ISA() == cls;<br>&#125;<br><br>- (<span class="hljs-built_in">BOOL</span>)isMemberOfClass:(Class)cls &#123;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] == cls;<br>&#125;<br><br><span class="hljs-comment">//判断元类</span><br><span class="hljs-comment">// [LGPerson isKindOfClass:object_getClass([LGPerson class])] 返回true</span><br>+ (<span class="hljs-built_in">BOOL</span>)isKindOfClass:(Class)cls &#123;<br>    <span class="hljs-comment">//取出元类，取出元类</span><br>    <span class="hljs-keyword">for</span> (Class tcls = <span class="hljs-keyword">self</span>-&gt;ISA(); tcls; tcls = tcls-&gt;getSuperclass()) &#123;<br>        <span class="hljs-keyword">if</span> (tcls == cls) <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>&#125;<br><br><span class="hljs-comment">// [[LGPerson new] isKindOfClass:[LGPerson class]] 返回true</span><br>- (<span class="hljs-built_in">BOOL</span>)isKindOfClass:(Class)cls &#123;<br>    <span class="hljs-keyword">for</span> (Class tcls = [<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]; tcls; tcls = tcls-&gt;getSuperclass()) &#123;<br>        <span class="hljs-keyword">if</span> (tcls == cls) <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">@interface Person:NSObject<br>@end<br>@interface Student:Person<br>@end<br>[Student isKindofClass:[Person class]] //false,类对象是元类的类型（isa指向），并不是类的类型<br>[Student isKindofClass:object_class([Person class])] // true,类对象是元类(类的类)的类型<br>[[Student new] isKindofClass:[Person class]] //true，实例对象的父类是，Person<br>//不管方法调用者，不管是实例对象还是类对象，都是返回true，（只要是NSObject体系下的）<br>[Student isKindofClass:[NSObject class]] //true，基元类的父类是NSObject，所以是成立的<br><br>[Person isMemberOfClass:[NSObject class]] //false，是直接判断isa指针的<br>[Person isMemberOfClass:object_class([Sturdent class])] //false<br>[Person isMemberOfClass:object_class([Person class])] //true<br>[[Person new] isMemberOfClass:[Person class]] //true<br></code></pre></td></tr></table></figure>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Person</span>:<span class="hljs-title">NSObject</span></span><br><span class="hljs-keyword">@end</span><br><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Student</span>:<span class="hljs-title">Person</span></span><br><span class="hljs-keyword">@end</span><br>[Student isKindofClass:[Person <span class="hljs-keyword">class</span>]] <span class="hljs-comment">//false,类对象是元类的类型（isa指向），并不是类的类型</span><br>[Student isKindofClass:object_class([Person <span class="hljs-keyword">class</span>])] <span class="hljs-comment">// true,类对象是元类(类的类)的类型</span><br>[[Student new] isKindofClass:[Person <span class="hljs-keyword">class</span>]] <span class="hljs-comment">//true，实例对象的父类是，Person</span><br><span class="hljs-comment">//不管方法调用者，不管是实例对象还是类对象，都是返回true，（只要是NSObject体系下的）</span><br>[Student isKindofClass:[<span class="hljs-built_in">NSObject</span> <span class="hljs-keyword">class</span>]] <span class="hljs-comment">//true，基元类的父类是NSObject，所以是成立的</span><br><br>[Person isMemberOfClass:[<span class="hljs-built_in">NSObject</span> <span class="hljs-keyword">class</span>]] <span class="hljs-comment">//false，是直接判断isa指针的</span><br>[Person isMemberOfClass:object_class([Sturdent <span class="hljs-keyword">class</span>])] <span class="hljs-comment">//false</span><br>[Person isMemberOfClass:object_class([Person <span class="hljs-keyword">class</span>])] <span class="hljs-comment">//true</span><br>[[Person new] isMemberOfClass:[Person <span class="hljs-keyword">class</span>]] <span class="hljs-comment">//true</span><br></code></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Runtime</category>
@@ -3094,15 +3573,15 @@
 </blockquote>
 <hr>
 <h2 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h2><ul>
-<li>方法中子类调用<code>[super class]</code>实际输出还是子类的对象，和一般语言中的有所不同<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Student</span>:<span class="hljs-title">Person</span></span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Student</span></span><br>- (<span class="hljs-keyword">instancetype</span>)init<br>&#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span> = [<span class="hljs-keyword">super</span> init]) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;[self class] = %@&quot;</span>, [<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]); <span class="hljs-comment">// Student</span><br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;[self superclass] = %@&quot;</span>, [<span class="hljs-keyword">self</span> superclass]); <span class="hljs-comment">// Person</span><br>        <br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;[super class] = %@&quot;</span>, [<span class="hljs-keyword">super</span> <span class="hljs-keyword">class</span>]); <span class="hljs-comment">// 实际输出 Student</span><br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;[super superclass] = %@&quot;</span>, [<span class="hljs-keyword">super</span> superclass]); <span class="hljs-comment">// MJPerson</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure></li>
+<li>方法中子类调用<code>[super class]</code>实际输出还是子类的对象，这和一般语言中的有所不同<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">Student</span>:<span class="hljs-title">Person</span></span><br><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Student</span></span><br>- (<span class="hljs-keyword">instancetype</span>)init<br>&#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span> = [<span class="hljs-keyword">super</span> init]) &#123;<br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;[self class] = %@&quot;</span>, [<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]); <span class="hljs-comment">// Student</span><br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;[self superclass] = %@&quot;</span>, [<span class="hljs-keyword">self</span> superclass]); <span class="hljs-comment">// Person</span><br>        <br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;[super class] = %@&quot;</span>, [<span class="hljs-keyword">super</span> <span class="hljs-keyword">class</span>]); <span class="hljs-comment">// 实际输出 Student</span><br>        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;[super superclass] = %@&quot;</span>, [<span class="hljs-keyword">super</span> superclass]); <span class="hljs-comment">// MJPerson</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;<br>&#125;<br><br><span class="hljs-keyword">@end</span><br></code></pre></td></tr></table></figure></li>
 </ul>
 <h3 id="原因解答"><a href="#原因解答" class="headerlink" title="原因解答"></a>原因解答</h3><h4 id="实际调用super的方法"><a href="#实际调用super的方法" class="headerlink" title="实际调用super的方法"></a>实际调用<code>super</code>的方法</h4><pre><code><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">/** </span><br><span class="hljs-comment"> * Sends a message with a simple return value to the superclass of an instance of a class.</span><br><span class="hljs-comment"> * </span><br><span class="hljs-comment"> * @param super A pointer to an \c objc_super data structure. Pass values identifying the</span><br><span class="hljs-comment"> *  context the message was sent to, including the instance of the class that is to receive the</span><br><span class="hljs-comment"> *  message and the superclass at which to start searching for the method implementation.</span><br><span class="hljs-comment"> * @param op A pointer of type SEL. Pass the selector of the method that will handle the message.</span><br><span class="hljs-comment"> * @param ...</span><br><span class="hljs-comment"> *   A variable argument list containing the arguments to the method.</span><br><span class="hljs-comment"> * </span><br><span class="hljs-comment"> * @return The return value of the method identified by \e op.</span><br><span class="hljs-comment"> * </span><br><span class="hljs-comment"> * @see objc_msgSend</span><br><span class="hljs-comment"> */</span><br>objc_msgSendSuper(<span class="hljs-keyword">struct</span> objc_super * _Nonnull <span class="hljs-keyword">super</span>, SEL _Nonnull op, ...)<br></code></pre></td></tr></table></figure>
 </code></pre>
 <h4 id="objc-super的结构体"><a href="#objc-super的结构体" class="headerlink" title="objc_super的结构体"></a><code>objc_super</code>的结构体</h4><pre><code><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">struct</span> objc_super &#123;<br><span class="hljs-comment">/// Specifies an instance of a class.</span><br>__<span class="hljs-keyword">unsafe_unretained</span> _Nonnull <span class="hljs-keyword">id</span> receiver;<br><br><span class="hljs-comment">/// Specifies the particular superclass of the instance to message. </span><br>__<span class="hljs-keyword">unsafe_unretained</span> _Nonnull Class super_class;<br><br><span class="hljs-comment">/* super_class is the first class to search */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
 </code></pre>
-<h4 id="编译后的代码"><a href="#编译后的代码" class="headerlink" title="编译后的代码"></a>编译后的代码</h4><pre><code><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">objc_msgSendSuper((__rw_objc_super)&#123;(<span class="hljs-keyword">id</span>)<span class="hljs-keyword">self</span>, (<span class="hljs-keyword">id</span>)class_getSuperclass(objc_getClass(<span class="hljs-string">&quot;Student&quot;</span>))&#125;, sel_registerName(<span class="hljs-string">&quot;class&quot;</span>)));<br></code></pre></td></tr></table></figure>
+<h4 id="编译后的代码"><a href="#编译后的代码" class="headerlink" title="编译后的代码"></a>编译后的代码</h4><pre><code><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">objc_msgSendSuper(<br>(__rw_objc_super)&#123;(<span class="hljs-keyword">id</span>)<span class="hljs-keyword">self</span>, <br>(<span class="hljs-keyword">id</span>)class_getSuperclass(objc_getClass(<span class="hljs-string">&quot;Student&quot;</span>))&#125;,<br> sel_registerName(<span class="hljs-string">&quot;class&quot;</span>)));<br></code></pre></td></tr></table></figure>
 </code></pre>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><ul>
 <li><p>由编译后的代码可知<code>objc_super</code>结构中的<code>receiver</code>,仍然是<code>self</code>。表明消息接收者仍然是<code>self</code></p>
 </li>
 <li><p>对<code>super</code>发消息的本质有</p>
@@ -3111,10 +3590,10 @@
 <li>其消息的查找是从<strong>父类开始查找方法的实现</strong></li>
 </ol>
 </li>
-<li><p>本问题中,<code>- (Class)class</code>方法是在<code>NSObject</code>上实现的，因此不管是<code>[self class]</code>,还是<code>[super class]</code>,都是从父类开始查找方法，实际上都是在<code>NSObject</code>上实现的，因此最终和<code>[self class]</code>一样，还是会返回<code>Student</code></p>
+<li><p>本问题中,<code>- (Class)class</code>方法是在<code>NSObject</code>上实现的，因此不管是<code>[self class]</code>从当前类开始查找,还是<code>[super class]</code>从父类开始查找方法，实际上都是在<code>NSObject</code>上实现的，因此最终和<code>[self class]</code>一样，还是会返回<code>Student</code></p>
 </li>
 </ul>
-<h4 id="特殊"><a href="#特殊" class="headerlink" title="特殊"></a>特殊</h4><ul>
+<h3 id="特殊"><a href="#特殊" class="headerlink" title="特殊"></a>特殊</h3><ul>
 <li>注意在查看汇编时，实际调用的是<code>objc_msgSendSuper2</code>,其第二个参数是当前类对象，而非父类对象，但是在实际源码中<code>objc_msgSendSuper2</code>内，最终还是会取父类去调用。因此最终和编译后的<code>objc_msgSendSuper</code>实现实际是一样的</li>
 </ul>
 ]]></content>
@@ -3127,8 +3606,8 @@
     <url>/2023/01/02/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-msgSend/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="objc-msgSend"><a href="#objc-msgSend" class="headerlink" title="objc_msgSend"></a>objc_msgSend</h1><blockquote>
 <ul>
-<li>OC中的方法调用，其实都是转换为objc_msgSend函数的调用</li>
-<li>objc_msgSend的执行流程可以分为3大阶段<ul>
+<li><code>OC</code>中的方法调用，其实都是转换为<code>objc_msgSend</code>函数的调用</li>
+<li><code>objc_msgSend</code>的执行流程可以分为3大阶段<ul>
 <li>消息发送</li>
 <li>动态方法解析</li>
 <li>消息转发</li>
@@ -3136,27 +3615,26 @@
 </li>
 </ul>
 </blockquote>
-<span id="more"></span>
-<h2 id="objc-msgSend源码866执行流程"><a href="#objc-msgSend源码866执行流程" class="headerlink" title="objc_msgSend源码866执行流程"></a>objc_msgSend源码866执行流程</h2><h3 id="objc-msg-arm64-s"><a href="#objc-msg-arm64-s" class="headerlink" title="objc-msg-arm64.s"></a>objc-msg-arm64.s</h3><ul>
-<li>objc-msg-arm64.s<ol>
-<li>MSG_ENTRY _objc_msgSend <ul>
-<li>到 END_ENTRY _objc_msgSend，objc_msgSend的定义</li>
+<h2 id="objc-msgSend源码-866-执行流程"><a href="#objc-msgSend源码-866-执行流程" class="headerlink" title="objc_msgSend源码(866)执行流程"></a>objc_msgSend源码(866)执行流程</h2><h3 id="objc-msg-arm64-s"><a href="#objc-msg-arm64-s" class="headerlink" title="objc-msg-arm64.s"></a>objc-msg-arm64.s</h3><ul>
+<li><code>objc-msg-arm64.s</code><ol>
+<li><code>MSG_ENTRY _objc_msgSend </code><ul>
+<li>到 <code>END_ENTRY _objc_msgSend，objc_msgSend</code>的定义</li>
 </ul>
 </li>
-<li>b.le    LNilOrTagged<ul>
-<li>首先会判断是否时nil，为nil，则会跳转到LReturnZero直接返回，</li>
+<li><code>b.le    LNilOrTagged</code><ul>
+<li>首先会判断是否时<code>nil</code>，为<code>nil</code>，则会跳转到<code>LReturnZero</code>直接返回，</li>
 </ul>
 </li>
-<li>CacheLookup NORMAL<ul>
-<li>不是nil,去查找缓存</li>
+<li><code>CacheLookup NORMAL</code><ul>
+<li>不是<code>nil</code>,去查找缓存</li>
 </ul>
 </li>
-<li>.macro <code>CacheLookup</code><ul>
-<li>缓存命中CacheHit，直接返回IMP</li>
+<li><code>.macro CacheLookup</code><ul>
+<li>缓存命中<code>CacheHit</code>，直接返回<code>IMP</code></li>
 </ul>
 </li>
-<li>缓存未命中，__objc_msgLookup_uncached<ul>
-<li>没找到方法，则会调用<code>MethodTableLookup</code>去查找，MethodTableLookup</li>
+<li>缓存未命中，<code>__objc_msgLookup_uncached</code><ul>
+<li>没找到方法，则会调用<code>MethodTableLookup</code>去查找，<code>MethodTableLookup</code></li>
 <li>最终调用的是C函数的方法是<code>lookUpImpOrForward(obj, sel, cls, LOOKUP_INITIALIZE | LOOKUP_RESOLVER)</code>（注意汇编中的比C函数方法多一个<code>_</code>）</li>
 </ul>
 </li>
@@ -3165,35 +3643,40 @@
 </ul>
 <h3 id="第一阶段，消息发送"><a href="#第一阶段，消息发送" class="headerlink" title="第一阶段，消息发送"></a>第一阶段，消息发送</h3><ul>
 <li>在<code>objc-runtime-new.mm</code>文件中，<code>第一个阶段</code>，查找方法<ol>
-<li><code>lookUpImpOrForward</code>,未从缓存中查找的逻辑</li>
+<li><code>lookUpImpOrForward</code>,为从缓存中查找的逻辑</li>
 <li><code>realizeAndInitializeIfNeeded_locked</code><ul>
-<li>确保类已经<code>realize</code>了</li>
+<li>确保类已经<code>realize</code>了,初始化了</li>
 </ul>
 </li>
-<li>for循环进行遍历查找类<code>cls</code>中方法，有个最大的数进行记录，防止陷入死循环<ol>
+<li><code>for</code>循环进行遍历查找类<code>cls</code>中方法，有个最大的数进行记录，防止陷入死循环<ol>
 <li>先去<code>cache_getImp</code>从缓存中获取<ul>
-<li>在查找中间的方法过程中，可能会有新方法在中间添加进来，会先加到缓存中</li>
+<li>在查找中间的方法过程中，可能会有新方法在中间添加进来，也都会先加到缓存中</li>
 </ul>
 </li>
 <li><code>getMethodNoSuper_nolock</code>、<code>search_method_list_inline</code>、<code>log_and_fill_cache</code><ol>
-<li>从<code>class_rw_t的methods</code>中找到所有类和分类的方法，遍历<code>method_list_t</code>查找，因此需要类先realize</li>
-<li>是排好序列的，<code>findMethodInSortedMethodList</code>中去查找方法,根据方法名查找，已经排序，<code>二分查找</code>的方式<ul>
+<li>从<code>class_rw_t</code>的<code>methods</code>中找到所有类和分类的方法，遍历<code>method_list_t</code>查找，因此需要类先<code>realize</code></li>
+<li>如果是排好序列的，<code>findMethodInSortedMethodList</code>中去查找方法,根据方法名查找，已经排序，<code>二分查找</code>的方式<ul>
 <li>如果有相同的有很多，会倒序查找，找到排序的第一个方法</li>
 <li>排序，会在<code>prepareMethodLists</code>中调用<code>fixupMethodList</code>方法<ul>
-<li>method_t中方法类型有big、small、bigSigned<ul>
-<li>big是默认的，大方法，其值为指针，其类型包括<code>SEL name;const char *types;MethodListIMP imp;</code></li>
-<li>small，小方法，其值表示为相对每个字段的额外地址，其结构是<code>RelativePointer&lt;const void *&gt; name;RelativePointer&lt;const char *&gt; types;RelativePointer&lt;IMP, /*isNullable*/false&gt; imp;</code>,其引用的选择器在(共享缓存)或者是在磁盘上，考虑<code>相关动态库的系统方法</code>,该方法是只读内存，因此small的是无法修改的。其是否是small方法，是由编译器决定，进行设置的</li>
-<li>bigSigned,和big相同，但是其name已经签名，该方法是由运行时添加的，类似<code>class_addMethod</code>方法添加的</li>
+<li><code>method_t</code>中方法类型有<code>big</code>、<code>small</code>、<code>bigSigned</code>  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">    <span class="hljs-keyword">enum</span> <span class="hljs-keyword">class</span> Kind &#123;<br>        <span class="hljs-comment">// Note: method_invoke detects small methods by detecting 1 in the low</span><br>        <span class="hljs-comment">// bit. Any change to that will require a corresponding change to</span><br>        <span class="hljs-comment">// method_invoke.</span><br>        big = <span class="hljs-number">0</span>,<br><br>        <span class="hljs-comment">// `small` encompasses both small and small direct methods. We</span><br>        <span class="hljs-comment">// distinguish those cases by doing a range check against the shared</span><br>        <span class="hljs-comment">// cache.</span><br>        small = <span class="hljs-number">1</span>,<br>        bigSigned = <span class="hljs-number">2</span>,<br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>big</code>是默认的，大方法，其值为指针  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">struct</span> big &#123;<br>    SEL name;<br>    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *types;<br>    MethodListIMP imp;<br>&#125;;<br></code></pre></td></tr></table></figure></li>
+<li><code>small</code>，小方法，其值表示为相对每个字段的额外地址，其结构是  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">struct</span> small &#123;<br>    <span class="hljs-comment">// The name field either refers to a selector (in the shared</span><br>    <span class="hljs-comment">// cache) or a selref (everywhere else).</span><br>    RelativePointer&lt;<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *&gt; name;<br>    RelativePointer&lt;<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *&gt; types;<br>    RelativePointer&lt;IMP, <span class="hljs-comment">/*isNullable*/</span><span class="hljs-literal">false</span>&gt; imp;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>其引用的选择器在(共享缓存)或者是在磁盘上，考虑<code>相关动态库的系统方法</code>,该方法是只读内存，因此<code>small</code>的是无法修改的。其是否是<code>smal</code>l方法，是由编译器决定，进行设置的</li>
 </ul>
 </li>
-<li>对方法排序，只会对非small的方法进行排序,排序是根据方法名<code>SEL</code>的地址由低到高排序的<br><img src="4.png"></li>
+<li><code>bigSigned</code>,和<code>big</code>相同，但是其<code>name</code>已经签名，该方法是由运行时添加的，类似<code>class_addMethod</code>方法添加的</li>
+</ul>
+</li>
+<li>对方法排序，只会对非<code>small</code>的方法进行排序,排序是根据方法名<code>SEL</code>的地址由低到高排序的<br><img src="4.png"></li>
 <li>排序的方式采用的是<code>**归并排序**</code><br><img src="5.png"></li>
 </ul>
 </li>
 </ul>
 </li>
-<li>不是排好序的<code>findMethodInUnsortedMethodList</code>，<code>线性遍历查找</code>，找到第一个方法名相同的，后，返回</li>
-<li><code>log_and_fill_cache(cls, imp, sel, inst, curClass)</code>,查找到方法后，调用void cache_t::insert,去插入到缓存中,保存的类是最开始查找的类方法<code>cls</code>中,而并非当前的类。</li>
+<li>不是排好序的方法，调用<code>findMethodInUnsortedMethodList</code>，<code>线性遍历查找</code>，找到第一个方法名相同的，后，返回 <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">template&lt;<span class="hljs-keyword">class</span> getNameFunc&gt;<br>ALWAYS_INLINE <span class="hljs-keyword">static</span> method_t *<br>findMethodInUnsortedMethodList(SEL sel, <span class="hljs-keyword">const</span> method_list_t *list, <span class="hljs-keyword">const</span> getNameFunc &amp;getName)<br>&#123;<br>    <span class="hljs-keyword">for</span> (auto&amp; meth : *list) &#123;<br>        <span class="hljs-keyword">if</span> (getName(meth) == sel) <span class="hljs-keyword">return</span> &amp;meth;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>log_and_fill_cache(cls, imp, sel, inst, curClass)</code>,查找到方法后，调用<code>void cache_t::insert</code>,去插入到缓存中,保存的类是最开始查找的类方法<code>cls</code>中,而并非当前的类(即如果查找到了父类的<code>IMP</code>,最后会将这个<code>IMP</code>保存到子类的<code>cache</code>)。</li>
 <li>当前<code>curClass</code>中没有找到，则会去父类遍历查找<code>curClass = curClass-&gt;getSuperclass()) == nil</code><ul>
 <li>如果找到最后的父类，都没有找到方法，则会设置当前<code>imp = _objc_msgForward_impcache</code></li>
 <li>或者从缓存中取到的方法，等于<code>_objc_msgForward_impcache</code>,则会跳出循环</li>
@@ -3208,25 +3691,27 @@
 <li>消息发送流程<br><img src="1.png"></li>
 </ul>
 <h3 id="第二阶段，动态方法解析"><a href="#第二阶段，动态方法解析" class="headerlink" title="第二阶段，动态方法解析"></a>第二阶段，动态方法解析</h3><ul>
-<li>log_and_fill_cache，<code>第二个阶段</code>，动态方法解析<ul>
+<li><code>log_and_fill_cache</code>，<code>第二个阶段</code>，动态方法解析<ul>
 <li><code>(behavior &amp; LOOKUP_RESOLVER) == 0</code>由最开始汇编中，传入，需要进行方法解析，则进入方法解析流程<ol>
 <li> <code>behavior ^= LOOKUP_RESOLVER</code>,解析之后，就不需要了</li>
 <li> <code>resolveMethod_locked(inst, sel, cls, behavior)</code>,进入方法解析流程</li>
-<li>不是元类，则走<code>resolveInstanceMethod</code>方法<ol>
-<li>会先去找<code>resolveInstanceMethod</code>,<code>_lookUpImpOrNilTryCache(cls, resolve_sel, cls-&gt;ISA(true))</code>先去,其isa，也就是其类类对象，缓存中找，找不到，则走<code>阶段一</code>的方法查找，这次的<code>behavior</code>不包含<code>LOOKUP_RESOLVER</code>,不会去走动态方法解析<ul>
-<li> 其中NSObject中<code>+(BOOL)resolveInstanceMethod</code>会有基础实现</li>
-<li> 因为后续会同步再去查询方法，因此是否返回true，不影响实际结果，但是安规范，实现了返回true</li>
+<li>不是元类，则走<code>resolveInstanceMethod</code>方法 <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> resolveInstanceMethod(<span class="hljs-keyword">id</span> inst, SEL sel, Class cls)<br>&#123;<br>    lockdebug::assert_unlocked(&amp;runtimeLock);<br>    ASSERT(cls-&gt;isRealized());<br>    SEL resolve_sel = <span class="hljs-keyword">@selector</span>(resolveInstanceMethod:);<br><br>    <span class="hljs-keyword">if</span> (!lookUpImpOrNilTryCache(cls, resolve_sel, cls-&gt;ISA(<span class="hljs-comment">/*authenticated*/</span><span class="hljs-literal">true</span>))) &#123;<br>        <span class="hljs-comment">// Resolver not implemented.</span><br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-built_in">BOOL</span> (*msg)(Class, SEL, SEL) = (<span class="hljs-keyword">typeof</span>(msg))objc_msgSend;<br>    <span class="hljs-keyword">bool</span> resolved = msg(cls, resolve_sel, sel);<br><br>    <span class="hljs-comment">// Cache the result (good or bad) so the resolver doesn&#x27;t fire next time.</span><br>    <span class="hljs-comment">// +resolveInstanceMethod adds to self a.k.a. cls</span><br>    IMP imp = lookUpImpOrNilTryCache(inst, sel, cls);<br>&#125;<br></code></pre></td></tr></table></figure>
+<ol>
+<li>会先去找<code>resolveInstanceMethod</code>,<code>_lookUpImpOrNilTryCache(cls, resolve_sel, cls-&gt;ISA(true))</code>先去,其<code>isa</code>，也就是其元类对象，缓存中找，找不到，则走<code>阶段一</code>的方法查找，这次的<code>behavior</code>不包含<code>LOOKUP_RESOLVER</code>,这次是不会去走动态方法解析<ul>
+<li> 其中<code>NSObject</code>中<code>+(BOOL)resolveInstanceMethod</code>会有基础实现</li>
+<li>因为后续会同步再次去查询方法，因此是否返回<code>true</code>还是<code>false</code>，不影响实际的结果，但是按规范，返回<code>true</code></li>
 </ul>
 </li>
-<li> 会用<code>objc_msgSend</code>调用方法</li>
+<li>会用<code>objc_msgSend</code>调用方法</li>
 <li>会再调用<code>lookUpImpOrNilTryCache(inst, sel, cls)</code>,去查找，一开始寻找的方法</li>
 <li>方法的返回，最后通过调用<code>lookUpImpOrForwardTryCache</code>去查找<ul>
-<li><strong>注意</strong>，用<code>lookUpImpOrNilTryCache</code>传入的<code>behavior</code>包括<code>LOOKUP_NIL</code>，即没有搜索到，会返回nil,不会出现找不到方法的异常</li>
+<li><strong>注意</strong>，用<code>lookUpImpOrNilTryCache</code>传入的<code>behavior</code>包括<code>LOOKUP_NIL</code>，即没有搜索到，会返回<code>nil</code>,不会出现<strong>找不到方法的异常</strong></li>
 </ul>
 </li>
 </ol>
 </li>
-<li>是元类，则会查找<code>resolveClassMethod</code>，同时，如果调用<code>lookUpImpOrNilTryCache</code>,没有找到，也会去走<code>resolveInstanceMethod</code>方法，即上面的流程(注意，此时他回去元类的isa指针，找方法，而元类的isa指针，实际上是基元类，也就是NSObjec类方法中)，解析类的方法和实例方法流程一样<ol>
+<li>是元类，则会查找<code>resolveClassMethod</code>，同时，如果调用<code>lookUpImpOrNilTryCache</code>,没有找到，也会去走<code>resolveInstanceMethod</code>方法，即上面的流程(注意，此时他会去元类的<code>isa</code>指针中找方法，而元类的<code>isa</code>指针，实际上是基元类，也就是NSObjec类方法中)，解析类的方法和实例方法流程一样 <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">// try [nonMetaClass resolveClassMethod:sel]</span><br><span class="hljs-comment">// and [cls resolveInstanceMethod:sel]</span><br>resolveClassMethod(inst, sel, cls);<br><span class="hljs-keyword">if</span> (!lookUpImpOrNilTryCache(inst, sel, cls)) &#123;<br>    resolveInstanceMethod(inst, sel, cls);<br>&#125;<br></code></pre></td></tr></table></figure>
+<ol>
 <li>同样会先去找方法<code>resolveClassMethod</code>，其在NSObject中也已实现</li>
 <li>会用<code>objc_msgSend</code>的方式调用</li>
 <li>最终用<code>lookUpImpOrForwardTryCache</code>去查找方法</li>
@@ -3236,40 +3721,43 @@
 </li>
 </ul>
 </li>
-<li>实现代码<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">void c_other(id self, SEL _cmd)<br>&#123;<br>    NSLog(@&quot;c_other - %@ - %@&quot;, self, NSStringFromSelector(_cmd));<br>&#125;<br>- (void)other &#123;<br> NSLog(@&quot;other - %@ - %s&quot;, self, __func__);<br>&#125;<br>+ (BOOL)resolveClassMethod:(SEL)sel<br>&#123;<br>    if (sel == @selector(test)) &#123;<br>        // 第一个参数是object_getClass(self)<br>       // c函数 class_addMethod(object_getClass(self), sel, (IMP)c_other, &quot;v16@0:8&quot;);<br>       Method method = class_getInstanceMethod(self, @selector(other));<br>        class_addMethod(<br>        object_getClass(self), <br>        sel,<br>        method_getImplementation(method), <br>        method_getTypeEncoding(method));<br>        return YES;<br>    &#125;<br>    return [super resolveClassMethod:sel];<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>示例代码<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">void</span> c_other(<span class="hljs-keyword">id</span> <span class="hljs-keyword">self</span>, SEL _cmd)<br>&#123;<br>    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;c_other - %@ - %@&quot;</span>, <span class="hljs-keyword">self</span>, <span class="hljs-built_in">NSStringFromSelector</span>(_cmd));<br>&#125;<br>- (<span class="hljs-keyword">void</span>)other &#123;<br> <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;other - %@ - %s&quot;</span>, <span class="hljs-keyword">self</span>, __func__);<br>&#125;<br>+ (<span class="hljs-built_in">BOOL</span>)resolveClassMethod:(SEL)sel<br>&#123;<br>    <span class="hljs-keyword">if</span> (sel == <span class="hljs-keyword">@selector</span>(test)) &#123;<br>        <span class="hljs-comment">// 第一个参数是object_getClass(self)</span><br>       <span class="hljs-comment">// c函数 class_addMethod(object_getClass(self), sel, (IMP)c_other, &quot;v16@0:8&quot;);</span><br>       Method method = class_getInstanceMethod(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">@selector</span>(other));<br>        class_addMethod(<br>        object_getClass(<span class="hljs-keyword">self</span>), <br>        sel,<br>        method_getImplementation(method), <br>        method_getTypeEncoding(method));<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">super</span> resolveClassMethod:sel];<br>&#125;<br></code></pre></td></tr></table></figure></li>
 <li>动态解析流程<br><img src="2.png"></li>
 </ul>
 <h3 id="第三阶段，消息转发"><a href="#第三阶段，消息转发" class="headerlink" title="第三阶段，消息转发"></a>第三阶段，消息转发</h3><ul>
-<li>在<code>第二阶段</code>中，最终会用<code>lookUpImpOrForwardTryCache</code>,再去查找一次方法，这次，如果动态解析方法添加到了，则直接返回，否则不会再走解析流程，其中设置imp为<code>_objc_msgForward_impcache</code>,会跳转到该方法的实现上，该方法在<code>objc-msg-arm64.s</code>文件内，属于汇编<ul>
-<li>ENTRY __objc_msgForward</li>
-<li>Core Foundation</li>
-<li>__forwarding__（不开源)<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">// __forwarding__伪代码<br>int __forwarding__(void *frameStackPointer, int isStret) &#123;<br>    id receiver = *(id *)frameStackPointer;<br>    SEL sel = *(SEL *)(frameStackPointer + 8);<br>    const char *selName = sel_getName(sel);<br>    Class receiverClass = object_getClass(receiver);<br><br>    // 调用 forwardingTargetForSelector:<br>    if (class_respondsToSelector(receiverClass, @selector(forwardingTargetForSelector:))) &#123;<br>        id forwardingTarget = [receiver forwardingTargetForSelector:sel];<br>        if (forwardingTarget &amp;&amp; forwardingTarget != receiver) &#123;<br>            if (isStret == 1) &#123;<br>                int ret;<br>                objc_msgSend_stret(&amp;ret,forwardingTarget, sel, ...);<br>                return ret;<br>            &#125;<br>            return objc_msgSend(forwardingTarget, sel, ...);<br>        &#125;<br>    &#125;<br><br>    // 僵尸对象<br>    const char *className = class_getName(receiverClass);<br>    const char *zombiePrefix = &quot;_NSZombie_&quot;;<br>    size_t prefixLen = strlen(zombiePrefix); // 0xa<br>    if (strncmp(className, zombiePrefix, prefixLen) == 0) &#123;<br>        CFLog(kCFLogLevelError,<br>              @&quot;*** -[%s %s]: message sent to deallocated instance %p&quot;,<br>              className + prefixLen,<br>              selName,<br>              receiver);<br>        &lt;breakpoint-interrupt&gt;<br>    &#125;<br><br>    // 调用 methodSignatureForSelector 获取方法签名后再调用 forwardInvocation<br>    if (class_respondsToSelector(receiverClass, @selector(methodSignatureForSelector:))) &#123;<br>        NSMethodSignature *methodSignature = [receiver methodSignatureForSelector:sel];<br>        if (methodSignature) &#123;<br>            BOOL signatureIsStret = [methodSignature _frameDescriptor]-&gt;returnArgInfo.flags.isStruct;<br>            if (signatureIsStret != isStret) &#123;<br>                CFLog(kCFLogLevelWarning ,<br>                      @&quot;*** NSForwarding: warning: method signature and compiler disagree on struct-return-edness of &#x27;%s&#x27;.  Signature thinks it does%s return a struct, and compiler thinks it does%s.&quot;,<br>                      selName,<br>                      signatureIsStret ? &quot;&quot; : not,<br>                      isStret ? &quot;&quot; : not);<br>            &#125;<br>            if (class_respondsToSelector(receiverClass, @selector(forwardInvocation:))) &#123;<br>                NSInvocation *invocation = [NSInvocation _invocationWithMethodSignature:methodSignature frame:frameStackPointer];<br><br>                [receiver forwardInvocation:invocation];<br><br>                void *returnValue = NULL;<br>                [invocation getReturnValue:&amp;value];<br>                return returnValue;<br>            &#125; else &#123;<br>                CFLog(kCFLogLevelWarning ,<br>                      @&quot;*** NSForwarding: warning: object %p of class &#x27;%s&#x27; does not implement forwardInvocation: -- dropping message&quot;,<br>                      receiver,<br>                      className);<br>                return 0;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    SEL *registeredSel = sel_getUid(selName);<br><br>    // selector 是否已经在 Runtime 注册过<br>    if (sel != registeredSel) &#123;<br>        CFLog(kCFLogLevelWarning ,<br>              @&quot;*** NSForwarding: warning: selector (%p) for message &#x27;%s&#x27; does not match selector known to Objective C runtime (%p)-- abort&quot;,<br>              sel,<br>              selName,<br>              registeredSel);<br>    &#125; // doesNotRecognizeSelector<br>    else if (class_respondsToSelector(receiverClass,@selector(doesNotRecognizeSelector:))) &#123;<br>        [receiver doesNotRecognizeSelector:sel];<br>    &#125;<br>    else &#123;<br>        CFLog(kCFLogLevelWarning ,<br>              @&quot;*** NSForwarding: warning: object %p of class &#x27;%s&#x27; does not implement doesNotRecognizeSelector: -- abort&quot;,<br>              receiver,<br>              className);<br>    &#125;<br><br>    // The point of no return.<br>    kill(getpid(), 9);<br>&#125;<br><br></code></pre></td></tr></table></figure></li>
+<li>在<code>第二阶段</code>中，最终会用<code>lookUpImpOrForwardTryCache</code>,再次去查找一次方法，这次，如果动态解析方法添加到了，则会查找到方法，并直接返回；否则会将<code>imp</code>设置为<code>_objc_msgForward_impcache</code>，返回。</li>
+<li>最终方法调用者会去执行<code>_objc_msgForward_impcache</code>,会跳转到该方法的实现上，该方法在<code>objc-msg-arm64.s</code>文件内，属于汇编<ul>
+<li><code>ENTRY __objc_msgForward</code></li>
+<li><code>Core Foundation</code></li>
+<li><code>__forwarding__</code>（不开源)<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">// __forwarding__伪代码</span><br><span class="hljs-keyword">int</span> __forwarding__(<span class="hljs-keyword">void</span> *frameStackPointer, <span class="hljs-keyword">int</span> isStret) &#123;<br>    <span class="hljs-keyword">id</span> receiver = *(<span class="hljs-keyword">id</span> *)frameStackPointer;<br>    SEL sel = *(SEL *)(frameStackPointer + <span class="hljs-number">8</span>);<br>    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *selName = sel_getName(sel);<br>    Class receiverClass = object_getClass(receiver);<br><br>    <span class="hljs-comment">// 调用 forwardingTargetForSelector:</span><br>    <span class="hljs-keyword">if</span> (class_respondsToSelector(receiverClass, <span class="hljs-keyword">@selector</span>(forwardingTargetForSelector:))) &#123;<br>        <span class="hljs-keyword">id</span> forwardingTarget = [receiver forwardingTargetForSelector:sel];<br>        <span class="hljs-keyword">if</span> (forwardingTarget &amp;&amp; forwardingTarget != receiver) &#123;<br>            <span class="hljs-keyword">if</span> (isStret == <span class="hljs-number">1</span>) &#123;<br>                <span class="hljs-keyword">int</span> ret;<br>                objc_msgSend_stret(&amp;ret,forwardingTarget, sel, ...);<br>                <span class="hljs-keyword">return</span> ret;<br>            &#125;<br>            <span class="hljs-keyword">return</span> objc_msgSend(forwardingTarget, sel, ...);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// 僵尸对象</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *className = class_getName(receiverClass);<br>    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *zombiePrefix = <span class="hljs-string">&quot;_NSZombie_&quot;</span>;<br>    size_t prefixLen = strlen(zombiePrefix); <span class="hljs-comment">// 0xa</span><br>    <span class="hljs-keyword">if</span> (strncmp(className, zombiePrefix, prefixLen) == <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-built_in">CFLog</span>(kCFLogLevelError,<br>              <span class="hljs-string">@&quot;*** -[%s %s]: message sent to deallocated instance %p&quot;</span>,<br>              className + prefixLen,<br>              selName,<br>              receiver);<br>        &lt;breakpoint-interrupt&gt;<br>    &#125;<br><br>    <span class="hljs-comment">// 调用 methodSignatureForSelector 获取方法签名后再调用 forwardInvocation</span><br>    <span class="hljs-keyword">if</span> (class_respondsToSelector(receiverClass, <span class="hljs-keyword">@selector</span>(methodSignatureForSelector:))) &#123;<br>        <span class="hljs-built_in">NSMethodSignature</span> *methodSignature = [receiver methodSignatureForSelector:sel];<br>        <span class="hljs-keyword">if</span> (methodSignature) &#123;<br>            <span class="hljs-built_in">BOOL</span> signatureIsStret = [methodSignature _frameDescriptor]-&gt;returnArgInfo.flags.isStruct;<br>            <span class="hljs-keyword">if</span> (signatureIsStret != isStret) &#123;<br>                <span class="hljs-built_in">CFLog</span>(kCFLogLevelWarning ,<br>                      <span class="hljs-string">@&quot;*** NSForwarding: warning: method signature and compiler disagree on struct-return-edness of &#x27;%s&#x27;.  Signature thinks it does%s return a struct, and compiler thinks it does%s.&quot;</span>,<br>                      selName,<br>                      signatureIsStret ? <span class="hljs-string">&quot;&quot;</span> : not,<br>                      isStret ? <span class="hljs-string">&quot;&quot;</span> : not);<br>            &#125;<br>            <span class="hljs-keyword">if</span> (class_respondsToSelector(receiverClass, <span class="hljs-keyword">@selector</span>(forwardInvocation:))) &#123;<br>                <span class="hljs-built_in">NSInvocation</span> *invocation = [<span class="hljs-built_in">NSInvocation</span> _invocationWithMethodSignature:methodSignature frame:frameStackPointer];<br><br>                [receiver forwardInvocation:invocation];<br><br>                <span class="hljs-keyword">void</span> *returnValue = <span class="hljs-literal">NULL</span>;<br>                [invocation getReturnValue:&amp;value];<br>                <span class="hljs-keyword">return</span> returnValue;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-built_in">CFLog</span>(kCFLogLevelWarning ,<br>                      <span class="hljs-string">@&quot;*** NSForwarding: warning: object %p of class &#x27;%s&#x27; does not implement forwardInvocation: -- dropping message&quot;</span>,<br>                      receiver,<br>                      className);<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    SEL *registeredSel = sel_getUid(selName);<br><br>    <span class="hljs-comment">// selector 是否已经在 Runtime 注册过</span><br>    <span class="hljs-keyword">if</span> (sel != registeredSel) &#123;<br>        <span class="hljs-built_in">CFLog</span>(kCFLogLevelWarning ,<br>              <span class="hljs-string">@&quot;*** NSForwarding: warning: selector (%p) for message &#x27;%s&#x27; does not match selector known to Objective C runtime (%p)-- abort&quot;</span>,<br>              sel,<br>              selName,<br>              registeredSel);<br>    &#125; <span class="hljs-comment">// doesNotRecognizeSelector</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (class_respondsToSelector(receiverClass,<span class="hljs-keyword">@selector</span>(doesNotRecognizeSelector:))) &#123;<br>        [receiver doesNotRecognizeSelector:sel];<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-built_in">CFLog</span>(kCFLogLevelWarning ,<br>              <span class="hljs-string">@&quot;*** NSForwarding: warning: object %p of class &#x27;%s&#x27; does not implement doesNotRecognizeSelector: -- abort&quot;</span>,<br>              receiver,<br>              className);<br>    &#125;<br><br>    <span class="hljs-comment">// The point of no return.</span><br>    kill(getpid(), <span class="hljs-number">9</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li>实际实现,类方法也有消息转发处理<ol>
-<li><code>-(id)forwardingTargetForSelector:</code>返回可以转发该方法的对象，如果是类方法则是+<ul>
-<li>注意，也可以再该实例方法中返回类，可以响应的类对象（如果类方法支持的话）</li>
+<li>实际实现,类方法中也有消息转发处理<ol>
+<li><code>-(id)forwardingTargetForSelector:</code>返回可以转发该方法的对象，如果是类方法则是<code>+</code><ul>
+<li><strong>注意</strong>，也可以在该实例方法中返回可以响应的类对象（如果类方法支持的话）</li>
 </ul>
 </li>
-<li>1中返回的是该对象本身，则会调用<code>- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector</code>,先获取方法签名<ul>
+<li>如果<code>1</code>中返回的是该对象本身，则会调用<code>- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector</code>,先获取方法签名<ul>
 <li>注意方法签名，会决定<code>NSInvocation</code>中的参数和返回值</li>
 </ul>
 </li>
-<li>2中获取了方法签名之后，再会调用<code>forwardInvocation:(NSInvocation *)anInvocation</code>方法</li>
-<li>如果最后还是没有实现方法3，则会走<code>doesNotRecognizeSelector </code>方法，发出未找到方法的错误<ul>
-<li>注意，只要方法3实现了，就算没有任何实现，那么也不会去，走到<code>doesNotRecognizeSelector</code>的流程，要<strong>注意</strong><code>NSObjec</code>中<code>forwardInvocation:</code>的默认实现,如果没实际实现转发的方法，还是会触发<code>doesNotRecognizeSelector </code></li>
+<li><code>2</code>中获取了方法签名之后，再会调用<code>forwardInvocation:(NSInvocation *)anInvocation</code>方法</li>
+<li>如果最后还是没有实现方法<code>3</code>，则会走<code>doesNotRecognizeSelector </code>方法，发出未找到方法的错误<ul>
+<li>注意，只要方法<code>3</code>实现了，就算没有任何实现，那么也不会走到<code>doesNotRecognizeSelector</code>的流程，要<strong>注意</strong><code>NSObjec</code>中<code>forwardInvocation:</code>的默认实现,如果没实际实现转发的方法，还是会触发<code>doesNotRecognizeSelector </code></li>
 </ul>
 </li>
 </ol>
 </li>
-<li>注意，消息转发成功之后，在当前类的方法中是不会缓存方法的，但是在转发的类中会缓存;因此，无法从缓存中获取，每次调用该方法，都会重新走消息转发流程。<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">//如果是类方法则是+<br>- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector &#123;<br>    if (aSelector == @selector(text)) &#123;<br>        return [NSMethodSignature signatureWithObjCTypes:&quot;v16@0:8i20&quot;];<br>        //不带数字位置也是可以的，v-&gt;void、@-&gt;self、:-&gt;SEL、i-&gt;int<br>        // return [NSMethodSignature signatureWithObjCTypes:&quot;v@:i&quot;]<br>    &#125;<br>    return  [super methodSignatureForSelector: aSelector];<br>&#125;<br>//如果是类方法则是+<br>- (void)forwardInvocation:(NSInvocation *)anInvocation &#123;<br>    [anInvocation invokeWithTarget:[[LGPersonText alloc] init]];<br>&#125;<br></code></pre></td></tr></table></figure></li>
-<li><code>NSObject</code>中的内部实现<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext"><br>+ (void)forwardInvocation:(NSInvocation *)invocation &#123;<br>    [self doesNotRecognizeSelector:(invocation ? [invocation selector] : 0)];<br>&#125;<br><br>- (void)forwardInvocation:(NSInvocation *)invocation &#123;<br>    [self doesNotRecognizeSelector:(invocation ? [invocation selector] : 0)];<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>注意</strong>，消息转发成功之后，在当前<strong>调用的类</strong>中是不会缓存方法的，但是在<strong>转发的类</strong>中会缓存;因此,后续调用该方法，仍然无法从缓存中获取，每次调用该方法，都会<strong>重新走消息转发流程</strong>。<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">//如果是类方法则是+</span><br>- (<span class="hljs-built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector &#123;<br>    <span class="hljs-keyword">if</span> (aSelector == <span class="hljs-keyword">@selector</span>(text)) &#123;<br>        <span class="hljs-keyword">return</span> [<span class="hljs-built_in">NSMethodSignature</span> signatureWithObjCTypes:<span class="hljs-string">&quot;v16@0:8i20&quot;</span>];<br>        <span class="hljs-comment">//不带数字位置也是可以的，v-&gt;void、@-&gt;self、:-&gt;SEL、i-&gt;int</span><br>        <span class="hljs-comment">// return [NSMethodSignature signatureWithObjCTypes:&quot;v@:i&quot;]</span><br>    &#125;<br>    <span class="hljs-keyword">return</span>  [<span class="hljs-keyword">super</span> methodSignatureForSelector: aSelector];<br>&#125;<br><span class="hljs-comment">//如果是类方法则是+</span><br>- (<span class="hljs-keyword">void</span>)forwardInvocation:(<span class="hljs-built_in">NSInvocation</span> *)anInvocation &#123;<br>    [anInvocation invokeWithTarget:[[LGPersonText alloc] init]];<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>NSObject</code>中的内部实现<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><br>+ (<span class="hljs-keyword">void</span>)forwardInvocation:(<span class="hljs-built_in">NSInvocation</span> *)invocation &#123;<br>    [<span class="hljs-keyword">self</span> doesNotRecognizeSelector:(invocation ? [invocation selector] : <span class="hljs-number">0</span>)];<br>&#125;<br><br>- (<span class="hljs-keyword">void</span>)forwardInvocation:(<span class="hljs-built_in">NSInvocation</span> *)invocation &#123;<br>    [<span class="hljs-keyword">self</span> doesNotRecognizeSelector:(invocation ? [invocation selector] : <span class="hljs-number">0</span>)];<br>&#125;<br></code></pre></td></tr></table></figure></li>
 <li>方法转发流程<br><img src="3.png"><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2></li>
-<li>OC的消息机制<ul>
-<li>OC中的方法调用其实都是转成了objc_msgSend函数的调用，给receiver发送一条消息（selector方法）</li>
-<li>objc_msgSend底层有3大阶段<ul>
-<li>消息发送（当前类、父类中查找），动态方法解析，消息转发</li>
-</ul>
+<li><code>OC</code>的消息机制<ul>
+<li><code>OC</code>中的方法调用其实都是转成了<code>objc_msgSend</code>函数的调用，给<code>receiver</code>发送一条消息（<code>selector</code>方法）</li>
+<li><code>objc_msgSend</code>底层有3大阶段<ol>
+<li>消息发送（当前类、父类中查找）</li>
+<li>动态方法解析</li>
+<li>消息转发</li>
+</ol>
 </li>
 </ul>
 </li>
@@ -3282,53 +3770,59 @@
   <entry>
     <title>objc_class</title>
     <url>/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/objc-class/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
-<h2 id="Class的结构"><a href="#Class的结构" class="headerlink" title="Class的结构"></a>Class的结构</h2><p><img src="1.png"></p>
-<h3 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h3><blockquote>
-<p>class_rw_t里面的methods、properties、protocols是二维数组，是可读可写的，包含了类的初始内容、分类的内容</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Class的结构"><a href="#Class的结构" class="headerlink" title="Class的结构"></a>Class的结构</h1><p><img src="1.png"></p>
+<h1 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h1><blockquote>
+<p><code>class_rw_t</code>里面的<code>methods</code>、<code>properties</code>、<code>protocols</code>是二维数组，是可读可写的，包含了类的初始内容、分类的内容。</p>
 </blockquote>
 <p><img src="2.png"></p>
-<h3 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h3><blockquote>
-<p>class_ro_t里面的baseMethodList、baseProtocols、ivars、baseProperties是一维数组，是只读的，包含了类的初始内容</p>
+<h2 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h2><blockquote>
+<p><code>class_ro_t</code>里面的<code>baseMethodList</code>、<code>baseProtocols</code>、<code>ivars</code>、<code>baseProperties</code>是一维数组，是只读的，包含了类的初始内容。</p>
 </blockquote>
 <p><img src="3.png"></p>
-<h3 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h3><blockquote>
-<p>method_t是对方法\函数的封装</p>
+<h2 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h2><blockquote>
+<p><code>method_t</code>是对方法\函数的封装</p>
 </blockquote>
 <p><img src="4.png"></p>
 <ul>
-<li>IMP代表函数的具体实现<ul>
+<li><code>IMP</code>代表函数的具体实现<ul>
 <li><code>typedef id _Nullable (*IMP)(id _Nonnull,SEL _Nonnull,...)</code></li>
 </ul>
 </li>
-<li>SEL代表方法\函数名，一般叫做选择器，底层结构跟char *类似 <ul>
-<li>可以通过@selector()和sel_registerName()获得</li>
-<li>可以通过sel_getName()和NSStringFromSelector()转成字符串</li>
-<li>不同类中相同名字的方法，所对应的方法选择器是相同的 </li>
+<li><code>SEL</code>代表方法\函数名，一般叫做选择器，底层结构跟<code>char *</code>类似 <ul>
+<li>可以通过<code>@selector()</code>和<code>sel_registerName()</code>获得</li>
+<li>可以通过<code>sel_getName()</code>和<code>NSStringFromSelector()</code>转成字符串</li>
+<li>不同类中相同名字的方法，所对应的方法选择器是<strong>相同</strong>的 </li>
 </ul>
 </li>
-<li>types包含了函数返回值、参数编码的字符串<ul>
-<li>方法位objc_msgSend(id self,SEL,…)</li>
-<li>i-&gt;int,@-&gt;id,@-&gt;SEL,f-&gt;float</li>
-<li>24参数总字节，0从0字节开始，8从第8字节开始…<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">types:i24@0:8i16f20<br> i 24 @ 0 : 8 i 16 f 20<br>- (int)test:(int)age height:(float)height;<br></code></pre></td></tr></table></figure>
-<h3 id="方法缓存"><a href="#方法缓存" class="headerlink" title="方法缓存"></a>方法缓存</h3><blockquote>
-<p>Class内部结构中有个方法缓存（cache_t），用散列表（哈希表）来缓存曾经调用过的方法，可以提高方法的查找速度</p>
+<li><code>types</code>包含了函数返回值、参数编码的字符串  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">types -&gt;  i24@<span class="hljs-number">0</span>:<span class="hljs-number">8</span>i16f20<br> i <span class="hljs-number">24</span> @ <span class="hljs-number">0</span> : <span class="hljs-number">8</span> i <span class="hljs-number">16</span> f <span class="hljs-number">20</span><br>- (<span class="hljs-keyword">int</span>)test:(<span class="hljs-keyword">int</span>)age height:(<span class="hljs-keyword">float</span>)height;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>方法为<code>objc_msgSend(id self,SEL,...)</code></li>
+<li><code>i-&gt;int</code>,<code>@-&gt;id</code>,<code>@-&gt;SEL</code>,<code>f-&gt;float</code></li>
+<li><code>24</code>参数总字节，<code>0</code>从<code>0</code>字节开始，<code>8</code>从第<code>8</code>字节开始</li>
+</ul>
+</li>
+</ul>
+<h2 id="方法缓存"><a href="#方法缓存" class="headerlink" title="方法缓存"></a>方法缓存</h2><blockquote>
+<p><code>Class</code>内部结构中有个方法缓存（<code>cache_t</code>），用散列表（哈希表）来缓存曾经调用过的方法，可以提高方法的查找速度</p>
 </blockquote>
-</li>
-</ul>
-</li>
-<li>mask存储的是散列表的长度减1<br><img src="5.png"></li>
+<ul>
+<li><code>mask</code>存储的是散列表的长度减1<br><img src="5.png"></li>
 <li>缓存查找<ul>
 <li><code>objc-cache.mm</code></li>
 <li><code>void cache_t::insert(SEL sel, IMP imp, id receiver)</code></li>
 </ul>
 </li>
-<li>插入之前，会先判断是否需要扩容，扩容为条件为，大于之前的3/4倍,扩容为2倍扩容，不超过最大缓存尺寸<br><img src="8.png"></li>
-<li>当扩容时，会清除之前缓存的方法，也就是说，之前缓存的方法，不过传给新的扩容缓存，会全部释放。新缓存又重新开始计数<br><img src="9.png"></li>
-<li>向缓存中插入方法<br><img src="6.png"></li>
-<li>hash的方式，直接用SEL &amp; mask得到key的方式,会存在，冲突，根据取到的sel判断是不是同一方法<br><img src="10.png"><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">bucket_t *buckets = cache._buckets;<br>bucket_t bucket = buckets[(long long)@selector(studentTest) &amp; cache._mask];<br>//即可拿到缓存中的选择器，和实现，可能会有hash冲突，源码中会根据拿到的sel看是不是一致的<br>NSLog(@&quot;%s %p&quot;, bucket._key, bucket._imp);<br></code></pre></td></tr></table></figure></li>
-<li>解决hash冲突的方式，开放地址法，线性探测<br><img src="7.png"></li>
 </ul>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><ol>
+<li>插入之前，会先判断是否需要扩容，扩容为条件为，大于之前的<code>3/4</code>倍,扩容为<code>2</code>倍扩容，不超过最大缓存尺寸<br><img src="8.png"></li>
+<li>当扩容时，生成的新的<code>buckets</code>会直接替换旧的，会清除之前缓存的方法，也就是说，之前缓存的方法，不会传给新扩容的缓存，缓存会全部释放。新缓存又要重新开始计数。<br><img src="9.png"></li>
+<li>向缓存中插入方法<br><img src="6.png"></li>
+<li><code>hash</code>的方式是直接用<code>SEL &amp; mask</code>得到<code>key</code>的方式。存在冲突时，会根据取到的<code>sel</code>判断是不是同一方法<br><img src="10.png"> <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">bucket_t *buckets = cache._buckets;<br>bucket_t bucket = buckets[(<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span>)<span class="hljs-keyword">@selector</span>(studentTest) &amp; cache._mask];<br><span class="hljs-comment">//即可拿到缓存中的选择器，和实现，可能会有hash冲突，源码中会根据拿到的sel看是不是一致的</span><br><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@&quot;%s %p&quot;</span>, bucket._key, bucket._imp);<br></code></pre></td></tr></table></figure>
+<ul>
+<li>解决<code>hash</code>冲突的方式，<strong>开放地址法-线性探测</strong><br><img src="7.png"></li>
+</ul>
+</li>
+</ol>
 ]]></content>
       <categories>
         <category>Runtime</category>
@@ -3339,66 +3833,66 @@
   </entry>
   <entry>
     <title>isa</title>
-    <url>/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/Runtime/</url>
+    <url>/2023/01/01/iOS%E5%AD%A6%E4%B9%A0/Runtime/isa/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h2><blockquote>
 <ul>
-<li>objective-C的动态性是由runtime API来支撑的</li>
-<li>runtime API提供的接口基本都是C语言的，源码又C\C++\汇编语言编写</li>
+<li><code>objective-C</code>的动态性是由<code>runtime API</code>来支撑的</li>
+<li><code>runtime API</code>提供的接口基本都是<code>C</code>语言的，源码由<code>C\C++\</code>汇编语言编写</li>
 </ul>
 </blockquote>
 <h2 id="isa"><a href="#isa" class="headerlink" title="isa"></a>isa</h2><blockquote>
 <ul>
-<li>在arm64架构之前，isa就是一个普通的指针，存储着Class、Meta-Class对象的内存地址</li>
-<li>从arm64架构开始，对isa进行了优化，变成了一个共用体（<code>union</code>）(结构体和数据共用的一个内存地址，实际共用体中的结构体，只做展示作用)结构，使用位域来存储更多信息</li>
+<li>在<code>arm64</code>架构之前，<code>isa</code>就是一个普通的指针，存储着<code>Class</code>、<code>Meta-Class</code>对象的内存地址</li>
+<li>从<code>arm64</code>架构开始，对<code>isa</code>进行了优化，变成了一个共用体（<code>union</code>）(结构体和数据共用的一个内存地址，实际共用体中的结构体，只做展示作用)结构，使用位域来存储更多信息</li>
 </ul>
 </blockquote>
 <h3 id="isa结构"><a href="#isa结构" class="headerlink" title="isa结构"></a>isa结构</h3><ol>
-<li>共用体（<code>union</code>）结构(结构体和数据共用的一个内存地址，实际数据存储在bits中，共用体中的结构体，只做展示作用)<br><img src="1.png"><img src="2.png"></li>
+<li>共用体（<code>union</code>）结构(结构体和数据共用的一个内存地址，实际数据存储在<code>bits</code>中，共用体中的结构体，只做展示作用)<br><img src="1.png"><img src="2.png"></li>
 </ol>
 <h3 id="isa指针每位的含义"><a href="#isa指针每位的含义" class="headerlink" title="isa指针每位的含义"></a>isa指针每位的含义</h3><blockquote>
 <p>从内存地址，从上往下，即地址从右边，往左</p>
 </blockquote>
 <ul>
-<li>nonpointer<ul>
-<li>0,代表普通的指针，存储着Class、Meta—Class对象的内存地址</li>
-<li>1,代表优化过，使用位域存储更多的信息</li>
+<li><code>nonpointer</code><ul>
+<li><code>0</code>,代表普通的指针，存储着<code>Class</code>、<code>Meta—Class</code>对象的内存地址</li>
+<li><code>1</code>,代表优化过，使用位域存储更多的信息</li>
 </ul>
 </li>
-<li>has_assoc<ul>
-<li>是否又设置过关联对象，如果没有，释放会更快</li>
+<li><code>has_assoc</code><ul>
+<li>是否有设置过关联对象，如果没有，释放会更快</li>
 </ul>
 </li>
-<li>has_cxx_dtor<ul>
-<li>是否有C++的析构函数（.cxx_destruct),如果没有，释放会更快</li>
+<li><code>has_cxx_dtor</code><ul>
+<li>是否有<code>C++</code>的析构函数（<code>.cxx_destruct</code>),如果没有，释放会更快</li>
 </ul>
 </li>
-<li>shiftcls<ul>
-<li>存储着Class、Meta-Class对象的内存地址信息</li>
-<li>ios中mask为<code>0x0000000ffffffff8</code>,因此，很多类以及元类的地址是以8和0结尾的，因为最后三位均是000.</li>
+<li><code>shiftcls</code><ul>
+<li>存储着<code>Class</code>、<code>Meta-Class</code>对象的内存地址信息</li>
+<li><code>ios</code>中<code>mask</code>为<code>0x0000000ffffffff8</code>,因此，很多类以及元类的地址是以8和0结尾的，因为最后三位均是<code>000</code>.</li>
 </ul>
 </li>
-<li>magic<ul>
+<li><code>magic</code><ul>
 <li>用于在调试时分辨对象是否未完成初始化</li>
 </ul>
 </li>
-<li>weakly_referenced<ul>
+<li><code>weakly_referenced</code><ul>
 <li>是否有被弱引用指向过，如果没有,释放时会更快</li>
 </ul>
 </li>
-<li>deallocating/unused(818版本之后)<ul>
+<li><code>deallocating</code>/<code>unused</code>(818版本之后)<ul>
 <li>对象是否正在释放</li>
 </ul>
 </li>
-<li>extra_rc<ul>
-<li>里面存储的值是引用计数器减1</li>
+<li><code>extra_rc</code><ul>
+<li>里面存储的值是引用计数器减<code>1</code></li>
 </ul>
 </li>
-<li>has_sidetable_rc<ul>
-<li>引用计数器是否过大无法存储在isa中，如果为1，那么引用计数会存储在一个叫<code>SideTable</code>的类的属性中</li>
+<li><code>has_sidetable_rc</code><ul>
+<li>引用计数器是否过大无法存储在<code>isa</code>中，如果为<code>1</code>，那么引用计数会存储在一个叫<code>SideTable</code>的类的属性中</li>
 </ul>
 </li>
 </ul>
-<p>注意，这里的都是是否有设置过，就像关联对象，就算最后将所有的关联对象删除，仍是1，如果有这些，在销毁的时候，会做额外工作<br><img src="16725690610032.png"></p>
+<p>注意，这里的都是<strong>是否有设置过</strong>，就像关联对象，就算最后将所有的关联对象删除，仍是<code>1</code>，如果有这些，在销毁的时候，会做额外工作.<br><img src="3.png"></p>
 ]]></content>
       <categories>
         <category>Runtime</category>
@@ -4601,15 +5095,15 @@
     <url>/2022/10/29/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/SSH%E6%8C%87%E4%BB%A4/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><span id="more"></span>
 <h1 id="SSH常用指令"><a href="#SSH常用指令" class="headerlink" title="SSH常用指令"></a>SSH常用指令</h1><ul>
-<li>ssh <a href="mailto:&#x72;&#111;&#x6f;&#116;&#64;&#49;&#x39;&#50;&#46;&#x31;&#x36;&#56;&#x2e;&#x31;&#46;&#x31;&#x34;">&#x72;&#111;&#x6f;&#116;&#64;&#49;&#x39;&#50;&#46;&#x31;&#x36;&#56;&#x2e;&#x31;&#46;&#x31;&#x34;</a>,跳转到指定ip的命令</li>
+<li>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#x74;&#64;&#49;&#57;&#x32;&#x2e;&#49;&#54;&#x38;&#46;&#x31;&#46;&#49;&#52;">&#114;&#x6f;&#x6f;&#x74;&#64;&#49;&#57;&#x32;&#x2e;&#49;&#54;&#x38;&#46;&#x31;&#46;&#49;&#52;</a>,跳转到指定ip的命令</li>
 <li>ssh-keygen -R 192.168.1.14,删除ip保存的公钥<h2 id="客户端认证密钥"><a href="#客户端认证密钥" class="headerlink" title="客户端认证密钥"></a>客户端认证密钥</h2></li>
 </ul>
 <ol>
 <li>ssh-keygen -t rsa,生成公钥和私钥,认证密钥，下次不用输入密码<ul>
-<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#111;&#111;&#x74;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#56;&#46;&#x31;&#46;&#x31;&#52;">&#x72;&#111;&#111;&#x74;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#56;&#46;&#x31;&#46;&#x31;&#52;</a>，追加到当前ip服务器授权文件的尾部</li>
+<li>公钥追加到服务器授权文件（.ssh/authorized_keys）的尾部，ssh-copy-id <a href="mailto:&#x72;&#x6f;&#x6f;&#x74;&#x40;&#49;&#x39;&#50;&#46;&#49;&#x36;&#56;&#x2e;&#x31;&#x2e;&#49;&#52;">&#x72;&#x6f;&#x6f;&#x74;&#x40;&#49;&#x39;&#50;&#46;&#49;&#x36;&#56;&#x2e;&#x31;&#x2e;&#49;&#52;</a>，追加到当前ip服务器授权文件的尾部</li>
 </ul>
 </li>
-<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x39;&#50;&#46;&#x31;&#54;&#x38;&#x2e;&#49;&#x2e;&#x31;&#x34;">&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x39;&#50;&#46;&#x31;&#54;&#x38;&#x2e;&#49;&#x2e;&#x31;&#x34;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
+<li>scp <del>/.ssh/id_rsa.pub <a href="mailto:&#114;&#111;&#111;&#116;&#x40;&#49;&#57;&#50;&#x2e;&#49;&#54;&#x38;&#x2e;&#49;&#x2e;&#49;&#x34;">&#114;&#111;&#111;&#116;&#x40;&#49;&#57;&#50;&#x2e;&#49;&#54;&#x38;&#x2e;&#49;&#x2e;&#49;&#x34;</a>:</del>/.ssh，基于SSH登录进行安全的远程文件拷贝命令,将id_rsa.pub文件拷贝到.ssh文件下<ul>
 <li>cat id_rsa.pub &gt;&gt; authorized_keys,将id_rsa.pub内容加到authorized_keys中(同样可以实现认证密钥，不用输入密码)<h2 id="权限赋予"><a href="#权限赋予" class="headerlink" title="权限赋予"></a>权限赋予</h2></li>
 </ul>
 </li>
@@ -4635,54 +5129,6 @@
 ]]></content>
       <categories>
         <category>iOS越狱</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>flutter指令</title>
-    <url>/2022/09/11/Flutter/%E6%8C%87%E4%BB%A4/%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h4 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h4><ul>
-<li>flutter run –no-sound-null-safety  解决flutter插件旧版本兼容问题</li>
-<li>flutter create –template=package hello 创建pakcage</li>
-<li>flutter create -t module flutter_module 创建fluttermodule</li>
-<li>flutter create example 创建flutter项目<h4 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h4></li>
-<li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
-<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h4 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h4></li>
-<li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
-</ul>
-<h3 id="创建flutter"><a href="#创建flutter" class="headerlink" title="创建flutter"></a>创建flutter</h3><ol>
-<li>集成SDK<ul>
-<li><a href="https://flutter.cn/docs/get-started/install/macos#get-sdk">Flutter地址</a></li>
-</ul>
-</li>
-<li>创建<code>flutter</code>项目<ul>
-<li><code>flutter create -i swift -a java --org com.flutter. test_flutter</code></li>
-</ul>
-</li>
-<li>运行<code>flutter</code>项目<ul>
-<li><code>flutter run</code><h3 id="创建packages"><a href="#创建packages" class="headerlink" title="创建packages"></a>创建packages</h3><blockquote>
-<ol>
-<li>纯flutter的<code>Dart package</code></li>
-<li>原生插件<code>Plugin packages</code></li>
-</ol>
-</blockquote>
-</li>
-</ul>
-</li>
-</ol>
-<h4 id="Dart-package"><a href="#Dart-package" class="headerlink" title="Dart package"></a><code>Dart package</code></h4><ul>
-<li><code>flutter create --template=package hello</code></li>
-<li><code>flutter pub publish --dry-run</code><ul>
-<li>发布检查包是否合法</li>
-</ul>
-</li>
-</ul>
-<h4 id="原生-plugin"><a href="#原生-plugin" class="headerlink" title="原生 plugin"></a><code>原生 plugin</code></h4><ul>
-<li><code>flutter create --org com.example --template=plugin --platforms=android,ios -a kotlin -i swift hello</code></li>
-<li>创建目录结构如下</li>
-</ul>
-]]></content>
-      <categories>
-        <category>flutter指令</category>
       </categories>
   </entry>
   <entry>
@@ -4779,6 +5225,54 @@
 ]]></content>
       <categories>
         <category>flutter和原生交互</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>flutter指令</title>
+    <url>/2022/09/11/Flutter/%E6%8C%87%E4%BB%A4/%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h4 id="Flutter-常用指令"><a href="#Flutter-常用指令" class="headerlink" title="Flutter 常用指令"></a>Flutter 常用指令</h4><ul>
+<li>flutter run –no-sound-null-safety  解决flutter插件旧版本兼容问题</li>
+<li>flutter create –template=package hello 创建pakcage</li>
+<li>flutter create -t module flutter_module 创建fluttermodule</li>
+<li>flutter create example 创建flutter项目<h4 id="Flutter包发布指令"><a href="#Flutter包发布指令" class="headerlink" title="Flutter包发布指令"></a>Flutter包发布指令</h4></li>
+<li>flutter packages pub publish –dry-run 检查发布前需要准备什么</li>
+<li>flutter packages pub publish 直接发布，需要外网，还有授权（注意不要设置代理使用国内镜像）<h4 id="flutter插件"><a href="#flutter插件" class="headerlink" title="flutter插件"></a>flutter插件</h4></li>
+<li>flutter create –org com.flutter_plugine –template=plugin –platforms=ios,macos -i swift flutter_plugin  插件新建</li>
+</ul>
+<h3 id="创建flutter"><a href="#创建flutter" class="headerlink" title="创建flutter"></a>创建flutter</h3><ol>
+<li>集成SDK<ul>
+<li><a href="https://flutter.cn/docs/get-started/install/macos#get-sdk">Flutter地址</a></li>
+</ul>
+</li>
+<li>创建<code>flutter</code>项目<ul>
+<li><code>flutter create -i swift -a java --org com.flutter. test_flutter</code></li>
+</ul>
+</li>
+<li>运行<code>flutter</code>项目<ul>
+<li><code>flutter run</code><h3 id="创建packages"><a href="#创建packages" class="headerlink" title="创建packages"></a>创建packages</h3><blockquote>
+<ol>
+<li>纯flutter的<code>Dart package</code></li>
+<li>原生插件<code>Plugin packages</code></li>
+</ol>
+</blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="Dart-package"><a href="#Dart-package" class="headerlink" title="Dart package"></a><code>Dart package</code></h4><ul>
+<li><code>flutter create --template=package hello</code></li>
+<li><code>flutter pub publish --dry-run</code><ul>
+<li>发布检查包是否合法</li>
+</ul>
+</li>
+</ul>
+<h4 id="原生-plugin"><a href="#原生-plugin" class="headerlink" title="原生 plugin"></a><code>原生 plugin</code></h4><ul>
+<li><code>flutter create --org com.example --template=plugin --platforms=android,ios -a kotlin -i swift hello</code></li>
+<li>创建目录结构如下</li>
+</ul>
+]]></content>
+      <categories>
+        <category>flutter指令</category>
       </categories>
   </entry>
   <entry>
