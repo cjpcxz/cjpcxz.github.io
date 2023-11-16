@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-10-31T17:23:04.627Z</updated>
+  <updated>2023-11-14T15:20:21.467Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>播放yuv视频</title>
+    <link href="http://example.com/2023/11/12/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E6%92%AD%E6%94%BEyuv%E8%A7%86%E9%A2%91/"/>
+    <id>http://example.com/2023/11/12/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E6%92%AD%E6%94%BEyuv%E8%A7%86%E9%A2%91/</id>
+    <published>2023-11-12T14:22:51.000Z</published>
+    <updated>2023-11-14T15:20:21.467Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>显示YUV图片</title>
+    <link href="http://example.com/2023/11/12/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E6%98%BE%E7%A4%BAYUV%E5%9B%BE%E7%89%87/"/>
+    <id>http://example.com/2023/11/12/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E6%98%BE%E7%A4%BAYUV%E5%9B%BE%E7%89%87/</id>
+    <published>2023-11-12T13:44:13.000Z</published>
+    <updated>2023-11-12T14:22:36.593Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>视频录制</title>
@@ -413,52 +459,6 @@
     <id>http://example.com/2023/06/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/Mirror/</id>
     <published>2023-06-12T14:38:06.000Z</published>
     <updated>2023-08-01T17:07:49.063Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="swift进阶" scheme="http://example.com/categories/swift%E8%BF%9B%E9%98%B6/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>TargetStructMetadata分析</title>
-    <link href="http://example.com/2023/06/11/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/TargetStructMetadata%E5%88%86%E6%9E%90/"/>
-    <id>http://example.com/2023/06/11/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/TargetStructMetadata%E5%88%86%E6%9E%90/</id>
-    <published>2023-06-11T14:38:06.000Z</published>
-    <updated>2023-07-31T17:41:52.823Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="swift进阶" scheme="http://example.com/categories/swift%E8%BF%9B%E9%98%B6/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>TargetClassMetadata结构分析</title>
-    <link href="http://example.com/2023/06/09/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/TargetClassMetadata%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"/>
-    <id>http://example.com/2023/06/09/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/TargetClassMetadata%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/</id>
-    <published>2023-06-08T17:08:10.000Z</published>
-    <updated>2023-07-31T02:59:40.151Z</updated>
     
     
       
