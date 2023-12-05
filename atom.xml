@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-11-14T15:20:21.467Z</updated>
+  <updated>2023-11-30T11:45:49.271Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,80 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>视频解封装格式</title>
+    <link href="http://example.com/2023/11/28/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91%E8%A7%A3%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/"/>
+    <id>http://example.com/2023/11/28/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91%E8%A7%A3%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/</id>
+    <published>2023-11-28T15:48:20.000Z</published>
+    <updated>2023-11-30T11:45:49.271Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>h264解码实战</title>
+    <link href="http://example.com/2023/11/26/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/h264%E8%A7%A3%E7%A0%81%E5%AE%9E%E6%88%98/"/>
+    <id>http://example.com/2023/11/26/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/h264%E8%A7%A3%E7%A0%81%E5%AE%9E%E6%88%98/</id>
+    <published>2023-11-26T08:55:04.000Z</published>
+    <updated>2023-11-29T03:25:19.435Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>h264编码实战</title>
+    <link href="http://example.com/2023/11/24/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/h264%E7%BC%96%E5%AE%9E%E6%88%98/"/>
+    <id>http://example.com/2023/11/24/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/h264%E7%BC%96%E5%AE%9E%E6%88%98/</id>
+    <published>2023-11-24T06:30:34.000Z</published>
+    <updated>2023-11-26T09:13:44.091Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>播放yuv视频</title>
     <link href="http://example.com/2023/11/12/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E6%92%AD%E6%94%BEyuv%E8%A7%86%E9%A2%91/"/>
     <id>http://example.com/2023/11/12/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E6%92%AD%E6%94%BEyuv%E8%A7%86%E9%A2%91/</id>
     <published>2023-11-12T14:22:51.000Z</published>
-    <updated>2023-11-14T15:20:21.467Z</updated>
+    <updated>2023-11-17T09:54:11.334Z</updated>
     
     
       
@@ -136,7 +205,7 @@
     <link href="http://example.com/2023/10/11/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/aac%E8%A7%A3%E7%A0%81%E5%AE%9E%E6%88%98/"/>
     <id>http://example.com/2023/10/11/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/aac%E8%A7%A3%E7%A0%81%E5%AE%9E%E6%88%98/</id>
     <published>2023-10-11T15:59:41.000Z</published>
-    <updated>2023-10-12T12:03:21.898Z</updated>
+    <updated>2023-11-24T17:11:32.843Z</updated>
     
     
       
@@ -316,6 +385,29 @@
   </entry>
   
   <entry>
+    <title>命令行和编程实现音视频录制</title>
+    <link href="http://example.com/2023/08/23/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%92%8C%E7%BC%96%E7%A8%8B%E5%AE%9E%E7%8E%B0%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BD%95%E5%88%B6/"/>
+    <id>http://example.com/2023/08/23/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%92%8C%E7%BC%96%E7%A8%8B%E5%AE%9E%E7%8E%B0%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BD%95%E5%88%B6/</id>
+    <published>2023-08-22T17:58:52.000Z</published>
+    <updated>2023-11-28T03:10:21.258Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>泛型原理</title>
     <link href="http://example.com/2023/07/02/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/%E6%B3%9B%E5%9E%8B%E5%8E%9F%E7%90%86/"/>
     <id>http://example.com/2023/07/02/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/%E6%B3%9B%E5%9E%8B%E5%8E%9F%E7%90%86/</id>
@@ -367,98 +459,6 @@
     <id>http://example.com/2023/06/24/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/%E9%97%AD%E5%8C%85%E5%88%86%E6%9E%90/</id>
     <published>2023-06-24T15:50:31.000Z</published>
     <updated>2023-08-03T02:37:59.747Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="swift进阶" scheme="http://example.com/categories/swift%E8%BF%9B%E9%98%B6/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>IR语法</title>
-    <link href="http://example.com/2023/06/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/IR%E8%AF%AD%E6%B3%95/"/>
-    <id>http://example.com/2023/06/20/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/IR%E8%AF%AD%E6%B3%95/</id>
-    <published>2023-06-19T16:00:57.000Z</published>
-    <updated>2023-06-24T15:51:36.298Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="swift进阶" scheme="http://example.com/categories/swift%E8%BF%9B%E9%98%B6/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>TargetFunctionTypeMetadata</title>
-    <link href="http://example.com/2023/06/18/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/TargetFunctionTypeMetadata/"/>
-    <id>http://example.com/2023/06/18/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/TargetFunctionTypeMetadata/</id>
-    <published>2023-06-18T15:23:55.000Z</published>
-    <updated>2023-08-01T17:23:35.552Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="swift进阶" scheme="http://example.com/categories/swift%E8%BF%9B%E9%98%B6/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>TargetEnumMetadata</title>
-    <link href="http://example.com/2023/06/14/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/TargetEnumMetadata/"/>
-    <id>http://example.com/2023/06/14/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/TargetEnumMetadata/</id>
-    <published>2023-06-14T15:58:42.000Z</published>
-    <updated>2023-08-01T17:17:15.547Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="swift进阶" scheme="http://example.com/categories/swift%E8%BF%9B%E9%98%B6/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Mirror</title>
-    <link href="http://example.com/2023/06/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/Mirror/"/>
-    <id>http://example.com/2023/06/12/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/Mirror/</id>
-    <published>2023-06-12T14:38:06.000Z</published>
-    <updated>2023-08-01T17:07:49.063Z</updated>
     
     
       
