@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-11-30T11:45:49.271Z</updated>
+  <updated>2024-01-13T14:29:15.307Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,236 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MAC地址/IP地址</title>
+    <link href="http://example.com/2024/01/12/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/MAC%E5%9C%B0%E5%9D%80-IP%E5%9C%B0%E5%9D%80/"/>
+    <id>http://example.com/2024/01/12/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/MAC%E5%9C%B0%E5%9D%80-IP%E5%9C%B0%E5%9D%80/</id>
+    <published>2024-01-12T15:58:40.000Z</published>
+    <updated>2024-01-13T14:29:15.307Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>本地音视频播放器</title>
+    <link href="http://example.com/2024/01/09/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E6%9C%AC%E5%9C%B0%E9%9F%B3%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%99%A8/"/>
+    <id>http://example.com/2024/01/09/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E6%9C%AC%E5%9C%B0%E9%9F%B3%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%99%A8/</id>
+    <published>2024-01-09T13:56:50.000Z</published>
+    <updated>2024-01-18T12:09:35.973Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>c++新特性</title>
+    <link href="http://example.com/2024/01/07/C++%E5%AD%A6%E4%B9%A0/c-11%E6%96%B0%E7%89%B9%E6%80%A7/"/>
+    <id>http://example.com/2024/01/07/C++%E5%AD%A6%E4%B9%A0/c-11%E6%96%B0%E7%89%B9%E6%80%A7/</id>
+    <published>2024-01-06T16:04:48.000Z</published>
+    <updated>2024-01-14T15:02:06.968Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="C++学习" scheme="http://example.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>c++类型转换</title>
+    <link href="http://example.com/2024/01/06/C++%E5%AD%A6%E4%B9%A0/c-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/"/>
+    <id>http://example.com/2024/01/06/C++%E5%AD%A6%E4%B9%A0/c-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</id>
+    <published>2024-01-06T14:14:47.000Z</published>
+    <updated>2024-01-06T16:03:07.830Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="C++学习" scheme="http://example.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>c++模版</title>
+    <link href="http://example.com/2024/01/05/C++%E5%AD%A6%E4%B9%A0/c-%E6%A8%A1%E7%89%88/"/>
+    <id>http://example.com/2024/01/05/C++%E5%AD%A6%E4%B9%A0/c-%E6%A8%A1%E7%89%88/</id>
+    <published>2024-01-05T15:07:03.000Z</published>
+    <updated>2024-01-06T11:44:34.304Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="C++学习" scheme="http://example.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>运算符重载</title>
+    <link href="http://example.com/2024/01/03/C++%E5%AD%A6%E4%B9%A0/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/"/>
+    <id>http://example.com/2024/01/03/C++%E5%AD%A6%E4%B9%A0/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/</id>
+    <published>2024-01-03T15:55:00.000Z</published>
+    <updated>2024-01-04T16:22:16.254Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="C++学习" scheme="http://example.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>c++面向对像(2)</title>
+    <link href="http://example.com/2024/01/01/C++%E5%AD%A6%E4%B9%A0/c++%E9%9D%A2%E5%90%91%E5%AF%B9%E5%83%8F(2)/"/>
+    <id>http://example.com/2024/01/01/C++%E5%AD%A6%E4%B9%A0/c++%E9%9D%A2%E5%90%91%E5%AF%B9%E5%83%8F(2)/</id>
+    <published>2024-01-01T15:59:25.000Z</published>
+    <updated>2024-01-03T16:34:41.831Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="C++学习" scheme="http://example.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>拷贝构造函数</title>
+    <link href="http://example.com/2024/01/01/C++%E5%AD%A6%E4%B9%A0/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/"/>
+    <id>http://example.com/2024/01/01/C++%E5%AD%A6%E4%B9%A0/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</id>
+    <published>2024-01-01T06:11:55.000Z</published>
+    <updated>2024-01-01T15:51:50.816Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="C++学习" scheme="http://example.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>iOS中的JavaScriptCore</title>
+    <link href="http://example.com/2023/12/26/js%E7%9A%84%E5%AD%A6%E4%B9%A0/JavaScriptCore%20/"/>
+    <id>http://example.com/2023/12/26/js%E7%9A%84%E5%AD%A6%E4%B9%A0/JavaScriptCore%20/</id>
+    <published>2023-12-26T09:19:26.000Z</published>
+    <updated>2023-12-26T09:40:41.094Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="JavaScript" scheme="http://example.com/categories/JavaScript/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>c++面向对像(1)</title>
+    <link href="http://example.com/2023/12/24/C++%E5%AD%A6%E4%B9%A0/c++%E9%9D%A2%E5%90%91%E5%AF%B9%E5%83%8F(1)/"/>
+    <id>http://example.com/2023/12/24/C++%E5%AD%A6%E4%B9%A0/c++%E9%9D%A2%E5%90%91%E5%AF%B9%E5%83%8F(1)/</id>
+    <published>2023-12-24T13:26:25.000Z</published>
+    <updated>2024-01-07T13:28:08.352Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="C++学习" scheme="http://example.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>视频解封装格式</title>
@@ -182,7 +412,7 @@
     <link href="http://example.com/2023/10/12/C++%E5%AD%A6%E4%B9%A0/%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/"/>
     <id>http://example.com/2023/10/12/C++%E5%AD%A6%E4%B9%A0/%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</id>
     <published>2023-10-11T16:04:51.000Z</published>
-    <updated>2023-10-14T16:42:01.133Z</updated>
+    <updated>2024-01-01T13:35:07.329Z</updated>
     
     
       
@@ -242,236 +472,6 @@
     
     
     <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>aac编码</title>
-    <link href="http://example.com/2023/09/17/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/aac%E7%BC%96%E7%A0%81/"/>
-    <id>http://example.com/2023/09/17/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/aac%E7%BC%96%E7%A0%81/</id>
-    <published>2023-09-17T10:20:30.000Z</published>
-    <updated>2023-09-17T13:41:12.009Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>编译ffmpeg</title>
-    <link href="http://example.com/2023/09/17/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E7%BC%96%E8%AF%91ffmpeg/"/>
-    <id>http://example.com/2023/09/17/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E7%BC%96%E8%AF%91ffmpeg/</id>
-    <published>2023-09-17T09:53:34.000Z</published>
-    <updated>2023-09-17T10:19:53.386Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>播放wav</title>
-    <link href="http://example.com/2023/09/15/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E6%92%AD%E6%94%BEwav/"/>
-    <id>http://example.com/2023/09/15/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E6%92%AD%E6%94%BEwav/</id>
-    <published>2023-09-14T16:11:35.000Z</published>
-    <updated>2023-09-14T16:23:47.393Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>音频重采样</title>
-    <link href="http://example.com/2023/09/11/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E9%A2%91%E9%87%8D%E9%87%87%E6%A0%B7/"/>
-    <id>http://example.com/2023/09/11/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E9%9F%B3%E9%A2%91%E9%87%8D%E9%87%87%E6%A0%B7/</id>
-    <published>2023-09-11T03:32:03.000Z</published>
-    <updated>2023-12-05T15:47:44.359Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>pcm转wav</title>
-    <link href="http://example.com/2023/09/04/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/pcm%E8%BD%ACwav/"/>
-    <id>http://example.com/2023/09/04/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/pcm%E8%BD%ACwav/</id>
-    <published>2023-09-03T17:19:05.000Z</published>
-    <updated>2023-09-04T16:56:55.101Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>pcm音频播放</title>
-    <link href="http://example.com/2023/08/31/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/pcm%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE/"/>
-    <id>http://example.com/2023/08/31/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/pcm%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE/</id>
-    <published>2023-08-30T17:58:52.000Z</published>
-    <updated>2023-09-14T16:10:18.389Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>命令行和编程实现音视频录制</title>
-    <link href="http://example.com/2023/08/23/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%92%8C%E7%BC%96%E7%A8%8B%E5%AE%9E%E7%8E%B0%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BD%95%E5%88%B6/"/>
-    <id>http://example.com/2023/08/23/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%92%8C%E7%BC%96%E7%A8%8B%E5%AE%9E%E7%8E%B0%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BD%95%E5%88%B6/</id>
-    <published>2023-08-22T17:58:52.000Z</published>
-    <updated>2023-11-28T03:10:21.258Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>泛型原理</title>
-    <link href="http://example.com/2023/07/02/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/%E6%B3%9B%E5%9E%8B%E5%8E%9F%E7%90%86/"/>
-    <id>http://example.com/2023/07/02/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/%E6%B3%9B%E5%9E%8B%E5%8E%9F%E7%90%86/</id>
-    <published>2023-07-02T13:46:46.000Z</published>
-    <updated>2023-12-12T11:46:45.988Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="swift进阶" scheme="http://example.com/categories/swift%E8%BF%9B%E9%98%B6/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>协议分析</title>
-    <link href="http://example.com/2023/06/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/"/>
-    <id>http://example.com/2023/06/26/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/</id>
-    <published>2023-06-26T15:49:41.000Z</published>
-    <updated>2023-12-08T11:21:40.943Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="swift进阶" scheme="http://example.com/categories/swift%E8%BF%9B%E9%98%B6/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>闭包分析</title>
-    <link href="http://example.com/2023/06/24/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/%E9%97%AD%E5%8C%85%E5%88%86%E6%9E%90/"/>
-    <id>http://example.com/2023/06/24/iOS%E5%AD%A6%E4%B9%A0/Swift%E8%BF%9B%E9%98%B6/%E9%97%AD%E5%8C%85%E5%88%86%E6%9E%90/</id>
-    <published>2023-06-24T15:50:31.000Z</published>
-    <updated>2023-12-08T06:29:53.412Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="swift进阶" scheme="http://example.com/categories/swift%E8%BF%9B%E9%98%B6/"/>
     
     
   </entry>
