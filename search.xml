@@ -1,6 +1,810 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>传输层</title>
+    <url>/2024/01/20/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E4%BC%A0%E8%BE%93%E5%B1%82/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h1><p>传输层有2个协议</p>
+<ul>
+<li><code>TCP</code>（<code>Transmission Control Protocol</code>），传输控制协议</li>
+<li><code>UDP</code>（<code>User Datagram Protocol</code>），用户数据报协议</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">TCP</th>
+<th align="center">UDP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">连接性</td>
+<td align="center">面向连接</td>
+<td align="center">无连接</td>
+</tr>
+<tr>
+<td align="center">可靠性</td>
+<td align="center">可靠传输，不丢包</td>
+<td align="center">不可靠传输，尽最大努力交付，可能丢包</td>
+</tr>
+<tr>
+<td align="center">首部占用空间</td>
+<td align="center">大</td>
+<td align="center">小</td>
+</tr>
+<tr>
+<td align="center">传输速率</td>
+<td align="center">慢</td>
+<td align="center">快</td>
+</tr>
+<tr>
+<td align="center">资料消耗</td>
+<td align="center">大</td>
+<td align="center">小</td>
+</tr>
+<tr>
+<td align="center">应用场景</td>
+<td align="center">浏览器，文件传输，邮件传输</td>
+<td align="center">音视频通话、直播</td>
+</tr>
+<tr>
+<td align="center">应用层协议</td>
+<td align="center">HTTP、HTTPS、FTP、SMTP、DNS</td>
+<td align="center">DNS</td>
+</tr>
+</tbody></table>
+<h1 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a><code>UDP</code></h1><h3 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h3><ul>
+<li><code>UDP</code>是无连接的，减少了建立和释放连接的开销</li>
+<li><code>UDP</code>尽最大能力交付，不保证可靠交付<ul>
+<li>因此不需要维护一些复杂的参数，首部只有<code>8</code>个字节（<code>TCP</code>的首部至少<code>20</code>个字节）</li>
+</ul>
+</li>
+</ul>
+<p><img src="1.jpg"></p>
+<ul>
+<li><code>UDP</code>长度（<code>Length</code>）<ul>
+<li>占<code>16</code>位，首部的长度 + 数据的长度</li>
+</ul>
+</li>
+</ul>
+<h3 id="检验和"><a href="#检验和" class="headerlink" title="检验和"></a>检验和</h3><ul>
+<li>检验和的计算内容：伪首部 + 首部 + 数据<ul>
+<li>伪首部：仅在计算检验和时起作用，并不会传递给网络层</li>
+</ul>
+</li>
+</ul>
+<p><img src="2.jpg"></p>
+<h3 id="端口-port"><a href="#端口-port" class="headerlink" title="端口(port)"></a>端口(<code>port</code>)</h3><ul>
+<li><code>UDP</code>首部中端口是占用<code>2</code>字节<ul>
+<li>可以推测出端口号的取值范围是：<code>0~65535</code></li>
+</ul>
+</li>
+<li>客户端的源端口是临时开启的随机端口</li>
+<li>防火墙可以设置开启\关闭某些端口来提高安全性</li>
+<li>常用命令行<ul>
+<li><code>netstat –an</code>：查看被占用的端口</li>
+<li><code>netstat –anb</code>：查看被占用的端口、占用端口的应用程序</li>
+<li><code>telnet 主机 端口</code>：查看是否可以访问主机的某个端</li>
+</ul>
+</li>
+</ul>
+<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a><code>TCP</code></h1><h2 id="数据格式-1"><a href="#数据格式-1" class="headerlink" title="数据格式"></a>数据格式</h2><p><img src="3.jpg"></p>
+<ul>
+<li>有些资料中，<code>TCP</code>首部的保留（<code>Reserved</code>）字段占<code>3</code>位，标志（<code>Flags</code>）字段占9位<br><img src="4.jpg"></li>
+</ul>
+<h3 id="数据偏移"><a href="#数据偏移" class="headerlink" title="数据偏移"></a>数据偏移</h3><ul>
+<li>占<code>4</code>位，取值范围是<code>0x0101~0x1111</code></li>
+<li>乘以<code>4</code>：首部长度（<code>Header Length</code>）</li>
+<li>首部长度是<code>20</code>~`60`字节</li>
+</ul>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
+<li><p><code>UDP</code>的首部中有个<code>16</code>位的字段记录了整个<code>UDP</code>报文段的长度（首部+数据）</p>
+</li>
+<li><p>但是，<code>TCP</code>的首部中仅仅有个<code>4</code>位的字段记录了<code>TCP</code>报文段的首部长度，并没有字段记录TCP报文段的数据长度</p>
+</li>
+<li><p>分析</p>
+<ul>
+<li><code>UDP</code>首部中占<code>16</code>位的长度字段是冗余的，纯粹是为了保证首部是<code>32bit</code>对齐</li>
+<li><code>TCP\UDP</code>的数据长度，完全可以由<code>IP</code>数据包的首部推测出来<ul>
+<li>传输层的数据长度 = 网络层的总长度 – 网络层的首部长度 – 传输层的首部长度</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="检验和-1"><a href="#检验和-1" class="headerlink" title="检验和"></a>检验和</h3><ul>
+<li>跟<code>UDP</code>一样，<code>TCP</code>检验和的计算内容：伪首部 + 首部 + 数据<ul>
+<li>伪首部：占用<code>12</code>字节，仅在计算检验和时起作用，并不会传递给网络层</li>
+</ul>
+</li>
+</ul>
+<p><img src="5.jpg"></p>
+<h3 id="标志位"><a href="#标志位" class="headerlink" title="标志位"></a>标志位</h3><ul>
+<li><code>URG（Urgent</code>）<ul>
+<li>当<code>URG=1</code>时，紧急指针字段才有效。表明当前报文段中有紧急数据，应优先尽快传送</li>
+</ul>
+</li>
+<li><code>ACK（Acknowledgment）</code><ul>
+<li>当<code>ACK=1</code>时，确认号字段才有效</li>
+</ul>
+</li>
+<li><code>PSH（Push）</code></li>
+<li><code>RST（Reset）</code><ul>
+<li>当<code>RST=1</code>时，表明连接中出现严重差错，必须释放连接，然后再重新建立连接</li>
+</ul>
+</li>
+<li><code>SYN（Synchronization</code>,同步标识<ul>
+<li>当<code>SYN=1</code>、<code>ACK=0</code>时，表明这是一个建立连接的请求</li>
+<li>若对方同意建立连接，则回复<code>SYN=1</code>、<code>ACK=1</code></li>
+</ul>
+</li>
+<li><code>FIN（Finish</code><ul>
+<li>当<code>FIN=1</code>时，表明数据已经发送完毕，要求释放连接</li>
+</ul>
+</li>
+</ul>
+<h3 id="序号"><a href="#序号" class="headerlink" title="序号"></a>序号</h3><ul>
+<li>占<code>4</code>字节</li>
+<li>首先，在传输过程的每一个字节都会有一个编号</li>
+<li>在建立连接后，序号代表：这一次传给对方的<code>TCP</code>数据部分的第一个字节的编号</li>
+</ul>
+<h3 id="确认号"><a href="#确认号" class="headerlink" title="确认号"></a>确认号</h3><ul>
+<li>占<code>4</code>字节</li>
+<li>在建立连接后，确认号代表：期望对方下一次传过来的<code>TCP</code>数据部分的第一个字节的编号</li>
+</ul>
+<h3 id="窗口"><a href="#窗口" class="headerlink" title="窗口"></a>窗口</h3><ul>
+<li>占<code>2</code>字节</li>
+<li>这个字段有流量控制功能，用以告知对方下一次允许发送的数据大小（字节为单位）</li>
+</ul>
+<h2 id="TCP的可靠传输"><a href="#TCP的可靠传输" class="headerlink" title="TCP的可靠传输"></a>TCP的可靠传输</h2><h3 id="停止等待ARQ协议"><a href="#停止等待ARQ协议" class="headerlink" title="停止等待ARQ协议"></a>停止等待ARQ协议</h3><ul>
+<li><p><code>ARQ</code>（<code>Automatic Repeat–reQuest</code>），自动重传请求<br><img src="6.jpg"></p>
+</li>
+<li><p>出现重复包的情况，重复的确认，会丢弃<br><img src="7.jpg"></p>
+</li>
+</ul>
+<h4 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h4><ul>
+<li>若有个包重传了<code>N</code>次还是失败，会一直持续重传到成功为止么？<ul>
+<li>这个取决于<strong>系统的设置</strong>，比如有些系统，重传<code>5</code>次还未成功就会发送<code>reset</code>报文（<code>RST</code>）断开<code>TCP</code>连接<br><img src="8.jpg"></li>
+</ul>
+</li>
+</ul>
+<h3 id="停止等待ARQ协议-滑动窗口协议"><a href="#停止等待ARQ协议-滑动窗口协议" class="headerlink" title="停止等待ARQ协议 + 滑动窗口协议"></a>停止等待ARQ协议 + 滑动窗口协议</h3><p><img src="9.jpg"></p>
+<ul>
+<li>如果接收窗口最多能接收<code>4</code>个包<ul>
+<li>但发送方只发了<code>2</code>个包</li>
+</ul>
+</li>
+<li>接收方如何确定后面还有没有<code>2</code>个包？<ul>
+<li>等待一定时间后没有第<code>3</code>个包</li>
+<li>就会返回确认收到<code>2</code>个包给发送方</li>
+</ul>
+</li>
+</ul>
+<p><img src="10.jpg"></p>
+<ul>
+<li><p>现在假设每一组数据是<code>100</code>个字节，代表一个数据段的数据</p>
+</li>
+<li><p>每一组给一个编号</p>
+</li>
+<li><p>在<code>TCP</code>通信过程中，如果发送序列中间某个数据包丢失（比如<code>1</code>、<code>2</code>、<code>3</code>、<code>4</code>、<code>5</code>中的<code>3</code>丢失了）</p>
+</li>
+<li><p><code>TCP</code>会通过重传最后确认的分组后续的分组（最后确认的是<code>2</code>，会重传<code>3</code>、<code>4</code>、<code>5</code>）</p>
+</li>
+<li><p>这样原先已经正确传输的分组也可能重复发送（比如<code>4</code>、<code>5</code>），降低了<code>TCP</code>性能</p>
+</li>
+<li><p>为改善上述情况，发展出了<code>SACK</code>（<code>Selective acknowledgment</code>，选择性确认）技术</p>
+<ul>
+<li>告诉发送方哪些数据丢失，哪些数据已经提前收到</li>
+<li>使<code>TCP</code>只重新发送丢失的包（比如<code>3</code>），不用发送后续所有的分组（比如<code>4</code>、<code>5</code>）</li>
+</ul>
+</li>
+</ul>
+<h4 id="SACK选择确定"><a href="#SACK选择确定" class="headerlink" title="SACK选择确定"></a><code>SACK</code>选择确定</h4><ul>
+<li><p><code>SACK信息</code><br><img src="11.jpg"></p>
+</li>
+<li><p><code>SACK</code>信息会放在<code>TCP</code>首部的选项部分</p>
+<ul>
+<li><code>Kind</code>：占<code>1</code>字节。值为<code>5</code>代表这是<code>SACK</code>选项</li>
+<li><code>Length</code>：占<code>1</code>字节。表明<code>SACK</code>选项一共占用多少字节</li>
+<li><code>Left Edge</code>：占<code>4</code>字节，左边界</li>
+<li><code>Right Edge</code>：占<code>4</code>字节，右边界</li>
+</ul>
+</li>
+</ul>
+<p><img src="12.jpg"></p>
+<ul>
+<li>一对边界信息需要占用<code>8</code>字节，由于<code>TCP</code>首部的选项部分最多<code>40</code>字节，所以<ul>
+<li><code>SACK</code>选项最多携带<code>4</code>组边界信息</li>
+<li><code>SACK</code>选项的最大占用字节数 = <code>4</code> * <code>8</code> + <code>2</code> = <code>34</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="13.png"></p>
+<h3 id="传输层分包的原因"><a href="#传输层分包的原因" class="headerlink" title="传输层分包的原因"></a>传输层分包的原因</h3><ul>
+<li>为什么选择在传输层就将数据“大卸八块”分成多个段，而不是等到网络层再分片传递给数据链路层？<ul>
+<li>因为可以提高重传的性能</li>
+<li>需要明确的是：可靠传输是在传输层进行控制的<ul>
+<li>如果在传输层不分段，一旦出现数据丢失，整个传输层的数据都得重传</li>
+<li>如果在传输层分了段，一旦出现数据丢失，只需要重传丢失的那些段即可</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h2><ul>
+<li>如果接收方的缓存区满了，发送方还在疯狂着发送数据<ul>
+<li>接收方只能把收到的数据包丢掉，大量的丢包会极大着浪费网络资源</li>
+<li>所以要进行流量控制</li>
+</ul>
+</li>
+<li>什么是流量控制？<ul>
+<li>让发送方的发送速率不要太快，让接收方来得及接收处理</li>
+</ul>
+</li>
+<li>原理<ul>
+<li>通过确认报文中窗口字段来控制发送方的发送速率</li>
+<li>发送方的发送窗口大小不能超过接收方给出窗口大小</li>
+<li>当发送方收到接收窗口的大小为<code>0</code>时，发送方就会停止发送数据</li>
+</ul>
+</li>
+</ul>
+<p><img src="12.jpg"></p>
+<h3 id="特殊情况"><a href="#特殊情况" class="headerlink" title="特殊情况"></a>特殊情况</h3><ul>
+<li><p>有一种特殊情况</p>
+<ul>
+<li>一开始，接收方给发送方发送了<code>0</code>窗口的报文段</li>
+<li>后面，接收方又有了一些存储空间，给发送方发送的非<code>0</code>窗口的报文段丢失了</li>
+<li>发送方的发送窗口一直为零，双方陷入<strong>僵局</strong></li>
+</ul>
+</li>
+<li><p>解决方案</p>
+<ul>
+<li>当发送方收到<code>0</code>窗口通知时，这时发送方停止发送报文</li>
+<li>并且同时开启一个定时器，隔一段时间就发个测试报文去询问接收方最新的窗口大小</li>
+<li>如果接收的窗口大小还是为<code>0</code>，则发送方再次刷新启动定时器</li>
+</ul>
+</li>
+</ul>
+<h2 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h2><p><img src="13.jpg"></p>
+<ul>
+<li>拥塞控制<ul>
+<li>防止过多的数据注入到网络中</li>
+<li>避免网络中的路由器或链路过载</li>
+</ul>
+</li>
+<li>拥塞控制是一个全局性的过程<ul>
+<li>涉及到所有的主机、路由器</li>
+<li>以及与降低网络传输性能有关的所有因素</li>
+<li>是大家共同努力的结果</li>
+</ul>
+</li>
+<li>相比而言，流量控制是点对点通信的控制</li>
+</ul>
+<h3 id="拥塞控制的方法"><a href="#拥塞控制的方法" class="headerlink" title="拥塞控制的方法"></a>拥塞控制的方法</h3><ol>
+<li> 慢开始（<code>slow start</code>，慢启动）</li>
+<li> 拥塞避免（<code>congestion avoidance</code>）</li>
+<li> 快速重传（<code>fast retransmit</code>）</li>
+<li> 快速恢复（<code>fast recovery</code>）</li>
+</ol>
+<ul>
+<li>一些缩写<ul>
+<li><code>MSS</code>（<code>Maximum Segment Size</code>）：每个段最大的数据部分大小</li>
+<li>在建立连接时确定<ul>
+<li><code>cwnd</code>（<code>congestion window</code>）：拥塞窗口</li>
+<li><code>rwnd</code>（<code>receive window</code>）：接收窗口</li>
+<li><code>swnd</code>（<code>send window</code>）：发送窗口<ul>
+<li><code>swnd = min(cwnd, rwnd)</code></li>
+<li> 当<code>rwnd</code> &lt; <code>cwnd</code>时，是接收方的接收能力限制发送窗口的最大值</li>
+<li> 当<code>cwnd</code> &lt; <code>rwnd</code>时，则是网络的拥塞限制发送窗口的最大值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="慢开始"><a href="#慢开始" class="headerlink" title="慢开始"></a>慢开始</h4><p><img src="14.jpg"></p>
+<ul>
+<li><code>cwnd</code>的初始值比较小，然后随着数据包被接收方确认（收到一个<code>ACK</code>）<ul>
+<li><code>cwnd</code>就成倍增长（指数级）<br><img src="15.jpg"><h4 id="拥塞避免"><a href="#拥塞避免" class="headerlink" title="拥塞避免"></a>拥塞避免</h4><img src="16.jpg"></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><code>ssthresh</code>（<code>slow start threshold</code>）：<code>慢开始</code>阈值，<code>cwnd</code>达到阈值后，以线性方式增加</li>
+<li>拥塞避免（加法增大）：<code>拥塞窗口</code>缓慢增大，以防止网络<code>过早</code>出现拥塞</li>
+<li>乘法减小：只要网络出现拥塞，把<code>ssthresh</code>减为拥塞峰值的一半，同时执行<code>慢开始</code>算法（<code>cwnd</code>又恢复到初始值）</li>
+<li>当网络出现频繁拥塞时，<code>ssthresh</code>值就下降的很快</li>
+</ul>
+<h4 id="快速重传"><a href="#快速重传" class="headerlink" title="快速重传"></a>快速重传</h4><p><img src="17.jpg"></p>
+<ul>
+<li><p>接收方</p>
+<ul>
+<li> 每收到一个失序的分组后就立即发出重复确认</li>
+<li> 使发送方及时知道有分组没有到达</li>
+<li> 而不要等待自己发送数据时才进行确认</li>
+</ul>
+</li>
+<li><p>发送方</p>
+<ul>
+<li>只要连续收到三个重复确认（总共<code>4</code>个相同的确认），就应当立即<code>重传</code>对方尚未收到的报文段</li>
+<li>而不必继续等待重传计时器到期后再重传</li>
+</ul>
+</li>
+</ul>
+<h4 id="快速恢复"><a href="#快速恢复" class="headerlink" title="快速恢复"></a>快速恢复</h4><ul>
+<li>当发送方连续收到三个重复确认，说明网络出现拥塞<ul>
+<li>就执行“乘法减小”算法，把<code>ssthresh</code>减为拥塞峰值的一半</li>
+</ul>
+</li>
+<li>与<code>慢开始</code>不同之处是现在不执行<code>慢开始</code>算法，即<code>cwnd</code>现在<code>不恢复</code>到<code>初始值</code><ul>
+<li>而是把<code>cwnd</code>值设置为新的<code>ssthresh</code>值（减小后的值）</li>
+<li>然后开始执行<code>拥塞避免</code>算法（“<code>加法增大</code>”），使<code>拥塞窗口</code>缓慢地<code>线性</code>增大</li>
+</ul>
+</li>
+</ul>
+<h4 id="快重传-快恢复"><a href="#快重传-快恢复" class="headerlink" title="快重传+快恢复"></a>快重传+快恢复</h4><p><img src="18.jpg"></p>
+<h2 id="序号、确认号"><a href="#序号、确认号" class="headerlink" title="序号、确认号"></a>序号、确认号</h2><ul>
+<li><p>服务端和客户段的<code>TCP</code>在建立连接的时候，会交互各自的初始序列号，在后续传输中</p>
+<ul>
+<li>服务端发送的<ul>
+<li>序列号：服务端初始序列号 + 发送数据长度(从建立连接开始的数据)</li>
+<li>确认号：服务端收到客户段的数据长度 + 客户端的初始序列号</li>
+</ul>
+</li>
+<li>客户端发送的<ul>
+<li>序列号：客户端初始序列号 + 发送数据长度(从建立连接开始的数据)</li>
+<li>确认号：客户端收到服务端的数据长度 + 服务端的初始序列号</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>注意</strong>，这里有个特殊的地方是，在建立/关闭连接（三次握手和四次挥手）的时候，<code>SYN</code>或<code>FIN</code>发送后，另一端回的确认号，经过数据长度为<code>0</code>,但为了回应发送端，其确认号会加<code>1</code>.</p>
+</li>
+</ul>
+<p><img src="20.png"></p>
+<h3 id="模拟序号、确认号变化"><a href="#模拟序号、确认号变化" class="headerlink" title="模拟序号、确认号变化"></a>模拟序号、确认号变化</h3><p><img src="19.png"></p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">发送端</th>
+<th align="center">seq</th>
+<th align="center">ack</th>
+<th align="center">SYN</th>
+<th align="center">ACK</th>
+<th align="center">携带数据长度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">客户端</td>
+<td align="center">s1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">服务器</td>
+<td align="center">s2</td>
+<td align="center">s1+1（回应客户端SYN，确定服务端发送数据的开始）</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">客户端</td>
+<td align="center">s1+1</td>
+<td align="center">s2+1（回应服务器的SYN，确定客户端发送数据的开始）</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">客户端</td>
+<td align="center">s1+1</td>
+<td align="center">s2+1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">k</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">服务器</td>
+<td align="center">s2+1</td>
+<td align="center">s1+k+1(接收了K数据，下次客户端发k+1开始的数据)</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">b1</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">服务器</td>
+<td align="center">s2+b1+1</td>
+<td align="center">s1+k+1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">b2</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">服务器</td>
+<td align="center">s2+b1+b2+1</td>
+<td align="center">s1+k+1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">b3</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">服务器</td>
+<td align="center">s2+b1+b2+b3+1</td>
+<td align="center">s1+k+1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">b4</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">客户端</td>
+<td align="center">s1+k+1</td>
+<td align="center">s2+b1+b2+b3+b4+1（响应已经收到的数据）</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+</tbody></table>
+<h2 id="建立连接-3次握手"><a href="#建立连接-3次握手" class="headerlink" title="建立连接-3次握手"></a>建立连接-3次握手</h2><p><img src="21.png"></p>
+<h3 id="状态解读"><a href="#状态解读" class="headerlink" title="状态解读"></a>状态解读</h3><ul>
+<li><code>CLOSED</code>：<code>client</code>处于关闭状态</li>
+<li><code>LISTEN</code>：<code>server</code>处于监听状态，等待<code>client</code>连接</li>
+<li><code>SYN-RCVD</code>：表示<code>server</code>接受到了<code>SYN</code>报文，当收到<code>client</code>的<code>ACK</code>报文后，它会进入到<code>ESTABLISHED</code>状态</li>
+<li><code>SYN-SENT</code>：表示<code>client</code>已发送<code>SYN</code>报文，等待<code>server</code>的第<code>2</code>次握手</li>
+<li><code>ESTABLISHED</code>：表示连接已经建立</li>
+</ul>
+<h3 id="前两次握手的特点"><a href="#前两次握手的特点" class="headerlink" title="前两次握手的特点"></a>前两次握手的特点</h3><ul>
+<li><code>SYN</code>都设置为<code>1</code></li>
+<li>数据部分的长度都为<code>0</code><ul>
+<li>在收到<code>SYN</code>后，相应的发送端的确认号会+1</li>
+</ul>
+</li>
+<li><code>TCP</code>头部的长度一般是<code>44</code>字节<ul>
+<li>固定头部：<code>20</code>字节</li>
+<li>选项部分：<code>22</code>字节</li>
+</ul>
+</li>
+<li>双方会交换确认一些信息<ul>
+<li>比如<code>MSS</code>、是否支持<code>SACK</code>、<code>Window scale</code>（窗口缩放系数）、<code>Timestamps</code>(10字节)等</li>
+<li>这些数据都放在了<code>TCP</code>头部的选项部分中（<code>22</code>字节）,有些没有<code>Timestamps</code>只有<code>12</code>字节</li>
+</ul>
+</li>
+</ul>
+<h3 id="连接疑问"><a href="#连接疑问" class="headerlink" title="连接疑问"></a>连接疑问</h3><ul>
+<li>为什么建立连接的时候，要进行<code>3</code>次握手？<code>2</code>次不行么？<ul>
+<li>主要目的：防止<code>server</code>端一直等待，浪费资源</li>
+</ul>
+</li>
+<li>如果建立连接只需要<code>2</code>次握手，可能会出现的情况<ul>
+<li>假设<code>client</code>发出的第一个连接请求报文段，因为网络延迟，在连接释放以后的某个时间才到达<code>server</code></li>
+<li>本来这是一个早已失效的连接请求，但<code>server</code>收到此失效的请求后，误认为是<code>client</code>再次发出的一个新的连接请求</li>
+<li>于是<code>server</code>就向<code>client</code>发出确认报文段，同意建立连接</li>
+<li>如果不采用“<code>3</code>次握手”，那么只要<code>server</code>发出确认，新的连接就建立了</li>
+<li>由于现在<code>client</code>并没有真正想连接服务器的意愿，因此不会理睬<code>server</code>的确认，也不会向<code>server</code>发送数据</li>
+<li>但<code>server</code>却以为新的连接已经建立，并一直等待<code>client</code>发来数据，这样，<code>server</code>的很多资源就白白浪费掉了</li>
+</ul>
+</li>
+<li>采用“三次握手”的办法可以防止上述现象发生<ul>
+<li>例如上述情况，<code>client</code>没有向<code>server</code>的确认发出确认，<code>server</code>由于收不到确认，就知道<code>client</code>并没有要求建立连接</li>
+</ul>
+</li>
+<li>第<code>3</code>次握手失败了，会怎么处理？<ul>
+<li>此时<code>server</code>的状态为<code>SYN-RCVD</code>，若等不到<code>client</code>的<code>ACK</code>，<code>server</code>会重新发送<code>SYN+ACK</code>包，回到第<code>2</code>步</li>
+<li>如果<code>server</code>多次重发<code>SYN+ACK</code>都等不到<code>client</code>的<code>ACK</code>，就会发送<code>RST</code>包，强制关闭连接</li>
+</ul>
+</li>
+</ul>
+<h2 id="释放连接-4次挥手"><a href="#释放连接-4次挥手" class="headerlink" title="释放连接-4次挥手"></a>释放连接-4次挥手</h2><p><img src="22.png"></p>
+<h3 id="状态解读-1"><a href="#状态解读-1" class="headerlink" title="状态解读"></a>状态解读</h3><ul>
+<li><p><code>FIN-WAIT-1</code>：表示想主动关闭连接</p>
+<ul>
+<li>向对方发送了<code>FIN</code>报文，此时进入到<code>FIN-WAIT-1</code>状态</li>
+</ul>
+</li>
+<li><p><code>CLOSE-WAIT</code>：表示在等待关闭</p>
+<ul>
+<li>当对方发送<code>FIN</code>给自己，自己会回应一个<code>ACK</code>报文给对方，此时则进入到<code>CLOSE-WAIT</code>状态</li>
+<li>在此状态下，需要考虑自己是否还有数据要发送给对方，如果没有，发送<code>FIN</code>报文给对方</li>
+</ul>
+</li>
+<li><p><code>FIN-WAIT-2</code>：只要对方发送<code>ACK</code>确认后，主动方就会处于<code>FIN-WAIT-2</code>状态，然后等待对方发送<code>FIN</code>报文</p>
+</li>
+<li><p><code>CLOSING</code>：一种比较罕见的例外状态</p>
+<ul>
+<li>表示你发送<code>FIN</code>报文后，并没有收到对方的<code>ACK</code>报文，反而却也收到了对方的<code>FIN</code>报文</li>
+<li>如果双方几乎在同时准备关闭连接的话，那么就出现了双方同时发送<code>FIN</code>报文的情况，也即会出现<code>CLOSING</code>状态</li>
+<li>表示双方都正在关闭连接</li>
+</ul>
+</li>
+<li><p><code>LAST-ACK</code>：被动关闭一方在发送<code>FIN</code>报文后，最后等待对方的<code>ACK</code>报文</p>
+<ul>
+<li>当收到<code>ACK</code>报文后，即可进入<code>CLOSED</code>状态了</li>
+</ul>
+</li>
+<li><p><code>TIME-WAIT</code>：表示收到了对方的<code>FIN</code>报文，并发送出了<code>ACK</code>报文，就等<code>2MSL</code>后即可进入<code>CLOSED</code>状态了</p>
+<ul>
+<li>如果<code>FIN-WAIT-1</code>状态下，收到了对方同时带<code>FIN</code>标志和<code>ACK</code>标志的报文时<ul>
+<li>可以直接进入到<code>TIME-WAIT</code>状态，而无须经过<code>FIN-WAIT-2</code>状态,(三次挥手)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>CLOSED</code>：关闭状态</p>
+</li>
+<li><p>由于有些状态的时间比较短暂，所以很难用<code>netstat</code>命令看到，比如<code>SYN-RCVD</code>、<code>FIN-WAIT-1</code>等</p>
+</li>
+</ul>
+<h3 id="释放细节"><a href="#释放细节" class="headerlink" title="释放细节"></a>释放细节</h3><ul>
+<li><p><code>TCP/IP</code>协议栈在设计上，允许任何一方先发起断开请求。这里演示的是<code>client</code>主动要求断开</p>
+</li>
+<li><p><code>client</code>发送<code>ACK</code>后，需要有个<code>TIME-WAIT</code>阶段，等待一段时间后，再真正关闭连接</p>
+<ul>
+<li>一般是等待<code>2</code>倍的<code>MSL</code>（<code>Maximum Segment Lifetime</code>，最大分段生存期）<ul>
+<li><code>MSL</code>是<code>TCP</code>报文在<code>Internet</code>上的最长生存时间</li>
+<li>每个具体的<code>TCP</code>实现都必须选择一个确定的<code>MSL</code>值，<code>RFC 1122</code>建议是<code>2</code>分钟</li>
+<li>可以防止本次连接中产生的数据包误传到下一次连接中（因为本次连接中的数据包都会在<code>2MSL</code>时间内消失了）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如果<code>client</code>发送<code>ACK</code>后马上释放了，然后又因为网络原因，<code>server</code>没有收到<code>client</code>的<code>ACK</code>，<code>server</code>就会重发<code>FIN</code></p>
+<ul>
+<li>这时可能出现的情况是<ul>
+<li><code>client</code>没有任何响应，服务器那边会干等，甚至多次重发<code>FIN</code>，浪费资源</li>
+<li><code>client</code>有个新的应用程序刚好分配了同一个端口号，新的应用程序收到<code>FIN</code>后马上开始执行断开连接的操作，本来它可能是想跟<code>server</code>建立连接的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>为什么释放连接的时候，要进行<code>4</code>次挥手?</p>
+<ul>
+<li><code>TCP</code>是全双工模式</li>
+<li>第<code>1</code>次挥手：当<code>主机1</code>发出<code>FIN</code>报文段时<ul>
+<li>表示<code>主机1</code>告诉<code>主机2</code>，<code>主机1</code>已经没有数据要发送了，但是，此时<code>主机1</code>还是可以接受来自<code>主机2</code>的数据</li>
+</ul>
+</li>
+<li>第<code>2</code>次挥手：当<code>主机2</code>返回<code>ACK</code>报文段时<ul>
+<li>表示<code>主机2</code>已经知道<code>主机1</code>没有数据发送了，但是<code>主机2</code>还是可以发送数据到<code>主机1</code>的</li>
+</ul>
+</li>
+<li>第<code>3</code>次挥手：当<code>主机2</code>也发送了<code>FIN</code>报文段时<ul>
+<li>表示<code>主机2</code>告诉<code>主机1</code>，<code>主机2</code>已经没有数据要发送了</li>
+</ul>
+</li>
+<li>第<code>4</code>次挥手：当<code>主机1</code>返回<code>ACK</code>报文段时<ul>
+<li>表示<code>主机1</code>已经知道<code>主机2</code>没有数据发送了。随后正式断开整个<code>TCP</code>连接</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>有时候在使用抓包工具的时候，有可能只会看到“<code>3</code>次“挥手</p>
+<ul>
+<li>这其实是将第<code>2</code>、<code>3</code>次挥手合并了</li>
+</ul>
+</li>
+<li><p>当<code>server</code>接收到<code>client</code>的<code>FIN</code>时，如果<code>server</code>后面也没有数据要发送给<code>client</code>了</p>
+<ul>
+<li>这时，<code>server</code>就可以将第<code>2</code>、<code>3</code>次挥手合并，同时告诉<code>client</code>两件事<ul>
+<li>已经知道<code>client</code>没有数据要发</li>
+<li><code>server</code>已经没有数据要发了</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>网络协议</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>网络层</title>
+    <url>/2024/01/20/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%B1%82/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h1><ul>
+<li>网络层数据包（<code>IP</code>数据包，<code>Packet</code>）由首部、数据<code>2</code>部分组成<ul>
+<li>数据：很多时候是由传输层传递下来的数据段（<code>Segment</code>）</li>
+</ul>
+</li>
+</ul>
+<p><img src="1.jpg"></p>
+<h2 id="版本（Version）"><a href="#版本（Version）" class="headerlink" title="版本（Version）"></a>版本（<code>Version</code>）</h2><ul>
+<li>占<code>4</code>位</li>
+<li><code>0b0100</code>：<code>IPv4</code></li>
+<li><code>0b0110</code>：<code>IPv6</code></li>
+</ul>
+<h2 id="首部长度（Header-Length）"><a href="#首部长度（Header-Length）" class="headerlink" title="首部长度（Header Length）"></a>首部长度（<code>Header Length</code>）</h2><ul>
+<li>占<code>4</code>位，二进制乘以<code>4</code>才是最终长度</li>
+<li><code>0b0101</code>：<code>20</code>（最小值）</li>
+<li><code>0b1111</code>：<code>60</code>（最大值）</li>
+</ul>
+<h2 id="区分服务（Differentiated-Services-Field）"><a href="#区分服务（Differentiated-Services-Field）" class="headerlink" title="区分服务（Differentiated Services Field）"></a>区分服务（<code>Differentiated Services Field</code>）</h2><ul>
+<li>占<code>8</code>位</li>
+<li>可以用于提高网络的服务质量（<code>QoS</code>，<code>Quality of Service</code>）</li>
+</ul>
+<h2 id="总长度（Total-Length）"><a href="#总长度（Total-Length）" class="headerlink" title="总长度（Total Length）"></a>总长度（<code>Total Length</code>）</h2><ul>
+<li><p>占<code>16</code>位</p>
+</li>
+<li><p>首部 + 数据的长度之和，最大值是<code>65535</code><br><img src="2.jpg"></p>
+</li>
+<li><p>由于帧的数据不能超过1500字节，所以过大的IP数据包，需要分成片（fragments）传输给数据链路层</p>
+</li>
+<li><p>每一片都有自己的网络层首部（IP首部）</p>
+</li>
+</ul>
+<h2 id="标识（Identification）"><a href="#标识（Identification）" class="headerlink" title="标识（Identification）"></a>标识（<code>Identification</code>）</h2><ul>
+<li>占<code>16</code>位</li>
+<li>数据包的<code>ID</code>，当数据包过大进行分片时，同一个数据包的所有片的标识都是一样的</li>
+<li>有一个计数器专门管理数据包的<code>ID</code>，每发出一个数据包，<code>ID</code>就加<code>1</code></li>
+</ul>
+<h2 id="标志（Flags）"><a href="#标志（Flags）" class="headerlink" title="标志（Flags）"></a>标志（<code>Flags</code>）</h2><ul>
+<li>占<code>3</code>位</li>
+<li>第<code>1</code>位（<code>Reserved Bit</code>）：保留</li>
+<li>第<code>2</code>位（<code>Don&#39;t Fragment</code>）：<code>1</code>代表不允许分片，<code>0</code>代表允许分片</li>
+<li>第<code>3</code>位（<code>More Fragments</code>）：<code>1</code>代表不是最后一片，<code>0</code>代表是最后一片</li>
+</ul>
+<h2 id="片偏移（Fragment-Offset）"><a href="#片偏移（Fragment-Offset）" class="headerlink" title="片偏移（Fragment Offset）"></a>片偏移（<code>Fragment Offset</code>）</h2><ul>
+<li>占<code>13</code>位</li>
+<li>片偏移乘以<code>8</code>：字节偏移</li>
+<li>每一片的长度一定是<code>8</code>的整数倍</li>
+</ul>
+<p><img src="3.jpg"></p>
+<h2 id="生存时间（Time-To-Live，TTL）"><a href="#生存时间（Time-To-Live，TTL）" class="headerlink" title="生存时间（Time To Live，TTL）"></a>生存时间（<code>Time To Live，TTL</code>）</h2><ul>
+<li>占<code>8</code>位</li>
+<li>每个路由器在转发之前会将<code>TTL</code>减<code>1</code>，一旦发现<code>TTL</code>减为<code>0</code>，路由器会返回错误报告</li>
+<li>观察使用<code>ping</code>命令后的<code>TTL</code>，能够推测出对方的操作系统、中间经过了多少个路由器</li>
+</ul>
+<h2 id="协议（Protocol）"><a href="#协议（Protocol）" class="headerlink" title="协议（Protocol）"></a>协议（Protocol）</h2><ul>
+<li>占<code>8</code>位</li>
+<li>表明所封装的数据是使用了什么协议</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">协议</th>
+<th align="center">ICMP</th>
+<th align="center">IGMP</th>
+<th align="center">IP</th>
+<th align="center">TCP</th>
+<th align="center">EGP</th>
+<th align="center">IGP</th>
+<th align="center">UDP</th>
+<th align="center">IPv6</th>
+<th align="center">ESP</th>
+<th align="center">OSPF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">值（十进制）</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">4</td>
+<td align="center">6</td>
+<td align="center">8</td>
+<td align="center">9</td>
+<td align="center">17</td>
+<td align="center">41</td>
+<td align="center">50</td>
+<td align="center">89</td>
+</tr>
+</tbody></table>
+<h2 id="首部校验和（Header-Checksum）"><a href="#首部校验和（Header-Checksum）" class="headerlink" title="首部校验和（Header Checksum）"></a>首部校验和（<code>Header Checksum</code>）</h2><ul>
+<li>用于检查首部是否有错误</li>
+</ul>
+]]></content>
+      <categories>
+        <category>网络协议</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>数据链路层</title>
+    <url>/2024/01/19/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h1><ul>
+<li><p>链路：从<code>1</code>个节点到相邻节点的一段物理线路（有线或无线），中间没有其他交换节点<br><img src="1.jpg"></p>
+</li>
+<li><p>数据链路：在一条链路上传输数据时，需要有对应的通信协议来控制数据的传输</p>
+<ul>
+<li>不同类型的数据链路，所用的通信协议可能是不同的<ul>
+<li>广播信道：<code>CSMA/CD</code>协议（比如同轴电缆、集线器等组成的网络）</li>
+<li>点对点信道：<code>PPP</code>协议（比如<code>2</code>个路由器之间的信道）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>数据链路层的<code>3</code>个基本问题</p>
+<ul>
+<li>封装成帧</li>
+<li>透明传输</li>
+<li>差错检验</li>
+</ul>
+</li>
+</ul>
+<h2 id="封装成帧"><a href="#封装成帧" class="headerlink" title="封装成帧"></a>封装成帧</h2><p><img src="2.jpg"></p>
+<ul>
+<li>帧（<code>Frame</code>）的数据部分<ul>
+<li>就是网络层传递下来的数据包（<code>IP</code>数据包，<code>Packet</code>）</li>
+</ul>
+</li>
+<li>最大传输单元<code>MTU</code>（<code>Maximum Transfer Unit</code>）<ul>
+<li>每一种数据链路层协议都规定了所能够传送的帧的数据长度上限</li>
+<li>以太网的<code>MTU</code>为<code>1500</code>个字节</li>
+</ul>
+</li>
+</ul>
+<h2 id="透明传输"><a href="#透明传输" class="headerlink" title="透明传输"></a>透明传输</h2><p><img src="3.jpg"></p>
+<ul>
+<li>使用<code>SOH</code>（<code>Start Of Header</code>）作为帧开始符</li>
+<li>使用<code>EOT</code>（<code>End Of Transmission</code>）作为帧结束</li>
+<li>数据部分一旦出现了<code>SOH</code>、<code>EOT</code>，就需要进行转义</li>
+</ul>
+<p><img src="4.jpg"></p>
+<h2 id="差错检验"><a href="#差错检验" class="headerlink" title="差错检验"></a>差错检验</h2><p><img src="5.jpg"></p>
+<ul>
+<li><code>FCS</code>是根据数据部分 + 首部计算得出的</li>
+</ul>
+<h1 id="CSMA-CD协议"><a href="#CSMA-CD协议" class="headerlink" title="CSMA/CD协议"></a>CSMA/CD协议</h1><ul>
+<li><code>CSMA/CD</code>（<code>Carrier Sense Multiple Access with Collision Detectio</code>）<ul>
+<li> 载波侦听多路访问/冲突检测</li>
+</ul>
+</li>
+<li>使用了<code>CSMA/CD</code>的网络可以称为是以太网（<code>Ethernet</code>），它传输的是<code>以太网帧</code><ul>
+<li>以太网帧的格式有：<code>Ethernet V2</code>标准、<code>IEEE</code>的<code>802.3</code>标准</li>
+<li>使用最多的是：<code>Ethernet V2</code>标准</li>
+</ul>
+</li>
+<li>为了能够检测正在发送的帧是否产生了冲突，以太网的帧至少要<code>64</code>字节.(小于<code>64</code>字节的,发出去了，因为冲突回来了，由于太小了，发送端已经发送完了，因此没法判断是否是因为冲突回来，还是反方向的)</li>
+<li>用交换机组建的网络，已经支持全双工通信，不需要再使用<code>CSMA/CD</code>，但它传输的帧依然是以太网帧</li>
+<li>所以，用交换机组建的网络，依然可以叫做<code>以太网</code></li>
+</ul>
+<h2 id="Ethernet-V2帧的格式"><a href="#Ethernet-V2帧的格式" class="headerlink" title="Ethernet V2帧的格式"></a><code>Ethernet V2</code>帧的格式</h2><p><img src="6.jpg"></p>
+<ul>
+<li>首部：目标<code>MAC</code> +源<code>MAC</code> + 网络类型</li>
+<li>以太网帧：首部 + 数据 + <code>FCS</code></li>
+<li>数据的长度至少是：64 – 6 – 6 – 2 – 4 = <code>46</code>字节</li>
+</ul>
+<h3 id="标准"><a href="#标准" class="headerlink" title="标准"></a>标准</h3><ul>
+<li>当数据部分的长度小于<code>46</code>字节时<ul>
+<li>数据链路层会在数据的后面加入一些字节填充</li>
+<li>接收端会将添加的字节去掉</li>
+</ul>
+</li>
+</ul>
+<p><img src="7.jpg"></p>
+<ul>
+<li><p>长度总结</p>
+<ul>
+<li>以太网帧的数据长度：<code>46</code>~`1500`字节</li>
+<li>以太网帧的长度：<code>64</code>~`1518<code>字节（目标</code>MAC<code> +源</code>MAC<code>+ 网络类型 + 数据 +</code>FCS`）</li>
+</ul>
+</li>
+<li><p><strong>注意</strong>，网卡接收到一个帧，首先会进行差错校验，如果校验通过则接收，否则丢弃</p>
+<ul>
+<li><code>Wireshark</code>抓到的帧没有<code>FCS</code> ，因为它抓到的是差错校验通过的帧（帧尾的<code>FCS</code>会被硬件去掉）</li>
+<li><code>Wireshark</code>抓不到差错校验失败的帧</li>
+</ul>
+</li>
+</ul>
+<h1 id="PPP协议"><a href="#PPP协议" class="headerlink" title="PPP协议"></a><code>PPP</code>协议</h1><p><img src="8.jpg"></p>
+<ul>
+<li><code>Address</code>字段：图中的值是<code>0xFF</code>，形同虚设，点到点信道不需要源<code>MAC</code>、目标<code>MAC</code>地址<br>◼ <code>Control</code>字段：图中的值是<code>0x03</code>，目前没有什么作用<br>◼ <code>Protocol</code>字段：内部用到的协议类型<br>◼ 帧开始符、帧结束符：<code>0x7E</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>网络协议</category>
+      </categories>
+  </entry>
+  <entry>
     <title>MAC地址/IP地址</title>
     <url>/2024/01/12/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/MAC%E5%9C%B0%E5%9D%80-IP%E5%9C%B0%E5%9D%80/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="MAC地址"><a href="#MAC地址" class="headerlink" title="MAC地址"></a>MAC地址</h2><ul>
@@ -298,7 +1102,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>音视频学习</category>
+        <category>网络协议</category>
       </categories>
   </entry>
   <entry>
@@ -760,7 +1564,7 @@
 </li>
 </ul>
 <h2 id="浅拷贝和深拷贝"><a href="#浅拷贝和深拷贝" class="headerlink" title="浅拷贝和深拷贝"></a>浅拷贝和深拷贝</h2><ul>
-<li><p>编译器默认的提供的拷贝是<code>浅拷贝</code>（<code>shallow copy</code>）</p>
+<li><p>编译器默认提供的拷贝是<code>浅拷贝</code>（<code>shallow copy</code>）</p>
 <ul>
 <li>将一个对象中所有成员变量的值拷贝到另一个对象</li>
 <li>如果某个成员变量是个<code>指针</code>，只会拷贝<code>指针</code>中存储的地址值，并不会拷贝<code>指针</code>指向的内存空间</li>
@@ -773,7 +1577,7 @@
 </ul>
 </li>
 <li><p>下面是浅拷贝，将栈中的对象，指向堆，当栈释放之后(栈中生成的字符串释放)，<code>Person.name</code>指针指向未知（野指针）</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">int</span> age = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">char</span> *name = <span class="hljs-literal">NULL</span>;<br>&#125;;<br>Person *g_person = <span class="hljs-keyword">new</span> Person;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">test</span><span class="hljs-params">()</span> </span>&#123;<br><span class="hljs-comment">//    const char * name = &quot;abc&quot;; // 栈空间</span><br>    <span class="hljs-keyword">char</span> name[] = &#123;<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;\0&#x27;</span>&#125;; <span class="hljs-comment">//字符串义\0结尾</span><br>    g_person -&gt;name = name;<br>    cout &lt;&lt; g_person -&gt;name &lt;&lt; endl; <span class="hljs-comment">//abc</span><br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">test</span>();<br>    cout &lt;&lt; g_person -&gt;name &lt;&lt; endl; <span class="hljs-comment">// 未知参数，原来栈空间的字符串已经释放</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">int</span> age = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">char</span> *name = <span class="hljs-literal">NULL</span>;<br>&#125;;<br>Person *g_person = <span class="hljs-keyword">new</span> Person;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">test</span><span class="hljs-params">()</span> </span>&#123;<br><span class="hljs-comment">//    const char * name = &quot;abc&quot;; // 栈空间</span><br>    <span class="hljs-keyword">char</span> name[] = &#123;<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;\0&#x27;</span>&#125;; <span class="hljs-comment">//字符串义\0结尾</span><br>    g_person -&gt; name = name;<br>    cout &lt;&lt; g_person -&gt;name &lt;&lt; endl; <span class="hljs-comment">//abc</span><br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">test</span>();<br>    cout &lt;&lt; g_person -&gt;name &lt;&lt; endl; <span class="hljs-comment">// 未知参数，原来栈空间的字符串已经释放</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
 <li><p>此外拷贝构造函数<code>Person p = p1</code>的方式，就算<code>p1</code>中<code>name</code>有值，当时当前拷贝构造给<code>p</code>时，也是浅拷贝，<code>p</code>和<code>p1</code>的<code>name</code>公用一分内存。当<code>delete name</code>时，可能会<code>free</code>释放<code>name</code>多次，导致出现异常，甚至崩溃。因此需要深拷贝，进行改造</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> &#123;</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">copyName</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span>(name == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span>;<br>        <span class="hljs-keyword">this</span>-&gt;name = <span class="hljs-keyword">new</span> <span class="hljs-keyword">char</span>[<span class="hljs-built_in">strlen</span>(name) + <span class="hljs-number">1</span>] &#123;&#125;;<br>        <span class="hljs-built_in">strcpy</span>(<span class="hljs-keyword">this</span>-&gt;name, name);<span class="hljs-comment">// 将name cpy到新建的内存中</span><br>    &#125;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">int</span> age;<br>    <span class="hljs-keyword">char</span> *name;<br>    <br>    <span class="hljs-built_in">Person</span>(<span class="hljs-keyword">int</span> age = <span class="hljs-number">0</span>,<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name = <span class="hljs-literal">NULL</span>):<span class="hljs-built_in">age</span>(age) &#123;<br>        <span class="hljs-built_in">copyName</span>(name);<br>    &#125;<br>    <span class="hljs-built_in">Person</span>(<span class="hljs-keyword">const</span> Person &amp;person):<span class="hljs-built_in">age</span>(person.age) &#123;<br>        <span class="hljs-built_in">copyName</span>(person.name);<br>    &#125;<br>    ~<span class="hljs-built_in">Person</span>() &#123;<br>        <span class="hljs-keyword">if</span> (name != <span class="hljs-literal">NULL</span>) &#123;<br>            <span class="hljs-keyword">delete</span>[] name;<br>        &#125;<br>    &#125;<br>    <br>&#125;;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    Person *p = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Person</span>(<span class="hljs-number">1</span>,<span class="hljs-string">&quot;222&quot;</span>);<br>    Person *p1 = p; <span class="hljs-comment">//拷贝构造，也是深拷贝</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
 </ul>
@@ -822,7 +1626,7 @@
     <title>c++面向对像(1)</title>
     <url>/2023/12/24/C++%E5%AD%A6%E4%B9%A0/c++%E9%9D%A2%E5%90%91%E5%AF%B9%E5%83%8F(1)/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="类"><a href="#类" class="headerlink" title="类"></a>类</h1><blockquote>
-<p><code>c++</code>可以适用<code>struct</code>、<code>class</code>来定义一个类。<code>c</code>语言时没有<code>class</code>的。<code>class</code>是<code>c++</code>中的概念</p>
+<p><code>c++</code>可以适用<code>struct</code>、<code>class</code>来定义一个类。<code>c</code>语言是没有<code>class</code>的。<code>class</code>是<code>c++</code>中的概念</p>
 <ul>
 <li>以前<code>c</code>中结构体是无法定义函数的，只能通过函数指针的方式。现在<code>c++</code>中结构体视为类，且能定义方法了</li>
 </ul>
@@ -840,7 +1644,7 @@
 <li>案例,在汇编中<code>0xcc</code>起到断点的作用，为了防止栈空间中指针指向其他地方，会给栈空间填满<code>0xCC</code>的数据，因此，这里<code>height</code>上的数据，也是<code>0xcccccccc</code>四个字节<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Person person;<br>person.id = <span class="hljs-number">10</span>;<br>person.age = <span class="hljs-number">20</span>;<br>person.hegiht = <span class="hljs-number">30</span>;<br><br>Person *p = (Person *) &amp;person.age;<br>p-&gt;id = <span class="hljs-number">40</span>;<br>p -&gt;age = <span class="hljs-number">50</span><br><span class="hljs-comment">// 打印当前的 id = 10,age = 40,height = 50;</span><br>person.<span class="hljs-built_in">description</span>(); <br><span class="hljs-comment">// 打印指针p的 id = 40,age = 50,height = 0xcccccccc</span><br>p-&gt;<span class="hljs-built_in">description</span>();<br><br></code></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="存储的位置"><a href="#存储的位置" class="headerlink" title="存储的位置"></a>存储的位置</h2><blockquote>
-<p>c++中的对象的内存可以存放在</p>
+<p><code>c++</code>中的对象的内存可以存放在</p>
 <ul>
 <li>全局区（数据段）：全局变量</li>
 <li>栈空间：函数里面的局部变量（类中的对象，均在栈）</li>
@@ -880,16 +1684,16 @@
 <li>通过<code>malloc</code>分配的对象不会调用构造函数</li>
 </ul>
 </li>
-<li><p><strong>注意</strong>,<code>Person p2();</code>实际是函数声明，不会调用构造函数</p>
+<li><p><strong>注意</strong>,全局区的<code>Person p2();</code>实际是函数声明，不会调用构造函数</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Person p1; <span class="hljs-comment">// 调用Person()</span><br><span class="hljs-function">Person <span class="hljs-title">p2</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">// 实际是函数声明</span><br>Person p2&#123;&#125;; <span class="hljs-comment">//调用默认Person()</span><br><span class="hljs-function">Person <span class="hljs-title">p3</span><span class="hljs-params">(<span class="hljs-number">3</span>)</span></span>; <span class="hljs-comment">// 调用Person(Int)</span><br>Person *p4 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Person</span>(); <span class="hljs-comment">// 调用Person()</span><br></code></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><h3 id="默认情况下"><a href="#默认情况下" class="headerlink" title="默认情况下"></a>默认情况下</h3><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span> &#123;</span><br>    <span class="hljs-keyword">int</span> age;<br>&#125;;<br><span class="hljs-comment">// 全局区初始化变量为0，（全局区默认初始化为0）</span><br>Person g_person;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 栈空间：没有初始化成员变量，报错</span><br>     <span class="hljs-comment">//   Person person;</span><br>    <br>    <span class="hljs-comment">//堆空间 没有初始化成员变量</span><br>    Person *po = <span class="hljs-keyword">new</span> Person;<br>    <span class="hljs-comment">// 堆空间 初始化成员变量为0</span><br>    Person *p1 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Person</span>();<br>    <span class="hljs-comment">// 3个person对象，不会初始化</span><br>    Person *p2 = <span class="hljs-keyword">new</span> Person[<span class="hljs-number">3</span>];<br>    <span class="hljs-comment">// 3个person对象，初始化为0</span><br>    Person *p3 = <span class="hljs-keyword">new</span> Person[<span class="hljs-number">3</span>]();<br>    <span class="hljs-comment">// 3个person对象，初始化为0</span><br>    Person *p4 = <span class="hljs-keyword">new</span> Person[<span class="hljs-number">3</span>]&#123;&#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><h3 id="默认情况下"><a href="#默认情况下" class="headerlink" title="默认情况下"></a>默认情况下</h3><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span> &#123;</span><br>    <span class="hljs-keyword">int</span> age;<br>&#125;;<br><span class="hljs-comment">// 全局区初始化变量为0，（全局区默认初始化为0）</span><br>Person g_person;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 栈空间：没有初始化成员变量</span><br>    Person person;<br>    <br>    <span class="hljs-comment">//堆空间 没有初始化成员变量</span><br>    Person *po = <span class="hljs-keyword">new</span> Person;<br>    <span class="hljs-comment">// 堆空间 初始化成员变量为0</span><br>    Person *p1 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Person</span>();<br>    <span class="hljs-comment">// 3个person对象，不会初始化</span><br>    Person *p2 = <span class="hljs-keyword">new</span> Person[<span class="hljs-number">3</span>];<br>    <span class="hljs-comment">// 3个person对象，初始化为0</span><br>    Person *p3 = <span class="hljs-keyword">new</span> Person[<span class="hljs-number">3</span>]();<br>    <span class="hljs-comment">// 3个person对象，初始化为0</span><br>    Person *p4 = <span class="hljs-keyword">new</span> Person[<span class="hljs-number">3</span>]&#123;&#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="有构造函数"><a href="#有构造函数" class="headerlink" title="有构造函数"></a>有构造函数</h3><blockquote>
 <p>如果自定义了构造函数，除了全局区，其他内存空间的成员变量默认都不会被初始化，需要开发人员手动初始化</p>
 </blockquote>
 <h4 id="空的实现"><a href="#空的实现" class="headerlink" title="空的实现"></a>空的实现</h4><ul>
-<li>初始化一个空的构造函数，用<code>new Person()</code>,不会帮忙初始化为<code>0</code>，全局去仍然有数据<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span> &#123;</span><br>    <span class="hljs-keyword">int</span> age;<br>    <span class="hljs-built_in">Person</span>() &#123;<br>    &#125;<br>&#125;;<br><span class="hljs-comment">// 全局区初始化变量为0，（全局区默认初始化为0）</span><br>Person g_person;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 栈空间：没有初始化成员变量，报错</span><br>     <span class="hljs-comment">//   Person person;</span><br>    <br>    <span class="hljs-comment">//堆空间 没有初始化成员变量</span><br>    Person *po = <span class="hljs-keyword">new</span> Person;<br>    <span class="hljs-comment">// 堆空间 没有初始化成员变量</span><br>    Person *p1 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Person</span>();<br>    <span class="hljs-comment">// 堆空间 没有初始化成员变量</span><br>    Person *p1 = <span class="hljs-keyword">new</span> Person&#123;&#125;;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>初始化一个空的构造函数，用<code>new Person()</code>,不会帮忙初始化为<code>0</code>，全局区仍然有数据<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span> &#123;</span><br>    <span class="hljs-keyword">int</span> age;<br>    <span class="hljs-built_in">Person</span>() &#123;<br>    &#125;<br>&#125;;<br><span class="hljs-comment">// 全局区初始化变量为0，（全局区默认初始化为0）</span><br>Person g_person;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 栈空间：没有初始化成员变量</span><br>    Person person;<br>    <br>    <span class="hljs-comment">//堆空间 没有初始化成员变量</span><br>    Person *po = <span class="hljs-keyword">new</span> Person;<br>    <span class="hljs-comment">// 堆空间 没有初始化成员变量</span><br>    Person *p1 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Person</span>();<br>    <span class="hljs-comment">// 堆空间 没有初始化成员变量</span><br>    Person *p1 = <span class="hljs-keyword">new</span> Person&#123;&#125;;<br>&#125;<br></code></pre></td></tr></table></figure></li>
 </ul>
 <h3 id="初始化方法建议"><a href="#初始化方法建议" class="headerlink" title="初始化方法建议"></a>初始化方法建议</h3><ul>
 <li>初始化清理<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">Person</span>() &#123;<br>    <span class="hljs-built_in">memset</span>(<span class="hljs-keyword">this</span>,<span class="hljs-number">0</span>,<span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(Person));<br>&#125;<br></code></pre></td></tr></table></figure></li>
@@ -911,8 +1715,8 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">Person</span>(<span class="hljs-keyword">int</span> age = <span class="hljs-number">0</span>,<span class="hljs-keyword">int</span> height = <span class="hljs-number">0</span>):<span class="hljs-built_in">age</span>(age),<span class="hljs-built_in">height</span>(height) &#123;<br>    age = <span class="hljs-number">10</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
 <li><p><strong>注意</strong>,如果函数声明和实现是分离的</p>
 <ul>
-<li>初始化列表只能写在函数的<code>实现</code>中（本质在实现中插入代码，因此必须在实现中）</li>
-<li>默认参数只能写在函数的<code>声明</code>中.(声明和实现可能会在不同的地方，编译器，需要根据声明去判断是否有默认参数)<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span> &#123;</span><br>    <span class="hljs-keyword">int</span> age;<br>    <span class="hljs-keyword">int</span> height;<br>    <span class="hljs-built_in">Person</span>(<span class="hljs-keyword">int</span> age = <span class="hljs-number">0</span>,<span class="hljs-keyword">int</span> height = <span class="hljs-number">0</span>);<br>&#125;;<br><br>Person::<span class="hljs-built_in">Person</span>(<span class="hljs-keyword">int</span> age,<span class="hljs-keyword">int</span> height):<span class="hljs-built_in">age</span>(age),<span class="hljs-built_in">height</span>(height) &#123;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>初始化列表</strong>只能写在函数的<code>实现</code>中（本质在实现中插入代码，因此必须在<strong>实现</strong>中）</li>
+<li><strong>默认参数</strong>只能写在函数的<code>声明</code>中.(声明和实现可能会在不同的地方，编译器，需要根据声明去判断是否有默认参数)<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span> &#123;</span><br>    <span class="hljs-keyword">int</span> age;<br>    <span class="hljs-keyword">int</span> height;<br>    <span class="hljs-built_in">Person</span>(<span class="hljs-keyword">int</span> age = <span class="hljs-number">0</span>,<span class="hljs-keyword">int</span> height = <span class="hljs-number">0</span>);<br>&#125;;<br><br>Person::<span class="hljs-built_in">Person</span>(<span class="hljs-keyword">int</span> age,<span class="hljs-keyword">int</span> height):<span class="hljs-built_in">age</span>(age),<span class="hljs-built_in">height</span>(height) &#123;<br>&#125;<br></code></pre></td></tr></table></figure></li>
 </ul>
 </li>
 </ul>
@@ -926,7 +1730,7 @@
 <li>如果子类的构造函数显式地调用了父类的有参构造函数，就不会再去默认调用父类的无参构造函数</li>
 <li>如果父类缺少无参构造函数，子类的构造函数必须显式调用父类的有参构造函数</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span> &#123;</span><br>   <span class="hljs-keyword">int</span> age;<br>   <span class="hljs-built_in">Person</span>():<span class="hljs-built_in">Person</span>(<span class="hljs-number">0</span>)&#123;&#125;<br>   <span class="hljs-built_in">Person</span>(<span class="hljs-keyword">int</span> age):<span class="hljs-built_in">age</span>(age)&#123;&#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Student</span>:</span> Person &#123;<br>    <span class="hljs-keyword">int</span> no;<br>    <span class="hljs-built_in">Student</span>(): <span class="hljs-built_in">Student</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>) &#123;&#125;<br>    <span class="hljs-built_in">Student</span>(<span class="hljs-keyword">int</span> age,<span class="hljs-keyword">int</span> no): <span class="hljs-built_in">Person</span>(age),<span class="hljs-built_in">no</span>(no)&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span> &#123;</span><br>   <span class="hljs-keyword">int</span> age;<br>   <span class="hljs-built_in">Person</span>():<span class="hljs-built_in">Person</span>(<span class="hljs-number">0</span>)&#123;&#125;<br>   <span class="hljs-built_in">Person</span>(<span class="hljs-keyword">int</span> age):<span class="hljs-built_in">age</span>(age)&#123;&#125;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Student</span>:</span> Person &#123;<br>    <span class="hljs-keyword">int</span> no;<br>    <span class="hljs-built_in">Student</span>(): <span class="hljs-built_in">Student</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>) &#123;&#125;<br>    <span class="hljs-built_in">Student</span>(<span class="hljs-keyword">int</span> age,<span class="hljs-keyword">int</span> no): <span class="hljs-built_in">Person</span>(age),<span class="hljs-built_in">no</span>(no)&#123;&#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
 
 <h1 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h1><blockquote>
@@ -935,7 +1739,7 @@
 <h2 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h2><ul>
 <li> 函数名以<code>~</code>开头，与类同名，无返回值（<code>void</code>都不能写），无参，不可以重载，有且只有一个析构函数</li>
 <li><strong>注意</strong><ul>
-<li> 通过<code>malloc</code>分配的对象<code>free</code>的时候不会调用析构函数</li>
+<li> 通过<code>malloc</code>分配的对象<code>free</code>的时候不会<strong>调用析构函数</strong></li>
 </ul>
 </li>
 <li>构造函数、析构函数要声明为<code>public</code>，才能被外界正常使用</li>
@@ -995,7 +1799,7 @@
 <ul>
 <li><p><strong>注意</strong>，访问权限不影响对象的内存布局，<code>Student2</code>无法访问<code>no</code>但是还是会继承下来。</p>
 <ul>
-<li>这样设计的目的是，经过无法通过成员变量直接访问，但是可以通过<code>set</code>方法设置，实现封装的目的<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">int</span> age;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setNo</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num)</span> </span>&#123;<br>        no = num;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getNo</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> no;<br>    &#125;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-keyword">int</span> no;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Student</span>:</span> <span class="hljs-keyword">private</span> Person &#123; <br><span class="hljs-comment">//以私有的方式继承Person，person中的age，在student中是privare的。等价下面的</span><br><span class="hljs-comment">// private：</span><br><span class="hljs-comment">//    int age;</span><br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Student2</span>:</span> Public Person &#123; <br>    <span class="hljs-comment">// 访问权限不影响对象的内存布局,Student2会继承 no,但是无法访问no</span><br>    <span class="hljs-comment">// 但是可以通过setNo设置，getNo访问</span><br>&#125;;<br></code></pre></td></tr></table></figure></li>
+<li>这样设计的目的是，尽管无法通过成员变量直接访问，但是可以通过<code>set</code>方法设置，实现封装的目的<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Person</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">int</span> age;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setNo</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num)</span> </span>&#123;<br>        no = num;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getNo</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> no;<br>    &#125;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-keyword">int</span> no;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Student</span>:</span> <span class="hljs-keyword">private</span> Person &#123; <br><span class="hljs-comment">//以私有的方式继承Person，person中的age，在student中是privare的。等价下面的</span><br><span class="hljs-comment">// private：</span><br><span class="hljs-comment">//    int age;</span><br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Student2</span>:</span> Public Person &#123; <br>    <span class="hljs-comment">// 访问权限不影响对象的内存布局,Student2会继承 no,但是无法访问no</span><br>    <span class="hljs-comment">// 但是可以通过setNo设置，getNo访问</span><br>&#125;;<br></code></pre></td></tr></table></figure></li>
 </ul>
 </li>
 <li><p><strong>注意</strong>，<code>class</code>默认是<code>private</code>继承（写的时候，注意加上<code>public</code>），<code>struct</code>默认是<code>public</code>继承</p>
@@ -1041,13 +1845,13 @@
 </ul>
 </li>
 <li><p>调用父类的成员函数的实现</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Cat2</span>:</span> Animal &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">speak</span><span class="hljs-params">()</span> </span>&#123;<br>        Cat1::<span class="hljs-built_in">speak</span>();<br>        cout &lt;&lt; <span class="hljs-string">&quot;Cat2::speak&quot;</span> &lt;&lt; endl;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Cat2</span>:</span> Animal &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">speak</span><span class="hljs-params">()</span> </span>&#123;<br>        Cat1::<span class="hljs-built_in">speak</span>();<br>        cout &lt;&lt; <span class="hljs-string">&quot;Cat2::speak&quot;</span> &lt;&lt; endl;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure></li>
+</ul>
 <h3 id="虚表"><a href="#虚表" class="headerlink" title="虚表"></a>虚表</h3><blockquote>
 <p>虚函数的实现原理是虚表，这个虚表里面存储着最终需要调用的虚函数地址，这个虚表也叫虚函数表</p>
 </blockquote>
-</li>
-<li><p>有虚函数的类，会多占<code>4</code>个字节(不同环境下有所不同)，其前<code>4</code>个字节存放虚表地址。虚表地址开始中，每<code>4</code>个字节存放相映虚函数的地址。（在<code>xcode</code>中时<code>8</code>个，windo的<code>x86</code>是<code>4</code>字节）</p>
-</li>
+<ul>
+<li>有虚函数的类，会多占<code>4</code>个字节(不同环境下有所不同)，其前<code>4</code>个字节存放虚表地址。虚表地址开始中，每<code>4</code>个字节存放相映虚函数的地址。（在<code>xcode</code>中时<code>8</code>个，windo的<code>x86</code>是<code>4</code>字节）</li>
 </ul>
 <h3 id="虚析构函数"><a href="#虚析构函数" class="headerlink" title="虚析构函数"></a>虚析构函数</h3><blockquote>
 <p>编译器还是根据指针类型的，如果指针类型中没有虚表，则不会去查。那么如果存在父类指针指向子类对象的情况，应该将析构函数声明为虚函数（虚析构函数）。否则，销毁时，只会调用父类的析构函数，而导致实际子类析构函数不会调用，释放不完整</p>
@@ -2002,10 +2806,11 @@
 
 <h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><ul>
 <li>在<code>C</code>语言中，使用指针（<code>Pointer</code>）可以间接获取、修改某个变量的值</li>
-<li>在<code>C++</code>中，使用引用（<code>Reference</code>）可以起到跟指针类似的功能<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> age = <span class="hljs-number">20</span>;<br><span class="hljs-comment">// rage即为引用</span><br><span class="hljs-keyword">int</span> &amp;rage = age;<br></code></pre></td></tr></table></figure>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2></li>
+<li>在<code>C++</code>中，使用引用（<code>Reference</code>）可以起到跟指针类似的功能<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> age = <span class="hljs-number">20</span>;<br><span class="hljs-comment">// rage即为引用</span><br><span class="hljs-keyword">int</span> &amp;rage = age;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
 <li>引用相当于是变量的别名（基本数据类型、枚举、结构体、类、指针、数组等，都可以有引用）<ul>
-<li>和指针不同，因为是别名，表示在任何地方都代表最开始的值<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> age = <span class="hljs-number">20</span>;<br><span class="hljs-keyword">int</span> height = <span class="hljs-number">40</span><br><span class="hljs-comment">// rage即为引用</span><br><span class="hljs-keyword">int</span> &amp;rage = age;<br>rage = height; <span class="hljs-comment">// age 40 , height 40</span><br>rage = <span class="hljs-number">10</span>; <span class="hljs-comment">// age 10,height 40</span><br><br><br></code></pre></td></tr></table></figure></li>
+<li>和指针不同，因为是别名，表示在任何地方都代表最开始的值<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> age = <span class="hljs-number">20</span>;<br><span class="hljs-keyword">int</span> height = <span class="hljs-number">40</span>;<br><span class="hljs-comment">// rage即为引用</span><br><span class="hljs-keyword">int</span> &amp;rage = age;<br>rage = height; <span class="hljs-comment">// age 40 , height 40</span><br>rage = <span class="hljs-number">10</span>; <span class="hljs-comment">// age 10,height 40</span><br><br><br></code></pre></td></tr></table></figure></li>
 </ul>
 </li>
 <li>在定义的时候就必须初始化，一旦指向了某个变量，就不可以再改变，“从一而终”。<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">&amp;rage = height;<span class="hljs-comment">// 错误，因为rage就是age，&amp;rage是age的地址，是不等于height的</span><br></code></pre></td></tr></table></figure></li>
@@ -2021,10 +2826,10 @@
 <h2 id="指针的引用"><a href="#指针的引用" class="headerlink" title="指针的引用"></a>指针的引用</h2><ul>
 <li>这里<code>ref</code>是指针<code>p</code>的引用。<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> age = <span class="hljs-number">10</span><br><span class="hljs-keyword">int</span> *p = &amp;age<br><span class="hljs-keyword">int</span> * &amp;ref = p;<span class="hljs-comment">// 这里引用类型是int *的指针</span><br>*ref = <span class="hljs-number">30</span>; <span class="hljs-comment">// age = 30</span><br><br><span class="hljs-keyword">int</span> height = <span class="hljs-number">30</span>；<br>ref = &amp;height;<span class="hljs-comment">// 修改指针的指向</span><br></code></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="数组的引用"><a href="#数组的引用" class="headerlink" title="数组的引用"></a>数组的引用</h2><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> arr[] = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>&#125;;<br><span class="hljs-built_in"><span class="hljs-keyword">int</span></span> (&amp;ref)[<span class="hljs-number">3</span>] = array;<br>ref[<span class="hljs-number">0</span>] = <span class="hljs-number">2</span>; <span class="hljs-comment">//修改过arr的第一项</span><br><span class="hljs-comment">// 也可以</span><br><span class="hljs-comment">// int * &amp;ref1 = arr;报错，因为arr时常量，必须用常量指针引用</span><br><span class="hljs-keyword">int</span> * <span class="hljs-keyword">const</span> &amp;ref1 = arr; <br></code></pre></td></tr></table></figure>
+<h2 id="数组的引用"><a href="#数组的引用" class="headerlink" title="数组的引用"></a>数组的引用</h2><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> arr[] = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>&#125;;<br><span class="hljs-built_in"><span class="hljs-keyword">int</span></span> (&amp;ref)[<span class="hljs-number">3</span>] = arr;<br>ref[<span class="hljs-number">0</span>] = <span class="hljs-number">2</span>; <span class="hljs-comment">//修改过arr的第一项</span><br><span class="hljs-comment">// 也可以</span><br><span class="hljs-comment">// int * &amp;ref1 = arr;报错，因为arr时常量，必须用常量指针引用</span><br><span class="hljs-keyword">int</span> * <span class="hljs-keyword">const</span> &amp;ref1 = arr; <br></code></pre></td></tr></table></figure>
 
 <h2 id="常量引用"><a href="#常量引用" class="headerlink" title="常量引用"></a>常量引用</h2><ul>
-<li><p>引用可与你被<code>const</code>修饰，这样就无法通过引用修改数据了，可以称为常引用</p>
+<li><p>引用可以被<code>const</code>修饰，这样就无法通过引用修改数据了，可以称为常引用</p>
 <ul>
 <li><code>const</code>必须写在<code>&amp;</code>符合的左边，才能算常引用。（右边，代表无法改变指向，而引用本身就无法改变）  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> hegiht = <span class="hljs-number">20</span>;<br><span class="hljs-keyword">int</span> age = <span class="hljs-number">10</span>;<br><span class="hljs-keyword">int</span> <span class="hljs-keyword">const</span> &amp;ref = age;<br><span class="hljs-comment">// ref = 20; 无法赋值，引用其实就是指针，可看作 int const * ref = age;因此*ref = 20;会失败</span><br><span class="hljs-keyword">int</span> &amp; <span class="hljs-keyword">const</span> ref = age; <span class="hljs-comment">// ref无法修改执行，对于引用本身是无法修改指向的。这里加不加const一样</span><br>ref = <span class="hljs-number">30</span>; <span class="hljs-comment">// 可以赋值，这里常量修饰的是指针，但是可以修改所指向的变量</span><br><span class="hljs-comment">// p1不能修改指向，可以利用p1简介修改所指向的变量</span><br><span class="hljs-keyword">int</span> *<span class="hljs-keyword">const</span> p1 = &amp;age;<br>*p1 = <span class="hljs-number">30</span>;<br><br><span class="hljs-comment">// p2可以修改过指向，不可以利用p2间接修改所指向的变量</span><br><span class="hljs-keyword">int</span> cont *p2 = &amp;age;<br>p2 = &amp;height;<br><br></code></pre></td></tr></table></figure></li>
 </ul>
@@ -2096,7 +2901,7 @@
 <h3 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h3><h4 id="方式1"><a href="#方式1" class="headerlink" title="方式1"></a>方式1</h4><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 解码</span><br>    <span class="hljs-comment">// 读取数据</span><br>    inLen = inFile.<span class="hljs-built_in">read</span>(inData,IN_DATA_SIZE);<br>    <span class="hljs-keyword">while</span> (inLen &gt; <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">// 经过解析器上下文处理</span><br>        ret = <span class="hljs-built_in">av_parser_parse2</span>(parserCtx,<br>                               ctx,<br>                               &amp;pkt-&gt;data,<br>                               &amp;pkt-&gt;size,<br>                               (<span class="hljs-keyword">uint8_t</span> *)inData,<br>                               inLen,<br>                               AV_NOPTS_VALUE,<br>                               AV_NOPTS_VALUE,<span class="hljs-number">0</span>);<br>        <span class="hljs-keyword">if</span> (ret &lt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-built_in">ERROR_BUF</span>(ret);<br>            <span class="hljs-built_in">qDebug</span>() &lt;&lt; <span class="hljs-string">&quot;av_parser_parse2 error&quot;</span> &lt;&lt; errbuf;<br>            <span class="hljs-keyword">goto</span> end;<br>        &#125;<br><br>        <span class="hljs-comment">// 跳过已经解析过的数据</span><br>        inData += ret;<br>        <span class="hljs-comment">// 减去已经解析过的数据</span><br>        inLen -= ret;<br><br>        <span class="hljs-comment">// 解码</span><br>        <span class="hljs-keyword">if</span> (pkt-&gt;size &gt; <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-built_in">decode</span>(ctx,pkt,frame,outFile) &lt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-keyword">goto</span> end;<br>        &#125;<br><br>        <span class="hljs-comment">// 如果数据不够了，再次读取文件</span><br>        <span class="hljs-keyword">if</span>(inLen &lt; REFILL_THRESH &amp;&amp; !inEnd) &#123;<br>            <span class="hljs-comment">// 剩余数据移动到缓冲区前,将inData开始长inLen的数据，移动到inDataArray的位置</span><br>            <span class="hljs-built_in">memmove</span>(inDataArray,inData,inLen);<br>            <span class="hljs-built_in">qDebug</span>() &lt;&lt; (<span class="hljs-keyword">uint8_t</span> *)inData &lt;&lt; (<span class="hljs-keyword">uint8_t</span> *)inDataArray;<br>            <span class="hljs-comment">// 重新开始从缓冲区开始读取，此时缓冲区有效数据长度为inLen</span><br>            inData = inDataArray;<br><br>            <span class="hljs-comment">// 跨过已有数据inlen，读取填满缓冲区的文件数据,其长度，即为IN_DATA_SIZE - inLen</span><br>            <span class="hljs-keyword">int</span> len = inFile.<span class="hljs-built_in">read</span>(inData + inLen,IN_DATA_SIZE - inLen);<br>            <span class="hljs-keyword">if</span> (len &gt; <span class="hljs-number">0</span>) &#123;<br>                inLen += len;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-comment">//aac文件数据读取完了</span><br>                inEnd = <span class="hljs-number">1</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// flush解码器</span><br>    <span class="hljs-comment">// pkt-&gt; data = NULL;</span><br>    <span class="hljs-comment">// pkt-&gt; size = 0;</span><br>    <span class="hljs-built_in">decode</span>(ctx,<span class="hljs-literal">nullptr</span>,frame,outFile);<br></code></pre></td></tr></table></figure>
 
 <h4 id="方式2"><a href="#方式2" class="headerlink" title="方式2"></a>方式2</h4><blockquote>
-<p>也可以通过两个<code>while</code>循环不断读取数据，来将<code>aac</code>数据，通过解析器传到<code>pkt</code>中，如果不足一采样的数据，则会保解析器中，等下次来采集</p>
+<p>也可以通过两个<code>while</code>循环不断读取数据，来将<code>aac</code>数据，通过解析器传到<code>pkt</code>中，如果不足一采样格式的数据，则会保存在解析器中，等下次来采集</p>
 </blockquote>
 <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">while</span> ((inLen = inFile.<span class="hljs-built_in">read</span>(inData,IN_DATA_SIZE)) &gt; <span class="hljs-number">0</span>) &#123;<br>   <span class="hljs-built_in">qDebug</span>() &lt;&lt; <span class="hljs-string">&quot;---&quot;</span> &lt;&lt; (<span class="hljs-keyword">uint8_t</span> *)inData &lt;&lt; (<span class="hljs-keyword">uint8_t</span> *)inDataArray;<br>       <span class="hljs-keyword">while</span> (inLen &gt; <span class="hljs-number">0</span>) &#123;<br>           <span class="hljs-comment">// 经过解析器上下文处理</span><br>           ret = <span class="hljs-built_in">av_parser_parse2</span>(parserCtx,<br>                                  ctx,<br>                                  &amp;pkt-&gt;data,<br>                                  &amp;pkt-&gt;size,<br>                                  (<span class="hljs-keyword">uint8_t</span> *)inData,<br>                                  inLen,<br>                                  AV_NOPTS_VALUE,<br>                                  AV_NOPTS_VALUE,<span class="hljs-number">0</span>);<br>           <span class="hljs-keyword">if</span> (ret &lt; <span class="hljs-number">0</span>) &#123;<br>               <span class="hljs-built_in">ERROR_BUF</span>(ret);<br>               <span class="hljs-built_in">qDebug</span>() &lt;&lt; <span class="hljs-string">&quot;av_parser_parse2 error&quot;</span> &lt;&lt; errbuf;<br>               <span class="hljs-keyword">goto</span> end;<br>           &#125;<br><br>           <span class="hljs-built_in">qDebug</span>() &lt;&lt; <span class="hljs-string">&quot;------&quot;</span> &lt;&lt; pkt-&gt;size &lt;&lt; ret &lt;&lt; inLen;<br>           <span class="hljs-comment">// 跳过已经解析过的数据</span><br>           inData += ret;<br>           <span class="hljs-comment">// 减去已经解析过的数据</span><br>           inLen -= ret;<br><br>           <span class="hljs-comment">// 解码</span><br>           <span class="hljs-keyword">if</span> (pkt-&gt;size &gt; <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-built_in">decode</span>(ctx,pkt,frame,outFile) &lt; <span class="hljs-number">0</span>) &#123;<br>               <span class="hljs-keyword">goto</span> end;<br>           &#125;<br>       &#125;<br>       <span class="hljs-comment">// inData读取完之后，重新开始赋值</span><br>       inData = inDataArray;<br>   &#125;<br>   <br>    <span class="hljs-built_in">decode</span>(ctx,<span class="hljs-literal">nullptr</span>,frame,outFile);<br></code></pre></td></tr></table></figure>
 
