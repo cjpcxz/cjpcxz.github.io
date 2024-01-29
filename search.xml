@@ -1,6 +1,1308 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>https</title>
+    <url>/2024/01/28/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_s/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="https"><a href="#https" class="headerlink" title="https"></a>https</h1><ul>
+<li><p><code>HTTPS</code>（<code>HyperText Transfer Protocol Secure</code>），译为：超文本传输安全协议</p>
+<ul>
+<li>常称为<code>HTTP over TLS</code>、<code>HTTP over SSL</code>、<code>HTTP Secure</code></li>
+<li>由网景公司于<code>1994</code>年首次提出</li>
+</ul>
+</li>
+<li><p><code>HTTPS</code>的默认端口号是<code>443</code>（<code>HTTP</code>是<code>80</code>）</p>
+</li>
+</ul>
+<h2 id="SSL-TLS"><a href="#SSL-TLS" class="headerlink" title="SSL/TLS"></a><code>SSL/TLS</code></h2><ul>
+<li><p><code>HTTPS</code>是在<code>HTTP</code>的基础上使用<code>SSL/TLS</code>来加密报文，对窃听和中间人攻击提供合理的防护</p>
+</li>
+<li><p><code>SSL/TLS</code>也可以用在其他协议上，比如</p>
+<ul>
+<li><code>FTP → FTPS</code></li>
+<li><code>SMTP → SMTPS</code></li>
+</ul>
+</li>
+<li><p><code>TLS</code>（<code>Transport Layer Security</code>），译为：传输层安全性协议</p>
+<ul>
+<li>前身是<code>SSL</code>（<code>Secure Sockets Layer</code>），译为：安全套接层</li>
+</ul>
+</li>
+<li><p>历史版本信息</p>
+<ul>
+<li><code>SSL 1.0</code>：因存在严重的安全漏洞，从未公开过</li>
+<li><code>SSL 2.0</code>：<code>1995</code>年，已于<code>2011</code>年弃用（<a href="https://tools.ietf.org/html/rfc6176">RFC 6176</a>）</li>
+<li><code>SSL 3.0</code>：<code>1996</code>年，已于<code>2015</code>年弃用（<a href="https://tools.ietf.org/html/rfc7568">RFC 7568</a>）</li>
+<li><code>TLS 1.0</code>：<code>1999</code>年（<a href="https://tools.ietf.org/html/rfc2246">RFC 2246</a>）</li>
+<li><code>TLS 1.1</code>：<code>2006</code>年（<a href="https://tools.ietf.org/html/rfc4346">RFC 4346</a>）</li>
+<li><code>TLS 1.2</code>：<code>2008</code>年（<a href="https://tools.ietf.org/html/rfc5246">RFC 5246</a>）</li>
+<li><code>TLS 1.3</code>：<code>2018</code>年（<a href="https://tools.ietf.org/html/rfc8446">RFC 8446</a>）</li>
+</ul>
+</li>
+</ul>
+<h2 id="SSL-TLS工作在应用层"><a href="#SSL-TLS工作在应用层" class="headerlink" title="SSL/TLS工作在应用层"></a><code>SSL/TLS</code>工作在应用层</h2><p><img src="1.jpg"></p>
+<h2 id="OpenSSL"><a href="#OpenSSL" class="headerlink" title="OpenSSL"></a><code>OpenSSL</code></h2><ul>
+<li><code>OpenSSL</code>是<code>SSL/TLS</code>协议的开源实现，始于<code>1998</code>年，支持<code>Windows</code>、<code>Mac</code>、<code>Linux</code>等平台<ul>
+<li><code>Linux</code>、<code>Mac</code>一般自带<code>OpenSSL</code></li>
+<li><code>Windows</code><a href="https://slproweb.com/products/Win32OpenSSL.html">下载安装OpenSSL</a></li>
+</ul>
+</li>
+<li>常用命令<ul>
+<li>生成私钥：<code>openssl genrsa -out mj.key</code></li>
+<li>生成公钥：<code>openssl rsa -in mj.key -pubout -out mj.pem</code></li>
+</ul>
+</li>
+<li>可以使用<code>OpenSSL</code>构建一套属于自己的<code>CA</code>，自己给自己颁发证书，称为“自签名证书”</li>
+</ul>
+<h2 id="Https的通信过程"><a href="#Https的通信过程" class="headerlink" title="Https的通信过程"></a><code>Https</code>的通信过程</h2><p><img src="13.png"></p>
+<ul>
+<li>总的可以分为<code>3</code>大阶段<ul>
+<li><code>TCP</code>的<code>3</code>次握手</li>
+<li><code>TLS</code>的连接</li>
+<li><code>HTTP</code>请求和响应</li>
+</ul>
+</li>
+</ul>
+<h2 id="TLS-1-2的连接"><a href="#TLS-1-2的连接" class="headerlink" title="TLS 1.2的连接"></a><code>TLS 1.2</code>的连接</h2><ul>
+<li>大概是有<code>10</code>大步骤</li>
+<li>图片中省略了中间产生的一些<code>ACK</code>确认</li>
+</ul>
+<p><img src="2.jpg"></p>
+<h3 id="TLS-1-2的连接-Client-Hello"><a href="#TLS-1-2的连接-Client-Hello" class="headerlink" title="TLS 1.2的连接 - Client Hello"></a><code>TLS 1.2</code>的连接 - <code>Client Hello</code></h3><ul>
+<li><code>Client Hello</code><ul>
+<li>TLS的版本号</li>
+<li>支持的加密组件（<code>Cipher Suite</code>）列表<ul>
+<li>加密组件是指所使用的加密算法及密钥长度等</li>
+</ul>
+</li>
+<li>一个随机数（<code>Client Random</code>）</li>
+</ul>
+</li>
+</ul>
+<p><img src="3.jpg"></p>
+<h3 id="TLS-1-2的连接-Server-Hello"><a href="#TLS-1-2的连接-Server-Hello" class="headerlink" title="TLS 1.2的连接 - Server Hello"></a><code>TLS 1.2</code>的连接 - <code>Server Hello</code></h3><ul>
+<li><p><code>Server Hello</code></p>
+<ul>
+<li>TLS的版本号</li>
+<li>选择的加密组件<ul>
+<li>是从接收到的客户端加密组件列表中挑选出来的</li>
+</ul>
+</li>
+<li>一个随机数（<code>Server Random</code>)</li>
+</ul>
+<p>  <img src="4.jpg"></p>
+</li>
+</ul>
+<h3 id="TLS-1-2的连接-Certificate"><a href="#TLS-1-2的连接-Certificate" class="headerlink" title="TLS 1.2的连接 - Certificate"></a><code>TLS 1.2</code>的连接 - <code>Certificate</code></h3><ul>
+<li><code>Certificate</code><ul>
+<li>服务器的公钥证书（被<code>CA</code>签名过的）</li>
+</ul>
+</li>
+</ul>
+<p><img src="5.jpg"></p>
+<h3 id="TLS-1-2的连接-Server-Key-Exchange"><a href="#TLS-1-2的连接-Server-Key-Exchange" class="headerlink" title="TLS 1.2的连接 - Server Key Exchange"></a><code>TLS 1.2</code>的连接 - <code>Server Key Exchange</code></h3><ul>
+<li><code>Server Key Exchange</code><ul>
+<li>用以实现<code>ECDHE</code>算法的其中一个参数（<code>Server Params</code>）<ul>
+<li><code>ECDHE</code>是一种密钥交换算法</li>
+<li>为了防止伪造，<code>Server Params</code>经过了服务器私钥签名</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="6.jpg"></p>
+<h3 id="TLS-1-2的连接-Server-Hello-Done"><a href="#TLS-1-2的连接-Server-Hello-Done" class="headerlink" title="TLS 1.2的连接 - Server Hello Done"></a><code>TLS 1.2</code>的连接 - <code>Server Hello Done</code></h3><ul>
+<li><p><code>Server Hello Done</code></p>
+<ul>
+<li>告知客户端：协商部分结束</li>
+</ul>
+<p>  <img src="7.jpg"></p>
+</li>
+<li><p>目前为止，客户端和服务器之间通过明文共享了</p>
+<ul>
+<li><code>Client Random</code>、<code>Server Random</code>、<code>Server Params</code></li>
+</ul>
+</li>
+<li><p>而且，客户端也已经拿到了服务器的公钥证书，接下来，客户端会验证证书的真实有效性</p>
+</li>
+</ul>
+<h3 id="TLS-1-2的连接-Client-Key-Exchange"><a href="#TLS-1-2的连接-Client-Key-Exchange" class="headerlink" title="TLS 1.2的连接 - Client Key Exchange"></a><code>TLS 1.2</code>的连接 - <code>Client Key Exchange</code></h3><ul>
+<li><code>Client Key Exchange</code><ul>
+<li>用以实现<code>ECDHE</code>算法的另一个参数（<code>Client Params</code>）</li>
+</ul>
+</li>
+</ul>
+<p><img src="8.jpg"></p>
+<ul>
+<li>目前为止，客户端和服务器都拥有了<code>ECDHE</code>算法需要的<code>2</code>个参数：<code>Server Params</code>、<code>Client Params</code></li>
+<li>客户端、服务器都可以<ul>
+<li>使用<code>ECDHE</code>算法根据<code>Server Params</code>、<code>Client Params</code>计算出一个新的随机密钥串：<code>Pre-master secret</code></li>
+<li>然后结合<code>Client Random</code>、<code>Server Random</code>、<code>Pre-master secret</code>生成一个<code>主密钥</code></li>
+<li>最后利用<code>主密钥</code>衍生出其他密钥：客户端发送用的<code>会话密钥</code>、服务器发送用的<code>会话密钥</code>等</li>
+</ul>
+</li>
+</ul>
+<h3 id="TLS-1-2的连接-客户端发送的Change-Cipher-Spec"><a href="#TLS-1-2的连接-客户端发送的Change-Cipher-Spec" class="headerlink" title="TLS 1.2的连接 - 客户端发送的Change Cipher Spec"></a><code>TLS 1.2</code>的连接 - 客户端发送的<code>Change Cipher Spec</code></h3><ul>
+<li><code>Change Cipher Spec</code><ul>
+<li>告知服务器：之后的通信会采用计算出来的会话密钥进行加密</li>
+</ul>
+  <img src="9.jpg"></li>
+</ul>
+<h3 id="TLS-1-2的连接-客户端发送的Finished"><a href="#TLS-1-2的连接-客户端发送的Finished" class="headerlink" title="TLS 1.2的连接 -  客户端发送的Finished"></a><code>TLS 1.2</code>的连接 -  客户端发送的<code>Finished</code></h3><ul>
+<li><code>Finished</code><ul>
+<li>包含连接至今全部报文的整体校验值（摘要），<code>加密</code>之后发送给服务器</li>
+<li>这次握手协商是否成功，要以服务器是否能够正确解密该报文作为判定标准</li>
+</ul>
+</li>
+</ul>
+<p><img src="10.jpg"></p>
+<h3 id="TLS-1-2的连接-服务器发送的Change-Cipher-Spec-Finished"><a href="#TLS-1-2的连接-服务器发送的Change-Cipher-Spec-Finished" class="headerlink" title="TLS 1.2的连接 - 服务器发送的Change Cipher Spec,Finished"></a><code>TLS 1.2</code>的连接 - 服务器发送的<code>Change Cipher Spec</code>,<code>Finished</code></h3><ul>
+<li>服务器发送的<code>Change Cipher Spec</code></li>
+<li>服务器发送的<code>Finished</code><ul>
+<li>到此为止，客户端服务器都验证加密解密没问题，握手正式结束</li>
+<li>后面开始传输加密的<code>HTTP</code>请求和响应</li>
+</ul>
+</li>
+</ul>
+<p><img src="11.jpg"></p>
+<p><img src="12.jpg"></p>
+]]></content>
+      <categories>
+        <category>网络协议</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>网络安全</title>
+    <url>/2024/01/26/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="网络安全威胁"><a href="#网络安全威胁" class="headerlink" title="网络安全威胁"></a>网络安全威胁</h1><ul>
+<li>网络通信中面临的 种安全威胁<ul>
+<li>截获：窃听通信内容</li>
+<li>中断：中断网络通信</li>
+<li>篡改：篡改通信内容</li>
+<li>伪造：伪造通信内容</li>
+</ul>
+</li>
+</ul>
+<p><img src="1.jpg"></p>
+<h1 id="网络层安全问题"><a href="#网络层安全问题" class="headerlink" title="网络层安全问题"></a>网络层安全问题</h1><h2 id="ARP欺骗"><a href="#ARP欺骗" class="headerlink" title="ARP欺骗"></a><code>ARP</code>欺骗</h2><ul>
+<li><code>ARP</code>欺骗（<code>ARP spoofing</code>），又称<code>ARP</code>毒化（<code>ARP poisonin</code>g）、<code>ARP</code>病毒、<code>ARP</code>攻击</li>
+<li><code>ARP</code>欺骗可以造成的效果<ul>
+<li>可让攻击者获取局域网上的数据包甚至可篡改数据包</li>
+<li>可让网络上特定电脑之间无法正常通信（例如网络执法官这样的软件）</li>
+<li>让送至特定<code>IP</code>地址的流量被错误送到攻击者所取代的地方</li>
+</ul>
+</li>
+</ul>
+<h2 id="步骤举例"><a href="#步骤举例" class="headerlink" title="步骤举例"></a>步骤举例</h2><ul>
+<li>假设主机<code>C</code>是攻击者，主机<code>A</code>、<code>B</code>是被攻击者<ul>
+<li><code>C</code>只要收到过<code>A</code>、<code>B</code>发送的<code>ARP</code>请求，就会拥有<code>A</code>、<code>B</code>的<code>IP</code>、<code>MAC</code>地址，就可以进行欺骗活动</li>
+<li><code>C</code>发送一个<code>ARP</code>响应给<code>B</code>，把响应包里的源<code>IP</code>设为<code>A</code>的<code>IP</code>地址，源<code>MAC</code>设为<code>C</code>的<code>MAC</code>地址</li>
+<li><code>B</code>收到<code>ARP</code>响应后，更新它的<code>ARP</code>表，把<code>A</code>的<code>MAC</code>地址（<code>IP_A</code>, <code>MAC_A</code>）改为（<code>IP_A</code>, <code>MAC_C</code>）</li>
+<li>当<code>B</code>要发送数据包给<code>A</code>时，它根据<code>ARP</code>表来封装数据包的头部，把目标<code>MAC</code>地址设为<code>MAC_C</code>，而非<code>MAC_A</code></li>
+<li>当交换机收到<code>B</code>发送给<code>A</code>的数据包时，根据此包的目标<code>MAC地址</code>（<code>MAC_C</code>）而把数据包转发给<code>C</code></li>
+<li><code>C</code>收到数据包后，可以把它存起来后再发送给<code>A</code>，达到窃听效果。<code>C</code>也可以篡改数据后才发送数据包给<code>A</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="防护"><a href="#防护" class="headerlink" title="防护"></a>防护</h2><ul>
+<li>静态<code>ARP</code></li>
+<li><code>DHCP Snooping</code><ul>
+<li>网络设备可借由<code>DHCP</code>保留网络上各电脑的<code>MAC</code>地址，在伪造的<code>ARP</code>数据包发出时即可侦测到</li>
+</ul>
+</li>
+<li>利用一些软件监听<code>ARP</code>的不正常变动</li>
+<li>…</li>
+</ul>
+<h1 id="DoS、DDoS"><a href="#DoS、DDoS" class="headerlink" title="DoS、DDoS"></a><code>DoS</code>、<code>DDoS</code></h1><ul>
+<li><p><code>DoS</code>攻击（拒绝服务攻击，<code>Denial-of-Service attack</code>）</p>
+<ul>
+<li>使目标电脑的网络或系统资源耗尽，使服务暂时中断或停止，导致其正常用户无法访问</li>
+</ul>
+</li>
+<li><p><code>DDoS</code>攻击（分布式拒绝服务攻击，<code>Distributed Denial-of-Service attack</code>）</p>
+<ul>
+<li>黑客使用网络上两个或以上被攻陷的电脑作为“僵尸”向特定的目标发动<code>DoS</code>攻击</li>
+<li><code>2018</code>年<code>3</code>月，<code>GitHub</code>遭到迄今为止规模最大的<code>DDoS</code>攻击</li>
+</ul>
+</li>
+<li><p><code>DoS</code>攻击可以分为<code>2</code>大类</p>
+<ul>
+<li>带宽消耗型：<code>UDP</code>洪水攻击、<code>ICMP</code>洪水攻击</li>
+<li>资源消耗型：<code>SYN</code>洪水攻击、<code>LAND</code>攻击</li>
+</ul>
+</li>
+</ul>
+<h2 id="DoS、DDoS防御"><a href="#DoS、DDoS防御" class="headerlink" title="DoS、DDoS防御"></a><code>DoS</code>、<code>DDoS</code>防御</h2><ul>
+<li><p>防御方式通常为：入侵检测、流量过滤、和多重验证</p>
+<ul>
+<li>堵塞网络带宽的流量将被过滤，而正常的流量可正常通过</li>
+</ul>
+</li>
+<li><p>防火墙</p>
+<ul>
+<li>防火墙可以设置规则，例如允许或拒绝特定通讯协议，端口或<code>IP</code>地址</li>
+<li>当攻击从少数不正常的<code>IP</code>地址发出时，可以简单的使用拒绝规则阻止一切从攻击源<code>IP</code>发出的通信</li>
+<li>复杂攻击难以用简单规则来阻止，例如<code>80</code>端口遭受攻击时不可能拒绝端口所有的通信，因为同时会阻止合法流量</li>
+<li>防火墙可能处于网络架构中过后的位置，路由器可能在恶意流量达到防火墙前即被攻击影响</li>
+</ul>
+</li>
+<li><p>交换机：大多数交换机有一定的速度限制和访问控制能力</p>
+</li>
+<li><p>路由器：和交换机类似，路由器也有一定的速度限制和访问控制能力</p>
+</li>
+<li><p>黑洞引导</p>
+<ul>
+<li>将所有受攻击计算机的通信全部发送至一个“黑洞”（空接口或不存在的计算机地址）或者有足够能力处理洪流的网络设备商，以避免网络受到较大影响</li>
+</ul>
+</li>
+<li><p>流量清洗</p>
+<ul>
+<li>当流量被送到<code>DDoS</code>防护清洗中心时，通过采用抗<code>DDoS</code>软件处理，将正常流量和恶意流量区分开</li>
+<li>正常的流量则回注回客户网站</li>
+</ul>
+</li>
+</ul>
+<h1 id="传输层安全问题"><a href="#传输层安全问题" class="headerlink" title="传输层安全问题"></a>传输层安全问题</h1><h2 id="SYN洪水攻击"><a href="#SYN洪水攻击" class="headerlink" title="SYN洪水攻击"></a><code>SYN</code>洪水攻击</h2><ul>
+<li><code>SYN</code>洪水攻击（<code>SYN flooding attack</code>）<ul>
+<li>攻击者发送一系列的<code>SYN</code>请求到目标，然后让目标因收不到<code>ACK</code>（第<code>3</code>次握手）而进行等待、消耗资源</li>
+</ul>
+</li>
+<li>攻击方法<ul>
+<li>跳过发送最后的<code>ACK</code>信息</li>
+<li>修改源<code>IP</code>地址，让目标送<code>SYN-ACK</code>到伪造的<code>IP</code>地址，因此目标永不可能收到<code>ACK</code>（第3次握手）</li>
+</ul>
+</li>
+<li>防护<ul>
+<li>参考：<a href="https://datatracker.ietf.org/doc/html/rfc4987">RFC 4987</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="LAND攻击"><a href="#LAND攻击" class="headerlink" title="LAND攻击"></a><code>LAND</code>攻击</h2><ul>
+<li><code>LAND</code>攻击（局域网拒绝服务攻击，<code>Local Area Network Denial attack</code>）<ul>
+<li>通过持续发送相同源地址和目标地址的欺骗数据包，使目标试图与自己建立连接，消耗系统资源直至崩溃</li>
+</ul>
+</li>
+<li>有些系统存在设计上的缺陷，允许设备接受并响应来自网络、却宣称来自于设备自身的数据包，导致循环应答</li>
+<li>防护<ul>
+<li>大多数防火墙都能拦截类似的攻击包，以保护系统</li>
+<li>部分操作系统通过发布安全补丁修复了这一漏洞</li>
+<li>路由器应同时配置上行与下行筛选器，屏蔽所有源地址与目标地址相同的数据包</li>
+</ul>
+</li>
+</ul>
+<h1 id="应用层安全问题"><a href="#应用层安全问题" class="headerlink" title="应用层安全问题"></a>应用层安全问题</h1><h2 id="DNS劫持"><a href="#DNS劫持" class="headerlink" title="DNS劫持"></a>DNS劫持</h2><ul>
+<li><p><code>DNS</code>劫持，又称为域名劫持</p>
+<ul>
+<li>攻击者篡改了某个域名的解析结果，使得指向该域名的<code>IP</code>变成了另一个<code>IP</code></li>
+<li>导致对相应网址的访问被劫持到另一个不可达的或者假冒的网址</li>
+<li>从而实现非法窃取用户信息或者破坏正常网络服务的目的</li>
+</ul>
+</li>
+<li><p>为防止<code>DNS</code>劫持，可以考虑使用更靠谱的<code>DNS</code>服务器，比如：<code>114.114.114.114</code></p>
+<ul>
+<li>谷歌：<code>8.8.8.8</code>、<code>8.8.4.4</code></li>
+<li>微软：<code>4.2.2.1</code>、<code>4.2.2.2</code></li>
+<li>百度：<code>180.76.76.76</code></li>
+<li>阿里：<code>223.5.5.5</code>、<code>223.6.6.6</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="Http的安全问题"><a href="#Http的安全问题" class="headerlink" title="Http的安全问题"></a>Http的安全问题</h2><ul>
+<li><p><code>HTTP</code>劫持：对<code>HTTP</code>数据包进行拦截处理，比如插入<code>JS</code>代码</p>
+<ul>
+<li>比如你访问某些网站时，在右下角多了个莫名其妙的弹窗广</li>
+</ul>
+</li>
+<li><p><code>HTTP</code>协议默认是采取明文传输的，因此会有很大的安全隐患</p>
+<ul>
+<li>常见的提高安全性的方法是：对通信内容进行加密后，再进行传输</li>
+</ul>
+</li>
+</ul>
+<h1 id="加密方式"><a href="#加密方式" class="headerlink" title="加密方式"></a>加密方式</h1><ul>
+<li>常见的加密方式有<ul>
+<li>不可逆<ul>
+<li>单向散列函数：<code>MD5</code>、<code>SHA</code>等</li>
+</ul>
+</li>
+<li>可逆<ul>
+<li>对称加密：<code>DES</code>、<code>3DES</code>、<code>AES</code>等</li>
+<li>非对称加密：<code>RSA</code>等</li>
+</ul>
+</li>
+<li>其它<ul>
+<li>混合密码系统</li>
+<li>数字签名</li>
+<li>证书</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="单向散列函数"><a href="#单向散列函数" class="headerlink" title="单向散列函数"></a>单向散列函数</h2><ul>
+<li>单向散列函数，可以根据根据消息内容计算出散列值</li>
+<li>散列值的长度和消息的长度无关，无论消息是<code>1bit</code>、<code>10M</code>、<code>100G</code>，单向散列函数都会计算出固定长度的散列值</li>
+</ul>
+<p><img src="2.jpg"></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>根据任意长度的消息，计算出固定长度的散列值</li>
+<li>计算速度快，能快速计算出散列值</li>
+<li>消息不同，散列值也不同</li>
+<li>具备单向性</li>
+</ul>
+<p><img src="3.jpg"></p>
+<h3 id="称呼"><a href="#称呼" class="headerlink" title="称呼"></a>称呼</h3><ul>
+<li>单向散列函数，也被称为<ul>
+<li>消息摘要函数</li>
+<li>哈希函数</li>
+</ul>
+</li>
+<li>输出的散列值，也被称为<ul>
+<li>消息摘要</li>
+<li>指纹</li>
+</ul>
+</li>
+</ul>
+<h3 id="常见的单向散列函数"><a href="#常见的单向散列函数" class="headerlink" title="常见的单向散列函数"></a>常见的单向散列函数</h3><ul>
+<li><p><code>MD4</code>、<code>MD5</code></p>
+<ul>
+<li>产生<code>128bit</code>的散列值,<code>MD</code>就是<code>Message Digest</code>的缩写</li>
+</ul>
+</li>
+<li><p><code>SHA-1</code></p>
+<ul>
+<li>产生<code>160bit</code>的散列值</li>
+</ul>
+</li>
+<li><p><code>SHA-2</code></p>
+<ul>
+<li><code>SHA-265</code>、<code>SHA-384</code>、<code>SHA-512</code>，散列值长度分别是<code>256bit</code>、<code>384bit</code>、<code>512bit</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><ol>
+<li>防止数据被篡改<br><img src="4.jpg"></li>
+<li>保密用户密码（服务器数据库中是保存单向散列的值，而非密码，因此是无法获取原密码的）</li>
+</ol>
+<h2 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h2><ul>
+<li>在对称加密中，加密、解密时使用的是同一个密钥</li>
+<li>常见的对称加密算法有<ul>
+<li><code>DES</code></li>
+<li><code>3DES</code></li>
+<li><code>AES</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="5.jpg"></p>
+<h3 id="DES"><a href="#DES" class="headerlink" title="DES"></a><code>DES</code></h3><p><img src="6.jpg"></p>
+<ul>
+<li><code>DES</code>是一种将<code>64bit</code>明文加密成<code>64bit</code>密文的对称加密算法，密钥长度是<code>56bit</code></li>
+<li>规格上来说，密钥长度是<code>64bit</code>，但每隔<code>7bit</code>会设置一个用于错误检查的 ，因此密钥长度实质上是<code>56bit</code></li>
+<li>由于<code>DES</code>每次只能加密<code>64bit</code>的数据，遇到比较大的数据，需要对<code>DES</code>加密进行迭代（反复）</li>
+<li>目前已经可以在短时间内被破解，所以不建议使用</li>
+</ul>
+<h3 id="3DES"><a href="#3DES" class="headerlink" title="3DES"></a><code>3DES</code></h3><ul>
+<li><code>3DES</code>,将<code>DES</code>重复<code>3</code>次所得到的一种密码算法，也叫做<code>3</code>重<code>DES</code><ul>
+<li>三重<code>DES</code>并不是进行三次<code>DES</code>加密（加密-&gt;加密-&gt;加密）</li>
+<li>而是加密（<code>Encryption</code>） 解密（<code>Decryption</code>） 加密（<code>Encryption</code>）的过程</li>
+</ul>
+</li>
+</ul>
+<p><img src="7.jpg"></p>
+<ul>
+<li><code>3</code>个密钥都是不同的，也称为<code>DES-EDE3</code></li>
+<li>如果所有密钥都使用同一个，则结果与普通的<code>DES</code>是等价的</li>
+<li>如果密钥<code>1</code>、密钥<code>3</code>相同，密钥<code>2</code>不同，称为<code>DES-EDE2</code></li>
+</ul>
+<h3 id="AES"><a href="#AES" class="headerlink" title="AES"></a><code>AES</code></h3><ul>
+<li>取代<code>DES</code>成为新标准的一种对称加密算法，又称<code>Rijndael</code>加密</li>
+<li><code>AES</code>的密钥长度有<code>128</code>、<code>192</code>、<code>256bit</code> 三种</li>
+<li>目前<code>AES</code>，已经逐步取代<code>DES</code>、<code>#DES</code>，成为首选的对称加密算法</li>
+<li>一般来说，我们也不应该去使用任何自制的密码算法，而是应该使用<code>AES</code><ul>
+<li>它经过了全世界密码学家所进行的高品质验证工作</li>
+</ul>
+</li>
+</ul>
+<h3 id="密钥配送问题"><a href="#密钥配送问题" class="headerlink" title="密钥配送问题"></a>密钥配送问题</h3><ul>
+<li><p>在使用对称加密时，一定会遇到密钥配送问题<br><img src="8.jpg"></p>
+</li>
+<li><p>如果<code>Alice</code>将使用对称加密过的消息发给了<code>Bob</code></p>
+<ul>
+<li>只有将密钥发送给<code>Bob</code>,<code>Bob</code>才能完成解密</li>
+<li>在发送密钥过程中<ul>
+<li>可能会被<code>Eve</code>窃取密钥</li>
+<li>最后<code>Eve</code>也能完成解密</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="如何解决密钥配送问题"><a href="#如何解决密钥配送问题" class="headerlink" title="如何解决密钥配送问题"></a>如何解决密钥配送问题</h3><ul>
+<li>有以下几种解决密钥配送的方法<ul>
+<li>事先共享密钥（比如私下共享）</li>
+<li>密钥分配中心（<code>Key Distribution Center</code>，简称<code>KDC</code>）</li>
+<li><code>Diffie-Hellman</code>密钥交换</li>
+<li>非对称加密</li>
+</ul>
+</li>
+</ul>
+<h2 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h2><ul>
+<li>在非对称加密中，密钥分为加密密钥、解密密钥<code>2</code>种，它们并不是同一个密钥</li>
+<li>加密密钥：一般是公开的，因此该密钥称为公钥（<code>public key</code>）<ul>
+<li>因此，非对称加密也被称为公钥密码（<code>Public-key Cryptography</code>）</li>
+</ul>
+</li>
+<li>解密密钥：由消息接收者自己保管的，不能公开，因此也称为私钥(<code>Private key</code>)</li>
+</ul>
+<p><img src="9.jpg"></p>
+<h3 id="公钥、私钥"><a href="#公钥、私钥" class="headerlink" title="公钥、私钥"></a>公钥、私钥</h3><ul>
+<li>公钥和私钥是一一对应的，不能单独生成<ul>
+<li>一对公钥和私钥统称为密钥对（<code>key pair</code>）</li>
+</ul>
+</li>
+<li>由公钥加密的密文，必须使用与该公钥对应的私钥才能解密</li>
+<li>由私钥加密的密文，必须使用与该私钥对应的公钥才能解密</li>
+</ul>
+<p><img src="10.jpg"></p>
+<h3 id="解决密钥配送问题"><a href="#解决密钥配送问题" class="headerlink" title="解决密钥配送问题"></a>解决密钥配送问题</h3><ul>
+<li>由消息的接收者，生成一对公钥、私钥</li>
+<li>将公钥发给消息的发送者</li>
+<li>消息的发送者使用公钥加密消息</li>
+<li>非对称加密的加密解密速度比对称加密要慢</li>
+</ul>
+<p><img src="11.jpg"></p>
+<h2 id="混合密码系统"><a href="#混合密码系统" class="headerlink" title="混合密码系统"></a>混合密码系统</h2><ul>
+<li>对称加密的缺点<ul>
+<li>不能很好地解决密钥配送问题（密钥会被窃听）</li>
+</ul>
+</li>
+<li>非对称加密的缺点<ul>
+<li>加密解密速度比较慢</li>
+</ul>
+</li>
+<li>混合密码系统：是将对称加密和非对称加密的优势相结合的方法<ul>
+<li>解决了非对称加密速度慢的问题</li>
+<li>并通过非对称加密解决了对称加密的密钥配送问题</li>
+</ul>
+</li>
+<li>网络上的密码通信所用的 都运用了混合密码系统</li>
+</ul>
+<h3 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h3><ul>
+<li>会话密钥（<code>session key</code>）<ul>
+<li>为本次通信随机生成的临时密钥</li>
+<li>作为对称加密的密钥，用于加密消息，提高速度</li>
+</ul>
+</li>
+</ul>
+<p><img src="12.jpg"></p>
+<ul>
+<li><p>加密步骤（发送消息）</p>
+<ol>
+<li>首先，消息发送者要拥有消息接收者的公钥</li>
+<li>生成会话密钥，作为对称加密的密钥，加密消息</li>
+<li>用消息接收者的公钥，加密会话密钥</li>
+<li>将前<code>2</code>步生成的加密结果，一并发给消息接收者</li>
+</ol>
+</li>
+<li><p>发送出去的内容包括</p>
+<ul>
+<li>用会话密钥加密的消息（加密方法：对称加密）</li>
+<li>用公钥加密的会话密钥（加密方法：非对称加密）</li>
+</ul>
+</li>
+</ul>
+<h3 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h3><p><img src="13.jpg"></p>
+<ul>
+<li>解密步骤（收到消息）<ol>
+<li>消息接收者用自己的私钥解密出会话密钥</li>
+<li>再用第1步解密出来的会话密钥，解密消息</li>
+</ol>
+</li>
+</ul>
+<h2 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h2><ul>
+<li>在数字签名技术中，有以下2种行为<ul>
+<li>生成签名<ul>
+<li>由消息的发送者完成，通过“签名密钥”生成</li>
+</ul>
+</li>
+<li>验证签名<ul>
+<li>由消息的接收者完成，通过“验证密钥”验证</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如何能保证这个签名是消息发送者自己签的？<ul>
+<li>用消息发送者的私钥进行签名</li>
+</ul>
+</li>
+</ul>
+<p><img src="14.jpg"></p>
+<h3 id="数字签名的问题"><a href="#数字签名的问题" class="headerlink" title="数字签名的问题"></a>数字签名的问题</h3><ul>
+<li><p>如果有人篡改了消息内容或签名内容，会是什么结果？</p>
+<ul>
+<li>签名验证失败，证明内容被篡改了</li>
+</ul>
+</li>
+<li><p>数字签名不能保证机密性？</p>
+<ul>
+<li>数字签名的作用不是为了保证机密性，仅仅是为了能够识别内容有没有被<code>篡改</code></li>
+</ul>
+</li>
+<li><p>数字签名的作用</p>
+<ul>
+<li>确认消息的完整性</li>
+<li>识别消息是否被篡改</li>
+<li>防止消息发送人否认</li>
+</ul>
+</li>
+</ul>
+<h2 id="非对称加密-公钥的问题"><a href="#非对称加密-公钥的问题" class="headerlink" title="非对称加密 - 公钥的问题"></a>非对称加密 - 公钥的问题</h2><ul>
+<li><p>在非对称加密中，任何人都可以使用公钥进行加密<br><img src="15.jpg"></p>
+</li>
+<li><p>在数字签名中，任何人都可以使用公钥验证签名<br><img src="16.jpg"></p>
+</li>
+<li><p>数字签名，其实就是将非对称加密反过来使用</p>
+</li>
+<li><p>对于加密而言，那肯定是不希望别人知道我的消息，所以只有我才能解密</p>
+<ul>
+<li>公钥负责加密，私钥负责解密</li>
+</ul>
+</li>
+<li><p>对于签名而言，那肯定是不希望有人冒充我发消息，所以只有我才能签名</p>
+<ul>
+<li>私钥负责签名，公钥负责验签</li>
+</ul>
+</li>
+</ul>
+<h3 id="公钥的合法性"><a href="#公钥的合法性" class="headerlink" title="公钥的合法性"></a>公钥的合法性</h3><p><img src="17.jpg"></p>
+<ul>
+<li><p>如果遭遇了中间人攻击，那么</p>
+<ul>
+<li>公钥将可能是伪造的</li>
+</ul>
+</li>
+<li><p>如何验证公钥的合法性？</p>
+<ul>
+<li>证书</li>
+</ul>
+</li>
+</ul>
+<h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><ul>
+<li><p>密码学中的证书，全称叫公钥证书（<code>Public-key Certificate，PKC</code>），跟驾驶证类似</p>
+<ul>
+<li>里面有姓名、邮箱等个人信息，以及此人的公钥</li>
+<li>并由认证机构（<code>Certificate Authority，CA</code>）施加数字签名</li>
+</ul>
+</li>
+<li><p><code>CA</code>就是能够认定“公钥确实属于此人”并能够生成数字签名的个人或者组织</p>
+<ul>
+<li>有国际性组织、政府设立的组织</li>
+<li>有通过提供认证服务来盈利的企业</li>
+<li>个人也可以成立认证机构</li>
+</ul>
+</li>
+</ul>
+<h3 id="证书的使用"><a href="#证书的使用" class="headerlink" title="证书的使用"></a>证书的使用</h3><p><img src="18.jpg"></p>
+<ul>
+<li>各大<code>CA</code>的公钥，默认已经内置在浏览器和操作系统中。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>网络协议</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>应用层（http）</title>
+    <url>/2024/01/25/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Http"><a href="#Http" class="headerlink" title="Http"></a><code>Http</code></h1><ul>
+<li><code>HTTP</code>（<code>Hyper Text Transfer Protocol</code>），译为超文本传输协议<ul>
+<li>是互联网中应用最广泛的应用层协议之一</li>
+<li>设计<code>HTTP</code>最初的目的是：提供一种发布和接收<code>HTML</code>页面的方法，由<code>URI</code>来标识具体的资源</li>
+<li>后面用<code>HTTP</code>来传递的数据格式不仅仅是<code>HTML</code>，应用非常广泛</li>
+</ul>
+</li>
+<li><code>HTML</code>（ <code>Hyper Text Markup Language</code>）：超文本标记语言<ul>
+<li>用以编写网页</li>
+</ul>
+</li>
+</ul>
+<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><ul>
+<li><code>1991</code>年，<code>HTTP/0.9</code><ul>
+<li>只支持<code>GET</code>请求方法获取文本数据（比如<code>HTML</code>文档），且不支持请求头、响应头等，无法向服务器传递太多信息</li>
+</ul>
+</li>
+<li><code>1996年，HTTP/1.0</code><ul>
+<li>支持<code>POST</code>、<code>HEAD</code>等请求方法，支持请求头、响应头等，支持更多种数据类型（不再局限于文本数据）</li>
+<li>浏览器的每次请求都需要与服务器建立一个<code>TCP</code>连接，请求处理完成后立即断开<code>TCP</code>连接</li>
+</ul>
+</li>
+<li><code>1997</code>年，<code>HTTP/1.1</code>（最经典、使用最广泛的版本）<ul>
+<li>支持<code>PUT</code>、<code>DELETE</code>等请求方法</li>
+<li>采用持久连接（<code>Connection: keep-alive</code>），多个请求可以共用同一个<code>TCP</code>连接</li>
+</ul>
+</li>
+<li><code>2015</code>年，<code>HTTP/2.0</code></li>
+<li><code>2018</code>年，<code>HTTP/3.0</code></li>
+</ul>
+<h2 id="标准"><a href="#标准" class="headerlink" title="标准"></a>标准</h2><ul>
+<li><code>HTTP</code>的标准<ul>
+<li>由万维网协会（<code>W3C</code>）、互联网工程任务组（<code>IETF</code>）协调制定，最终发布了一系列的<code>RFC</code></li>
+</ul>
+</li>
+<li><a href="https://www.rfc-editor.org/standards">RFC</a>（<code>Request For Comments</code>，可以译为：请求意见稿）<ul>
+<li><code>HTTP/1.1</code>最早是在<code>1997</code>年的<a href="https://datatracker.ietf.org/doc/html/rfc2068">RFC 2068</a>中记录的<ul>
+<li>该规范在<code>1999</code>年的<a href="https://datatracker.ietf.org/doc/html/rfc2616">RFC 2616</a>中已作废</li>
+<li><code>2014</code>年又由<a href="https://datatracker.ietf.org/doc/html/rfc7230">RFC 7230</a>系列的<code>RFC</code>取代</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>HTTP/2</code>标准于<code>2015</code>年<code>5</code>月以<a href="https://datatracker.ietf.org/doc/html/rfc7540">RFC 7540</a>正式发表，取代<code>HTTP/1.1</code>成为<code>HTTP</code>的实现标准</li>
+<li>中国的<code>RFC</code><ul>
+<li><code>1996</code>年<code>3</code>月，清华大学提交的适应不同国家和地区中文编码的汉字统一传输标准被<code>IETF</code>通过为<a href="https://datatracker.ietf.org/doc/html/rfc1922">RFC 1922</a><ul>
+<li>成为中国大陆第一个被<code>认可</code>为<code>RFC</code>文件的提交协议</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式"></a>报文格式</h2><ul>
+<li>一般<code>Http</code>的报文格式如下。其格式实际遵守<code>ABNF</code></li>
+</ul>
+<p><img src="1.jpg"><br><img src="2.jpg"></p>
+<h2 id="ABNF"><a href="#ABNF" class="headerlink" title="ABNF"></a><code>ABNF</code></h2><ul>
+<li><code>ABNF</code>（<code>Augmented BNF</code>）<ul>
+<li>是<code>BNF</code>（<code>Backus-Naur Form</code>，译为：巴科斯-瑙尔范式）的修改、增强版</li>
+<li>在<a href="https://datatracker.ietf.org/doc/html/rfc5234">RFC 5234</a>中表明：<code>ABNF</code>用作<code>internet</code>中通信协议的定义语言</li>
+<li><code>ABNF是</code>最严谨的<code>HTTP</code>报文格式描述形式</li>
+</ul>
+</li>
+<li>关于<code>HTTP</code>报文格式的定义<ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc2616#section-4">RFC 2616 4.HTTP Message</a>（旧）</li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7230#section-3">RFC 7230 3.Message Format</a>（新）</li>
+</ul>
+</li>
+</ul>
+<h3 id="核心规则"><a href="#核心规则" class="headerlink" title="核心规则"></a>核心规则</h3><table>
+<thead>
+<tr>
+<th align="center">规则</th>
+<th align="center">形式定义</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>ALPHA</code></td>
+<td align="center"><code>%x41-5A</code> / <code>%x61-7A</code></td>
+<td align="center">大写和小写 字母（ <code>A-Z</code>、<code>a-z</code>）</td>
+</tr>
+<tr>
+<td align="center"><code>DIGIT</code></td>
+<td align="center"><code>%x30-39</code></td>
+<td align="center">数字（<code>0-9</code>）</td>
+</tr>
+<tr>
+<td align="center"><code>HEXDIG</code></td>
+<td align="center"><code>DIGIT</code> / <code>&quot;A&quot;</code>  / <code>&quot;B&quot;</code>  / <code>&quot;C&quot;</code>  / <code>&quot;D&quot;</code>  / <code>&quot;E&quot;</code>  / <code>&quot;F&quot;</code></td>
+<td align="center">十六进制数字(<code>0-9</code>、<code>A-F</code>、<code>a-f</code>)</td>
+</tr>
+<tr>
+<td align="center"><code>DQUOTE</code></td>
+<td align="center"><code>%x22</code></td>
+<td align="center">双引号</td>
+</tr>
+<tr>
+<td align="center"><code>SP</code></td>
+<td align="center"><code>%x20</code></td>
+<td align="center">空格</td>
+</tr>
+<tr>
+<td align="center"><code>HTAB</code></td>
+<td align="center"><code>%x09</code></td>
+<td align="center">横向制表符</td>
+</tr>
+<tr>
+<td align="center"><code>WSP</code></td>
+<td align="center"><code>SP</code> / <code>HTAB</code></td>
+<td align="center">空格或横向制表符</td>
+</tr>
+<tr>
+<td align="center"><code>LWSP</code></td>
+<td align="center">*(<code>WSP</code> / <code>CRLF</code> <code>WSP</code>)</td>
+<td align="center">直线空白（晚于换行）</td>
+</tr>
+<tr>
+<td align="center"><code>VCHAR</code></td>
+<td align="center"><code>%x21-7E</code></td>
+<td align="center">可见（打印）字符</td>
+</tr>
+<tr>
+<td align="center"><code>CHAR</code></td>
+<td align="center"><code>%x01-7F</code></td>
+<td align="center">任何<code>7</code>位<code>US-ASCII</code>字符，不包括 <code>NULL</code>（ <code>%x00</code>）</td>
+</tr>
+<tr>
+<td align="center"><code>OCTET</code></td>
+<td align="center"><code>%x00-FF</code></td>
+<td align="center"><code>8</code>位数据</td>
+</tr>
+<tr>
+<td align="center"><code>CTL</code></td>
+<td align="center"><code>%x00-1F</code> / <code>%x7F</code></td>
+<td align="center">控制字符</td>
+</tr>
+<tr>
+<td align="center"><code>CR</code></td>
+<td align="center"><code>%x0D</code></td>
+<td align="center">回车</td>
+</tr>
+<tr>
+<td align="center"><code>LF</code></td>
+<td align="center"><code>%x0A</code></td>
+<td align="center">换行</td>
+</tr>
+<tr>
+<td align="center"><code>CRLF</code></td>
+<td align="center"><code>CR LF</code></td>
+<td align="center">互联网标准换行（<code>%x0D</code> 、<code>%x0A</code>）</td>
+</tr>
+<tr>
+<td align="center"><code>BIT</code></td>
+<td align="center"><code>0</code> / <code>1</code></td>
+<td align="center">二进制数字</td>
+</tr>
+</tbody></table>
+<h3 id="报文格式-1"><a href="#报文格式-1" class="headerlink" title="报文格式"></a>报文格式</h3><p><img src="4.png"></p>
+<ul>
+<li><code>/</code> : 任选一个</li>
+<li><code>*</code> : <code>0</code>个或多个。<code>2*</code>表示至少<code>2</code>个，<code>3*6</code>表示<code>3</code>到<code>6</code>个</li>
+<li><code>()</code> : 组成一个整体</li>
+<li><code>[]</code> : 可选（可有可无）</li>
+</ul>
+<h4 id="start-line"><a href="#start-line" class="headerlink" title="start-line"></a><code>start-line</code></h4><ul>
+<li><code>;HTTP</code>是<code>ABNF</code>格式中的注释<br><img src="5.png"></li>
+</ul>
+<h4 id="header-filed、message-body"><a href="#header-filed、message-body" class="headerlink" title="header - filed、message-body"></a><code>header - filed</code>、<code>message-body</code></h4><p><img src="6.png"></p>
+<h3 id="telnet"><a href="#telnet" class="headerlink" title="telnet"></a>telnet</h3><ul>
+<li> 可以直接面向<code>HTTP</code>报文与服务器交互</li>
+<li> 可以更清晰、直观地看到请求报文、响应报文的内容<figure class="highlight js"><table><tr><td class="code"><pre><code class="hljs js">$ telnet localhost <span class="hljs-number">8080</span><br># 建立三次握手<br><span class="hljs-attr">Trying</span> ::<span class="hljs-number">1.</span>..<br>Connected to localhost.<br>Escape character is <span class="hljs-string">&#x27;^]&#x27;</span>.<br>^]  <br>telnet&gt;<br># 发送报文<br>GET /hello/ HTTP/<span class="hljs-number">1.1</span><br><span class="hljs-attr">Host</span>: localhost:<span class="hljs-number">8080</span><br><br># 响应结果<br>HTTP/<span class="hljs-number">1.1</span> <span class="hljs-number">200</span><br><span class="hljs-built_in">Set</span>-Cookie: JSESSIONID=74D0161CA8819EDB183B97C8611B0741; Path=/hello; HttpOnly<br>Content-Type: text/html;charset=UTF-<span class="hljs-number">8</span><br>Content-Length: <span class="hljs-number">90</span><br><span class="hljs-attr">Date</span>: Sat, <span class="hljs-number">27</span> Jan <span class="hljs-number">2024</span> <span class="hljs-number">09</span>:<span class="hljs-number">56</span>:<span class="hljs-number">43</span> GMT<br><br><br>## 回的messageBody<br>&lt;html&gt;<br>  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>$Title$<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br>  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="xml">  $END$</span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br>&lt;/html&gt;<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="URL的编码"><a href="#URL的编码" class="headerlink" title="URL的编码"></a><code>URL</code>的编码</h2><ul>
+<li><code>URL</code>中一旦出现了一些特殊字符（比如中文、空格），需要进行编码<ul>
+<li>在浏览器地址栏输入<code>URL</code>时，是采用<code>UTF-8</code>进行编码</li>
+</ul>
+</li>
+</ul>
+<h2 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h2><ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7231#section-4">RFC 7231, section 4: Request methods</a>：描述了<code>8</code>种请求方法<ul>
+<li><code>GET</code>、<code>HEAD</code>、<code>POST</code>、<code>PUT</code>、<code>DELETE</code>、<code>CONNECT</code>、<code>OPTIONS</code>、<code>TRACE</code></li>
+</ul>
+</li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc5789#section-2">RFC 5789, section 2: Patch method</a>：描述了<code>PATCH</code>方法</li>
+</ul>
+<h3 id="方法介绍"><a href="#方法介绍" class="headerlink" title="方法介绍"></a>方法介绍</h3><ul>
+<li><p><code>GET</code>：常用于读取的操作，请求参数直接拼接在<code>URL</code>的后面（浏览器对<code>URL</code>是有长度限制的）</p>
+</li>
+<li><p><code>POST</code>：常用于添加、修改、删除的操作，请求参数可以放到请求体中（没有大小限制）</p>
+</li>
+<li><p><code>HEAD</code>：请求得到与<code>GET</code>请求相同的响应，但没有响应体</p>
+<ul>
+<li>使用场景举例：在下载一个大文件前，先获取其大小，再决定是否要下载。以此可以节约带宽资源</li>
+</ul>
+</li>
+<li><p><code>OPTIONS</code>：用于获取目的资源所支持的通信选项，比如服务器支持的请求方法</p>
+<ul>
+<li><code>OPTIONS * HTTP/1.1</code></li>
+</ul>
+</li>
+<li><p><code>PUT</code>：用于对已存在的资源进行整体覆盖</p>
+</li>
+<li><p><code>PATCH</code>：用于对资源进行部分修改（资源不存在，会创建新的资源）</p>
+</li>
+<li><p><code>DELETE</code>：用于删除指定的资源</p>
+</li>
+<li><p><code>TRACE</code>：请求服务器回显其收到的请求信息，主要用于HTTP请求的测试或诊断</p>
+</li>
+<li><p><code>CONNECT</code>：可以开启一个客户端与所请求资源之间的双向沟通的通道，它可以用来创建隧道（<code>tunnel</code>）</p>
+<ul>
+<li>可以用来访问采用了<code>SSL</code>(<code>HTTPS</code>) 协议的站点</li>
+</ul>
+</li>
+<li><p><strong>注意</strong>，一般情况下会禁止使用不安全的<code>HTTP</code>方法，例如 <code>PUT</code>、<code>DELETE</code> 等.(主要由于历史原因导致的)</p>
+<ol>
+<li><p><code>Tomcat PUT</code> 的上传漏洞，受影响的版本：<code>Apache Tomcat 7.0.0 to 7.0.79</code></p>
+<ul>
+<li>当 <code>Tomcat</code> 运行在 <code>Windows</code>操作系统时，且启用了 <code>HTTP PUT</code> 请求方法（例如，将 <code>readonly</code> 初始化参数由默认值设置为 <code>false</code>），攻击者将有可能可通过精心构造的攻击请求数据包向服务器上传包含任意代码的 <code>JSP</code> 文件，<code>JSP</code> 文件中的恶意代码将能被服务器执行。导致服务器上的数据泄露或获取服务器权限。</li>
+</ul>
+</li>
+<li><p><code>Nginx</code> 在开启 <code>WebDAV</code> 模式下，如果未配置认证模式，攻击者可以通过自由上传文件方法上传木马攻击服务器。</p>
+<ul>
+<li><code>WebDAV</code>（<code>Web-based Distributed Authoring and Versioning</code>）是基于 <code>HTTP/1.1</code> 的增强协议。该协议使用户可以直接对 <code>Web</code> 服务器进行文件读写，并支持对文件的版本控制和写文件的加锁及解锁等操作。说白了，<code>Nginx</code> 就是开启 <code>WebDAV</code> 这个协议后，可以当做一个文件服务器，允许用户在远端向本地一样进行读写操作，当然也包括上传文件。</li>
+<li>由于 <code>Nginx</code> 在设计时，或许是为了减轻小白的上手难度，在开启 <code>WebDAV</code> 时没有强制要求用户必须配置访问认证，这导致了某些用户在公网上开启了 <code>WebDAV</code> 而没有进行认证配置，从而导致了安全问题。而且由于 <code>WebDAV</code> 支持的协议有 <code>PUT</code>、<code>DELETE</code>、<code>MKCOL</code>、<code>COPY</code> 和 <code>MOVE</code> 等，其中 <code>PUT</code>、<code>DELETE </code>与 <code>HTTP</code> 方法中的 <code>PUT</code>、<code>DELETE</code> 协议重合，便被安全部门给一刀切了。</li>
+<li><code>WebDAV</code> 安全风险<ul>
+<li><code>PUT</code>：由于 <code>PUT</code> 方法自身不带验证机制（<code>PUT</code>是幂等的，只是简单的更新，不会像<code>POST</code>在请求的时候，服务器每次都会创建一个文件），利用 <code>PUT</code> 方法可以向服务器上传文件，所以恶意攻击者可以上传木马等恶意文件。</li>
+<li><code>DELETE</code>：利用 <code>DELETE</code> 方法可以删除服务器上特定的资源文件，造成恶意攻击。</li>
+<li><code>OPTIONS</code>：将会造成服务器信息暴露，如中间件版本、支持的 <code>HTTP</code> 方法等。</li>
+<li><code>TRACE</code>：可以回显服务器收到的请求，主要用于测试或诊断，一般都会存在反射型跨站漏洞。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="头部字段"><a href="#头部字段" class="headerlink" title="头部字段"></a><a href="https://zh.wikipedia.org/wiki/HTTP%E5%A4%B4%E5%AD%97%E6%AE%B5">头部字段</a></h2><ul>
+<li>头部字段可以分为<code>4</code>种类型<ul>
+<li>请求头字段（<code>Request Header Fields</code>）<ul>
+<li>有关要获取的资源或客户端本身信息的消息头</li>
+</ul>
+</li>
+<li>响应头字段（<code>Response Header Fields</code>）<ul>
+<li>有关响应的补充信息，比如服务器本身（名称和版本等）的消息头</li>
+</ul>
+</li>
+<li>实体头字段（<code>Entity Header Fields</code>）<ul>
+<li>有关实体主体的更多信息，比如主体长度（<code>Content-Length</code>）或其<code>MIME</code>类型</li>
+</ul>
+</li>
+<li>通用头字段（<code>General Header Fields</code>）<ul>
+<li>同时适用于请求和响应消息，但与消息主体无关的消息头</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="请求头字段"><a href="#请求头字段" class="headerlink" title="请求头字段"></a>请求头字段</h3><table>
+<thead>
+<tr>
+<th align="center">头字段名</th>
+<th align="center">说明</th>
+<th align="center">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>User-Agent</code></td>
+<td align="center">浏览器的身份标识字符串</td>
+<td align="center"><code>User-Agent: Mozilla/5.0(X11；Linux x86_64；rv: 12.0)Gecko/20100101 FireFox/21.0</code></td>
+</tr>
+<tr>
+<td align="center"><code>Host</code></td>
+<td align="center">服务器的域名、端口号</td>
+<td align="center"><code>Host: localhost:80</code></td>
+</tr>
+<tr>
+<td align="center"><code>Date</code></td>
+<td align="center">发送该消息的日期和时间</td>
+<td align="center"><code>Date: Tue, 15 Nov 1994 08:12:31</code></td>
+</tr>
+<tr>
+<td align="center"><code>Referer</code></td>
+<td align="center">表示浏览器所访问的前一个页面正是前一个页面的某个链接将浏览器带到了当前这个页面</td>
+<td align="center"><code>Referer: https://www.baidu.com</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content - Type</code></td>
+<td align="center">请求体的类型</td>
+<td align="center"><code>Content-Type: multipart/form-data</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content - Length</code></td>
+<td align="center">请求体的长度（字节为单位）</td>
+<td align="center"><code>Content-Length: 348</code></td>
+</tr>
+<tr>
+<td align="center"><code>Accept</code></td>
+<td align="center">能接受的响应内容类型（<code>Content-Types</code>）</td>
+<td align="center"><code>Accept: text/plain</code></td>
+</tr>
+<tr>
+<td align="center"><code>Accept-Charset</code></td>
+<td align="center">能够接受的字符集</td>
+<td align="center"><code>Accept-Charset: GB2312,utf-8;q=0.7,*;q=0.7</code>(q值越大，表示优先级越高)</td>
+</tr>
+<tr>
+<td align="center"><code>Accept-Encoding</code></td>
+<td align="center">能够接受的编码方式列表</td>
+<td align="center"><code>Accept-Encoding: gzip，deflate</code></td>
+</tr>
+<tr>
+<td align="center"><code>Accept-Language</code></td>
+<td align="center">能够接受的响应内容的自然语言列表</td>
+<td align="center"><code>Accept-Language: en-US</code></td>
+</tr>
+<tr>
+<td align="center"><code>Range</code></td>
+<td align="center">仅请求某个实体的一部分。字节偏移以 开始（实现断点续传）</td>
+<td align="center"><code>Range: bytes=500-999</code></td>
+</tr>
+<tr>
+<td align="center"><code>Origin</code></td>
+<td align="center">发起一个针对跨域资源共享的请求</td>
+<td align="center"><code>Origin: https://www.baidu.com</code></td>
+</tr>
+<tr>
+<td align="center"><code>Cookie</code></td>
+<td align="center">之前由服务器通过<code>Set-Cookie</code>发送<code>Cookie</code></td>
+<td align="center"><code>Cookie: $Version = 1; SKin=new;</code></td>
+</tr>
+<tr>
+<td align="center"><code>Connection</code></td>
+<td align="center">该浏览器想要优先使用的连接类型</td>
+<td align="center"><code>Connection: keep-alive</code></td>
+</tr>
+<tr>
+<td align="center"><code>Cache-Control</code></td>
+<td align="center">用来指定在这次的请求/响应链中的所有缓存机制用来指定在这次的请求 响应链中的所有缓存机制都必须遵守的指令</td>
+<td align="center"><code>Cache-Control: no-cache</code></td>
+</tr>
+</tbody></table>
+<h3 id="响应头字段"><a href="#响应头字段" class="headerlink" title="响应头字段"></a>响应头字段</h3><table>
+<thead>
+<tr>
+<th align="center">头字段</th>
+<th align="center">说明</th>
+<th align="center">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>Date</code></td>
+<td align="center">发送该消息的日期和时间</td>
+<td align="center"><code>Date: Tue, 15 Nov 1994 08:12:31</code></td>
+</tr>
+<tr>
+<td align="center"><code>Last-Modified</code></td>
+<td align="center">所请求的对象的最后修改日期</td>
+<td align="center"><code>Last-Modified: Tue, 15 Nov 1994 08:12:31</code></td>
+</tr>
+<tr>
+<td align="center"><code>Server</code></td>
+<td align="center">服务器的名字</td>
+<td align="center"><code>Server: Apache/2.4.1(Unix)</code></td>
+</tr>
+<tr>
+<td align="center"><code>Expires</code></td>
+<td align="center">指定一个时间，超过该时间则认为此响应已经过期</td>
+<td align="center"><code>Expires: Tue, 15 Dec 1994 08:12:31</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content-Type</code></td>
+<td align="center">响应体的类型</td>
+<td align="center"><code>Content-Type: text/html; charset=utf-8</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content-Encoding</code></td>
+<td align="center">内容所使用的编码类型</td>
+<td align="center"><code>Content-Encoding: gzip</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content-Length</code></td>
+<td align="center">响应体的长度（字节为单位）</td>
+<td align="center"><code>Content-Length: 348</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content-Disposition</code></td>
+<td align="center">一个可以让客户端下载文件并建议文件名的头部</td>
+<td align="center"><code>Content-Disposition: attachment; filename=&quot;fname.text&quot;</code></td>
+</tr>
+<tr>
+<td align="center"><code>Accept-Ranges</code></td>
+<td align="center">服务器支持哪些种类的部分内容范围</td>
+<td align="center"><code>Accept-Ranges: bytes</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content-Ranges</code></td>
+<td align="center">这条部分消息是属于完整消息的哪部分</td>
+<td align="center"><code>Content-Ranges: bytes 21010-47021/47022</code></td>
+</tr>
+<tr>
+<td align="center"><code>Access-Control-Allow-Origin</code></td>
+<td align="center">指定哪些网站可参与到跨来源资源共享过程中</td>
+<td align="center"><code>Access-Control-Allow-Origin: *</code></td>
+</tr>
+<tr>
+<td align="center"><code>Location</code></td>
+<td align="center">用来进行重定向，或者在创建了某个新资源时使用</td>
+<td align="center"><code>Location: http://www.w3.org</code></td>
+</tr>
+<tr>
+<td align="center"><code>Set-Cookie</code></td>
+<td align="center">返回一个<code>Cookie</code>让客户端去保存</td>
+<td align="center"><code>Set-Cookie: UserID=:JohnDoe; Max-Age=3600; Version=1</code></td>
+</tr>
+<tr>
+<td align="center"><code>Connection</code></td>
+<td align="center">针对该连接所预期的选项</td>
+<td align="center"><code>Connection : close</code></td>
+</tr>
+<tr>
+<td align="center"><code>Cache-Control</code></td>
+<td align="center">向从服务器直到客户端在内的所有缓存机制告知，它们是否可以缓存这个对象。单位为秒</td>
+<td align="center"><code>Cache-Control: max-age=3600</code></td>
+</tr>
+</tbody></table>
+<h2 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h2><ul>
+<li>在<a href>RFC 2616 10.Status Code Definitions</a>规范中定义<ul>
+<li>状态码指示<code>HTTP</code>请求是否已成功完成</li>
+</ul>
+</li>
+<li>状态码可以分为<code>5</code>类<ul>
+<li>信息响应：<code>100~199</code></li>
+<li>成功响应：<code>200~299</code></li>
+<li>重定向：<code>300~399</code></li>
+<li>客户端错误：<code>400~499</code></li>
+<li>服务器错误 ：<code>500~599</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="常见的状态码"><a href="#常见的状态码" class="headerlink" title="常见的状态码"></a>常见的状态码</h3><ul>
+<li><code>100 Continue</code><ul>
+<li>请求的初始部分已经被服务器收到，并且没有被服务器拒绝。客户端应该继续发送剩余的请求，如果请求已经完成，就忽略这个响应</li>
+<li>允许客户端发送带请求体的请求前，判断服务器是否愿意接收请求（服务器通过请求头判断）</li>
+<li>在某些情况下，如果服务器在不看请求体就拒绝请求时，客户端就发送请求体是不恰当的或低效的</li>
+</ul>
+</li>
+<li><code>200 OK</code>：请求成功</li>
+<li><code>302 Found</code>：请求的资源被暂时的移动到了由<code>Location</code>头部指定的<code>URL</code>上</li>
+<li><code>304 Not Modified</code>：说明无需再次传输请求的内容，也就是说可以使用缓存的内容</li>
+<li><code>400 Bad Request</code>：由于语法无效，服务器无法理解该请求</li>
+<li><code>401 Unauthorized</code>：由于缺乏目标资源要求的身份验证凭证</li>
+<li><code>403 Forbidden</code>：服务器端有能力处理该请求，但是拒绝授权访问</li>
+<li><code>404 Not Found</code>：服务器端无法找到所请求的资源</li>
+<li><code>405 Method Not Allowed</code>：服务器禁止了使用当前<code>HTTP</code>方法的请求</li>
+<li><code>406 Not Acceptable</code>：服务器端无法提供与<code>Accept-Charset</code>以及<code>Accept-Language</code>指定的值相匹配的响应</li>
+<li><code>408 Request Timeout</code>：服务器想要将没有在使用的连接关闭<ul>
+<li>一些服务器会在空闲连接上发送此信息，即便是在客户端没有发送任何请求的情况下</li>
+</ul>
+</li>
+<li><code>500 Internal Server Error</code>：所请求的服务器遇到意外的情况并阻止其执行请求</li>
+<li><code>501 Not Implemented</code>：请求的方法不被服务器支持，因此无法被处理<ul>
+<li>服务器必须支持的方法（即不会返回这个状态码的方法）只有<code>GET</code>和<code>HEAD</code></li>
+</ul>
+</li>
+<li><code>502 Bad Gateway</code>：作为网关或代理角色的服务器，从上游服务器（如<code>tomcat</code>）中接收到的响应是无效的</li>
+<li><code>503 Service Unavailable</code>：服务器尚未处于可以接受请求的状态<ul>
+<li>通常造成这种情况的原因是由于服务器停机维护或者已超载</li>
+</ul>
+</li>
+</ul>
+<h2 id="请求体Message-Body数据格式"><a href="#请求体Message-Body数据格式" class="headerlink" title="请求体Message-Body数据格式"></a>请求体<code>Message-Body</code>数据格式</h2><ul>
+<li>设置<code>Content-Type</code>，可以确定<code>post</code>请求中<code>Message-Body</code>中的数据格式，常见的有<ul>
+<li><code>application/x-www-form-urlencoded</code>（默认值）<ul>
+<li>用<code>&amp;</code>分隔参数，用<code>=</code>分隔键和值，字符用<code>URL</code>编码方式进行编码</li>
+</ul>
+</li>
+<li><code>application/json</code>，采用<code>json</code>的格式</li>
+<li><code>multipart/form-data</code><ul>
+<li>文件上传时必须使用这种编码方式</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="multipart-form-data格式"><a href="#multipart-form-data格式" class="headerlink" title="multipart/form-data格式"></a><code>multipart/form-data</code>格式</h3><ul>
+<li>参考<a href="https://datatracker.ietf.org/doc/html/rfc1521">RFC 1521</a></li>
+<li>请求头<ul>
+<li><code>Content-Type: multipart/form-data; boundary=xxx</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="7.png"></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><code class="hljs js">POST /hello/form HTTP/<span class="hljs-number">1.1</span><br><span class="hljs-attr">Host</span>: localhost:<span class="hljs-number">8080</span><br><span class="hljs-attr">Connection</span>: keep-alive<br>Content-Length: <span class="hljs-number">592540</span><br>Cache-Control: max-age=<span class="hljs-number">0</span><br>sec-ch-ua: <span class="hljs-string">&quot;Not A(Brand&quot;</span>;v=<span class="hljs-string">&quot;99&quot;</span>, <span class="hljs-string">&quot;Google Chrome&quot;</span>;v=<span class="hljs-string">&quot;121&quot;</span>, <span class="hljs-string">&quot;Chromium&quot;</span>;v=<span class="hljs-string">&quot;121&quot;</span><br>sec-ch-ua-mobile: ?<span class="hljs-number">0</span><br>sec-ch-ua-platform: <span class="hljs-string">&quot;macOS&quot;</span><br>Upgrade-Insecure-Requests: <span class="hljs-number">1</span><br><span class="hljs-attr">Origin</span>: http:<span class="hljs-comment">//localhost:8080</span><br><span class="hljs-comment">// boundary</span><br>Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryXejOnYSFafBNlI0w<br>User-Agent: Mozilla/<span class="hljs-number">5.0</span> (Macintosh; Intel Mac OS X <span class="hljs-number">10_15_7</span>) AppleWebKit/<span class="hljs-number">537.36</span> (KHTML, like Gecko) Chrome/<span class="hljs-number">121.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span> Safari/<span class="hljs-number">537.36</span><br><span class="hljs-attr">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="hljs-number">0.9</span>,image/avif,image/webp,image/apng,*<span class="hljs-comment">/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="hljs-comment">Sec-Fetch-Site: same-origin</span><br><span class="hljs-comment">Sec-Fetch-Mode: navigate</span><br><span class="hljs-comment">Sec-Fetch-User: ?1</span><br><span class="hljs-comment">Sec-Fetch-Dest: document</span><br><span class="hljs-comment">Referer: http://localhost:8080/hello/html/form.html</span><br><span class="hljs-comment">Accept-Encoding: gzip, deflate, br</span><br><span class="hljs-comment">Accept-Language: zh-CN,zh;q=0.9</span><br><span class="hljs-comment">Cookie: JSESSIONID=0B1068472562269E7E2E76604E96B4B8; Webstorm-c5be0d49=04e69f37-ac09-4674-89cc-4120f5cebd97</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">------WebKitFormBoundaryXejOnYSFafBNlI0w</span><br><span class="hljs-comment">// body-part</span><br><span class="hljs-comment">Content-Disposition: form-data; name=&quot;name&quot;</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">1222</span><br><span class="hljs-comment">------WebKitFormBoundaryXejOnYSFafBNlI0w</span><br><span class="hljs-comment">Content-Disposition: form-data; name=&quot;age&quot;</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">3333</span><br><span class="hljs-comment">------WebKitFormBoundaryXejOnYSFafBNlI0w</span><br><span class="hljs-comment">Content-Disposition: form-data; name=&quot;photo&quot;; filename=&quot;......2024-01-27 19.59.06.png&quot;</span><br><span class="hljs-comment">Content-Type: image/png</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">.PNG</span><br><span class="hljs-comment">.</span><br><span class="hljs-comment">...</span><br><span class="hljs-comment">.......</span><br><span class="hljs-comment">//数据结束的标志</span><br><span class="hljs-comment">------WebKitFormBoundaryXejOnYSFafBNlI0w--</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><h3 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h3><ul>
+<li><code>Pragma</code>：作用类似于<code>Cache-Control</code>，<code>HTTP/1.0</code>的产物</li>
+<li><code>Expires</code>：缓存的过期时间（<code>GMT</code>格式时间），<code>HTTP/1.0</code>的产物</li>
+<li><code>Cache-Control</code>：设置缓存策略<ul>
+<li><code>no-storage</code>：不缓存数据到本地</li>
+<li><code>public</code>：允许用户、代理服务器缓存数据到本地</li>
+<li><code>private</code>：只允许用户缓存数据到本地</li>
+<li><code>max-age</code>：缓存的有效时间（多长时间不过期），单位秒</li>
+<li><code>no-cache</code>：每次需要发请求给服务器询问缓存是否有变化，再来决定如何使用缓存</li>
+</ul>
+</li>
+<li>优先级：<code>Pragma</code> &gt; <code>Cache-Control</code> &gt; <code>Expires</code></li>
+</ul>
+<h4 id="是否更新资源的判断"><a href="#是否更新资源的判断" class="headerlink" title="是否更新资源的判断"></a>是否更新资源的判断</h4><ul>
+<li><code>Last-Modified</code>：资源的最后一次修改时间</li>
+<li><code>ETag</code>：资源的唯一标识（根据文件内容计算出来的摘要值）</li>
+<li>优先级：<code>ETag</code> &gt; <code>Last-Modified</code></li>
+</ul>
+<h3 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h3><ul>
+<li><code>If-None-Match</code><ul>
+<li>如果上一次的响应头中有<code>ETag</code>，就会将<code>ETag</code>的值作为请求头的值</li>
+<li>如果服务器发现资源的最新摘要值跟<code>If-None-Match</code>不匹配，就会返回新的资源（<code>200 OK</code>）</li>
+<li>否则，就不会返回资源的具体数据（<code>304 Not Modified</code>）</li>
+</ul>
+</li>
+<li><code>If-Modified-Since</code><ul>
+<li>如果上一次的响应头中没有<code>ETag</code>，有<code>Last-Modified</code>，就会将<code>Last-Modified</code>的值作为请求头的值</li>
+<li>如果服务器发现资源的最后一次修改时间晚于<code>If-Modified-Since</code>，就会返回新的资源（<code>200 OK</code>）</li>
+<li>否则，就不会返回资源的具体数据（<code>304 Not Modified</code>）</li>
+</ul>
+</li>
+</ul>
+<h3 id="缓存对比Last-Modified-VS-ETag"><a href="#缓存对比Last-Modified-VS-ETag" class="headerlink" title="缓存对比Last-Modified VS ETag"></a>缓存对比<code>Last-Modified</code> VS <code>ETag</code></h3><ul>
+<li><p><code>Last-Modified</code>的缺陷</p>
+<ul>
+<li>只能精确到秒级别，如果资源在<code>1秒</code>内被修改了，客户端将无法获取最新的资源数据</li>
+<li>如果某些资源被修改了（最后一次修改时间发生了变化），但是内容并没有任何变化<ul>
+<li>会导致相同数据重复传输，没有使用到缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>ETag</code>可以办到</p>
+<ul>
+<li>只要资源的内容没有变化，就不会重复传输资源数据</li>
+<li>只要资源的内容发生了变化，就会返回最新的资源数据给客户端</li>
+</ul>
+</li>
+</ul>
+<h3 id="缓存使用流程"><a href="#缓存使用流程" class="headerlink" title="缓存使用流程"></a>缓存使用流程</h3><p><img src="3.jpg"></p>
+]]></content>
+      <categories>
+        <category>网络协议</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>应用层（DNS和DHCP）</title>
+    <url>/2024/01/23/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E5%BA%94%E7%94%A8%E5%B1%82%EF%BC%88DNS%E5%92%8CDHCP%EF%BC%89/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="应用层的常见协议"><a href="#应用层的常见协议" class="headerlink" title="应用层的常见协议"></a>应用层的常见协议</h1><ul>
+<li>超文本传输：<code>HTTP</code>、<code>HTTPS</code></li>
+<li>文件传输：<code>FTP</code></li>
+<li>电子邮件：<code>SMTP</code>、<code>POP3</code>、<code>IMAP</code></li>
+<li>动态主机配置：<code>DHCP</code></li>
+<li>域名系统：<code>DNS</code></li>
+</ul>
+<h1 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a><code>DNS</code></h1><ul>
+<li><code>DNS</code>的全称是：<code>Domain Name System</code>，译为：域名系统<ul>
+<li>利用<code>DNS</code>协议，可以将域名（比如<code>baidu.com</code>）解析成对应的<code>IP</code>地址（比如<code>220.181.38.148</code>）</li>
+<li><code>DNS</code>可以基于<code>UDP</code>协议，也可以基于<code>TCP</code>协议，服务器占用<code>53</code>端口</li>
+</ul>
+</li>
+</ul>
+<h2 id="域名-Domain-Name"><a href="#域名-Domain-Name" class="headerlink" title="域名(Domain Name)"></a>域名(<code>Domain Name</code>)</h2><ul>
+<li>由于<code>IP</code>地址不方便记忆，并且不能表达组织的名称和性质，人们设计出了域名（比如<code>baidu.com</code>）<ul>
+<li>但实际上，为了能够访问到具体的主机，最终还是得知道目标主机的IP地址</li>
+<li><a href="https://wanwang.aliyun.com/">域名申请注册</a></li>
+</ul>
+</li>
+<li>那干脆全程直接用域名，不用<code>IP</code>地址？<ul>
+<li><code>IP</code>地址固定<code>4</code>个字节，域名随随便便都至少<code>10</code>几个字节，这无疑会增加路由器的负担，浪费流量</li>
+</ul>
+</li>
+<li>根据级别不同，域名可以分为<ul>
+<li>顶级域名（<code>Top-level Domain</code>，简称<code>TLD</code>）</li>
+<li>二级域名</li>
+<li>三级域名</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<h3 id="顶级域名"><a href="#顶级域名" class="headerlink" title="顶级域名"></a>顶级域名</h3><ul>
+<li>通用顶级域名（<code>General Top-level Domain</code>，简称<code>gTLD</code>）<ul>
+<li><code>.com</code>（公司），<code>.net</code>（网络机构），<code>.org</code>（组织机构），<code>.edu</code>（教育）</li>
+<li><code>.gov</code>（政府部门），<code>.int</code>（国际组织）等</li>
+</ul>
+</li>
+<li>国家及地区顶级域名（<code>Country Code Top-level Domain</code>，简称<code>ccTLD</code>）<ul>
+<li><code>.cn</code>（中国）、<code>.jp</code>（日本）、<code>.uk</code>（英国）</li>
+</ul>
+</li>
+<li>新通用顶级域名（<code>New Generic Top-level Domain</code>，简称：<code>New gTLD</code>）<ul>
+<li><code>.vip</code>、<code>.xyz</code>、<code>.top</code>、<code>.club</code>、<code>.shop</code>等</li>
+</ul>
+</li>
+</ul>
+<h3 id="二级域名"><a href="#二级域名" class="headerlink" title="二级域名"></a>二级域名</h3><ul>
+<li>二级域名是指顶级域名之下的域名<ul>
+<li>在通用顶级域名下，它一般指域名注册人的名称，例如<code>google</code>、<code>baidu</code>、<code>microsoft</code>等</li>
+<li>在国家及地区顶级域名下，它一般指注册类别的，例如<code>com</code>、<code>edu</code>、<code>gov</code>、<code>net</code>等</li>
+</ul>
+</li>
+</ul>
+<p><img src="1.jpg"></p>
+<h2 id="域名解析的流程"><a href="#域名解析的流程" class="headerlink" title="域名解析的流程"></a>域名解析的流程</h2><p><img src="2.jpg"></p>
+<ul>
+<li>客户端首先会访问最近的一台<code>DNS</code>服务器（也就是客户端自己配置的<code>DNS</code>服务器）</li>
+<li>所有的<code>DNS</code>服务器都记录了<code>DNS</code>根域名服务器的<code>IP</code>地址</li>
+<li>上级<code>DNS</code>服务器记录了下一级<code>DNS</code>服务器的<code>IP</code>地址</li>
+<li>全球一共<code>13</code>台<code>IPv4</code>的<code>DNS</code>根域名服务器、<code>25</code>台<code>IPv6</code>的<code>DNS</code>根域名服务器</li>
+</ul>
+<h1 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a><code>DHCP</code></h1><ul>
+<li><code>DHCP</code>（<code>Dynamic Host Configuration Protocol</code>），译为：动态主机配置协议<ul>
+<li><code>DHCP</code>协议基于<code>UDP</code>协议，客户端是<code>68</code>端口，服务器是<code>67</code>端口</li>
+</ul>
+</li>
+<li><code>DHCP</code>服务器会从<code>IP</code>地址池中，挑选一个<code>IP</code>地址“出租“给客户端一段时间，时间到期就回收它们<ul>
+<li>平时家里上网的路由器就可以充当<code>DHCP</code>服务器</li>
+</ul>
+</li>
+</ul>
+<h2 id="IP地址的分配"><a href="#IP地址的分配" class="headerlink" title="IP地址的分配"></a><code>IP</code>地址的分配</h2><ul>
+<li><code>IP</code>地址按照分配方式，可以分为：静态<code>IP</code>地址、动态<code>IP</code>地址<ul>
+<li>静态<code>IP</code>地址<ul>
+<li>手动设置</li>
+<li>适用场景：不怎么挪动的台式机（比如学校机房中的台式机）、服务器等</li>
+</ul>
+</li>
+<li>动态<code>IP</code>地址<ul>
+<li>从<code>DHCP</code>服务器自动获取<code>IP</code>地址</li>
+<li>适用场景：移动设备、无线设备等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="DHCP-分配IP地址的四个阶段"><a href="#DHCP-分配IP地址的四个阶段" class="headerlink" title="DHCP - 分配IP地址的四个阶段"></a><code>DHCP</code> - 分配<code>IP</code>地址的四个阶段</h2><ul>
+<li><code>DISCOVER</code>：发现服务器<ul>
+<li>发广播包（源<code>IP</code>是<code>0.0.0.0</code>，目标<code>IP</code>是<code>255.255.255.255</code>，目标<code>MAC</code>是<code>FF:FF:FF:FF:FF:FF</code>）</li>
+</ul>
+</li>
+<li><code>OFFER</code>：提供租约<ul>
+<li>服务器返回可以租用的<code>IP地址</code>，以及<code>租用期限</code>、<code>子网掩码</code>、<code>网关</code>、<code>DNS</code>等信息</li>
+<li>注意：这里可能会有多个服务器提供租约</li>
+</ul>
+</li>
+<li><code>REQUEST</code>：选择<code>IP地址</code><ul>
+<li>客户端选择一个<code>OFFER</code>，发送广播包进行回应</li>
+</ul>
+</li>
+<li><code>ACKNOWLEDGE</code>：确认<ul>
+<li>被选中的服务器发送<code>ACK</code>数据包给客户端</li>
+<li>至此，<code>IP地址</code>分配完毕</li>
+</ul>
+</li>
+</ul>
+<p><img src="3.jpg"></p>
+<h2 id="wireshark抓包"><a href="#wireshark抓包" class="headerlink" title="wireshark抓包"></a><code>wireshark</code>抓包</h2><p><img src="4.jpg"></p>
+<ol>
+<li><p><code>Discover</code><br><img src="5.jpg"></p>
+</li>
+<li><p><code>offer</code><br><img src="6.jpg"></p>
+</li>
+<li><p><code>request</code><br><img src="7.jpg"></p>
+</li>
+<li><p><code>ACK</code><br><img src="8.jpg"></p>
+</li>
+</ol>
+<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><ul>
+<li><p><code>DHCP</code>服务器可以跨网段分配<code>IP</code>地址么？（<code>DHCP</code>服务器、客户端不在同一个网段）</p>
+<ul>
+<li>可以借助<code>DHCP</code>中继代理（<code>DHCP Relay Agent</code>）实现跨网段分配<code>IP地址</code></li>
+</ul>
+</li>
+<li><p>自动续约</p>
+<ul>
+<li>客户端会在租期不足的时候，自动向<code>DHCP服务器</code>发送<code>REQUEST</code>信息申请续约</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>网络协议</category>
+      </categories>
+  </entry>
+  <entry>
     <title>传输层</title>
     <url>/2024/01/20/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E4%BC%A0%E8%BE%93%E5%B1%82/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h1><p>传输层有2个协议</p>
@@ -611,7 +1913,7 @@
   </entry>
   <entry>
     <title>网络层</title>
-    <url>/2024/01/20/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%B1%82/</url>
+    <url>/2024/01/16/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%B1%82/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h1><ul>
 <li>网络层数据包（<code>IP</code>数据包，<code>Packet</code>）由首部、数据<code>2</code>部分组成<ul>
 <li>数据：很多时候是由传输层传递下来的数据段（<code>Segment</code>）</li>
@@ -638,9 +1940,9 @@
 </li>
 <li><p>首部 + 数据的长度之和，最大值是<code>65535</code><br><img src="2.jpg"></p>
 </li>
-<li><p>由于帧的数据不能超过1500字节，所以过大的IP数据包，需要分成片（fragments）传输给数据链路层</p>
+<li><p>由于帧的数据不能超过<code>1500</code>字节，所以过大的IP数据包，需要分成片（<code>fragments</code>）传输给数据链路层</p>
 </li>
-<li><p>每一片都有自己的网络层首部（IP首部）</p>
+<li><p>每一片都有自己的网络层首部（<code>IP</code>首部）</p>
 </li>
 </ul>
 <h2 id="标识（Identification）"><a href="#标识（Identification）" class="headerlink" title="标识（Identification）"></a>标识（<code>Identification</code>）</h2><ul>
@@ -709,7 +2011,7 @@
   </entry>
   <entry>
     <title>数据链路层</title>
-    <url>/2024/01/19/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/</url>
+    <url>/2024/01/14/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h1><ul>
 <li><p>链路：从<code>1</code>个节点到相邻节点的一段物理线路（有线或无线），中间没有其他交换节点<br><img src="1.jpg"></p>
 </li>
@@ -9494,7 +10796,7 @@
 </li>
 <li><code>initialize</code><ul>
 <li>在，第一次使用的时候调用，先初始化父类，</li>
-<li>再初始化子类（可能最终调用的是父类的）</li>
+<li>再初始化子类（可能最终调用的是父类的(子类中没有实现的话)）</li>
 </ul>
 </li>
 </ol>
@@ -9521,8 +10823,9 @@
 <li>采用的是<code>objc_msSend</code>去调用<code>initialize</code>方法<br><img src="16721356497584.png"></li>
 </ul>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><code>runtime</code>中会通过<code>RW_INITIALIZED</code>标志位，保证当前类已经初始化了。（此前<code>realizeClassWithoutSwift</code>类的加载，是通过<code>RW_REALIZED</code>来标识的）</li>
 <li><code>initialize</code>和<code>load</code>的最大区别是，<code>initialize</code>是通过<code>objc_msgSend</code>进行调用的。而<code>load</code>是拿到函数地址后直接调用的<ul>
-<li>如果子类没有实现<code>initialize</code>，会调用父类的<code>initialize</code>（所以父类的<code>initialize</code>可能会调用多次）</li>
+<li>如果子类没有实现<code>initialize</code>，会调用父类的<code>initialize</code>（所以父类的<code>initialize</code>可能会调用多次）。（不会像<code>load</code>方法一样，先调用父类的，再调用<code>子类</code>的）</li>
 <li>如果分类实现了<code>initialize</code>，就会覆盖本身的<code>initialize</code>调用</li>
 </ul>
 </li>
@@ -9546,7 +10849,7 @@
 <li>同一级的关系时按照编译的顺序来</li>
 </ul>
 </li>
-<li>尽管load中方法在源码中只会调用一次，但实际上主动<code>[Class load]</code>也会触发load,因此在调用<code>method_exchangeImplementations</code>做hook时，会加上<code>dispatch_once</code>，保证只会执行一次。</li>
+<li>尽管<code>load</code>中方法在源码中只会调用一次，但实际上主动<code>[Class load]</code>也会触发<code>load</code>,因此在调用<code>method_exchangeImplementations</code>做hook时，会加上<code>dispatch_once</code>，保证只会执行一次。</li>
 </ul>
 <span id="more"></span>
 
@@ -9581,7 +10884,7 @@
 </li>
 <li>调用<code>load</code>方法:<code>call_load_methods</code><ul>
 <li>先调用类<code>Class</code>的<code>load</code>，后处理分类<code>Category</code>，通过分类找到对应的类，然后由类调用<code>load</code>方法的顺序进行处理</li>
-<li>这个调用处理的顺序是根据准备方法<code>prepare_load_method</code>s中准备好的两张表<code>loadable_classes</code>和<code>loadable_categories</code>的顺序而来的。调用完就从表中移除，全部调用完结束循环。</li>
+<li>这个调用处理的顺序是根据准备方法<code>prepare_load_methods</code>中准备好的两张表<code>loadable_classes</code>和<code>loadable_categories</code>的顺序而来的。调用完就从表中移除，全部调用完结束循环。</li>
 </ul>
 </li>
 </ol>
@@ -9621,7 +10924,7 @@
 <p><code>environ_init</code>是读取<code>environment variables</code>的一些配置信息，<code>environment variables</code>在<code>Edit Scheme -&gt; Run -&gt; Argments -&gt; Environment Variables</code> 中配置</p>
 </blockquote>
 <ul>
-<li>可以设置<code>OBJC_HELP</code>，启动程序后会打印所有可以设置的信息已经含义解释。<br><img src="map-images/1.png"></li>
+<li>可以设置<code>OBJC_HELP</code>，启动程序后会打印所有可以设置的信息已经含义解释。<br><img src="1.png"></li>
 </ul>
 <h3 id="static-init"><a href="#static-init" class="headerlink" title="static_init"></a><code>static_init</code></h3><blockquote>
 <p>接下来是<code>static_init</code>：找到<code>objc</code>库中的所有初始化方法，遍历调用，注意：<code>objc</code>库中的静态<code>构造</code>函数早于<code>load</code>方法，<code>load</code>方法早于我们自己的静态<code>构造</code>函数。</p>
@@ -9631,11 +10934,9 @@
 <h3 id="runtime-init"><a href="#runtime-init" class="headerlink" title="runtime_init"></a><span id="jump"><code>runtime_init</code></span></h3><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">runtime_init</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>    objc::disableEnforceClassRXPtrAuth = DisableClassRXSigningEnforcement;<br>    <span class="hljs-comment">//分类加载表</span><br>    objc::unattachedCategories.<span class="hljs-built_in">init</span>(<span class="hljs-number">32</span>);<br>    <span class="hljs-comment">//类的加载表</span><br>    objc::allocatedClasses.<span class="hljs-built_in">init</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h2 id="map-images"><a href="#map-images" class="headerlink" title="map_images"></a>map_images</h2><blockquote>
-<blockquote>
 <ul>
-<li>整个流程是<code>map_images</code> -&gt; <code>map_images_nolock</code> -&gt; <code>_read_images</code>。这里对<code>map_images_nolock</code>和<code>_read_images</code>进行分享</li>
+<li>整个流程是<code>map_images</code> -&gt; <code>map_images_nolock</code> -&gt; <code>_read_images</code>。这里对<code>map_images_nolock</code>和<code>_read_images</code>进行介绍</li>
 </ul>
-</blockquote>
 </blockquote>
 <h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">void</span> <br>map_images_nolock(<span class="hljs-keyword">unsigned</span> mhCount, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * <span class="hljs-keyword">const</span> mhPaths[],<br>                  <span class="hljs-keyword">const</span> <span class="hljs-keyword">struct</span> mach_header * <span class="hljs-keyword">const</span> mhdrs[],<br>                  <span class="hljs-keyword">bool</span> *disabledClassROEnforcement)<br>&#123;<br>    <span class="hljs-comment">//定义一系列变量</span><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">bool</span> firstTime = <span class="hljs-literal">YES</span>;<br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">bool</span> executableHasClassROSigning = <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">bool</span> executableIsARM64e = <span class="hljs-literal">false</span>;<br><br>    header_info *hList[mhCount];<br>    uint32_t hCount;<br>    size_t selrefCount = <span class="hljs-number">0</span>;<br><br>    *disabledClassROEnforcement = <span class="hljs-literal">false</span>;<br><br>    <span class="hljs-comment">//如果是第一次，就准备初始化环境</span><br>    <span class="hljs-keyword">if</span> (firstTime) &#123;<br>        preopt_init();<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (PrintImages) &#123;<br>        _objc_inform(<span class="hljs-string">&quot;IMAGES: processing %u newly-mapped images...\n&quot;</span>, mhCount);<br>    &#125;<br><br><br>    <span class="hljs-comment">// Find all images with Objective-C metadata.</span><br>    hCount = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-comment">//计算class数量，根据总数调整各种表的大小。</span><br>    <span class="hljs-keyword">int</span> totalClasses = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">int</span> unoptimizedTotalClasses = <span class="hljs-number">0</span>;<br>    &#123;<br>        uint32_t i = mhCount;<br>        <span class="hljs-keyword">while</span> (i--) &#123;<br>            <span class="hljs-keyword">const</span> headerType *mhdr = (<span class="hljs-keyword">const</span> headerType *)mhdrs[i];<br><br>            auto hi = addHeader(mhdr, mhPaths[i], totalClasses, unoptimizedTotalClasses);<br>            <span class="hljs-keyword">if</span> (!hi) &#123;<br>                <span class="hljs-comment">// no objc data in this entry</span><br>                <span class="hljs-keyword">continue</span>;<br>            &#125;<br>            <br>            <span class="hljs-keyword">if</span> (mhdr-&gt;filetype == MH_EXECUTE) &#123;<br>                <span class="hljs-comment">// Size some data structures based on main executable&#x27;s size</span><br><br>                <span class="hljs-comment">// If dyld3 optimized the main executable, then there shouldn&#x27;t</span><br>                <span class="hljs-comment">// be any selrefs needed in the dynamic map so we can just init</span><br>                <span class="hljs-comment">// to a 0 sized map</span><br>                <span class="hljs-keyword">if</span> ( !hi-&gt;hasPreoptimizedSelectors() ) &#123;<br>                  size_t count;<br>                  _getObjc2SelectorRefs(hi, &amp;count);<br>                  selrefCount += count;<br>                  _getObjc2MessageRefs(hi, &amp;count);<br>                  selrefCount += count;<br>                &#125;<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> SUPPORT_GC_COMPAT</span><br>                <span class="hljs-comment">// 兼容旧版本OC的GCC功能</span><br>                <span class="hljs-comment">// Halt if this is a GC app.</span><br>                <span class="hljs-keyword">if</span> (shouldRejectGCApp(hi)) &#123;<br>                    _objc_fatal_with_reason<br>                        (OBJC_EXIT_REASON_GC_NOT_SUPPORTED, <br>                         OS_REASON_FLAG_CONSISTENT_FAILURE, <br>                         <span class="hljs-string">&quot;Objective-C garbage collection &quot;</span> <br>                         <span class="hljs-string">&quot;is no longer supported.&quot;</span>);<br>                &#125;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br><br>                <span class="hljs-keyword">if</span> (hasSignedClassROPointers(hi)) &#123;<br>                    executableHasClassROSigning = <span class="hljs-literal">true</span>;<br>                &#125;<br>            &#125;<br><br>            hList[hCount++] = hi;<br><br>            <span class="hljs-keyword">if</span> (PrintImages) &#123;<br>                _objc_inform(<span class="hljs-string">&quot;IMAGES: loading image for %s%s%s%s%s\n&quot;</span>, <br>                             hi-&gt;fname(),<br>                             mhdr-&gt;filetype == MH_BUNDLE ? <span class="hljs-string">&quot; (bundle)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>,<br>                             hi-&gt;info()-&gt;isReplacement() ? <span class="hljs-string">&quot; (replacement)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>,<br>                             hi-&gt;info()-&gt;hasCategoryClassProperties() ? <span class="hljs-string">&quot; (has class properties)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>,<br>                             hi-&gt;info()-&gt;optimizedByDyld()?<span class="hljs-string">&quot; (preoptimized)&quot;</span>:<span class="hljs-string">&quot;&quot;</span>);<br>            &#125;<br>        &#125;<br>    &#125;<br><br><span class="hljs-comment">//执行一次运行时初始化，必须将其推迟到找到可执行文件本身为止。 </span><br><span class="hljs-comment">//这需要在进一步初始化之前完成。（如果可执行文件不包含Objective-C代码，</span><br><span class="hljs-comment">//但稍后会动态加载Objective-C，则该可执行文件可能不会出现在此infoList中.</span><br>    <span class="hljs-keyword">if</span> (firstTime) &#123;<br>        sel_init(selrefCount); <span class="hljs-comment">//这里会初始化方法列表，并注册系统内部专门的方法。</span><br>        arr_init();<span class="hljs-comment">//这里会初始化`SideTablesMap`表，`associations`关联表</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> SUPPORT_GC_COMPAT</span><br>        <span class="hljs-comment">// Reject any GC images linked to the main executable.</span><br>        <span class="hljs-comment">// We already rejected the app itself above.</span><br>        <span class="hljs-comment">// Images loaded after launch will be rejected by dyld.</span><br><br>        <span class="hljs-keyword">for</span> (uint32_t i = <span class="hljs-number">0</span>; i &lt; hCount; i++) &#123;<br>            auto hi = hList[i];<br>            auto mh = hi-&gt;mhdr();<br>            <span class="hljs-keyword">if</span> (mh-&gt;filetype != MH_EXECUTE  &amp;&amp;  shouldRejectGCImage(mh)) &#123;<br>                _objc_fatal_with_reason<br>                    (OBJC_EXIT_REASON_GC_NOT_SUPPORTED, <br>                     OS_REASON_FLAG_CONSISTENT_FAILURE, <br>                     <span class="hljs-string">&quot;%s requires Objective-C garbage collection &quot;</span><br>                     <span class="hljs-string">&quot;which is no longer supported.&quot;</span>, hi-&gt;fname());<br>            &#125;<br>        &#125;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> TARGET_OS_OSX</span><br>        <span class="hljs-keyword">for</span> (uint32_t i = <span class="hljs-number">0</span>; i &lt; hCount; i++) &#123;<br>            auto hi = hList[i];<br>            auto mh = hi-&gt;mhdr();<br>            <span class="hljs-keyword">if</span> (mh-&gt;filetype != MH_EXECUTE) <span class="hljs-keyword">continue</span>;<br>            <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> size;<br>            <span class="hljs-keyword">if</span> (getsectiondata(hi-&gt;mhdr(), <span class="hljs-string">&quot;__DATA&quot;</span>, <span class="hljs-string">&quot;__objc_fork_ok&quot;</span>, &amp;size)) &#123;<br>                DisableInitializeForkSafety = <span class="hljs-literal">true</span>;<br>                <span class="hljs-keyword">if</span> (PrintInitializing) &#123;<br>                    _objc_inform(<span class="hljs-string">&quot;INITIALIZE: disabling +initialize fork &quot;</span><br>                                 <span class="hljs-string">&quot;safety enforcement because the app has &quot;</span><br>                                 <span class="hljs-string">&quot;a __DATA,__objc_fork_ok section&quot;</span>);<br>                &#125;<br>            &#125;<br>            <span class="hljs-keyword">break</span>;  <span class="hljs-comment">// assume only one MH_EXECUTE image</span><br>        &#125;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span> <span class="hljs-comment">// TARGET_OS_OSX</span></span><br><br>    <span class="hljs-comment">// If the main executable is ARM64e, make sure every image that is loaded</span><br>    <span class="hljs-comment">// has pointer signing turned on.</span><br>    <span class="hljs-keyword">if</span> (executableIsARM64e) &#123;<br>        <span class="hljs-keyword">bool</span> shouldWarn = (executableHasClassROSigning<br>                           &amp;&amp; DebugClassRXSigning);<br>        <span class="hljs-keyword">for</span> (uint32_t i = <span class="hljs-number">0</span>; i &lt; hCount; ++i) &#123;<br>            auto hi = hList[i];<br>            <span class="hljs-keyword">if</span> (!hasSignedClassROPointers(hi)) &#123;<br>                <span class="hljs-keyword">if</span> (!objc::disableEnforceClassRXPtrAuth) &#123;<br>                    *disabledClassROEnforcement = <span class="hljs-literal">true</span>;<br>                    objc::disableEnforceClassRXPtrAuth = <span class="hljs-number">1</span>;<br>                &#125;<br><br>                <span class="hljs-keyword">if</span> (shouldWarn) &#123;<br>                    _objc_inform(<span class="hljs-string">&quot;%s has un-signed class_ro_t pointers, but the &quot;</span><br>                                 <span class="hljs-string">&quot;main executable was compiled with class_ro_t &quot;</span><br>                                 <span class="hljs-string">&quot;pointer signing enabled&quot;</span>, hi-&gt;fname());<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">//直接开始镜像读取</span><br>    <span class="hljs-keyword">if</span> (hCount &gt; <span class="hljs-number">0</span>) &#123;<br>        _read_images(hList, hCount, totalClasses, unoptimizedTotalClasses);<br>    &#125;<br><br>    firstTime = <span class="hljs-literal">NO</span>;<br><br>    <span class="hljs-comment">// Call image load funcs after everything is set up.</span><br>    <span class="hljs-keyword">for</span> (auto func : loadImageFuncs) &#123;<br>        <span class="hljs-keyword">for</span> (uint32_t i = <span class="hljs-number">0</span>; i &lt; mhCount; i++) &#123;<br>            func(mhdrs[i]);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h3 id="分析源码"><a href="#分析源码" class="headerlink" title="分析源码"></a>分析源码</h3><ol>
@@ -9644,17 +10945,18 @@
 <li>判断<code>firstTime</code>，<code>firstTime</code>为<code>YES</code>，执行各种表(<code>SideTablesMap</code>表，<code>associations</code>关联表,<code>sel</code>方法表)初始化操作，为<code>NO</code>则不执行</li>
 <li>执行<code>_read_images</code>进行读取，然后将<code>firstTime</code>置为<code>NO</code>，就不再进入上面的逻辑了，下次进入<code>map_images_nolock</code>就开始直接<code>_read_images</code></li>
 </ol>
-<h2 id="read-images"><a href="#read-images" class="headerlink" title="_read_images"></a>_read_images</h2><h3 id="read-images源码"><a href="#read-images源码" class="headerlink" title="_read_images源码"></a>_read_images源码</h3><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">void</span> _read_images(header_info **hList, uint32_t hCount, <span class="hljs-keyword">int</span> totalClasses, <span class="hljs-keyword">int</span> unoptimizedTotalClasses)<br>&#123;<br>    header_info *hi;<br>    uint32_t hIndex;<br>    size_t count;<br>    size_t i;<br>    Class *resolvedFutureClasses = <span class="hljs-literal">nil</span>;<br>    size_t resolvedFutureClassCount = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">bool</span> doneOnce;<br>    <span class="hljs-keyword">bool</span> launchTime = <span class="hljs-literal">NO</span>;<br>    <span class="hljs-comment">//环境变量设置  OBJC_PRINT_IMAGE_TIMES = YES 会打印ts.log的内容</span><br>    TimeLogger ts(PrintImageTimes);<br>    <span class="hljs-comment">// 加锁</span><br>    lockdebug::assert_locked(&amp;runtimeLock);<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> EACH_HEADER \</span><br><span class="hljs-meta">    hIndex = 0;         \</span><br><span class="hljs-meta">    hIndex &lt; hCount &amp;&amp; (hi = hList[hIndex]); \</span><br><span class="hljs-meta">    hIndex++</span><br><br>    <span class="hljs-keyword">if</span> (!doneOnce) &#123;<br>        doneOnce = <span class="hljs-literal">YES</span>;<br>        launchTime = <span class="hljs-literal">YES</span>;<br>        <span class="hljs-comment">// 1.重新初始化TaggePointer环境</span><br>        <span class="hljs-keyword">if</span> (DisableTaggedPointers) &#123;<br>            disableTaggedPointers();<br>        &#125;<br><br>        initializeTaggedPointerObfuscator();<br><br>        <span class="hljs-keyword">if</span> (PrintConnecting) &#123;<br>            _objc_inform(<span class="hljs-string">&quot;CLASS: found %d classes during launch&quot;</span>, totalClasses);<br>        &#125;<br><br>        <span class="hljs-comment">// 创建gdb_objc_realized_classes表</span><br>        <span class="hljs-keyword">int</span> namedClassesSize =<br>            (isPreoptimized() ? unoptimizedTotalClasses : totalClasses) * <span class="hljs-number">4</span> / <span class="hljs-number">3</span>;<br>        <span class="hljs-comment">// 实际上它存放的是除了 dyld shared cache 中的 class，无论该 class 是否 realized。</span><br>        gdb_objc_realized_classes =<br>            NXCreateMapTable(NXStrValueMapPrototype, namedClassesSize);<br><br>        ts.log(<span class="hljs-string">&quot;IMAGE TIMES: first time tasks&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-comment">//2. 修复预编译阶段的`@selector`的混乱问题</span><br>    <span class="hljs-keyword">static</span> size_t UnfixedSelectors;<br>    &#123;<br>        mutex_locker_t lock(selLock);<br>        <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>            <span class="hljs-keyword">if</span> (hi-&gt;hasPreoptimizedSelectors()) <span class="hljs-keyword">continue</span>;<br><br>            <span class="hljs-keyword">bool</span> isBundle = hi-&gt;isBundle();<br>            <span class="hljs-comment">// 取出_objc_selrefs函数</span><br>            SEL *sels = _getObjc2SelectorRefs(hi, &amp;count);<br>            UnfixedSelectors += count;<br>            <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>                <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name = sel_cname(sels[i]);<br>                <span class="hljs-comment">//这里注册实际是将方法名存储到namedSelectors中保存</span><br>                SEL sel = sel_registerNameNoLock(name, isBundle);<br>                <span class="hljs-comment">//方法列表和注册时不同的，重新赋值，类似rebase操作</span><br>                <span class="hljs-keyword">if</span> (sels[i] != sel) &#123;<br>                    sels[i] = sel;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: fix up selector references&quot;</span>);<br><br>    <span class="hljs-keyword">bool</span> hasDyldRoots = dyld_shared_cache_some_image_overridden();<br>    <span class="hljs-number">3.</span> 开始遍历头文件，进行类与元类的读取操作并标记(旧类改动后会生成新的类，并重映射到新的类上)<br>    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>        <span class="hljs-keyword">if</span> (! mustReadClasses(hi, hasDyldRoots)) &#123;<br>            <span class="hljs-comment">// Image is sufficiently optimized that we need not call readClass()</span><br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        classref_t <span class="hljs-keyword">const</span> *classlist = _getObjc2ClassList(hi, &amp;count);<br><br>        <span class="hljs-keyword">bool</span> headerIsBundle = hi-&gt;isBundle();<br>        <span class="hljs-keyword">bool</span> headerIsPreoptimized = hi-&gt;hasPreoptimizedClasses();<br><br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            Class cls = (Class)classlist[i];<br>            <span class="hljs-comment">//readClass读取类的信息及类的更新</span><br>            Class newCls = readClass(cls, headerIsBundle, headerIsPreoptimized);<br>            <span class="hljs-comment">//旧类和新类不同，则会加到resolvedFutureClasses中</span><br>            <span class="hljs-keyword">if</span> (newCls != cls  &amp;&amp;  newCls) &#123;<br>                <span class="hljs-comment">// Class was moved but not deleted. Currently this occurs</span><br>                <span class="hljs-comment">// only when the new class resolved a future class.</span><br>                <span class="hljs-comment">// Non-lazily realize the class below.</span><br>                resolvedFutureClasses = (Class *)<br>                    realloc(resolvedFutureClasses,<br>                            (resolvedFutureClassCount+<span class="hljs-number">1</span>) * <span class="hljs-keyword">sizeof</span>(Class));<br>                resolvedFutureClasses[resolvedFutureClassCount++] = newCls;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: discover classes&quot;</span>);<br><br>    <span class="hljs-comment">// Fix up remapped classes</span><br>    <span class="hljs-comment">// Class list and nonlazy class list remain unremapped.</span><br>    <span class="hljs-comment">// Class refs and super refs are remapped for message dispatching.</span><br><br>    <span class="hljs-keyword">if</span> (!noClassesRemapped()) &#123;<br>        <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>            Class *classrefs = _getObjc2ClassRefs(hi, &amp;count);<br>            <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>                remapClassRef(&amp;classrefs[i]);<br>            &#125;<br>            <span class="hljs-comment">// fixme why doesn&#x27;t test future1 catch the absence of this?</span><br>            classrefs = _getObjc2SuperRefs(hi, &amp;count);<br>            <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>                remapClassRef(&amp;classrefs[i]);<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: remap classes&quot;</span>);<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> SUPPORT_FIXUP</span><br>    <span class="hljs-comment">// Fix up old objc_msgSend_fixup call sites</span><br>    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>        message_ref_t *refs = _getObjc2MessageRefs(hi, &amp;count);<br>        <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;<br><br>        <span class="hljs-keyword">if</span> (PrintVtables) &#123;<br>            _objc_inform(<span class="hljs-string">&quot;VTABLES: repairing %zu unsupported vtable dispatch &quot;</span><br>                         <span class="hljs-string">&quot;call sites in %s&quot;</span>, count, hi-&gt;fname());<br>        &#125;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            fixupMessageRef(refs+i);<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: fix up objc_msgSend_fixup&quot;</span>);<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br><br><br>    <span class="hljs-comment">// Discover protocols. Fix up protocol refs.</span><br>    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>        <span class="hljs-keyword">extern</span> objc_class OBJC_CLASS_$_Protocol;<br>        Class cls = (Class)&amp;OBJC_CLASS_$_Protocol;<br>        ASSERT(cls);<br>        NXMapTable *protocol_map = protocols();<br>        <span class="hljs-keyword">bool</span> isPreoptimized = hi-&gt;hasPreoptimizedProtocols();<br><br>        <span class="hljs-comment">// Skip reading protocols if this is an image from the shared cache</span><br>        <span class="hljs-comment">// and we support roots</span><br>        <span class="hljs-comment">// Note, after launch we do need to walk the protocol as the protocol</span><br>        <span class="hljs-comment">// in the shared cache is marked with isCanonical() and that may not</span><br>        <span class="hljs-comment">// be true if some non-shared cache binary was chosen as the canonical</span><br>        <span class="hljs-comment">// definition</span><br>        <span class="hljs-keyword">if</span> (launchTime &amp;&amp; isPreoptimized) &#123;<br>            <span class="hljs-keyword">if</span> (PrintProtocols) &#123;<br>                _objc_inform(<span class="hljs-string">&quot;PROTOCOLS: Skipping reading protocols in image: %s&quot;</span>,<br>                             hi-&gt;fname());<br>            &#125;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">bool</span> isBundle = hi-&gt;isBundle();<br><br>        protocol_t * <span class="hljs-keyword">const</span> *protolist = _getObjc2ProtocolList(hi, &amp;count);<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            readProtocol(protolist[i], cls, protocol_map,<br>                         isPreoptimized, isBundle);<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: discover protocols&quot;</span>);<br><br>    <span class="hljs-comment">// Fix up @protocol references</span><br>    <span class="hljs-comment">// Preoptimized images may have the right</span><br>    <span class="hljs-comment">// answer already but we don&#x27;t know for sure.</span><br>    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>        <span class="hljs-comment">// At launch time, we know preoptimized image refs are pointing at the</span><br>        <span class="hljs-comment">// shared cache definition of a protocol.  We can skip the check on</span><br>        <span class="hljs-comment">// launch, but have to visit @protocol refs for shared cache images</span><br>        <span class="hljs-comment">// loaded later.</span><br>        <span class="hljs-keyword">if</span> (launchTime &amp;&amp; hi-&gt;isPreoptimized())<br>            <span class="hljs-keyword">continue</span>;<br>        protocol_t **protolist = _getObjc2ProtocolRefs(hi, &amp;count);<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            remapProtocolRef(&amp;protolist[i]);<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: fix up @protocol references&quot;</span>);<br><br>    <span class="hljs-comment">// Discover categories. Only do this after the initial category</span><br>    <span class="hljs-comment">// attachment has been done. For categories present at startup,</span><br>    <span class="hljs-comment">// discovery is deferred until the first load_images call after</span><br>    <span class="hljs-comment">// the call to _dyld_objc_notify_register completes. rdar://problem/53119145</span><br>    <span class="hljs-keyword">if</span> (didInitialAttachCategories) &#123;<br>        <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>            load_categories_nolock(hi);<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: discover categories&quot;</span>);<br><br>    <span class="hljs-comment">// Category discovery MUST BE Late to avoid potential races</span><br>    <span class="hljs-comment">// when other threads call the new category code before</span><br>    <span class="hljs-comment">// this thread finishes its fixups.</span><br><br>    <span class="hljs-comment">// +load handled by prepare_load_methods()</span><br><br>    <span class="hljs-comment">// Realize non-lazy classes (for +load methods and static instances)</span><br>    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>        classref_t <span class="hljs-keyword">const</span> *classlist = hi-&gt;nlclslist(&amp;count);<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            Class cls = remapClass(classlist[i]);<br>            <span class="hljs-keyword">if</span> (!cls) <span class="hljs-keyword">continue</span>;<br><br>            addClassTableEntry(cls);<br><br>            <span class="hljs-keyword">if</span> (cls-&gt;isSwiftStable()) &#123;<br>                <span class="hljs-keyword">if</span> (cls-&gt;swiftMetadataInitializer()) &#123;<br>                    _objc_fatal(<span class="hljs-string">&quot;Swift class %s with a metadata initializer &quot;</span><br>                                <span class="hljs-string">&quot;is not allowed to be non-lazy&quot;</span>,<br>                                cls-&gt;nameForLogging());<br>                &#125;<br>                <span class="hljs-comment">// fixme also disallow relocatable classes</span><br>                <span class="hljs-comment">// We can&#x27;t disallow all Swift classes because of</span><br>                <span class="hljs-comment">// classes like Swift.__EmptyArrayStorage</span><br>            &#125;<br>            realizeClassWithoutSwift(cls, <span class="hljs-literal">nil</span>);<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: realize non-lazy classes&quot;</span>);<br><br>    <span class="hljs-comment">// Realize newly-resolved future classes, in case CF manipulates them</span><br>    <span class="hljs-keyword">if</span> (resolvedFutureClasses) &#123;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; resolvedFutureClassCount; i++) &#123;<br>            Class cls = resolvedFutureClasses[i];<br>            <span class="hljs-keyword">if</span> (cls-&gt;isSwiftStable()) &#123;<br>                _objc_fatal(<span class="hljs-string">&quot;Swift class is not allowed to be future&quot;</span>);<br>            &#125;<br>            realizeClassWithoutSwift(cls, <span class="hljs-literal">nil</span>);<br>            cls-&gt;setInstancesRequireRawIsaRecursively(<span class="hljs-literal">false</span><span class="hljs-comment">/*inherited*/</span>);<br>        &#125;<br>        free(resolvedFutureClasses);<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: realize future classes&quot;</span>);<br><br>    <span class="hljs-keyword">if</span> (DebugNonFragileIvars) &#123;<br>        realizeAllClasses();<br>    &#125;<br><br><br>    <span class="hljs-comment">// Print preoptimization statistics</span><br>    <span class="hljs-keyword">if</span> (PrintPreopt) &#123;<br>        <span class="hljs-keyword">static</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> PreoptTotalMethodLists;<br>        <span class="hljs-keyword">static</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> PreoptOptimizedMethodLists;<br>        <span class="hljs-keyword">static</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> PreoptTotalClasses;<br>        <span class="hljs-keyword">static</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> PreoptOptimizedClasses;<br><br>        <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>            <span class="hljs-keyword">if</span> (hi-&gt;hasPreoptimizedSelectors()) &#123;<br>                _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: honoring preoptimized selectors &quot;</span><br>                             <span class="hljs-string">&quot;in %s&quot;</span>, hi-&gt;fname());<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (hi-&gt;info()-&gt;optimizedByDyld()) &#123;<br>                _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: IGNORING preoptimized selectors &quot;</span><br>                             <span class="hljs-string">&quot;in %s&quot;</span>, hi-&gt;fname());<br>            &#125;<br><br>            classref_t <span class="hljs-keyword">const</span> *classlist = _getObjc2ClassList(hi, &amp;count);<br>            <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>                Class cls = remapClass(classlist[i]);<br>                <span class="hljs-keyword">if</span> (!cls) <span class="hljs-keyword">continue</span>;<br><br>                PreoptTotalClasses++;<br>                <span class="hljs-keyword">if</span> (hi-&gt;hasPreoptimizedClasses()) &#123;<br>                    PreoptOptimizedClasses++;<br>                &#125;<br><br>                <span class="hljs-keyword">const</span> method_list_t *mlist;<br>                <span class="hljs-keyword">if</span> ((mlist = cls-&gt;bits.safe_ro()-&gt;baseMethods)) &#123;<br>                    PreoptTotalMethodLists++;<br>                    <span class="hljs-keyword">if</span> (mlist-&gt;isFixedUp()) &#123;<br>                        PreoptOptimizedMethodLists++;<br>                    &#125;<br>                &#125;<br>                <span class="hljs-keyword">if</span> ((mlist = cls-&gt;ISA()-&gt;bits.safe_ro()-&gt;baseMethods)) &#123;<br>                    PreoptTotalMethodLists++;<br>                    <span class="hljs-keyword">if</span> (mlist-&gt;isFixedUp()) &#123;<br>                        PreoptOptimizedMethodLists++;<br>                    &#125;<br>                &#125;<br>            &#125;<br>        &#125;<br><br>        _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: %zu selector references not &quot;</span><br>                     <span class="hljs-string">&quot;pre-optimized&quot;</span>, UnfixedSelectors);<br>        _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: %u/%u (%.3g%%) method lists pre-sorted&quot;</span>,<br>                     PreoptOptimizedMethodLists, PreoptTotalMethodLists,<br>                     PreoptTotalMethodLists<br>                     ? <span class="hljs-number">100.0</span>*PreoptOptimizedMethodLists/PreoptTotalMethodLists<br>                     : <span class="hljs-number">0.0</span>);<br>        _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: %u/%u (%.3g%%) classes pre-registered&quot;</span>,<br>                     PreoptOptimizedClasses, PreoptTotalClasses,<br>                     PreoptTotalClasses<br>                     ? <span class="hljs-number">100.0</span>*PreoptOptimizedClasses/PreoptTotalClasses<br>                     : <span class="hljs-number">0.0</span>);<br>        _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: %zu protocol references not &quot;</span><br>                     <span class="hljs-string">&quot;pre-optimized&quot;</span>, UnfixedProtocolReferences);<br>    &#125;<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">undef</span> EACH_HEADER</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="read-images"><a href="#read-images" class="headerlink" title="_read_images"></a>_read_images</h2><h3 id="read-images源码"><a href="#read-images源码" class="headerlink" title="_read_images源码"></a>_read_images源码</h3><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">void</span> _read_images(header_info **hList, uint32_t hCount, <span class="hljs-keyword">int</span> totalClasses, <span class="hljs-keyword">int</span> unoptimizedTotalClasses)<br>&#123;<br>    header_info *hi;<br>    uint32_t hIndex;<br>    size_t count;<br>    size_t i;<br>    Class *resolvedFutureClasses = <span class="hljs-literal">nil</span>;<br>    size_t resolvedFutureClassCount = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">bool</span> doneOnce;<br>    <span class="hljs-keyword">bool</span> launchTime = <span class="hljs-literal">NO</span>;<br>    <span class="hljs-comment">//环境变量设置  OBJC_PRINT_IMAGE_TIMES = YES 会打印ts.log的内容</span><br>    TimeLogger ts(PrintImageTimes);<br>    <span class="hljs-comment">// 加锁</span><br>    lockdebug::assert_locked(&amp;runtimeLock);<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> EACH_HEADER \</span><br><span class="hljs-meta">    hIndex = 0;         \</span><br><span class="hljs-meta">    hIndex &lt; hCount &amp;&amp; (hi = hList[hIndex]); \</span><br><span class="hljs-meta">    hIndex++</span><br><br>    <span class="hljs-keyword">if</span> (!doneOnce) &#123;<br>        doneOnce = <span class="hljs-literal">YES</span>;<br>        launchTime = <span class="hljs-literal">YES</span>;<br>        <span class="hljs-comment">// 1.重新初始化TaggePointer环境</span><br>        <span class="hljs-keyword">if</span> (DisableTaggedPointers) &#123;<br>            disableTaggedPointers();<br>        &#125;<br><br>        initializeTaggedPointerObfuscator();<br><br>        <span class="hljs-keyword">if</span> (PrintConnecting) &#123;<br>            _objc_inform(<span class="hljs-string">&quot;CLASS: found %d classes during launch&quot;</span>, totalClasses);<br>        &#125;<br><br>        <span class="hljs-comment">// 创建gdb_objc_realized_classes表</span><br>        <span class="hljs-keyword">int</span> namedClassesSize =<br>            (isPreoptimized() ? unoptimizedTotalClasses : totalClasses) * <span class="hljs-number">4</span> / <span class="hljs-number">3</span>;<br>        <span class="hljs-comment">// 实际上它存放的是除了 dyld shared cache 中的 class，无论该 class 是否 realized。</span><br>        gdb_objc_realized_classes =<br>            NXCreateMapTable(NXStrValueMapPrototype, namedClassesSize);<br><br>        ts.log(<span class="hljs-string">&quot;IMAGE TIMES: first time tasks&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-comment">//2. 修复预编译阶段的`@selector`的混乱问题</span><br>    <span class="hljs-keyword">static</span> size_t UnfixedSelectors;<br>    &#123;<br>        mutex_locker_t lock(selLock);<br>        <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>            <span class="hljs-keyword">if</span> (hi-&gt;hasPreoptimizedSelectors()) <span class="hljs-keyword">continue</span>;<br><br>            <span class="hljs-keyword">bool</span> isBundle = hi-&gt;isBundle();<br>            <span class="hljs-comment">// 取出_objc_selrefs函数</span><br>            SEL *sels = _getObjc2SelectorRefs(hi, &amp;count);<br>            UnfixedSelectors += count;<br>            <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>                <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name = sel_cname(sels[i]);<br>                <span class="hljs-comment">//这里注册实际是将方法名存储到namedSelectors中保存</span><br>                SEL sel = sel_registerNameNoLock(name, isBundle);<br>                <span class="hljs-comment">//方法列表和注册时不同的，重新赋值</span><br>                <span class="hljs-keyword">if</span> (sels[i] != sel) &#123;<br>                    sels[i] = sel;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: fix up selector references&quot;</span>);<br><br>    <span class="hljs-keyword">bool</span> hasDyldRoots = dyld_shared_cache_some_image_overridden();<br>    <span class="hljs-number">3.</span> 开始遍历头文件，进行类与元类的读取操作并标记(旧类改动后会生成新的类，并重映射到新的类上)<br>    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>        <span class="hljs-keyword">if</span> (! mustReadClasses(hi, hasDyldRoots)) &#123;<br>            <span class="hljs-comment">// Image is sufficiently optimized that we need not call readClass()</span><br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        classref_t <span class="hljs-keyword">const</span> *classlist = _getObjc2ClassList(hi, &amp;count);<br><br>        <span class="hljs-keyword">bool</span> headerIsBundle = hi-&gt;isBundle();<br>        <span class="hljs-keyword">bool</span> headerIsPreoptimized = hi-&gt;hasPreoptimizedClasses();<br><br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            Class cls = (Class)classlist[i];<br>            <span class="hljs-comment">//readClass读取类的信息及类的更新</span><br>            Class newCls = readClass(cls, headerIsBundle, headerIsPreoptimized);<br>            <span class="hljs-comment">//旧类和新类不同，则会加到resolvedFutureClasses中</span><br>            <span class="hljs-keyword">if</span> (newCls != cls  &amp;&amp;  newCls) &#123;<br>                <span class="hljs-comment">// Class was moved but not deleted. Currently this occurs</span><br>                <span class="hljs-comment">// only when the new class resolved a future class.</span><br>                <span class="hljs-comment">// Non-lazily realize the class below.</span><br>                resolvedFutureClasses = (Class *)<br>                    realloc(resolvedFutureClasses,<br>                            (resolvedFutureClassCount+<span class="hljs-number">1</span>) * <span class="hljs-keyword">sizeof</span>(Class));<br>                resolvedFutureClasses[resolvedFutureClassCount++] = newCls;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: discover classes&quot;</span>);<br><br>    <span class="hljs-comment">// Fix up remapped classes</span><br>    <span class="hljs-comment">// Class list and nonlazy class list remain unremapped.</span><br>    <span class="hljs-comment">// Class refs and super refs are remapped for message dispatching.</span><br><br>    <span class="hljs-keyword">if</span> (!noClassesRemapped()) &#123;<br>        <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>            Class *classrefs = _getObjc2ClassRefs(hi, &amp;count);<br>            <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>                remapClassRef(&amp;classrefs[i]);<br>            &#125;<br>            <span class="hljs-comment">// fixme why doesn&#x27;t test future1 catch the absence of this?</span><br>            classrefs = _getObjc2SuperRefs(hi, &amp;count);<br>            <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>                remapClassRef(&amp;classrefs[i]);<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: remap classes&quot;</span>);<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> SUPPORT_FIXUP</span><br>    <span class="hljs-comment">// Fix up old objc_msgSend_fixup call sites</span><br>    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>        message_ref_t *refs = _getObjc2MessageRefs(hi, &amp;count);<br>        <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;<br><br>        <span class="hljs-keyword">if</span> (PrintVtables) &#123;<br>            _objc_inform(<span class="hljs-string">&quot;VTABLES: repairing %zu unsupported vtable dispatch &quot;</span><br>                         <span class="hljs-string">&quot;call sites in %s&quot;</span>, count, hi-&gt;fname());<br>        &#125;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            fixupMessageRef(refs+i);<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: fix up objc_msgSend_fixup&quot;</span>);<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br><br><br>    <span class="hljs-comment">// Discover protocols. Fix up protocol refs.</span><br>    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>        <span class="hljs-keyword">extern</span> objc_class OBJC_CLASS_$_Protocol;<br>        Class cls = (Class)&amp;OBJC_CLASS_$_Protocol;<br>        ASSERT(cls);<br>        NXMapTable *protocol_map = protocols();<br>        <span class="hljs-keyword">bool</span> isPreoptimized = hi-&gt;hasPreoptimizedProtocols();<br><br>        <span class="hljs-comment">// Skip reading protocols if this is an image from the shared cache</span><br>        <span class="hljs-comment">// and we support roots</span><br>        <span class="hljs-comment">// Note, after launch we do need to walk the protocol as the protocol</span><br>        <span class="hljs-comment">// in the shared cache is marked with isCanonical() and that may not</span><br>        <span class="hljs-comment">// be true if some non-shared cache binary was chosen as the canonical</span><br>        <span class="hljs-comment">// definition</span><br>        <span class="hljs-keyword">if</span> (launchTime &amp;&amp; isPreoptimized) &#123;<br>            <span class="hljs-keyword">if</span> (PrintProtocols) &#123;<br>                _objc_inform(<span class="hljs-string">&quot;PROTOCOLS: Skipping reading protocols in image: %s&quot;</span>,<br>                             hi-&gt;fname());<br>            &#125;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">bool</span> isBundle = hi-&gt;isBundle();<br><br>        protocol_t * <span class="hljs-keyword">const</span> *protolist = _getObjc2ProtocolList(hi, &amp;count);<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            readProtocol(protolist[i], cls, protocol_map,<br>                         isPreoptimized, isBundle);<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: discover protocols&quot;</span>);<br><br>    <span class="hljs-comment">// Fix up @protocol references</span><br>    <span class="hljs-comment">// Preoptimized images may have the right</span><br>    <span class="hljs-comment">// answer already but we don&#x27;t know for sure.</span><br>    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>        <span class="hljs-comment">// At launch time, we know preoptimized image refs are pointing at the</span><br>        <span class="hljs-comment">// shared cache definition of a protocol.  We can skip the check on</span><br>        <span class="hljs-comment">// launch, but have to visit @protocol refs for shared cache images</span><br>        <span class="hljs-comment">// loaded later.</span><br>        <span class="hljs-keyword">if</span> (launchTime &amp;&amp; hi-&gt;isPreoptimized())<br>            <span class="hljs-keyword">continue</span>;<br>        protocol_t **protolist = _getObjc2ProtocolRefs(hi, &amp;count);<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            remapProtocolRef(&amp;protolist[i]);<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: fix up @protocol references&quot;</span>);<br><br>    <span class="hljs-comment">// Discover categories. Only do this after the initial category</span><br>    <span class="hljs-comment">// attachment has been done. For categories present at startup,</span><br>    <span class="hljs-comment">// discovery is deferred until the first load_images call after</span><br>    <span class="hljs-comment">// the call to _dyld_objc_notify_register completes. rdar://problem/53119145</span><br>    <span class="hljs-keyword">if</span> (didInitialAttachCategories) &#123;<br>        <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>            load_categories_nolock(hi);<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: discover categories&quot;</span>);<br><br>    <span class="hljs-comment">// Category discovery MUST BE Late to avoid potential races</span><br>    <span class="hljs-comment">// when other threads call the new category code before</span><br>    <span class="hljs-comment">// this thread finishes its fixups.</span><br><br>    <span class="hljs-comment">// +load handled by prepare_load_methods()</span><br><br>    <span class="hljs-comment">// Realize non-lazy classes (for +load methods and static instances)</span><br>    <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>        classref_t <span class="hljs-keyword">const</span> *classlist = hi-&gt;nlclslist(&amp;count);<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>            Class cls = remapClass(classlist[i]);<br>            <span class="hljs-keyword">if</span> (!cls) <span class="hljs-keyword">continue</span>;<br><br>            addClassTableEntry(cls);<br><br>            <span class="hljs-keyword">if</span> (cls-&gt;isSwiftStable()) &#123;<br>                <span class="hljs-keyword">if</span> (cls-&gt;swiftMetadataInitializer()) &#123;<br>                    _objc_fatal(<span class="hljs-string">&quot;Swift class %s with a metadata initializer &quot;</span><br>                                <span class="hljs-string">&quot;is not allowed to be non-lazy&quot;</span>,<br>                                cls-&gt;nameForLogging());<br>                &#125;<br>                <span class="hljs-comment">// fixme also disallow relocatable classes</span><br>                <span class="hljs-comment">// We can&#x27;t disallow all Swift classes because of</span><br>                <span class="hljs-comment">// classes like Swift.__EmptyArrayStorage</span><br>            &#125;<br>            realizeClassWithoutSwift(cls, <span class="hljs-literal">nil</span>);<br>        &#125;<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: realize non-lazy classes&quot;</span>);<br><br>    <span class="hljs-comment">// Realize newly-resolved future classes, in case CF manipulates them</span><br>    <span class="hljs-keyword">if</span> (resolvedFutureClasses) &#123;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; resolvedFutureClassCount; i++) &#123;<br>            Class cls = resolvedFutureClasses[i];<br>            <span class="hljs-keyword">if</span> (cls-&gt;isSwiftStable()) &#123;<br>                _objc_fatal(<span class="hljs-string">&quot;Swift class is not allowed to be future&quot;</span>);<br>            &#125;<br>            realizeClassWithoutSwift(cls, <span class="hljs-literal">nil</span>);<br>            cls-&gt;setInstancesRequireRawIsaRecursively(<span class="hljs-literal">false</span><span class="hljs-comment">/*inherited*/</span>);<br>        &#125;<br>        free(resolvedFutureClasses);<br>    &#125;<br><br>    ts.log(<span class="hljs-string">&quot;IMAGE TIMES: realize future classes&quot;</span>);<br><br>    <span class="hljs-keyword">if</span> (DebugNonFragileIvars) &#123;<br>        realizeAllClasses();<br>    &#125;<br><br><br>    <span class="hljs-comment">// Print preoptimization statistics</span><br>    <span class="hljs-keyword">if</span> (PrintPreopt) &#123;<br>        <span class="hljs-keyword">static</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> PreoptTotalMethodLists;<br>        <span class="hljs-keyword">static</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> PreoptOptimizedMethodLists;<br>        <span class="hljs-keyword">static</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> PreoptTotalClasses;<br>        <span class="hljs-keyword">static</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> PreoptOptimizedClasses;<br><br>        <span class="hljs-keyword">for</span> (EACH_HEADER) &#123;<br>            <span class="hljs-keyword">if</span> (hi-&gt;hasPreoptimizedSelectors()) &#123;<br>                _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: honoring preoptimized selectors &quot;</span><br>                             <span class="hljs-string">&quot;in %s&quot;</span>, hi-&gt;fname());<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (hi-&gt;info()-&gt;optimizedByDyld()) &#123;<br>                _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: IGNORING preoptimized selectors &quot;</span><br>                             <span class="hljs-string">&quot;in %s&quot;</span>, hi-&gt;fname());<br>            &#125;<br><br>            classref_t <span class="hljs-keyword">const</span> *classlist = _getObjc2ClassList(hi, &amp;count);<br>            <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>                Class cls = remapClass(classlist[i]);<br>                <span class="hljs-keyword">if</span> (!cls) <span class="hljs-keyword">continue</span>;<br><br>                PreoptTotalClasses++;<br>                <span class="hljs-keyword">if</span> (hi-&gt;hasPreoptimizedClasses()) &#123;<br>                    PreoptOptimizedClasses++;<br>                &#125;<br><br>                <span class="hljs-keyword">const</span> method_list_t *mlist;<br>                <span class="hljs-keyword">if</span> ((mlist = cls-&gt;bits.safe_ro()-&gt;baseMethods)) &#123;<br>                    PreoptTotalMethodLists++;<br>                    <span class="hljs-keyword">if</span> (mlist-&gt;isFixedUp()) &#123;<br>                        PreoptOptimizedMethodLists++;<br>                    &#125;<br>                &#125;<br>                <span class="hljs-keyword">if</span> ((mlist = cls-&gt;ISA()-&gt;bits.safe_ro()-&gt;baseMethods)) &#123;<br>                    PreoptTotalMethodLists++;<br>                    <span class="hljs-keyword">if</span> (mlist-&gt;isFixedUp()) &#123;<br>                        PreoptOptimizedMethodLists++;<br>                    &#125;<br>                &#125;<br>            &#125;<br>        &#125;<br><br>        _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: %zu selector references not &quot;</span><br>                     <span class="hljs-string">&quot;pre-optimized&quot;</span>, UnfixedSelectors);<br>        _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: %u/%u (%.3g%%) method lists pre-sorted&quot;</span>,<br>                     PreoptOptimizedMethodLists, PreoptTotalMethodLists,<br>                     PreoptTotalMethodLists<br>                     ? <span class="hljs-number">100.0</span>*PreoptOptimizedMethodLists/PreoptTotalMethodLists<br>                     : <span class="hljs-number">0.0</span>);<br>        _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: %u/%u (%.3g%%) classes pre-registered&quot;</span>,<br>                     PreoptOptimizedClasses, PreoptTotalClasses,<br>                     PreoptTotalClasses<br>                     ? <span class="hljs-number">100.0</span>*PreoptOptimizedClasses/PreoptTotalClasses<br>                     : <span class="hljs-number">0.0</span>);<br>        _objc_inform(<span class="hljs-string">&quot;PREOPTIMIZATION: %zu protocol references not &quot;</span><br>                     <span class="hljs-string">&quot;pre-optimized&quot;</span>, UnfixedProtocolReferences);<br>    &#125;<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">undef</span> EACH_HEADER</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><ul>
-<li>主要流程如下：<ol>
+<li><p>主要流程如下：</p>
+<ol>
 <li>静态变量<code>doneOnce</code>,控制只加载一次，这里主要的工作时初始化<strong>类映射表</strong><code>gdb_objc_realized_classes</code>以及重新初始化<code>TaggePointer</code>环境<ul>
 <li>其中创建的<code>gdb_objc_realized_classes</code>这个表，后期会在<code>addNamedClass</code>静态方法内部对表进行赋值</li>
 </ul>
 </li>
-<li>修复预编译阶段的<code>@selector</code>的混乱问题,方法列表(从mach-o中拿到的，一般是物理地址，这里，修复，将其<code>rebase</code>，设为虚拟地址)和注册时不同的，重新修复。</li>
+<li>修复预编译阶段的<code>@selector</code>的混乱问题,方法列表和注册时不同的，重新修复。</li>
 <li>开始遍历头文件，进行类与元类的读取操作并标记(旧类改动后会生成新的类，并重映射到新的类上),主要的方法是<code>readClass</code>,其内部<ul>
 <li>找不到该类的父类，可能是弱绑定，直接返回<code>nil</code></li>
-<li>找到类了，判断这个类是否是一个<code>future</code>的类(可以理解为需要实现的一个类，也可以理解为这个类是否有变化)，如果有变化则创建新类，并把旧类的数据拷贝一份然后赋值给新类<code>newCls</code>，然后调用<code>addRemappedClass</code>进行重映射(rebase)，用新的类替换掉旧的类，并返回新类<code>newCls</code>的地址</li>
+<li>找到类了，判断这个类是否是一个<code>future</code>的类(可以理解为需要实现的一个类，也可以理解为这个类是否有变化)，如果有变化则创建新类，并把旧类的数据拷贝一份然后赋值给新类<code>newCls</code>，然后调用<code>addRemappedClass</code>进行重映射，用新的类替换掉旧的类，并返回新类<code>newCls</code>的地址</li>
 <li>找到类了，如果类没有任何变化，则不进行任何操作，直接返回<code>class</code></li>
 <li>期间会将类的信息加入<code>NXMapTable</code>(类映射表)和<code>objc::allocatedClasses</code>(所有类的表,这个表在<code>runtime_init</code>时初始化的)<ul>
 <li><code>addNamedClass</code>,<code>key</code>是<code>类名</code>，<code>value</code>是<code>Class</code>,哈希表结构</li>
@@ -9666,18 +10968,26 @@
 </li>
 <li>修复重映射⼀些没有被镜像⽂件加载进来的类,主要方法<code>remapClassRef</code></li>
 <li>修复⼀些旧的<code>objc</code>方法,在方法<code>fixupMessageRef</code>，类似<code>alloc</code>、<code>allocWithZone:</code>、<code>retain</code>、<code>release</code>、<code>autorelease</code>、<code>objc_msgSendSuper2_fixup</code>等一些方法，会重写赋值新的<code>imp</code>。在调试发现，并未触发，显然是对旧版本方法的修复</li>
-<li>找到所有的协议<code>protocols</code>，和2,3类似(<code>rebase</code>)，主要方法是<code>readProtocol</code>,会将协议加载到一个<code>NXMapTable</code>的映射表中，这里如果声明的协议没有使用，是不会加入的.</li>
+<li>找到所有的协议<code>protocols</code>，和2,3类似(<code>remap</code>)，主要方法是<code>readProtocol</code>,会将协议加载到一个<code>NXMapTable</code>的映射表中，这里如果声明的协议没有使用，是不会加入的.</li>
 <li>和4类似，重映射没有从镜像中加载的协议，主要方法<code>remapProtocolRef</code></li>
 <li>分类处理，将分类合并到类中。<strong>注意</strong>,这里的合并操作，是在真正的分类合并操作完成之后（也就是在<code>load_images</code>之后），才能进行合并，一般情况下，并不会执行</li>
 <li>对类中有<code>+load</code>存在的,即非懒加载类（有<code>+load</code>的类）,加入到所有类的表中，并进行加载<code>realizeClassWithoutSwift</code>。的作用是，<code>对类 cls 进行首次初始化，包括分配其读写数据。不执行任何 Swift 端初始化。返回该类的真实类结构</code>。</li>
 <li>对3中得到的<code>FutureClasses</code>重新映射</li>
 </ol>
 </li>
+<li><p><code>map_images</code>中的各种<code>remap</code>重映射的目的</p>
+<ol>
+<li><code>加载镜像文件</code>：<code>map_image</code>函数用于加载可执行文件和动态库的镜像文件(加载时，会调用<code>dyld</code>的方式，进行<code>rebase</code>)。它会根据传入的镜像路径，读取相应的二进制文件并将其映射到内存中。</li>
+<li><code>符号解析</code>：加载镜像文件后，<code>map_image</code>函数会对其中的符号进行解析。符号可以是函数、全局变量、类、协议等。解析符号是为了建立符号与相应的内存地址之间的关联，以便在后续的代码执行中能够正确地访问和调用这些符号</li>
+<li><code>修复链接关系</code>：镜像文件中的符号可能会引用其他的库或框架，需要进行链接才能正确地访问这些外部符号。<code>map_image</code>函数会处理这些链接关系，确保所有的符号都能够正确地链接到相应的库和框架中</li>
+<li><code>内存保护和权限设置</code>：<code>map_image</code>函数会为加载的镜像文件设置适当的内存保护和权限设置。这样可以防止对内存的非法访问和修改，提高应用程序的安全性。</li>
+</ol>
+</li>
 </ul>
 <h3 id="realizeClassWithoutSwift-源码"><a href="#realizeClassWithoutSwift-源码" class="headerlink" title="realizeClassWithoutSwift 源码"></a>realizeClassWithoutSwift 源码</h3><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-keyword">static</span> Class realizeClassWithoutSwift(Class cls, Class previously)<br>&#123;<br>    lockdebug::assert_locked(&amp;runtimeLock);<br><br>      class_rw_t *rw;<br>      Class supercls;<br>      Class metacls;<br><br>        <span class="hljs-keyword">if</span> (!cls) <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>        <span class="hljs-keyword">if</span> (cls-&gt;isRealized()) &#123;<br>            validateAlreadyRealizedClass(cls);<br>            <span class="hljs-keyword">return</span> cls;<br>    &#125;<br>     ASSERT(cls == remapClass(cls));<br><br>     <span class="hljs-comment">// fixme verify class is not in an un-dlopened part of the shared cache?</span><br><br>     auto ro = cls-&gt;safe_ro(); <span class="hljs-comment">// 读取类的数据</span><br>     auto isMeta = ro-&gt;flags &amp; RO_META;<br>     <span class="hljs-keyword">if</span> (ro-&gt;flags &amp; RO_FUTURE) &#123;  <span class="hljs-comment">// rw已经有值的话走这里</span><br>    <span class="hljs-comment">// This was a future class. rw data is already allocated.</span><br>      rw = cls-&gt;data();<br>      ro = cls-&gt;data()-&gt;ro();<br>      ASSERT(!isMeta);<br>       cls-&gt;changeInfo(RW_REALIZED|RW_REALIZING, RW_FUTURE);<br>    &#125; <span class="hljs-keyword">else</span> &#123;  <span class="hljs-comment">// 正常的类走这里</span><br>      <span class="hljs-comment">// Normal class. Allocate writeable class data.</span><br>       rw = objc::zalloc&lt;class_rw_t&gt;();<br>       rw-&gt;set_ro(ro);<br>       rw-&gt;flags = RW_REALIZED|RW_REALIZING|isMeta;<br>       cls-&gt;setData(rw);<br>  &#125;<br><br>  cls-&gt;cache.initializeToEmptyOrPreoptimizedInDisguise();<br><br> <span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> FAST_CACHE_META</span><br>  <span class="hljs-keyword">if</span> (isMeta) cls-&gt;cache.setBit(FAST_CACHE_META);<br> <span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br><br>  <span class="hljs-comment">// Choose an index for this class.</span><br> <span class="hljs-comment">// Sets cls-&gt;instancesRequireRawIsa if indexes no more indexes are         available</span><br> cls-&gt;chooseClassArrayIndex();<br>    <br> <span class="hljs-keyword">if</span> (PrintConnecting) &#123;<br>      _objc_inform(<span class="hljs-string">&quot;CLASS: realizing class &#x27;%s&#x27;%s %p %p #%u %s%s&quot;</span>,<br>             cls-&gt;nameForLogging(), isMeta ? <span class="hljs-string">&quot; (meta)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>,<br>             (<span class="hljs-keyword">void</span>*)cls, ro, cls-&gt;classArrayIndex(),<br>             cls-&gt;isSwiftStable() ? <span class="hljs-string">&quot;(swift)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>,<br>             cls-&gt;isSwiftLegacy() ? <span class="hljs-string">&quot;(pre-stable swift)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>);<br> &#125;<br><br> <span class="hljs-comment">// Realize superclass and metaclass, if they aren&#x27;t already.</span><br>  <span class="hljs-comment">//实现超类和元类（如果尚未实现）。</span><br>  <span class="hljs-comment">// This needs to be done after RW_REALIZED is set above, for root classes.</span><br>  <span class="hljs-comment">//对于根类，需要在上面设置了RW_REALIZED之后执行此操作。</span><br> <span class="hljs-comment">// This needs to be done after class index is chosen, for root metaclasses.</span><br> <span class="hljs-comment">//对于根元类，需要在选择类索引之后执行此操作。</span><br>  <span class="hljs-comment">// This assumes that none of those classes have Swift contents,</span><br>  <span class="hljs-comment">//   or that Swift&#x27;s initializers have already been called.</span><br>  <span class="hljs-comment">//   fixme that assumption will be wrong if we add support</span><br>  <span class="hljs-comment">//   for ObjC subclasses of Swift classes.</span><br>  <span class="hljs-comment">// 递归调用 realizeClassWithoutSwift ，实现父类和元类</span><br>  supercls = realizeClassWithoutSwift(remapClass(cls-&gt;getSuperclass()), <span class="hljs-literal">nil</span>);<br> metacls = realizeClassWithoutSwift(remapClass(cls-&gt;ISA()), <span class="hljs-literal">nil</span>);<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> SUPPORT_NONPOINTER_ISA</span><br>  <span class="hljs-keyword">if</span> (isMeta) &#123; <span class="hljs-comment">// 如果是元类，对isa处理</span><br>        <span class="hljs-comment">// Metaclasses do not need any features from non pointer ISA</span><br>     <span class="hljs-comment">// This allows for a faspath for classes in objc_retain/           objc_release.</span><br>        cls-&gt;setInstancesRequireRawIsa();<br>  &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// 不是元类，也是对isa处理</span><br>      <span class="hljs-comment">// Disable non-pointer isa for some classes and/or platforms.</span><br>       <span class="hljs-comment">// Set instancesRequireRawIsa.</span><br>       <span class="hljs-keyword">bool</span> instancesRequireRawIsa = cls-&gt;instancesRequireRawIsa();<br>       <span class="hljs-keyword">bool</span> rawIsaIsInherited = <span class="hljs-literal">false</span>;<br>       <span class="hljs-keyword">static</span> <span class="hljs-keyword">bool</span> hackedDispatch = <span class="hljs-literal">false</span>;<br><br>      <span class="hljs-keyword">if</span> (DisableNonpointerIsa) &#123;<br>            <span class="hljs-comment">// Non-pointer isa disabled by environment or app SDK version</span><br>         instancesRequireRawIsa = <span class="hljs-literal">true</span>;<br>      &#125;<br>      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!hackedDispatch  &amp;&amp;  <span class="hljs-number">0</span> == strcmp(ro-&gt;getName(),  <span class="hljs-string">&quot;OS_object&quot;</span>))<br>       &#123;<br>         <span class="hljs-comment">// hack for libdispatch et al - isa also acts as vtable pointer</span><br>         hackedDispatch = <span class="hljs-literal">true</span>;<br>            instancesRequireRawIsa = <span class="hljs-literal">true</span>;<br>     &#125;<br>       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (supercls  &amp;&amp;  supercls-&gt;getSuperclass()  &amp;&amp;<br>                 supercls-&gt;instancesRequireRawIsa())<br>     &#123;<br>            <span class="hljs-comment">// This is also propagated by addSubclass()</span><br>           <span class="hljs-comment">// but nonpointer isa setup needs it earlier.</span><br>           <span class="hljs-comment">// Special case: instancesRequireRawIsa does not propagate</span><br>            <span class="hljs-comment">// from root class to root metaclass</span><br>            instancesRequireRawIsa = <span class="hljs-literal">true</span>;<br>            rawIsaIsInherited = <span class="hljs-literal">true</span>;<br>      &#125;<br><br>        <span class="hljs-keyword">if</span> (instancesRequireRawIsa) &#123;<br>            cls-&gt;setInstancesRequireRawIsaRecursively(rawIsaIsInherited);<br>       &#125;<br> &#125;<br><span class="hljs-comment">// SUPPORT_NONPOINTER_ISA</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br><br> <span class="hljs-comment">// Update superclass and metaclass in case of remapping</span><br> <span class="hljs-comment">// 确定继承链，赋值父类和元类</span><br>    cls-&gt;setSuperclass(supercls);<br>    cls-&gt;initClassIsa(metacls);<br>    <span class="hljs-comment">// 协调实例变量的偏移量/布局。</span><br>    <span class="hljs-comment">// Reconcile instance variable offsets / layout.</span><br>    <span class="hljs-comment">// This may reallocate class_ro_t, updating our ro variable.</span><br>    <span class="hljs-keyword">if</span> (supercls  &amp;&amp;  !isMeta) reconcileInstanceVariables(cls, supercls, ro);<br>    <span class="hljs-comment">// 经过上一步，再次协调属性对齐后，设置实例大小</span><br>    <span class="hljs-comment">// Set fastInstanceSize if it wasn&#x27;t set already.</span><br>    cls-&gt;setInstanceSize(ro-&gt;instanceSize);<br>    <span class="hljs-comment">// 赋值一些 ro 中的 flags标识位 到 rw</span><br>    <span class="hljs-comment">// Copy some flags from ro to rw</span><br>    <span class="hljs-keyword">if</span> (ro-&gt;flags &amp; RO_HAS_CXX_STRUCTORS) &#123;<br>        cls-&gt;setHasCxxDtor();<br>        <span class="hljs-keyword">if</span> (! (ro-&gt;flags &amp; RO_HAS_CXX_DTOR_ONLY)) &#123;<br>            cls-&gt;setHasCxxCtor();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// Propagate the associated objects forbidden flag from ro or from</span><br>    <span class="hljs-comment">// the superclass.</span><br>    <span class="hljs-comment">// 从ro或父类传播关联的对象禁止标志。</span><br>    <span class="hljs-keyword">if</span> ((ro-&gt;flags &amp; RO_FORBIDS_ASSOCIATED_OBJECTS) ||<br>        (supercls &amp;&amp; supercls-&gt;forbidsAssociatedObjects()))<br>    &#123;<br>        rw-&gt;flags |= RW_FORBIDS_ASSOCIATED_OBJECTS;<br>    &#125;<br><br>    <span class="hljs-comment">// Connect this class to its superclass&#x27;s subclass lists</span><br>    <span class="hljs-comment">// 添加当前类到父类的子类列表中，如果没有父类，设置自己就是根类</span><br>    <span class="hljs-keyword">if</span> (supercls) &#123;<br>        addSubclass(supercls, cls);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        addRootClass(cls);<br>    &#125;<br><br>    <span class="hljs-comment">// Attach categories</span><br>    methodizeClass(cls, previously);<br><br>    <span class="hljs-keyword">return</span> cls;<br>    &#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li>非懒加载的类的<code>realizeClassWithoutSwift</code>是在<code>map_images</code>是实现的，而懒加载类则是在,第一次使用该类时，调用相关<code>objc_msgSend</code>方法时调用。（代码中不使用的类，则会回加载解析）</li>
-<li><code>methodizeClass</code>方法，修复 cls 的方法列表，协议列表和属性列表，将类<code>class_ro_t</code>中的方法添加到<code>class_rw_t</code>中来  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> methodizeClass(Class cls, Class previously)<br>    &#123;<br>        runtimeLock.assertLocked();<br>    <br>        <span class="hljs-keyword">bool</span> isMeta = cls-&gt;isMetaClass();<br>        auto rw = cls-&gt;data();<br>        auto ro = rw-&gt;ro(); <span class="hljs-comment">// 读取ro数据</span><br>        auto rwe = rw-&gt;ext(); <span class="hljs-comment">// 读取ext，赋值给rwe</span><br>    <br>        <span class="hljs-comment">// Methodizing for the first time</span><br>        <span class="hljs-keyword">if</span> (PrintConnecting) &#123;<br>            _objc_inform(<span class="hljs-string">&quot;CLASS: methodizing class &#x27;%s&#x27; %s&quot;</span>, <br>                         cls-&gt;nameForLogging(), isMeta ? <span class="hljs-string">&quot;(meta)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>);<br>        &#125;<br>    <br>        <span class="hljs-comment">// Install methods and properties that the class implements itself.</span><br>        method_list_t *list = ro-&gt;baseMethods(); <span class="hljs-comment">// 获取ro中的方法列表</span><br>        <span class="hljs-keyword">if</span> (list) &#123;<br>            <span class="hljs-comment">// 对方法列表list重新排序</span><br>            prepareMethodLists(cls, &amp;list, <span class="hljs-number">1</span>, <span class="hljs-literal">YES</span>,  isBundleClass(cls));<br>            <span class="hljs-keyword">if</span> (rwe) rwe-&gt;methods.attachLists(&amp;list, <span class="hljs-number">1</span>); <span class="hljs-comment">// 如果有rwe，添加方法列表list到rwe的methodsList</span><br>        &#125;<br>    <br>        property_list_t *proplist = ro-&gt;baseProperties;<br>        <span class="hljs-keyword">if</span> (rwe &amp;&amp; proplist) &#123;<br>            rwe-&gt;properties.attachLists(&amp;proplist, <span class="hljs-number">1</span>);<br>        &#125;<br>    <br>        protocol_list_t *protolist = ro-&gt;baseProtocols;<br>        <span class="hljs-keyword">if</span> (rwe &amp;&amp; protolist) &#123;<br>            rwe-&gt;protocols.attachLists(&amp;protolist, <span class="hljs-number">1</span>);<br>        &#125;<br>    <br>        <span class="hljs-comment">// Root classes get bonus method implementations if they don&#x27;t have </span><br>        <span class="hljs-comment">// them already. These apply before category replacements.</span><br>        <span class="hljs-keyword">if</span> (cls-&gt;isRootMetaclass()) &#123;<br>            <span class="hljs-comment">// root metaclass 根元类添加initialize方法</span><br>            addMethod(cls, <span class="hljs-keyword">@selector</span>(initialize), (IMP)&amp;objc_noop_imp, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-literal">NO</span>);<br>        &#125;<br>    <br>        <span class="hljs-comment">// Attach categories. 附加分类</span><br>        <span class="hljs-keyword">if</span> (previously) &#123;<br>            <span class="hljs-keyword">if</span> (isMeta) &#123;<br>                objc::unattachedCategories.attachToClass(cls, previously,<br>                                                         ATTACH_METACLASS);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-comment">// When a class relocates, categories with class methods</span><br>                <span class="hljs-comment">// may be registered on the class itself rather than on</span><br>                <span class="hljs-comment">// the metaclass. Tell attachToClass to look for those.</span><br>                objc::unattachedCategories.attachToClass(cls, previously,<br>                                                         ATTACH_CLASS_AND_METACLASS);<br>            &#125;<br>        &#125;<br>        objc::unattachedCategories.attachToClass(cls, cls,<br>                                                 isMeta ? ATTACH_METACLASS : ATTACH_CLASS);<br>    <br>    <span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> DEBUG</span><br>        <span class="hljs-comment">// Debug: sanity-check all SELs; log method list contents</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> auto&amp; meth : rw-&gt;methods()) &#123;<br>            <span class="hljs-keyword">if</span> (PrintConnecting) &#123;<br>                _objc_inform(<span class="hljs-string">&quot;METHOD %c[%s %s]&quot;</span>, isMeta ? <span class="hljs-string">&#x27;+&#x27;</span> : <span class="hljs-string">&#x27;-&#x27;</span>, <br>                             cls-&gt;nameForLogging(), sel_getName(meth.name));<br>            &#125;<br>            ASSERT(sel_registerName(sel_getName(meth.name)) == meth.name); <br>&#125;<br>   <span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br>     &#125;<br></code></pre></td></tr></table></figure>
+<li>非懒加载的类的<code>realizeClassWithoutSwift</code>是在<code>map_images</code>是实现的，而懒加载类则是在,第一次使用该类时，调用相关<code>objc_msgSend</code>方法时调用。（代码中不使用的类，则不会加载解析）</li>
+<li><code>methodizeClass</code>方法，修复<code>cls</code> 的方法列表，协议列表和属性列表，将类<code>class_ro_t</code>中的方法添加到<code>class_rw_t</code>中来  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> methodizeClass(Class cls, Class previously)<br>    &#123;<br>        runtimeLock.assertLocked();<br>    <br>        <span class="hljs-keyword">bool</span> isMeta = cls-&gt;isMetaClass();<br>        auto rw = cls-&gt;data();<br>        auto ro = rw-&gt;ro(); <span class="hljs-comment">// 读取ro数据</span><br>        auto rwe = rw-&gt;ext(); <span class="hljs-comment">// 读取ext，赋值给rwe</span><br>    <br>        <span class="hljs-comment">// Methodizing for the first time</span><br>        <span class="hljs-keyword">if</span> (PrintConnecting) &#123;<br>            _objc_inform(<span class="hljs-string">&quot;CLASS: methodizing class &#x27;%s&#x27; %s&quot;</span>, <br>                         cls-&gt;nameForLogging(), isMeta ? <span class="hljs-string">&quot;(meta)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>);<br>        &#125;<br>    <br>        <span class="hljs-comment">// Install methods and properties that the class implements itself.</span><br>        method_list_t *list = ro-&gt;baseMethods(); <span class="hljs-comment">// 获取ro中的方法列表</span><br>        <span class="hljs-keyword">if</span> (list) &#123;<br>            <span class="hljs-comment">// 对方法列表list重新排序</span><br>            prepareMethodLists(cls, &amp;list, <span class="hljs-number">1</span>, <span class="hljs-literal">YES</span>,  isBundleClass(cls));<br>            <span class="hljs-keyword">if</span> (rwe) rwe-&gt;methods.attachLists(&amp;list, <span class="hljs-number">1</span>); <span class="hljs-comment">// 如果有rwe，添加方法列表list到rwe的methodsList</span><br>        &#125;<br>    <br>        property_list_t *proplist = ro-&gt;baseProperties;<br>        <span class="hljs-keyword">if</span> (rwe &amp;&amp; proplist) &#123;<br>            rwe-&gt;properties.attachLists(&amp;proplist, <span class="hljs-number">1</span>);<br>        &#125;<br>    <br>        protocol_list_t *protolist = ro-&gt;baseProtocols;<br>        <span class="hljs-keyword">if</span> (rwe &amp;&amp; protolist) &#123;<br>            rwe-&gt;protocols.attachLists(&amp;protolist, <span class="hljs-number">1</span>);<br>        &#125;<br>    <br>        <span class="hljs-comment">// Root classes get bonus method implementations if they don&#x27;t have </span><br>        <span class="hljs-comment">// them already. These apply before category replacements.</span><br>        <span class="hljs-keyword">if</span> (cls-&gt;isRootMetaclass()) &#123;<br>            <span class="hljs-comment">// root metaclass 根元类添加initialize方法</span><br>            addMethod(cls, <span class="hljs-keyword">@selector</span>(initialize), (IMP)&amp;objc_noop_imp, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-literal">NO</span>);<br>        &#125;<br>    <br>        <span class="hljs-comment">// Attach categories. 附加分类</span><br>        <span class="hljs-keyword">if</span> (previously) &#123;<br>            <span class="hljs-keyword">if</span> (isMeta) &#123;<br>                objc::unattachedCategories.attachToClass(cls, previously,<br>                                                         ATTACH_METACLASS);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-comment">// When a class relocates, categories with class methods</span><br>                <span class="hljs-comment">// may be registered on the class itself rather than on</span><br>                <span class="hljs-comment">// the metaclass. Tell attachToClass to look for those.</span><br>                objc::unattachedCategories.attachToClass(cls, previously,<br>                                                         ATTACH_CLASS_AND_METACLASS);<br>            &#125;<br>        &#125;<br>        objc::unattachedCategories.attachToClass(cls, cls,<br>                                                 isMeta ? ATTACH_METACLASS : ATTACH_CLASS);<br>    <br>    <span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> DEBUG</span><br>        <span class="hljs-comment">// Debug: sanity-check all SELs; log method list contents</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> auto&amp; meth : rw-&gt;methods()) &#123;<br>            <span class="hljs-keyword">if</span> (PrintConnecting) &#123;<br>                _objc_inform(<span class="hljs-string">&quot;METHOD %c[%s %s]&quot;</span>, isMeta ? <span class="hljs-string">&#x27;+&#x27;</span> : <span class="hljs-string">&#x27;-&#x27;</span>, <br>                             cls-&gt;nameForLogging(), sel_getName(meth.name));<br>            &#125;<br>            ASSERT(sel_registerName(sel_getName(meth.name)) == meth.name); <br>&#125;<br>   <span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br>     &#125;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 ]]></content>
@@ -9690,7 +11000,7 @@
     <url>/2022/12/26/iOS%E5%AD%A6%E4%B9%A0/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/%E6%87%92%E5%8A%A0%E8%BD%BD%E7%B1%BB%E4%BB%A5%E5%8F%8A%E5%88%86%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
 <ul>
-<li>官方在对类进行处理的时候, 为了提高对类处理的效率以及性能, 就对类进行了识别, 当类需要使用的时候, 系统才会对类进行实现. 如果没有使用就不会实现. 当需要实现才进行加载的类就被称为懒加载类. 反之无论是否使用到这个类, 都对这个类进行加载的类就被称为非懒加载类</li>
+<li>官方在对类进行处理的时候, 为了提高对类处理的效率以及性能, 就对类进行了识别, 当类需要使用的时候, 系统才会对类进行实现. 如果没有使用就不会实现. 当需要使用时才进行加载的类就被称为懒加载类. 反之无论是否使用到这个类, 都会对这个类进行加载的类就被称为非懒加载类</li>
 <li>懒加载类和非懒加载类的区别在于是否实现了<code>+(void)load</code>方法</li>
 <li>所有的类在使用前都会调用<code>realizeClassMaybeSwiftAndLeaveLocked</code>对类进行加载,通过这个来判断类和分类加载的时机</li>
 </ul>
@@ -9715,7 +11025,7 @@
 <li><p>通过断点查看<br>   <img src="2.png"></p>
 </li>
 <li><p><code>lldb</code>查看<code>class_ro_t</code>中的代码，这里会调用<code>init</code>,是当前的实例方法，指向<code>LGPerson</code>。同样从其内存中也可发现分类中的方法一开始就在<code>class_ro_t</code>中</p>
-  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">    p ro.baseMethods<br>(<span class="hljs-keyword">const</span> WrappedPtr&lt;method_list_t, method_list_t::Ptrauth&gt;) $<span class="hljs-number">6</span> = &#123;<br>  ptr = <span class="hljs-number">0x0000000100008410</span><br>&#125;<br>  <br>(lldb) p $<span class="hljs-number">6</span>[<span class="hljs-number">0</span>]<br>(method_list_t) $<span class="hljs-number">7</span> = &#123;<br>  entsize_list_tt&lt;method_t, method_list_t, <span class="hljs-number">4294901763</span>, method_t::pointer_modifier&gt; = (entsizeAndFlags = <span class="hljs-number">24</span>, count = <span class="hljs-number">17</span>)<br>&#125;<br>(lldb) p $<span class="hljs-number">6</span>[<span class="hljs-number">0</span>].get(<span class="hljs-number">0</span>).big<br>(method_t::big) $<span class="hljs-number">8</span> = &#123;<br>  name = <span class="hljs-string">&quot;textCategory&quot;</span><br>  types = <span class="hljs-number">0x0000000100003f3e</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>  imp = <span class="hljs-number">0x0000000100003820</span> (KCObjcBuild`-[LGPerson(Text) textCategory])<br>&#125;<br> <br>(lldb) p $<span class="hljs-number">6</span>[<span class="hljs-number">0</span>].get(<span class="hljs-number">1</span>).big<br>(method_t::big) $<span class="hljs-number">9</span> = &#123;<br>  name = <span class="hljs-string">&quot;text1&quot;</span><br>  types = <span class="hljs-number">0x0000000100003f3e</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>  imp = <span class="hljs-number">0x0000000100003880</span> (KCObjcBuild`-[LGPerson text1])<br>&#125;<br>  <br></code></pre></td></tr></table></figure></li>
+  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">p ro.baseMethods<br>(<span class="hljs-keyword">const</span> WrappedPtr&lt;method_list_t, method_list_t::Ptrauth&gt;) $<span class="hljs-number">6</span> = &#123;<br>  ptr = <span class="hljs-number">0x0000000100008410</span><br>&#125;<br>  <br>(lldb) p $<span class="hljs-number">6</span>[<span class="hljs-number">0</span>]<br>(method_list_t) $<span class="hljs-number">7</span> = &#123;<br>  entsize_list_tt&lt;method_t, method_list_t, <span class="hljs-number">4294901763</span>, method_t::pointer_modifier&gt; = (entsizeAndFlags = <span class="hljs-number">24</span>, count = <span class="hljs-number">17</span>)<br>&#125;<br>(lldb) p $<span class="hljs-number">6</span>[<span class="hljs-number">0</span>].get(<span class="hljs-number">0</span>).big<br>(method_t::big) $<span class="hljs-number">8</span> = &#123;<br>  name = <span class="hljs-string">&quot;textCategory&quot;</span><br>  types = <span class="hljs-number">0x0000000100003f3e</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>  imp = <span class="hljs-number">0x0000000100003820</span> (KCObjcBuild`-[LGPerson(Text) textCategory])<br>&#125;<br> <br>(lldb) p $<span class="hljs-number">6</span>[<span class="hljs-number">0</span>].get(<span class="hljs-number">1</span>).big<br>(method_t::big) $<span class="hljs-number">9</span> = &#123;<br>  name = <span class="hljs-string">&quot;text1&quot;</span><br>  types = <span class="hljs-number">0x0000000100003f3e</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>  imp = <span class="hljs-number">0x0000000100003880</span> (KCObjcBuild`-[LGPerson text1])<br>&#125;<br>  <br></code></pre></td></tr></table></figure></li>
 </ul>
 <h5 id="第三次断点"><a href="#第三次断点" class="headerlink" title="第三次断点"></a>第三次断点</h5><ul>
 <li><p>第三次断点，会去查找元类，由于元类已经初始化，会直接返回。且，整个过程中不会触发在<code>load_categories_nolock</code>断点。</p>
@@ -9730,7 +11040,7 @@
 <p>类中实现load方法，分类中不实现。上述一样的排查方式</p>
 </blockquote>
 <h4 id="加载的时机-1"><a href="#加载的时机-1" class="headerlink" title="加载的时机"></a>加载的时机</h4><h5 id="第一次断点-1"><a href="#第一次断点-1" class="headerlink" title="第一次断点"></a>第一次断点</h5><ul>
-<li>通过断点查看,显然在<code>runtime</code>启动的时候，在<code>read_images</code>时，对所有的非懒加载类，进行了加载，并且先加载的是类，而非元类<br>  <img src="3.png"></li>
+<li>通过断点查看,显然在<code>runtime</code>启动的时候，在<code>read_images</code>时，对所有<code>懒加载类</code>进行了加载，并且先加载的是类，而非元类<br>  <img src="3.png"></li>
 <li><code>lldb</code>查看此时类中<code>class_ro_t</code>中的方法可知,懒加载分类中的方法，一开始就在类中，并在编译的时候就确定了  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">(lldb) p ro.baseMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">0</span>).big()<br>   (method_t::big) $<span class="hljs-number">4</span> = &#123;<br>     name = <span class="hljs-string">&quot;textCategory2&quot;</span><br>     types = <span class="hljs-number">0x0000000100003f47</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>     imp = <span class="hljs-number">0x0000000100003770</span> (KCObjcBuild`-[LGPerson(Text2) textCategory2])<br>   &#125;<br>     <br>   (lldb) p ro.baseMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">1</span>).big()<br>   (method_t::big) $<span class="hljs-number">5</span> = &#123;<br>     name = <span class="hljs-string">&quot;textCategory&quot;</span><br>     types = <span class="hljs-number">0x0000000100003f47</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>     imp = <span class="hljs-number">0x00000001000037d0</span> (KCObjcBuild`-[LGPerson(Text) textCategory])<br>   &#125;<br>    <br>   (lldb) p ro.baseMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">2</span>).big()<br>   (method_t::big) $<span class="hljs-number">6</span> = &#123;<br>     name = <span class="hljs-string">&quot;text1&quot;</span><br>     types = <span class="hljs-number">0x0000000100003f47</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>     imp = <span class="hljs-number">0x0000000100003830</span> (KCObjcBuild`-[LGPerson text1])<br>   &#125;<br>     <br></code></pre></td></tr></table></figure></li>
 </ul>
 <h5 id="第二次断点-1"><a href="#第二次断点-1" class="headerlink" title="第二次断点"></a>第二次断点</h5><ul>
@@ -9746,7 +11056,7 @@
 <p><code>LGPerson(Text)</code>分类中实现<code>load</code>方法,<code>LGPerson (Text2)</code>中不实现</p>
 </blockquote>
 <h5 id="第一次断点-2"><a href="#第一次断点-2" class="headerlink" title="第一次断点"></a>第一次断点</h5><ul>
-<li>通过断点查看,和上一节一样,<code>runtime</code>启动的时候，在<code>read_images</code>时，对所有的非懒加载类，进行了加载。这里显然,懒加载的类由于非懒加载的分类，而变成了非懒加载类。一样先加载的是类，而非元类<br>  <img src="3.png"></li>
+<li>通过断点查看,和上一节一样,<code>runtime</code>启动的时候，在<code>read_images</code>时，对所有<code>懒加载类</code>进行了加载。这里显然,懒加载的类由于非懒加载的分类，而变成了非懒加载类。一样先加载的是类，而非元类<br>  <img src="3.png"></li>
 <li><code>lldb</code>查看<code>class_ro_t</code>中的方法，发现非懒加载分类<code>LGPerson(Text2)</code>和懒加载分类<code>LGPerson(Text)</code>中的方法，一开始就在懒加载类中，显然也是由编译的时候就加到类中了。  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"> (lldb) p ro.baseMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">0</span>).big()<br>(method_t::big) $<span class="hljs-number">8</span> = &#123;<br>  name = <span class="hljs-string">&quot;textCategory2&quot;</span><br>  types = <span class="hljs-number">0x0000000100003f41</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>  imp = <span class="hljs-number">0x0000000100003750</span> (KCObjcBuild`-[LGPerson(Text2) textCategory2])<br>&#125;<br>  <br>(lldb) p ro.baseMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">1</span>).big()<br>(method_t::big) $<span class="hljs-number">9</span> = &#123;<br>  name = <span class="hljs-string">&quot;textCategory&quot;</span><br>  types = <span class="hljs-number">0x0000000100003f41</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>  imp = <span class="hljs-number">0x00000001000037e0</span> (KCObjcBuild`-[LGPerson(Text) textCategory])<br>&#125;<br><br>(lldb) p ro.baseMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">2</span>).big()<br>(method_t::big) $<span class="hljs-number">10</span> = &#123;<br>  name = <span class="hljs-string">&quot;text1&quot;</span><br>  types = <span class="hljs-number">0x0000000100003f41</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>  imp = <span class="hljs-number">0x0000000100003840</span> (KCObjcBuild`-[LGPerson text1])<br>&#125;<br></code></pre></td></tr></table></figure></li>
 </ul>
 <h5 id="第二次断点-2"><a href="#第二次断点-2" class="headerlink" title="第二次断点"></a>第二次断点</h5><ul>
@@ -9759,15 +11069,15 @@
 <p><code>LGPerson(Text)</code>和<code>LGPerson (Text2)</code>分类中均实现<code>load</code>方法，<code>LGPerson (Text3)</code>分类中不实现</p>
 </blockquote>
 <h5 id="第一次断点-3"><a href="#第一次断点-3" class="headerlink" title="第一次断点"></a>第一次断点</h5><ul>
-<li>在<code>load_images</code>时，<code>load_categories_nolock</code>加载所有分类时。其中<code>load_images</code>在<code>read_images</code>之后，并且之前并未有断点，显然，此时，类并未加载。<br>  <img src="4.png"></li>
+<li>在<code>load_images</code>时，<code>load_categories_nolock</code>加载所有分类时。其中<code>load_images</code>在<code>read_images</code>之后，并且之前并未有断点，显然，当前类不是<code>非懒加载类</code>(只有一个<code>非懒加载分类</code>时，会变成<code>非懒加载类</code>)，因此在<code>read_images</code>中加载，而是延后了。<br>  <img src="4.png"></li>
 <li><code>lldb</code>查看根据分类<code>remapClass</code>出的类，查看其中<code>class_ro_t</code>的方法,显然，最开始的类中不包含分类<code>LGPerson(Text)</code>、<code>LGPerson (Text2)</code>和<code>LGPerson (Text3)</code>的方法  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">(lldb)  p (objc_class *)cls<br>    (objc_class *) $<span class="hljs-number">0</span> = <span class="hljs-number">0x0000000100008778</span><br>(lldb) p $<span class="hljs-number">0.</span>safe_ro()<br>    (<span class="hljs-keyword">const</span> class_ro_t *) $<span class="hljs-number">1</span> = <span class="hljs-number">0x0000000100008500</span><br>(lldb) p $<span class="hljs-number">1.</span>baseMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">0</span>).big()<br>    (method_t::big) $<span class="hljs-number">2</span> = &#123;<br>      name = <span class="hljs-string">&quot;text1&quot;</span><br>      types = <span class="hljs-number">0x0000000100003f39</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>      imp = <span class="hljs-number">0x0000000100003820</span> (KCObjcBuild`-[LGPerson text1])<br>    &#125;<br>(lldb) p $<span class="hljs-number">1.</span>baseMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">1</span>).big()<br>    (method_t::big) $<span class="hljs-number">3</span> = &#123;<br>      name = <span class="hljs-string">&quot;text2&quot;</span><br>      types = <span class="hljs-number">0x0000000100003f39</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>      imp = <span class="hljs-number">0x0000000100003850</span> (KCObjcBuild`-[LGPerson text2])<br>    &#125;<br></code></pre></td></tr></table></figure></li>
-<li><code>lldb</code>查看<code>category_t</code>中的方法，很显然是<code>LGPerson(Text)</code>,  <figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">    (lldb) p cat.instanceMethods[0].get(0).big()<br>(method_t::big) $4 = &#123;<br>  name = &quot;textCategory&quot;<br>  types = 0x0000000100003f43 &quot;v16@0:8&quot;<br>  imp = 0x00000001000037d0 (KCObjcBuild`-[LGPerson(Text) textCategory])<br>&#125;<br>  <br>(lldb) p cat.classMethods[0].get(0).big()<br>(method_t::big) $5 = &#123;<br>  name = &quot;load&quot;<br>  types = 0x0000000100003f43 &quot;v16@0:8&quot;<br>  imp = 0x0000000100003770 (KCObjcBuild`+[LGPerson(Text) load])<br>&#125;<br>  <br>(lldb) p cat.classMethods[0].get(1).big()<br>(method_t::big) $6 = &#123;<br>  name = &quot;textCategory&quot;<br>  types = 0x0000000100003f43 &quot;v16@0:8&quot;<br>  imp = 0x00000001000037a0 (KCObjcBuild`+[LGPerson(Text) textCategory])<br>&#125;<br> <br>(lldb) <br></code></pre></td></tr></table></figure></li>
+<li><code>lldb</code>查看<code>category_t</code>中的方法，很显然是<code>LGPerson(Text)</code>,  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">(lldb) p cat.instanceMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">0</span>).big()<br>(method_t::big) $<span class="hljs-number">4</span> = &#123;<br>  name = <span class="hljs-string">&quot;textCategory&quot;</span><br>  types = <span class="hljs-number">0x0000000100003f43</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>  imp = <span class="hljs-number">0x00000001000037d0</span> (KCObjcBuild`-[LGPerson(Text) textCategory])<br>&#125;<br>  <br>(lldb) p cat.classMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">0</span>).big()<br>(method_t::big) $<span class="hljs-number">5</span> = &#123;<br>  name = <span class="hljs-string">&quot;load&quot;</span><br>  types = <span class="hljs-number">0x0000000100003f43</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>  imp = <span class="hljs-number">0x0000000100003770</span> (KCObjcBuild`+[LGPerson(Text) load])<br>&#125;<br>  <br>(lldb) p cat.classMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">1</span>).big()<br>(method_t::big) $<span class="hljs-number">6</span> = &#123;<br>  name = <span class="hljs-string">&quot;textCategory&quot;</span><br>  types = <span class="hljs-number">0x0000000100003f43</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>  imp = <span class="hljs-number">0x00000001000037a0</span> (KCObjcBuild`+[LGPerson(Text) textCategory])<br>&#125;<br> <br>(lldb) <br></code></pre></td></tr></table></figure></li>
 </ul>
 <h5 id="第二-三次断点"><a href="#第二-三次断点" class="headerlink" title="第二,三次断点"></a>第二,三次断点</h5><ul>
 <li>仍然在分类加载的循环中，一共有<code>3</code>个分类会加载<code>3</code>次。</li>
 <li><code>lldb</code>查看类的<code>class_ro_t</code>的方法,类<code>class_ro_t</code>并未发生任何改变,并且由于类未加载，<code>class_rw_t</code>还未生成。显然分类中的方法并未加载到类中。  <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"> (lldb) p (objc_class *)cls<br>        (objc_class *) $<span class="hljs-number">10</span> = <span class="hljs-number">0x0000000100008778</span><br> (lldb) p $<span class="hljs-number">10.</span>safe_ro().baseMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">0</span>).big()<br>        (method_t::big) $<span class="hljs-number">11</span> = &#123;<br>          name = <span class="hljs-string">&quot;text1&quot;</span><br>          types = <span class="hljs-number">0x0000000100003f39</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>          imp = <span class="hljs-number">0x0000000100003820</span> (KCObjcBuild`-[LGPerson text1])<br>        &#125;<br>          <br>(lldb) p $<span class="hljs-number">10.</span>safe_ro().baseMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">1</span>).big()<br>        (method_t::big) $<span class="hljs-number">12</span> = &#123;<br>          name = <span class="hljs-string">&quot;text2&quot;</span><br>          types = <span class="hljs-number">0x0000000100003f39</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>          imp = <span class="hljs-number">0x0000000100003850</span> (KCObjcBuild`-[LGPerson text2])<br>        &#125;<br>         <br>(lldb) <br></code></pre></td></tr></table></figure></li>
 <li><code>lldb</code>查看<code>category_t</code>中的方法，第二次是<code>LGPerson(Text2)</code>,第三次是<code>LGPerson(Text3)</code></li>
-<li>此外，没有加载的类，无法<code>attach分类方法</code>，会调用方法<code>objc::unattachedCategories.addForClass</code>方法。里面也有个<code>attachToClass</code>方法，在里面增加断点。<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (cls-&gt;<span class="hljs-built_in">ISA</span>()-&gt;<span class="hljs-built_in">isRealized</span>()) &#123;<br>                <span class="hljs-built_in">attachCategories</span>(cls-&gt;<span class="hljs-built_in">ISA</span>(), &amp;lc, <span class="hljs-number">1</span>, ATTACH_EXISTING | ATTACH_METACLASS);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                objc::unattachedCategories.<span class="hljs-built_in">addForClass</span>(lc, cls-&gt;<span class="hljs-built_in">ISA</span>());<br>            &#125;<br></code></pre></td></tr></table></figure></li>
+<li>此外，由于不是<code>已经加载的类</code>，无法<code>attach分类方法</code>，会调用方法<code>objc::unattachedCategories.addForClass</code>方法。里面也有个<code>attachToClass</code>方法，在里面增加断点。<code>locstamped_category_t lc&#123;cat, hi&#125;;</code>,<code>lc</code>中包含类和分类的映射关系<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (cls-&gt;<span class="hljs-built_in">ISA</span>()-&gt;<span class="hljs-built_in">isRealized</span>()) &#123;<br>    <span class="hljs-built_in">attachCategories</span>(cls-&gt;<span class="hljs-built_in">ISA</span>(), &amp;lc, <span class="hljs-number">1</span>, ATTACH_EXISTING | ATTACH_METACLASS);<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    objc::unattachedCategories.<span class="hljs-built_in">addForClass</span>(lc, cls-&gt;<span class="hljs-built_in">ISA</span>());<br>&#125;<br></code></pre></td></tr></table></figure></li>
 </ul>
 <h5 id="realizeClassWithoutSwift中的断点"><a href="#realizeClassWithoutSwift中的断点" class="headerlink" title="realizeClassWithoutSwift中的断点"></a><code>realizeClassWithoutSwift</code>中的断点</h5><ul>
 <li><p>在后续调用<code>prepare_load_methods</code>,加载所有分类中的<code>load</code>方法时，会调用<code>realizeClassWithoutSwift</code>开始加载类。和此前一样，先类，后元类。<br>  <img src="5.png"></p>
@@ -9781,7 +11091,7 @@
 </ul>
 <h5 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h5><blockquote>
 <ul>
-<li>懒加载中的类和一个以上非懒加载分类，也就是<code>+load</code>方法超过<code>1</code>个,类不是非懒加载类，不会在<code>read_image</code>中加载，而是会在<code>load_image</code>中，加载所有分类的时候，在<code>load_categories_nolock</code>,<code>remapClass</code>中进行加载。</li>
+<li>懒加载中的类和一个以上非懒加载分类，也就是分类中<code>+load</code>方法超过<code>1</code>个,类不是<code>非懒加载类</code>(如果只有一个<code>非懒加载分类</code>时，会变成<code>非懒加载类</code>)，不会在<code>read_image</code>中加载，而是会在<code>load_image</code>中。在加载所有分类的时候，在<code>load_categories_nolock</code>,<code>remapClass</code>中进行加载。</li>
 <li><code>remapClass</code>映射出类后，并未进行加载，因此，此时不会将分类中的方法加载到类中，但会将分类加载到<code>objc::unattachedCategories</code>中，构建类和分类的<code>映射表</code></li>
 <li>在获取所有分类中的<code>load</code>方法<code>prepare_load_methods</code>时，会去加载分类对应的类方法，并且在加载时，会调用<code>objc::unattachedCategories:attachToClass</code>方法，在这里，将分类中的方法，加载到类中。</li>
 </ul>
@@ -9790,10 +11100,10 @@
 <p>分类中实现<code>load</code>方法，类中实现<code>load</code></p>
 </blockquote>
 <h4 id="read-images断点"><a href="#read-images断点" class="headerlink" title="read_images断点"></a><code>read_images</code>断点</h4><ul>
-<li>非懒加载类，在<code>read_images</code>中，就进行<code>realize</code>，并且是，先元类，后类<br>   <img src="3.png"></li>
+<li>非懒加载类，在<code>read_images</code>中，就进行<code>realize</code>，并且是，先<code>元类</code>，后<code>类</code><br>   <img src="3.png"></li>
 </ul>
 <h4 id="load-images断点"><a href="#load-images断点" class="headerlink" title="load_images断点"></a><code>load_images</code>断点</h4><ul>
-<li><code>load_categories_nolock</code>,加载所有的分类，此时，类已经加载完成了，并且此时就会将分类方法添加到类中<br>  <img src="4.png"></li>
+<li><code>load_categories_nolock</code>,加载所有的分类，此时，类已经加载完成了，并且此时就会通过<code>attachCategories(cls, &amp;lc, 1, ATTACH_EXISTING);</code>方法，直接将<code>分类方法</code>添加到<code>类</code>中<br>  <img src="4.png"></li>
 <li><code>lldb</code>查看方法加载<ol>
 <li>最开始加载的是<code>LGPerson(Text)</code>的方法。 <figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">(lldb) p cat.instanceMethods[<span class="hljs-number">0</span>].get(<span class="hljs-number">0</span>).big()<br>    (method_t::big) $<span class="hljs-number">0</span> = &#123;<br>     name = <span class="hljs-string">&quot;textCategory&quot;</span><br>     types = <span class="hljs-number">0x0000000100003f46</span> <span class="hljs-string">&quot;v16@0:8&quot;</span><br>     imp = <span class="hljs-number">0x0000000100003780</span> (KCObjcBuild`-[LGPerson(Text) textCategory])<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
@@ -9806,20 +11116,20 @@
 </ul>
 <h4 id="总结-4"><a href="#总结-4" class="headerlink" title="总结"></a>总结</h4><blockquote>
 <ul>
-<li>和<a href="#jump1">一个以上懒加载分类</a>不同，非懒加载类和分类，会先在<code>read_images</code>，加载类,此时类已经<code>realize</code>解析完毕，并不需要在加载全部<code>load</code>方法时，再进行初始化</li>
-<li>在<code>load_images</code>的<code>load_categories_nolock</code>中，在解析完一个分类后，就将一个分类加载到类中。和<a href="#jump1">一个以上懒加载分类</a>不同，不需要将所有分类方法收集到映射表<code>objc::unattachedCategories</code>中，再在类的<code>realize</code>方法中添加到类中</li>
+<li>和<a href="#jump1">一个以上懒加载分类</a>不同，<code>非懒加载类</code>和<code>分类</code>，会先在<code>read_images</code>，加载类,此时类已经<code>realize</code>解析完毕，并不需要在加载全部<code>load</code>方法时，在进行初始化</li>
+<li>在<code>load_images</code>的<code>load_categories_nolock</code>中，在解析完一个<code>分类</code>后，就将一个<code>分类</code>加载到<code>类</code>中。和<a href="#jump1">一个以上懒加载分类</a>不同，不需要将所有<code>分类方法</code>收集到映射表<code>objc::unattachedCategories</code>中，再在类的<code>realize</code>方法中添加到类中</li>
 </ul>
 </blockquote>
 <h3 id="总结-5"><a href="#总结-5" class="headerlink" title="总结"></a>总结</h3><blockquote>
 <ul>
-<li>懒加载类和懒加载分类，分类中的方法在编译的时候就加载到类中，其方法在<code>class_ro_t</code>中；在使用类的时候才会去加载类，一般是触发<code>objc_msgsend</code>，发送消息时</li>
-<li>非懒加载类和懒加载分类,分类中的方法在编译的时候就加载到类中，其方法在<code>class_ro_t</code>中;类的加载，在<code>runtime</code>启动时，即<code>read_image</code>中，进行加载</li>
+<li><code>懒加载类</code>和<code>懒加载分类</code>，分类中的方法在<code>编译</code>的时候就加载到类中，其方法在<code>class_ro_t</code>中；在使用类的时候才会去加载类，一般是触发<code>objc_msgsend</code>，发送消息时</li>
+<li><code>非懒加载类</code>和<code>懒加载分类</code>,分类中的方法在编译的时候就加载到类中，其方法在<code>class_ro_t</code>中;类的加载，在<code>runtime</code>启动时，即<code>read_image</code>中，进行加载</li>
 <li>懒加载类和非懒加载分类,分两种<ul>
-<li>一个非懒加载分类，分类中的方法在编译的时候就加载到类中，其方法在<code>class_ro_t</code>中;类的加载，在<code>runtime</code>启动时，即<code>read_image</code>中，进行加载。此时的类受分类影响，变成了非懒加载类。</li>
-<li>一个以上非懒加载分类,分类的方法在<code>runtime</code>启动，<code>load_images</code>时，在<code>load_categories_nolock</code>时，由于类未加载，会将分类和类的映射在<code>objc::unattachedCategories.addForClass</code>中构建。并在<code>prepare_load_methods</code>会去加载类，在类加载时，会调用<code>objc::unattachedCategories:attachToClass</code>，这里会将分类中的方法加载到类中。</li>
+<li>一个<code>非懒加载分类</code>，分类中的方法在<code>编译</code>的时候就加载到类中(显然编译器将其合成到<code>类</code>中，因此本质上<code>类</code>拥有了<code>load</code>方法，变成了<code>非懒加载类</code>)，其方法在<code>class_ro_t</code>中;类的加载，在<code>runtime</code>启动时，即<code>read_image</code>中，进行加载。此时的类受<code>分类影响</code>，变成了<code>非懒加载类</code>。</li>
+<li>一个以上<code>非懒加载分类</code>(这类不会受影响，变成<code>非懒加载类</code>),分类的方法在<code>runtime</code>启动，<code>load_images</code>时，在<code>load_categories_nolock</code>时，由于<code>类未加载</code>，会将分类和类的映射在<code>objc::unattachedCategories.addForClass</code>中构建。并在<code>prepare_load_methods</code>会去加载类，在类加载时，会调用<code>objc::unattachedCategories:attachToClass</code>，这里会将分类中的方法加载到类中。</li>
 </ul>
 </li>
-<li>非懒加载类和非懒加载分类，<code>runtime</code>启动时，类的加载会在<code>read_image</code>中，进行加载。分类中的方法，会在<code>load_images</code>的<code>load_categories_nolock</code>时，解析完一个分类，就把该分类的方法加载到类中。</li>
+<li><code>非懒加载类</code>和<code>非懒加载分类</code>，<code>runtime</code>启动时，<code>类的加载</code>会在<code>read_image</code>中，进行加载。分类中的方法，会在<code>load_images</code>的<code>load_categories_nolock</code>时，解析完一个分类，就把该分类的方法加载到类中。</li>
 </ul>
 </blockquote>
 ]]></content>
@@ -10232,9 +11542,9 @@
     <url>/2022/12/04/iOS%E5%AD%A6%E4%B9%A0/iOS%E8%B6%8A%E7%8B%B1/%E8%B6%8A%E7%8B%B1%E7%BB%83%E4%B9%A0/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="练习一-喜玛拉广告去除"><a href="#练习一-喜玛拉广告去除" class="headerlink" title="练习一 喜玛拉广告去除"></a>练习一 喜玛拉广告去除</h1><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol>
 <li><code>Revel</code>中查看广告的图层信息，通过Cycript<code>[#0x12333 removeFromSuperlayer]</code>只能暂时将广告屏蔽</li>
-<li>用<code>CLutch</code>脱壳应用，<code>class-dump</code>指令拿到头文件信息，查看相关视图图层的信息，通过hook的方式去去除广告<h1 id="练习二，桌面更新数字去除"><a href="#练习二，桌面更新数字去除" class="headerlink" title="练习二，桌面更新数字去除"></a>练习二，桌面更新数字去除</h1></li>
+<li>用<code>CLutch</code>脱壳应用，<code>class-dump</code>指令拿到头文件信息，查看相关视图图层的信息，通过hook的方式去去除广告</li>
 </ol>
-<ul>
+<h1 id="练习二，桌面更新数字去除"><a href="#练习二，桌面更新数字去除" class="headerlink" title="练习二，桌面更新数字去除"></a>练习二，桌面更新数字去除</h1><ul>
 <li>iOS桌面为<code>springboard</code>，位置在<code>/System/Library/CoreServices/SpringBoard.app</code></li>
 <li><code>springboard</code>无法通过<code>revel</code>的方式查看，需要用<code>cycript</code>的方式查看</li>
 </ul>

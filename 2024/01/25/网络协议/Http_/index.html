@@ -1,0 +1,741 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>应用层（http） | Ayer</title><meta name="author" content="jingbo"><meta name="copyright" content="jingbo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Http HTTP（Hyper Text Transfer Protocol），译为超文本传输协议 是互联网中应用最广泛的应用层协议之一 设计HTTP最初的目的是：提供一种发布和接收HTML页面的方法，由URI来标识具体的资源 后面用HTTP来传递的数据格式不仅仅是HTML，应用非常广泛   HTML（ Hyper Text Markup Language）：超文本标记语言 用以编写网页    版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="应用层（http）">
+<meta property="og:url" content="http://example.com/2024/01/25/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_/index.html">
+<meta property="og:site_name" content="Ayer">
+<meta property="og:description" content="Http HTTP（Hyper Text Transfer Protocol），译为超文本传输协议 是互联网中应用最广泛的应用层协议之一 设计HTTP最初的目的是：提供一种发布和接收HTML页面的方法，由URI来标识具体的资源 后面用HTTP来传递的数据格式不仅仅是HTML，应用非常广泛   HTML（ Hyper Text Markup Language）：超文本标记语言 用以编写网页    版">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/banner/banner_11.jpeg">
+<meta property="article:published_time" content="2024-01-25T06:41:20.000Z">
+<meta property="article:modified_time" content="2024-01-28T17:02:03.855Z">
+<meta property="article:author" content="jingbo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/banner/banner_11.jpeg"><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="http://example.com/2024/01/25/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '应用层（http）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-01-29 01:02:03'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Ayer" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">130</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/banner/banner_11.jpeg')"><nav id="nav"><span id="blog-info"><a href="/" title="Ayer"><span class="site-name">Ayer</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">应用层（http）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-01-25T06:41:20.000Z" title="Created 2024-01-25 14:41:20">2024-01-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-01-28T17:02:03.855Z" title="Updated 2024-01-29 01:02:03">2024-01-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">网络协议</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="应用层（http）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Http"><a href="#Http" class="headerlink" title="Http"></a><code>Http</code></h1><ul>
+<li><code>HTTP</code>（<code>Hyper Text Transfer Protocol</code>），译为超文本传输协议<ul>
+<li>是互联网中应用最广泛的应用层协议之一</li>
+<li>设计<code>HTTP</code>最初的目的是：提供一种发布和接收<code>HTML</code>页面的方法，由<code>URI</code>来标识具体的资源</li>
+<li>后面用<code>HTTP</code>来传递的数据格式不仅仅是<code>HTML</code>，应用非常广泛</li>
+</ul>
+</li>
+<li><code>HTML</code>（ <code>Hyper Text Markup Language</code>）：超文本标记语言<ul>
+<li>用以编写网页</li>
+</ul>
+</li>
+</ul>
+<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><ul>
+<li><code>1991</code>年，<code>HTTP/0.9</code><ul>
+<li>只支持<code>GET</code>请求方法获取文本数据（比如<code>HTML</code>文档），且不支持请求头、响应头等，无法向服务器传递太多信息</li>
+</ul>
+</li>
+<li><code>1996年，HTTP/1.0</code><ul>
+<li>支持<code>POST</code>、<code>HEAD</code>等请求方法，支持请求头、响应头等，支持更多种数据类型（不再局限于文本数据）</li>
+<li>浏览器的每次请求都需要与服务器建立一个<code>TCP</code>连接，请求处理完成后立即断开<code>TCP</code>连接</li>
+</ul>
+</li>
+<li><code>1997</code>年，<code>HTTP/1.1</code>（最经典、使用最广泛的版本）<ul>
+<li>支持<code>PUT</code>、<code>DELETE</code>等请求方法</li>
+<li>采用持久连接（<code>Connection: keep-alive</code>），多个请求可以共用同一个<code>TCP</code>连接</li>
+</ul>
+</li>
+<li><code>2015</code>年，<code>HTTP/2.0</code></li>
+<li><code>2018</code>年，<code>HTTP/3.0</code></li>
+</ul>
+<h2 id="标准"><a href="#标准" class="headerlink" title="标准"></a>标准</h2><ul>
+<li><code>HTTP</code>的标准<ul>
+<li>由万维网协会（<code>W3C</code>）、互联网工程任务组（<code>IETF</code>）协调制定，最终发布了一系列的<code>RFC</code></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.rfc-editor.org/standards">RFC</a>（<code>Request For Comments</code>，可以译为：请求意见稿）<ul>
+<li><code>HTTP/1.1</code>最早是在<code>1997</code>年的<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc2068">RFC 2068</a>中记录的<ul>
+<li>该规范在<code>1999</code>年的<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc2616">RFC 2616</a>中已作废</li>
+<li><code>2014</code>年又由<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7230">RFC 7230</a>系列的<code>RFC</code>取代</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>HTTP/2</code>标准于<code>2015</code>年<code>5</code>月以<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7540">RFC 7540</a>正式发表，取代<code>HTTP/1.1</code>成为<code>HTTP</code>的实现标准</li>
+<li>中国的<code>RFC</code><ul>
+<li><code>1996</code>年<code>3</code>月，清华大学提交的适应不同国家和地区中文编码的汉字统一传输标准被<code>IETF</code>通过为<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc1922">RFC 1922</a><ul>
+<li>成为中国大陆第一个被<code>认可</code>为<code>RFC</code>文件的提交协议</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式"></a>报文格式</h2><ul>
+<li>一般<code>Http</code>的报文格式如下。其格式实际遵守<code>ABNF</code></li>
+</ul>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="1.jpg"><br><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="2.jpg"></p>
+<h2 id="ABNF"><a href="#ABNF" class="headerlink" title="ABNF"></a><code>ABNF</code></h2><ul>
+<li><code>ABNF</code>（<code>Augmented BNF</code>）<ul>
+<li>是<code>BNF</code>（<code>Backus-Naur Form</code>，译为：巴科斯-瑙尔范式）的修改、增强版</li>
+<li>在<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc5234">RFC 5234</a>中表明：<code>ABNF</code>用作<code>internet</code>中通信协议的定义语言</li>
+<li><code>ABNF是</code>最严谨的<code>HTTP</code>报文格式描述形式</li>
+</ul>
+</li>
+<li>关于<code>HTTP</code>报文格式的定义<ul>
+<li><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc2616#section-4">RFC 2616 4.HTTP Message</a>（旧）</li>
+<li><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7230#section-3">RFC 7230 3.Message Format</a>（新）</li>
+</ul>
+</li>
+</ul>
+<h3 id="核心规则"><a href="#核心规则" class="headerlink" title="核心规则"></a>核心规则</h3><table>
+<thead>
+<tr>
+<th align="center">规则</th>
+<th align="center">形式定义</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>ALPHA</code></td>
+<td align="center"><code>%x41-5A</code> / <code>%x61-7A</code></td>
+<td align="center">大写和小写 字母（ <code>A-Z</code>、<code>a-z</code>）</td>
+</tr>
+<tr>
+<td align="center"><code>DIGIT</code></td>
+<td align="center"><code>%x30-39</code></td>
+<td align="center">数字（<code>0-9</code>）</td>
+</tr>
+<tr>
+<td align="center"><code>HEXDIG</code></td>
+<td align="center"><code>DIGIT</code> / <code>&quot;A&quot;</code>  / <code>&quot;B&quot;</code>  / <code>&quot;C&quot;</code>  / <code>&quot;D&quot;</code>  / <code>&quot;E&quot;</code>  / <code>&quot;F&quot;</code></td>
+<td align="center">十六进制数字(<code>0-9</code>、<code>A-F</code>、<code>a-f</code>)</td>
+</tr>
+<tr>
+<td align="center"><code>DQUOTE</code></td>
+<td align="center"><code>%x22</code></td>
+<td align="center">双引号</td>
+</tr>
+<tr>
+<td align="center"><code>SP</code></td>
+<td align="center"><code>%x20</code></td>
+<td align="center">空格</td>
+</tr>
+<tr>
+<td align="center"><code>HTAB</code></td>
+<td align="center"><code>%x09</code></td>
+<td align="center">横向制表符</td>
+</tr>
+<tr>
+<td align="center"><code>WSP</code></td>
+<td align="center"><code>SP</code> / <code>HTAB</code></td>
+<td align="center">空格或横向制表符</td>
+</tr>
+<tr>
+<td align="center"><code>LWSP</code></td>
+<td align="center">*(<code>WSP</code> / <code>CRLF</code> <code>WSP</code>)</td>
+<td align="center">直线空白（晚于换行）</td>
+</tr>
+<tr>
+<td align="center"><code>VCHAR</code></td>
+<td align="center"><code>%x21-7E</code></td>
+<td align="center">可见（打印）字符</td>
+</tr>
+<tr>
+<td align="center"><code>CHAR</code></td>
+<td align="center"><code>%x01-7F</code></td>
+<td align="center">任何<code>7</code>位<code>US-ASCII</code>字符，不包括 <code>NULL</code>（ <code>%x00</code>）</td>
+</tr>
+<tr>
+<td align="center"><code>OCTET</code></td>
+<td align="center"><code>%x00-FF</code></td>
+<td align="center"><code>8</code>位数据</td>
+</tr>
+<tr>
+<td align="center"><code>CTL</code></td>
+<td align="center"><code>%x00-1F</code> / <code>%x7F</code></td>
+<td align="center">控制字符</td>
+</tr>
+<tr>
+<td align="center"><code>CR</code></td>
+<td align="center"><code>%x0D</code></td>
+<td align="center">回车</td>
+</tr>
+<tr>
+<td align="center"><code>LF</code></td>
+<td align="center"><code>%x0A</code></td>
+<td align="center">换行</td>
+</tr>
+<tr>
+<td align="center"><code>CRLF</code></td>
+<td align="center"><code>CR LF</code></td>
+<td align="center">互联网标准换行（<code>%x0D</code> 、<code>%x0A</code>）</td>
+</tr>
+<tr>
+<td align="center"><code>BIT</code></td>
+<td align="center"><code>0</code> / <code>1</code></td>
+<td align="center">二进制数字</td>
+</tr>
+</tbody></table>
+<h3 id="报文格式-1"><a href="#报文格式-1" class="headerlink" title="报文格式"></a>报文格式</h3><p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="4.png"></p>
+<ul>
+<li><code>/</code> : 任选一个</li>
+<li><code>*</code> : <code>0</code>个或多个。<code>2*</code>表示至少<code>2</code>个，<code>3*6</code>表示<code>3</code>到<code>6</code>个</li>
+<li><code>()</code> : 组成一个整体</li>
+<li><code>[]</code> : 可选（可有可无）</li>
+</ul>
+<h4 id="start-line"><a href="#start-line" class="headerlink" title="start-line"></a><code>start-line</code></h4><ul>
+<li><code>;HTTP</code>是<code>ABNF</code>格式中的注释<br><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="5.png"></li>
+</ul>
+<h4 id="header-filed、message-body"><a href="#header-filed、message-body" class="headerlink" title="header - filed、message-body"></a><code>header - filed</code>、<code>message-body</code></h4><p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="6.png"></p>
+<h3 id="telnet"><a href="#telnet" class="headerlink" title="telnet"></a>telnet</h3><ul>
+<li> 可以直接面向<code>HTTP</code>报文与服务器交互</li>
+<li> 可以更清晰、直观地看到请求报文、响应报文的内容<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs js">$ telnet localhost <span class="hljs-number">8080</span><br># 建立三次握手<br><span class="hljs-attr">Trying</span> ::<span class="hljs-number">1.</span>..<br>Connected to localhost.<br>Escape character is <span class="hljs-string">&#x27;^]&#x27;</span>.<br>^]  <br>telnet&gt;<br># 发送报文<br>GET /hello/ HTTP/<span class="hljs-number">1.1</span><br><span class="hljs-attr">Host</span>: localhost:<span class="hljs-number">8080</span><br><br># 响应结果<br>HTTP/<span class="hljs-number">1.1</span> <span class="hljs-number">200</span><br><span class="hljs-built_in">Set</span>-Cookie: JSESSIONID=74D0161CA8819EDB183B97C8611B0741; Path=/hello; HttpOnly<br>Content-Type: text/html;charset=UTF-<span class="hljs-number">8</span><br>Content-Length: <span class="hljs-number">90</span><br><span class="hljs-attr">Date</span>: Sat, <span class="hljs-number">27</span> Jan <span class="hljs-number">2024</span> <span class="hljs-number">09</span>:<span class="hljs-number">56</span>:<span class="hljs-number">43</span> GMT<br><br><br>## 回的messageBody<br>&lt;html&gt;<br>  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>$Title$<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br>  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="xml">  $END$</span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br>&lt;/html&gt;<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="URL的编码"><a href="#URL的编码" class="headerlink" title="URL的编码"></a><code>URL</code>的编码</h2><ul>
+<li><code>URL</code>中一旦出现了一些特殊字符（比如中文、空格），需要进行编码<ul>
+<li>在浏览器地址栏输入<code>URL</code>时，是采用<code>UTF-8</code>进行编码</li>
+</ul>
+</li>
+</ul>
+<h2 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7231#section-4">RFC 7231, section 4: Request methods</a>：描述了<code>8</code>种请求方法<ul>
+<li><code>GET</code>、<code>HEAD</code>、<code>POST</code>、<code>PUT</code>、<code>DELETE</code>、<code>CONNECT</code>、<code>OPTIONS</code>、<code>TRACE</code></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc5789#section-2">RFC 5789, section 2: Patch method</a>：描述了<code>PATCH</code>方法</li>
+</ul>
+<h3 id="方法介绍"><a href="#方法介绍" class="headerlink" title="方法介绍"></a>方法介绍</h3><ul>
+<li><p><code>GET</code>：常用于读取的操作，请求参数直接拼接在<code>URL</code>的后面（浏览器对<code>URL</code>是有长度限制的）</p>
+</li>
+<li><p><code>POST</code>：常用于添加、修改、删除的操作，请求参数可以放到请求体中（没有大小限制）</p>
+</li>
+<li><p><code>HEAD</code>：请求得到与<code>GET</code>请求相同的响应，但没有响应体</p>
+<ul>
+<li>使用场景举例：在下载一个大文件前，先获取其大小，再决定是否要下载。以此可以节约带宽资源</li>
+</ul>
+</li>
+<li><p><code>OPTIONS</code>：用于获取目的资源所支持的通信选项，比如服务器支持的请求方法</p>
+<ul>
+<li><code>OPTIONS * HTTP/1.1</code></li>
+</ul>
+</li>
+<li><p><code>PUT</code>：用于对已存在的资源进行整体覆盖</p>
+</li>
+<li><p><code>PATCH</code>：用于对资源进行部分修改（资源不存在，会创建新的资源）</p>
+</li>
+<li><p><code>DELETE</code>：用于删除指定的资源</p>
+</li>
+<li><p><code>TRACE</code>：请求服务器回显其收到的请求信息，主要用于HTTP请求的测试或诊断</p>
+</li>
+<li><p><code>CONNECT</code>：可以开启一个客户端与所请求资源之间的双向沟通的通道，它可以用来创建隧道（<code>tunnel</code>）</p>
+<ul>
+<li>可以用来访问采用了<code>SSL</code>(<code>HTTPS</code>) 协议的站点</li>
+</ul>
+</li>
+<li><p><strong>注意</strong>，一般情况下会禁止使用不安全的<code>HTTP</code>方法，例如 <code>PUT</code>、<code>DELETE</code> 等.(主要由于历史原因导致的)</p>
+<ol>
+<li><p><code>Tomcat PUT</code> 的上传漏洞，受影响的版本：<code>Apache Tomcat 7.0.0 to 7.0.79</code></p>
+<ul>
+<li>当 <code>Tomcat</code> 运行在 <code>Windows</code>操作系统时，且启用了 <code>HTTP PUT</code> 请求方法（例如，将 <code>readonly</code> 初始化参数由默认值设置为 <code>false</code>），攻击者将有可能可通过精心构造的攻击请求数据包向服务器上传包含任意代码的 <code>JSP</code> 文件，<code>JSP</code> 文件中的恶意代码将能被服务器执行。导致服务器上的数据泄露或获取服务器权限。</li>
+</ul>
+</li>
+<li><p><code>Nginx</code> 在开启 <code>WebDAV</code> 模式下，如果未配置认证模式，攻击者可以通过自由上传文件方法上传木马攻击服务器。</p>
+<ul>
+<li><code>WebDAV</code>（<code>Web-based Distributed Authoring and Versioning</code>）是基于 <code>HTTP/1.1</code> 的增强协议。该协议使用户可以直接对 <code>Web</code> 服务器进行文件读写，并支持对文件的版本控制和写文件的加锁及解锁等操作。说白了，<code>Nginx</code> 就是开启 <code>WebDAV</code> 这个协议后，可以当做一个文件服务器，允许用户在远端向本地一样进行读写操作，当然也包括上传文件。</li>
+<li>由于 <code>Nginx</code> 在设计时，或许是为了减轻小白的上手难度，在开启 <code>WebDAV</code> 时没有强制要求用户必须配置访问认证，这导致了某些用户在公网上开启了 <code>WebDAV</code> 而没有进行认证配置，从而导致了安全问题。而且由于 <code>WebDAV</code> 支持的协议有 <code>PUT</code>、<code>DELETE</code>、<code>MKCOL</code>、<code>COPY</code> 和 <code>MOVE</code> 等，其中 <code>PUT</code>、<code>DELETE </code>与 <code>HTTP</code> 方法中的 <code>PUT</code>、<code>DELETE</code> 协议重合，便被安全部门给一刀切了。</li>
+<li><code>WebDAV</code> 安全风险<ul>
+<li><code>PUT</code>：由于 <code>PUT</code> 方法自身不带验证机制（<code>PUT</code>是幂等的，只是简单的更新，不会像<code>POST</code>在请求的时候，服务器每次都会创建一个文件），利用 <code>PUT</code> 方法可以向服务器上传文件，所以恶意攻击者可以上传木马等恶意文件。</li>
+<li><code>DELETE</code>：利用 <code>DELETE</code> 方法可以删除服务器上特定的资源文件，造成恶意攻击。</li>
+<li><code>OPTIONS</code>：将会造成服务器信息暴露，如中间件版本、支持的 <code>HTTP</code> 方法等。</li>
+<li><code>TRACE</code>：可以回显服务器收到的请求，主要用于测试或诊断，一般都会存在反射型跨站漏洞。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="头部字段"><a href="#头部字段" class="headerlink" title="头部字段"></a><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/HTTP%E5%A4%B4%E5%AD%97%E6%AE%B5">头部字段</a></h2><ul>
+<li>头部字段可以分为<code>4</code>种类型<ul>
+<li>请求头字段（<code>Request Header Fields</code>）<ul>
+<li>有关要获取的资源或客户端本身信息的消息头</li>
+</ul>
+</li>
+<li>响应头字段（<code>Response Header Fields</code>）<ul>
+<li>有关响应的补充信息，比如服务器本身（名称和版本等）的消息头</li>
+</ul>
+</li>
+<li>实体头字段（<code>Entity Header Fields</code>）<ul>
+<li>有关实体主体的更多信息，比如主体长度（<code>Content-Length</code>）或其<code>MIME</code>类型</li>
+</ul>
+</li>
+<li>通用头字段（<code>General Header Fields</code>）<ul>
+<li>同时适用于请求和响应消息，但与消息主体无关的消息头</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="请求头字段"><a href="#请求头字段" class="headerlink" title="请求头字段"></a>请求头字段</h3><table>
+<thead>
+<tr>
+<th align="center">头字段名</th>
+<th align="center">说明</th>
+<th align="center">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>User-Agent</code></td>
+<td align="center">浏览器的身份标识字符串</td>
+<td align="center"><code>User-Agent: Mozilla/5.0(X11；Linux x86_64；rv: 12.0)Gecko/20100101 FireFox/21.0</code></td>
+</tr>
+<tr>
+<td align="center"><code>Host</code></td>
+<td align="center">服务器的域名、端口号</td>
+<td align="center"><code>Host: localhost:80</code></td>
+</tr>
+<tr>
+<td align="center"><code>Date</code></td>
+<td align="center">发送该消息的日期和时间</td>
+<td align="center"><code>Date: Tue, 15 Nov 1994 08:12:31</code></td>
+</tr>
+<tr>
+<td align="center"><code>Referer</code></td>
+<td align="center">表示浏览器所访问的前一个页面正是前一个页面的某个链接将浏览器带到了当前这个页面</td>
+<td align="center"><code>Referer: https://www.baidu.com</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content - Type</code></td>
+<td align="center">请求体的类型</td>
+<td align="center"><code>Content-Type: multipart/form-data</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content - Length</code></td>
+<td align="center">请求体的长度（字节为单位）</td>
+<td align="center"><code>Content-Length: 348</code></td>
+</tr>
+<tr>
+<td align="center"><code>Accept</code></td>
+<td align="center">能接受的响应内容类型（<code>Content-Types</code>）</td>
+<td align="center"><code>Accept: text/plain</code></td>
+</tr>
+<tr>
+<td align="center"><code>Accept-Charset</code></td>
+<td align="center">能够接受的字符集</td>
+<td align="center"><code>Accept-Charset: GB2312,utf-8;q=0.7,*;q=0.7</code>(q值越大，表示优先级越高)</td>
+</tr>
+<tr>
+<td align="center"><code>Accept-Encoding</code></td>
+<td align="center">能够接受的编码方式列表</td>
+<td align="center"><code>Accept-Encoding: gzip，deflate</code></td>
+</tr>
+<tr>
+<td align="center"><code>Accept-Language</code></td>
+<td align="center">能够接受的响应内容的自然语言列表</td>
+<td align="center"><code>Accept-Language: en-US</code></td>
+</tr>
+<tr>
+<td align="center"><code>Range</code></td>
+<td align="center">仅请求某个实体的一部分。字节偏移以 开始（实现断点续传）</td>
+<td align="center"><code>Range: bytes=500-999</code></td>
+</tr>
+<tr>
+<td align="center"><code>Origin</code></td>
+<td align="center">发起一个针对跨域资源共享的请求</td>
+<td align="center"><code>Origin: https://www.baidu.com</code></td>
+</tr>
+<tr>
+<td align="center"><code>Cookie</code></td>
+<td align="center">之前由服务器通过<code>Set-Cookie</code>发送<code>Cookie</code></td>
+<td align="center"><code>Cookie: $Version = 1; SKin=new;</code></td>
+</tr>
+<tr>
+<td align="center"><code>Connection</code></td>
+<td align="center">该浏览器想要优先使用的连接类型</td>
+<td align="center"><code>Connection: keep-alive</code></td>
+</tr>
+<tr>
+<td align="center"><code>Cache-Control</code></td>
+<td align="center">用来指定在这次的请求/响应链中的所有缓存机制用来指定在这次的请求 响应链中的所有缓存机制都必须遵守的指令</td>
+<td align="center"><code>Cache-Control: no-cache</code></td>
+</tr>
+</tbody></table>
+<h3 id="响应头字段"><a href="#响应头字段" class="headerlink" title="响应头字段"></a>响应头字段</h3><table>
+<thead>
+<tr>
+<th align="center">头字段</th>
+<th align="center">说明</th>
+<th align="center">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>Date</code></td>
+<td align="center">发送该消息的日期和时间</td>
+<td align="center"><code>Date: Tue, 15 Nov 1994 08:12:31</code></td>
+</tr>
+<tr>
+<td align="center"><code>Last-Modified</code></td>
+<td align="center">所请求的对象的最后修改日期</td>
+<td align="center"><code>Last-Modified: Tue, 15 Nov 1994 08:12:31</code></td>
+</tr>
+<tr>
+<td align="center"><code>Server</code></td>
+<td align="center">服务器的名字</td>
+<td align="center"><code>Server: Apache/2.4.1(Unix)</code></td>
+</tr>
+<tr>
+<td align="center"><code>Expires</code></td>
+<td align="center">指定一个时间，超过该时间则认为此响应已经过期</td>
+<td align="center"><code>Expires: Tue, 15 Dec 1994 08:12:31</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content-Type</code></td>
+<td align="center">响应体的类型</td>
+<td align="center"><code>Content-Type: text/html; charset=utf-8</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content-Encoding</code></td>
+<td align="center">内容所使用的编码类型</td>
+<td align="center"><code>Content-Encoding: gzip</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content-Length</code></td>
+<td align="center">响应体的长度（字节为单位）</td>
+<td align="center"><code>Content-Length: 348</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content-Disposition</code></td>
+<td align="center">一个可以让客户端下载文件并建议文件名的头部</td>
+<td align="center"><code>Content-Disposition: attachment; filename=&quot;fname.text&quot;</code></td>
+</tr>
+<tr>
+<td align="center"><code>Accept-Ranges</code></td>
+<td align="center">服务器支持哪些种类的部分内容范围</td>
+<td align="center"><code>Accept-Ranges: bytes</code></td>
+</tr>
+<tr>
+<td align="center"><code>Content-Ranges</code></td>
+<td align="center">这条部分消息是属于完整消息的哪部分</td>
+<td align="center"><code>Content-Ranges: bytes 21010-47021/47022</code></td>
+</tr>
+<tr>
+<td align="center"><code>Access-Control-Allow-Origin</code></td>
+<td align="center">指定哪些网站可参与到跨来源资源共享过程中</td>
+<td align="center"><code>Access-Control-Allow-Origin: *</code></td>
+</tr>
+<tr>
+<td align="center"><code>Location</code></td>
+<td align="center">用来进行重定向，或者在创建了某个新资源时使用</td>
+<td align="center"><code>Location: http://www.w3.org</code></td>
+</tr>
+<tr>
+<td align="center"><code>Set-Cookie</code></td>
+<td align="center">返回一个<code>Cookie</code>让客户端去保存</td>
+<td align="center"><code>Set-Cookie: UserID=:JohnDoe; Max-Age=3600; Version=1</code></td>
+</tr>
+<tr>
+<td align="center"><code>Connection</code></td>
+<td align="center">针对该连接所预期的选项</td>
+<td align="center"><code>Connection : close</code></td>
+</tr>
+<tr>
+<td align="center"><code>Cache-Control</code></td>
+<td align="center">向从服务器直到客户端在内的所有缓存机制告知，它们是否可以缓存这个对象。单位为秒</td>
+<td align="center"><code>Cache-Control: max-age=3600</code></td>
+</tr>
+</tbody></table>
+<h2 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h2><ul>
+<li>在<a href>RFC 2616 10.Status Code Definitions</a>规范中定义<ul>
+<li>状态码指示<code>HTTP</code>请求是否已成功完成</li>
+</ul>
+</li>
+<li>状态码可以分为<code>5</code>类<ul>
+<li>信息响应：<code>100~199</code></li>
+<li>成功响应：<code>200~299</code></li>
+<li>重定向：<code>300~399</code></li>
+<li>客户端错误：<code>400~499</code></li>
+<li>服务器错误 ：<code>500~599</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="常见的状态码"><a href="#常见的状态码" class="headerlink" title="常见的状态码"></a>常见的状态码</h3><ul>
+<li><code>100 Continue</code><ul>
+<li>请求的初始部分已经被服务器收到，并且没有被服务器拒绝。客户端应该继续发送剩余的请求，如果请求已经完成，就忽略这个响应</li>
+<li>允许客户端发送带请求体的请求前，判断服务器是否愿意接收请求（服务器通过请求头判断）</li>
+<li>在某些情况下，如果服务器在不看请求体就拒绝请求时，客户端就发送请求体是不恰当的或低效的</li>
+</ul>
+</li>
+<li><code>200 OK</code>：请求成功</li>
+<li><code>302 Found</code>：请求的资源被暂时的移动到了由<code>Location</code>头部指定的<code>URL</code>上</li>
+<li><code>304 Not Modified</code>：说明无需再次传输请求的内容，也就是说可以使用缓存的内容</li>
+<li><code>400 Bad Request</code>：由于语法无效，服务器无法理解该请求</li>
+<li><code>401 Unauthorized</code>：由于缺乏目标资源要求的身份验证凭证</li>
+<li><code>403 Forbidden</code>：服务器端有能力处理该请求，但是拒绝授权访问</li>
+<li><code>404 Not Found</code>：服务器端无法找到所请求的资源</li>
+<li><code>405 Method Not Allowed</code>：服务器禁止了使用当前<code>HTTP</code>方法的请求</li>
+<li><code>406 Not Acceptable</code>：服务器端无法提供与<code>Accept-Charset</code>以及<code>Accept-Language</code>指定的值相匹配的响应</li>
+<li><code>408 Request Timeout</code>：服务器想要将没有在使用的连接关闭<ul>
+<li>一些服务器会在空闲连接上发送此信息，即便是在客户端没有发送任何请求的情况下</li>
+</ul>
+</li>
+<li><code>500 Internal Server Error</code>：所请求的服务器遇到意外的情况并阻止其执行请求</li>
+<li><code>501 Not Implemented</code>：请求的方法不被服务器支持，因此无法被处理<ul>
+<li>服务器必须支持的方法（即不会返回这个状态码的方法）只有<code>GET</code>和<code>HEAD</code></li>
+</ul>
+</li>
+<li><code>502 Bad Gateway</code>：作为网关或代理角色的服务器，从上游服务器（如<code>tomcat</code>）中接收到的响应是无效的</li>
+<li><code>503 Service Unavailable</code>：服务器尚未处于可以接受请求的状态<ul>
+<li>通常造成这种情况的原因是由于服务器停机维护或者已超载</li>
+</ul>
+</li>
+</ul>
+<h2 id="请求体Message-Body数据格式"><a href="#请求体Message-Body数据格式" class="headerlink" title="请求体Message-Body数据格式"></a>请求体<code>Message-Body</code>数据格式</h2><ul>
+<li>设置<code>Content-Type</code>，可以确定<code>post</code>请求中<code>Message-Body</code>中的数据格式，常见的有<ul>
+<li><code>application/x-www-form-urlencoded</code>（默认值）<ul>
+<li>用<code>&amp;</code>分隔参数，用<code>=</code>分隔键和值，字符用<code>URL</code>编码方式进行编码</li>
+</ul>
+</li>
+<li><code>application/json</code>，采用<code>json</code>的格式</li>
+<li><code>multipart/form-data</code><ul>
+<li>文件上传时必须使用这种编码方式</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="multipart-form-data格式"><a href="#multipart-form-data格式" class="headerlink" title="multipart/form-data格式"></a><code>multipart/form-data</code>格式</h3><ul>
+<li>参考<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc1521">RFC 1521</a></li>
+<li>请求头<ul>
+<li><code>Content-Type: multipart/form-data; boundary=xxx</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="7.png"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs js">POST /hello/form HTTP/<span class="hljs-number">1.1</span><br><span class="hljs-attr">Host</span>: localhost:<span class="hljs-number">8080</span><br><span class="hljs-attr">Connection</span>: keep-alive<br>Content-Length: <span class="hljs-number">592540</span><br>Cache-Control: max-age=<span class="hljs-number">0</span><br>sec-ch-ua: <span class="hljs-string">&quot;Not A(Brand&quot;</span>;v=<span class="hljs-string">&quot;99&quot;</span>, <span class="hljs-string">&quot;Google Chrome&quot;</span>;v=<span class="hljs-string">&quot;121&quot;</span>, <span class="hljs-string">&quot;Chromium&quot;</span>;v=<span class="hljs-string">&quot;121&quot;</span><br>sec-ch-ua-mobile: ?<span class="hljs-number">0</span><br>sec-ch-ua-platform: <span class="hljs-string">&quot;macOS&quot;</span><br>Upgrade-Insecure-Requests: <span class="hljs-number">1</span><br><span class="hljs-attr">Origin</span>: http:<span class="hljs-comment">//localhost:8080</span><br><span class="hljs-comment">// boundary</span><br>Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryXejOnYSFafBNlI0w<br>User-Agent: Mozilla/<span class="hljs-number">5.0</span> (Macintosh; Intel Mac OS X <span class="hljs-number">10_15_7</span>) AppleWebKit/<span class="hljs-number">537.36</span> (KHTML, like Gecko) Chrome/<span class="hljs-number">121.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span> Safari/<span class="hljs-number">537.36</span><br><span class="hljs-attr">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="hljs-number">0.9</span>,image/avif,image/webp,image/apng,*<span class="hljs-comment">/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="hljs-comment">Sec-Fetch-Site: same-origin</span><br><span class="hljs-comment">Sec-Fetch-Mode: navigate</span><br><span class="hljs-comment">Sec-Fetch-User: ?1</span><br><span class="hljs-comment">Sec-Fetch-Dest: document</span><br><span class="hljs-comment">Referer: http://localhost:8080/hello/html/form.html</span><br><span class="hljs-comment">Accept-Encoding: gzip, deflate, br</span><br><span class="hljs-comment">Accept-Language: zh-CN,zh;q=0.9</span><br><span class="hljs-comment">Cookie: JSESSIONID=0B1068472562269E7E2E76604E96B4B8; Webstorm-c5be0d49=04e69f37-ac09-4674-89cc-4120f5cebd97</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">------WebKitFormBoundaryXejOnYSFafBNlI0w</span><br><span class="hljs-comment">// body-part</span><br><span class="hljs-comment">Content-Disposition: form-data; name=&quot;name&quot;</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">1222</span><br><span class="hljs-comment">------WebKitFormBoundaryXejOnYSFafBNlI0w</span><br><span class="hljs-comment">Content-Disposition: form-data; name=&quot;age&quot;</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">3333</span><br><span class="hljs-comment">------WebKitFormBoundaryXejOnYSFafBNlI0w</span><br><span class="hljs-comment">Content-Disposition: form-data; name=&quot;photo&quot;; filename=&quot;......2024-01-27 19.59.06.png&quot;</span><br><span class="hljs-comment">Content-Type: image/png</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">.PNG</span><br><span class="hljs-comment">.</span><br><span class="hljs-comment">...</span><br><span class="hljs-comment">.......</span><br><span class="hljs-comment">//数据结束的标志</span><br><span class="hljs-comment">------WebKitFormBoundaryXejOnYSFafBNlI0w--</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><h3 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h3><ul>
+<li><code>Pragma</code>：作用类似于<code>Cache-Control</code>，<code>HTTP/1.0</code>的产物</li>
+<li><code>Expires</code>：缓存的过期时间（<code>GMT</code>格式时间），<code>HTTP/1.0</code>的产物</li>
+<li><code>Cache-Control</code>：设置缓存策略<ul>
+<li><code>no-storage</code>：不缓存数据到本地</li>
+<li><code>public</code>：允许用户、代理服务器缓存数据到本地</li>
+<li><code>private</code>：只允许用户缓存数据到本地</li>
+<li><code>max-age</code>：缓存的有效时间（多长时间不过期），单位秒</li>
+<li><code>no-cache</code>：每次需要发请求给服务器询问缓存是否有变化，再来决定如何使用缓存</li>
+</ul>
+</li>
+<li>优先级：<code>Pragma</code> &gt; <code>Cache-Control</code> &gt; <code>Expires</code></li>
+</ul>
+<h4 id="是否更新资源的判断"><a href="#是否更新资源的判断" class="headerlink" title="是否更新资源的判断"></a>是否更新资源的判断</h4><ul>
+<li><code>Last-Modified</code>：资源的最后一次修改时间</li>
+<li><code>ETag</code>：资源的唯一标识（根据文件内容计算出来的摘要值）</li>
+<li>优先级：<code>ETag</code> &gt; <code>Last-Modified</code></li>
+</ul>
+<h3 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h3><ul>
+<li><code>If-None-Match</code><ul>
+<li>如果上一次的响应头中有<code>ETag</code>，就会将<code>ETag</code>的值作为请求头的值</li>
+<li>如果服务器发现资源的最新摘要值跟<code>If-None-Match</code>不匹配，就会返回新的资源（<code>200 OK</code>）</li>
+<li>否则，就不会返回资源的具体数据（<code>304 Not Modified</code>）</li>
+</ul>
+</li>
+<li><code>If-Modified-Since</code><ul>
+<li>如果上一次的响应头中没有<code>ETag</code>，有<code>Last-Modified</code>，就会将<code>Last-Modified</code>的值作为请求头的值</li>
+<li>如果服务器发现资源的最后一次修改时间晚于<code>If-Modified-Since</code>，就会返回新的资源（<code>200 OK</code>）</li>
+<li>否则，就不会返回资源的具体数据（<code>304 Not Modified</code>）</li>
+</ul>
+</li>
+</ul>
+<h3 id="缓存对比Last-Modified-VS-ETag"><a href="#缓存对比Last-Modified-VS-ETag" class="headerlink" title="缓存对比Last-Modified VS ETag"></a>缓存对比<code>Last-Modified</code> VS <code>ETag</code></h3><ul>
+<li><p><code>Last-Modified</code>的缺陷</p>
+<ul>
+<li>只能精确到秒级别，如果资源在<code>1秒</code>内被修改了，客户端将无法获取最新的资源数据</li>
+<li>如果某些资源被修改了（最后一次修改时间发生了变化），但是内容并没有任何变化<ul>
+<li>会导致相同数据重复传输，没有使用到缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>ETag</code>可以办到</p>
+<ul>
+<li>只要资源的内容没有变化，就不会重复传输资源数据</li>
+<li>只要资源的内容发生了变化，就会返回最新的资源数据给客户端</li>
+</ul>
+</li>
+</ul>
+<h3 id="缓存使用流程"><a href="#缓存使用流程" class="headerlink" title="缓存使用流程"></a>缓存使用流程</h3><p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="3.jpg"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="http://example.com">jingbo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/01/25/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_/">http://example.com/2024/01/25/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/banner/banner_11.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/01/26/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" title="网络安全"><img class="cover" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/img/banner/banner_58.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">网络安全</div></div></a></div><div class="next-post pull-right"><a href="/2024/01/23/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E5%BA%94%E7%94%A8%E5%B1%82%EF%BC%88DNS%E5%92%8CDHCP%EF%BC%89/" title="应用层（DNS和DHCP）"><img class="cover" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/img/banner/banner_17.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">应用层（DNS和DHCP）</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">jingbo</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">130</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/cjpcxz" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1337811967@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">欢迎来的bo的博客<div class="twopeople"></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Http"><span class="toc-number">1.</span> <span class="toc-text">Http</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC"><span class="toc-number">1.1.</span> <span class="toc-text">版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86"><span class="toc-number">1.2.</span> <span class="toc-text">标准</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">报文格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ABNF"><span class="toc-number">1.4.</span> <span class="toc-text">ABNF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text">核心规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">报文格式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#start-line"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">start-line</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#header-filed%E3%80%81message-body"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">header - filed、message-body</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#telnet"><span class="toc-number">1.4.3.</span> <span class="toc-text">telnet</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#URL%E7%9A%84%E7%BC%96%E7%A0%81"><span class="toc-number">1.5.</span> <span class="toc-text">URL的编码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95"><span class="toc-number">1.6.</span> <span class="toc-text">请求方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.6.1.</span> <span class="toc-text">方法介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%B4%E9%83%A8%E5%AD%97%E6%AE%B5"><span class="toc-number">1.7.</span> <span class="toc-text">头部字段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%A4%B4%E5%AD%97%E6%AE%B5"><span class="toc-number">1.7.1.</span> <span class="toc-text">请求头字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E5%A4%B4%E5%AD%97%E6%AE%B5"><span class="toc-number">1.7.2.</span> <span class="toc-text">响应头字段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E7%A0%81"><span class="toc-number">1.8.</span> <span class="toc-text">状态码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E7%8A%B6%E6%80%81%E7%A0%81"><span class="toc-number">1.8.1.</span> <span class="toc-text">常见的状态码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E4%BD%93Message-Body%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.9.</span> <span class="toc-text">请求体Message-Body数据格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#multipart-form-data%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.9.1.</span> <span class="toc-text">multipart&#x2F;form-data格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98"><span class="toc-number">1.10.</span> <span class="toc-text">缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E5%A4%B4"><span class="toc-number">1.10.1.</span> <span class="toc-text">响应头</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%AF%E5%90%A6%E6%9B%B4%E6%96%B0%E8%B5%84%E6%BA%90%E7%9A%84%E5%88%A4%E6%96%AD"><span class="toc-number">1.10.1.1.</span> <span class="toc-text">是否更新资源的判断</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%A4%B4"><span class="toc-number">1.10.2.</span> <span class="toc-text">请求头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E5%AF%B9%E6%AF%94Last-Modified-VS-ETag"><span class="toc-number">1.10.3.</span> <span class="toc-text">缓存对比Last-Modified VS ETag</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="toc-number">1.10.4.</span> <span class="toc-text">缓存使用流程</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/01/28/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_s/" title="https"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/img/banner/banner_39.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="https"/></a><div class="content"><a class="title" href="/2024/01/28/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_s/" title="https">https</a><time datetime="2024-01-28T15:21:05.000Z" title="Created 2024-01-28 23:21:05">2024-01-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/26/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" title="网络安全"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/img/banner/banner_58.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="网络安全"/></a><div class="content"><a class="title" href="/2024/01/26/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" title="网络安全">网络安全</a><time datetime="2024-01-26T06:48:33.000Z" title="Created 2024-01-26 14:48:33">2024-01-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/25/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_/" title="应用层（http）"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="/img/banner/banner_11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="应用层（http）"/></a><div class="content"><a class="title" href="/2024/01/25/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_/" title="应用层（http）">应用层（http）</a><time datetime="2024-01-25T06:41:20.000Z" title="Created 2024-01-25 14:41:20">2024-01-25</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By jingbo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script async src="/js/title.js"></script><script async src="/scripts/modify.js"></script><script defer src="https://cdn.jsdelivr.net/combine/npm/jquery@latest/dist/jquery.min.js,gh/weilining/jsdelivr/jquery/circlemagic/circlemagic.min.js,gh/weilining/jsdelivr@latest/jquery/circlemagic/butterflycirclemagic.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"live2dw"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script>
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 3,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body></html>
