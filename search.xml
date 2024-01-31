@@ -1,6 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>http的升级改进</title>
+    <url>/2024/01/29/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="HTTP-1，1协议的不足"><a href="#HTTP-1，1协议的不足" class="headerlink" title="HTTP/1，1协议的不足"></a><code>HTTP/1，1</code>协议的不足</h1><ul>
+<li><p>同一时间，一个连接只能对应一个请求</p>
+<ul>
+<li>针对同一个域名，大多数浏览器允许同时最多<code>6</code>个并发连接。(ios的<code>NSURLSession</code>最多可以建立<code>4</code>个<code>tcp</code>连接,<code>OSX</code>中最多<code>6</code>个)</li>
+</ul>
+</li>
+<li><p>只允许客户端主动发起请求</p>
+<ul>
+<li>一个请求只能对应一个响应</li>
+</ul>
+</li>
+<li><p>同一个会话的多次请求中，头信息会被重复传输</p>
+<ul>
+<li>通常会给每个传输增加<code>500~800</code>字节的开销</li>
+<li>如果使用<code>Cookie</code>，增加的开销有时会达到上千字节</li>
+</ul>
+</li>
+</ul>
+<h1 id="SPDY"><a href="#SPDY" class="headerlink" title="SPDY"></a><code>SPDY</code></h1><ul>
+<li><p><code>SPDY</code>（<code>speedy</code>的缩写），是基于<code>TCP</code>的应用层协议，它强制要求使用<code>SSL/TLS</code></p>
+<ul>
+<li><code>2009</code>年<code>11</code>月，<code>Google</code>宣布将<code>SPDY</code>作为提高网络速度的内部项目</li>
+</ul>
+</li>
+<li><p><code>SPDY</code>与<code>HTTP</code>的关系</p>
+<ul>
+<li><code>SPDY</code>并不用于取代<code>HTTP</code>，它只是修改了<code>HTTP</code>请求与响应的传输方式</li>
+<li>只需增加一个<code>SPDY</code>层，现有的所有服务端应用均不用做任何修改</li>
+<li><code>SPDY</code>是<code>HTTP/2</code>的前身<ul>
+<li><code>2015</code>年<code>9</code>月，<code>Google</code>宣布移除对<code>SPDY</code>的支持，拥抱<code>HTTP/2</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/1.jpg"></p>
+<h1 id="HTTP-2"><a href="#HTTP-2" class="headerlink" title="HTTP/2"></a><code>HTTP/2</code></h1><ul>
+<li><p><code>HTTP/2</code>，于<code>2015</code>年<code>5</code>月以<a href>RFC 7540</a>正式发表</p>
+<ul>
+<li>根据<code>W3Techs</code>的数据，截至<code>2021</code>年<code>10</code>月，全球有<code>46.5%</code>的网站支持了<code>HTTP/2</code></li>
+</ul>
+</li>
+<li><p><code>HTTP/1.1</code>和<code>HTTP/2</code>速度对比</p>
+<ul>
+<li><a href="http://www.http2demo.io/">http://www.http2demo.io/</a></li>
+<li><a href="https://http2.akamai.com/demo">https://http2.akamai.com/demo</a></li>
+</ul>
+</li>
+<li><p><code>HTTP/2</code>在底层传输做了很多的改进和优化，但在语意上完全与<code>HTTP/1.1</code>兼容</p>
+<ul>
+<li>比如请求方法（如<code>GET</code>、<code>POST</code>）、<code>Status Code</code>、各种<code>Headers</code>等都没有改变</li>
+<li>因此，要想升级到<code>HTTP/2</code><ul>
+<li>开发者不需要修改任何代码</li>
+<li>只需要升级服务器配置、升级浏览器</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
+<li><p>数据流：已建立的连接内的双向字节流，可以承载一条或多条消息</p>
+<ul>
+<li>所有通信都在一个<code>TCP</code>连接上完成，此连接可以承载任意数量的双向数据流</li>
+</ul>
+</li>
+<li><p>消息：与逻辑<code>HTTP</code>请求或响应消息对应，由一系列帧组成</p>
+</li>
+<li><p>帧：<code>HTTP/2</code>通信的最小单位，每个帧都包含帧头（会标识出当前帧所属的数据流）</p>
+<ul>
+<li>来自不同数据流的帧可以<code>交错发送</code>，然后再根据每个帧头的数据流标识符重新组装</li>
+</ul>
+</li>
+</ul>
+<h3 id="二进制格式"><a href="#二进制格式" class="headerlink" title="二进制格式"></a>二进制格式</h3><p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/2.jpg"></p>
+<ul>
+<li><code>HTTP/2</code>采用二进制格式传输数据，而非<code>HTTP/1.1</code>的文本格式</li>
+<li>二进制格式在协议的解析和优化扩展上带来更多的优势和可能</li>
+</ul>
+<h3 id="多路复用"><a href="#多路复用" class="headerlink" title="多路复用"></a>多路复用</h3><p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/3.jpg"></p>
+<ol>
+<li>客户端和服务器可以将<code>HTTP</code>消息分解为互不依赖的帧，然后交错发送，最后再在另一端把它们重新组装起来</li>
+<li>并行交错地发送多个请求，请求之间互不影响</li>
+<li>并行交错地发送多个响应，响应之间互不干扰</li>
+<li>使用一个连接并行发送多个请求和响应</li>
+<li>不必再为绕过<code>HTTP/1.1</code>限制而做很多工作<ul>
+<li>比如<code>image sprites</code>、合并<code>CSS\JS</code>、内嵌<code>CSS\JS\Base64</code>图片、域名分片等<ul>
+<li><code>image sprites</code>（也叫做<code>CSS Sprites</code>），将多张小图合并成一张大图<ul>
+<li> 最后通过<code>CSS</code>结合小图的位置、尺寸进行精准定位</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>并行交错的发送多个请求，只用一个连接<br><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/4.jpg"></p>
+</li>
+<li><p>无需等待上一次发送完成，在接着发送下一个<br><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/5.jpg"></p>
+</li>
+</ul>
+<h3 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h3><ul>
+<li><p><code>HTTP/2</code> 标准允许每个数据流都有一个关联的权重和依赖关系</p>
+<ul>
+<li>可以向每个数据流分配一个介于<code>1</code>至<code>256</code>之间的整数</li>
+<li>每个数据流与其他数据流之间可以存在显式依赖关系</li>
+</ul>
+</li>
+<li><p>客户端可以构建和传递“优先级树”，表明它倾向于如何接收响应</p>
+</li>
+<li><p>服务器可以使用此信息通过控制<code>CPU</code>、内存和其他资源的分配设定数据流处理的优先级</p>
+<ul>
+<li>在资源数据可用之后，确保将高优先级响应以最优方式传输至客户端</li>
+</ul>
+</li>
+<li><p>应尽可能先给父数据流分配资源</p>
+</li>
+<li><p>同级数据流（共享相同父项）应按其权重比例分配资源</p>
+</li>
+<li><p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/6.jpg"></p>
+</li>
+</ul>
+<ol>
+<li><code>A</code>、<code>B</code>依赖于隐式“根数据流”，<code>A</code>获得的资源比例是<code>12/16</code>，<code>B</code>获得的资源比例是<code>4/16</code></li>
+<li><code>D</code>依赖于根数据流，<code>C</code>依赖于<code>D</code>，<code>D</code>应先于<code>C</code>获得完整资源分</li>
+<li><code>D</code>应先于<code>C</code>获得完整资源分配，<code>C</code>应先于<code>A</code>和<code>B</code>获得完整资源分配，<code>B</code>获得的资源是<code>A</code>所获资源的<code>1/3</code></li>
+<li><code>D</code>应先于<code>E</code>和<code>C</code>获得完整资源分配，<code>E</code>和<code>C</code>应先于<code>A</code>和<code>B</code>获得相同的资源分配，<code>B</code>获得的资源是<code>A</code>所获资源的<code>1/3</code></li>
+</ol>
+<h3 id="头部压缩"><a href="#头部压缩" class="headerlink" title="头部压缩"></a>头部压缩</h3><p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/7.jpg"></p>
+<ul>
+<li><p><code>HTTP/2</code>使用<code>HPACK</code>压缩请求头和响应头</p>
+<ul>
+<li>可以极大减少头部开销，进而提高性能</li>
+</ul>
+</li>
+<li><p>早期版本的<code>HTTP/2</code>和<code>SPDY</code>使用 <code>zlib</code>压缩</p>
+<ul>
+<li>可以将所传输头数据的大小减小<code>85%~88%</code></li>
+<li>但在<code>2012</code>年夏天，被攻击导致会话劫持</li>
+<li>后被更安全的<code>HPACK</code>取代</li>
+</ul>
+</li>
+<li><p>其原理实际上是客户端和服务器中，都保存了一张表。如果本次请求的头部数据，在表中是存在的，则，新的请求，只用其表的索引即可。</p>
+</li>
+</ul>
+<p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/8.jpg"></p>
+<h3 id="服务器推送（非后台推送）"><a href="#服务器推送（非后台推送）" class="headerlink" title="服务器推送（非后台推送）"></a>服务器推送（非后台推送）</h3><ul>
+<li>服务器可以对一个<code>客户端</code>请求发送<code>多个响应</code>.(一个请求，多个响应)<ul>
+<li>除了对最初请求的响应外，服务器还可以向客户端推送额外资源，而无需客户端额外明确地请求（只能是静态资源，不能推送自定义数据）</li>
+</ul>
+</li>
+</ul>
+<p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/9.jpg"></p>
+<h1 id="HTTP-2存在的问题"><a href="#HTTP-2存在的问题" class="headerlink" title="HTTP/2存在的问题"></a><code>HTTP/2</code>存在的问题</h1><h2 id="队头阻塞"><a href="#队头阻塞" class="headerlink" title="队头阻塞"></a>队头阻塞</h2><ul>
+<li><p>因为<code>TCP</code>的可靠传输，如果队头元素丢失，需要重发，重发成功，后续的数据，才能发送。<br><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/10.jpg"></p>
+</li>
+<li><p>而<code>QUIC</code>可以实现，在中间数据丢失的情况下，不会阻塞后续数据发送。(且丢失的数据，可以通过已经发送数据中的冗余数据，推断出来)</p>
+</li>
+</ul>
+<p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/11.jpg"></p>
+<h2 id="握手延迟"><a href="#握手延迟" class="headerlink" title="握手延迟"></a>握手延迟</h2><p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/12.jpg"></p>
+<h1 id="HTTP-3"><a href="#HTTP-3" class="headerlink" title="HTTP/3"></a><code>HTTP/3</code></h1><ul>
+<li><code>Google</code>觉得<code>HTTP/2</code>仍然不够快，于是就有了<code>HTTP/3</code><ul>
+<li><code>HTTP/3</code>由<code>Google</code>开发，弃用<code>TCP</code>协议，改为使用基于<code>UDP</code>协议的<code>QUIC</code>协议实现</li>
+<li><code>QUIC</code>（<code>Quick UDP Internet Connections</code>），译为：快速<code>UDP</code>网络连接，由<code>Google</code>开发，在<code>2013</code>年实现</li>
+<li>于<code>2018</code>年从<code>HTTP-over-QUIC</code>改为<code>HTTP/3</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/13.jpg"></p>
+<ul>
+<li><p><code>HTTP/3</code>基于<code>UDP</code>，如何保证可靠传输</p>
+<ul>
+<li>由<code>QUIC</code>来保证</li>
+</ul>
+</li>
+<li><p>为何<code>Google</code>不开发一个新的不同于<code>TCP</code>、<code>UDP</code>的传输层协议？</p>
+<ul>
+<li>目前世界上的网络设备基本只认<code>TCP</code>、<code>UDP</code></li>
+<li>如果要修改传输层，意味着操作系统的内核也要修改</li>
+<li>另外，由<code>IETF</code>标准化的许多<code>TCP</code>新特性都因缺乏广泛支持而没有得到广泛的部署或使用</li>
+<li>因此，要想开发并应用一个新的传输层协议，是极其困难的一件事情</li>
+</ul>
+</li>
+</ul>
+<h2 id="特性-连接迁移"><a href="#特性-连接迁移" class="headerlink" title="特性 - 连接迁移"></a>特性 - 连接迁移</h2><ul>
+<li><p><code>TCP</code>基于<code>4</code>要素（<code>源IP</code>、<code>源端口</code>、<code>目标IP</code>、<code>目标端口</code>）</p>
+<ul>
+<li>切换网络时至少会有一个要素发生变化，导致连接发生变化</li>
+<li>当连接发生变化时，如果还使用原来的<code>TCP</code>连接，则会导致连接失败，就得等原来的连接超时后重新建立连接</li>
+<li>所以我们有时候发现切换到一个新网络时，即使新网络状况良好，但内容还是需要加载很久</li>
+<li>如果实现得好，当检测到网络变化时立刻建立新的<code>TCP</code>连接，即使这样，建立新的连接还是需要几百毫秒的时间</li>
+</ul>
+</li>
+<li><p><code>QUIC</code>的连接不受<code>4</code>要素的影响，当<code>4</code>要素发生变化时，原连接依然维持</p>
+<ul>
+<li><code>QUIC</code>连接不以<code>4</code>要素作为标识，而是使用一组<code>Connection ID</code>（连接<code>ID</code>）来标识一个连接</li>
+<li>即使<code>IP</code>或者端口发生变化，只要<code>Connection ID</code>没有变化，那么连接依然可以维持</li>
+<li>比如<ul>
+<li>当设备连接到<code>Wi-Fi</code>时，将进行中的下载从蜂窝网络连接转移到更快速的<code>Wi-Fi</code>连接</li>
+<li>当<code>Wi-Fi</code>连接不再可用时，将连接转移到蜂窝网络连接</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><ul>
+<li>据<code>Google</code>和<code>Facebook</code>称，与基于<code>TLS</code>的<code>HTTP/2</code>相比，它们大规模部署的<code>QUIC</code>需要近<code>2</code>倍的<code>CPU</code>使用量<ul>
+<li><code>Linux</code>内核的<code>UDP</code>部分没有得到像<code>TCP</code>那样的优化，因为传统上没有使用<code>UDP</code>进行如此高速的信息传输</li>
+<li><code>TCP</code>和<code>TLS</code>有硬件加速，而这对于<code>UDP</code>很罕见，对于<code>QUIC</code>则基本不存在</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>网络协议</category>
+      </categories>
+  </entry>
+  <entry>
     <title>https</title>
     <url>/2024/01/28/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/Http_s/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="https"><a href="#https" class="headerlink" title="https"></a>https</h1><ul>
@@ -2901,7 +3122,7 @@
 </ul>
 <h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><h3 id="原生中调用JS"><a href="#原生中调用JS" class="headerlink" title="原生中调用JS"></a>原生中调用JS</h3><ul>
 <li><p>调用<code>js</code>变量</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">let</span> jsvm <span class="hljs-operator">=</span> <span class="hljs-type">JSVirtualMachine</span>()<br><span class="hljs-keyword">let</span> ctx <span class="hljs-operator">=</span> <span class="hljs-type">JSContext</span>(virtualMachine: jsvm)<br>ctx<span class="hljs-operator">?</span>.evaluateScript(<span class="hljs-string">&quot;var i = 4 + 8&quot;</span>)<br><span class="hljs-keyword">let</span> number <span class="hljs-operator">=</span> ctx<span class="hljs-operator">?</span>.objectForKeyedSubscript(<span class="hljs-string">&quot;i&quot;</span>).toNumber()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;var i is&quot;</span>,number<span class="hljs-operator">!</span>) <span class="hljs-comment">// var i is 12</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight swift"><table><tr><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">let</span> jsvm <span class="hljs-operator">=</span> <span class="hljs-type">JSVirtualMachine</span>()<br><span class="hljs-comment">// 从webview中获取</span><br><span class="hljs-comment">//     JSContext *context = [self.webview valueForKeyPath:@&quot;documentView.webView.mainFrame.javaScriptContext&quot;];</span><br><br><span class="hljs-keyword">let</span> ctx <span class="hljs-operator">=</span> <span class="hljs-type">JSContext</span>(virtualMachine: jsvm)<br>ctx<span class="hljs-operator">?</span>.evaluateScript(<span class="hljs-string">&quot;var i = 4 + 8&quot;</span>)<br><span class="hljs-keyword">let</span> number <span class="hljs-operator">=</span> ctx<span class="hljs-operator">?</span>.objectForKeyedSubscript(<span class="hljs-string">&quot;i&quot;</span>).toNumber()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;var i is&quot;</span>,number<span class="hljs-operator">!</span>) <span class="hljs-comment">// var i is 12</span><br></code></pre></td></tr></table></figure></li>
 <li><p>调用<code>js</code>函数</p>
 <figure class="highlight swift"><table><tr><td class="code"><pre><code class="hljs swift">ctx<span class="hljs-operator">?</span>.evaluateScript(<span class="hljs-string">&quot;function addition(x,y) &#123; return x + y&#125;&quot;</span>)<br><span class="hljs-keyword">let</span> addition <span class="hljs-operator">=</span> ctx<span class="hljs-operator">?</span>.objectForKeyedSubscript(<span class="hljs-string">&quot;addition&quot;</span>)<br><span class="hljs-keyword">let</span> returnValue <span class="hljs-operator">=</span> addition<span class="hljs-operator">?</span>.call(withArguments: [<span class="hljs-number">4</span>,<span class="hljs-number">3</span>])<br> <span class="hljs-comment">// resultValue is 7</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;resultValue is&quot;</span>,returnValue<span class="hljs-operator">?</span>.toNumber() <span class="hljs-keyword">as!</span> <span class="hljs-type">NSNumber</span>)<br><br><span class="hljs-comment">// 也可以用全局对象去获取</span><br><span class="hljs-keyword">let</span> returnValue2 <span class="hljs-operator">=</span> ctx<span class="hljs-operator">?</span>.globalObject.invokeMethod(<span class="hljs-string">&quot;addition&quot;</span>, withArguments: [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>])<br><span class="hljs-comment">//  resultValue is 9</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;resultValue2 is&quot;</span>,returnValue2<span class="hljs-operator">?</span>.toNumber() <span class="hljs-keyword">as!</span> <span class="hljs-type">NSNumber</span>)<br></code></pre></td></tr></table></figure></li>
 </ul>
@@ -12137,119 +12358,136 @@
 <li>由另一个视图控制器显示它，也就是模态(<code>Modal</code>)显示(以Model方式显示另一个<code>viewController</code>)</li>
 </ol>
 <p>在 <code>storyboard</code> 里，每个<code>View Controller</code>是一个<code> Scene</code>，<code>View Controller Transition </code>便是从一个 <code>Scene</code> 转换到另外一个 <code>Scene</code>。</p>
-<p>在iOS7之前，只能使用系统提供的转场效果，iOS7之后开放相关API运行对转场效果进行定制</p>
+<p>在<code>iOS7</code>之前，只能使用系统提供的转场效果，<code>iOS7</code>之后开放相关<code>API</code>运行对转场效果进行定制</p>
 </blockquote>
 <span id="more"></span>
 
-<h3 id="Transition-解释"><a href="#Transition-解释" class="headerlink" title="Transition 解释"></a>Transition 解释</h3><p>转场时视图控制器和其对应的视图在结构上的变化：</p>
+<h1 id="Transition-解释"><a href="#Transition-解释" class="headerlink" title="Transition 解释"></a>Transition 解释</h1><p>转场时视图控制器和其对应的视图在结构上的变化：</p>
 <p><img src="1.png" alt="1.png"></p>
-<p>​        转场过程中，作为容器的父 VC 维护着多个子 VC，但在视图结构上，只保留一个子 VC 的视图，所以转场的本质是下一场景(子 VC)的视图替换当前场景(子 VC)的视图以及相应的控制器(子 VC)的替换，表现为当前视图消失和下一视图出现。</p>
-<h3 id="系统自带的方式"><a href="#系统自带的方式" class="headerlink" title="系统自带的方式"></a>系统自带的方式</h3><h4 id="CATransition"><a href="#CATransition" class="headerlink" title="CATransition"></a>CATransition</h4><p><code>CATransition</code>是<code>CAAnimation</code>的子类，用于过渡动画或转场动画。为视图层移入移除屏幕提供转场动画。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">CATransition *animation = [CATransition animation];<br>animation.type = type;<br>animation.subtype = kCATransitionFromRight;<br>animation.duration = 1.0;<br>[vc.view.window.layer addAnimation:animation forKey:kCATransition];<br></code></pre></td></tr></table></figure>
-
 <ul>
-<li>type：转场动画的类型。</li>
+<li>转场过程中，作为容器的父 <code>VC</code> 维护着多个子 <code>VC</code>，但在视图结构上，只保留一个子 <code>VC</code> 的视图，所以转场的本质是下一场景(子 <code>VC</code>)的视图替换当前场景(子 <code>VC</code>)的视图以及相应的控制器(子 <code>VC</code>)的替换，表现为当前视图消失和下一视图出现。</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">fade=1,                   //淡入淡出<br>  pageCurl,                 //翻页<br>  push,                     //推挤<br>  pageUnCurl,               //反翻页<br>  reveal,                   //揭开<br>  cameraIrisHollowOpen,     //开镜头<br>  moveIn,                   //覆盖<br>  cameraIrisHolowClose,     //关镜头<br>  cube,                     //立方体<br>  suckEffect,               //吮吸<br>  oglFlip,                  //翻转<br>  rippleEffect,             //波纹<br></code></pre></td></tr></table></figure>
+<h1 id="系统自带的方式"><a href="#系统自带的方式" class="headerlink" title="系统自带的方式"></a>系统自带的方式</h1><h2 id="CATransition"><a href="#CATransition" class="headerlink" title="CATransition"></a>CATransition</h2><p><code>CATransition</code>是<code>CAAnimation</code>的子类，用于过渡动画或转场动画。为视图层移入移除屏幕提供转场动画。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-built_in">CATransition</span> *animation = [<span class="hljs-built_in">CATransition</span> animation];<br>animation.type = type;<br>animation.subtype = kCATransitionFromRight;<br>animation.duration = <span class="hljs-number">1.0</span>;<br>[vc.view.window.layer addAnimation:animation forKey:kCATransition];<br></code></pre></td></tr></table></figure>
 
 <ul>
-<li>subtype：动画类型的方向，4个方向上下左右</li>
+<li><code>type</code>：转场动画的类型。</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">fade=<span class="hljs-number">1</span>,                   <span class="hljs-comment">//淡入淡出</span><br>  pageCurl,                 <span class="hljs-comment">//翻页</span><br>  push,                     <span class="hljs-comment">//推挤</span><br>  pageUnCurl,               <span class="hljs-comment">//反翻页</span><br>  reveal,                   <span class="hljs-comment">//揭开</span><br>  cameraIrisHollowOpen,     <span class="hljs-comment">//开镜头</span><br>  moveIn,                   <span class="hljs-comment">//覆盖</span><br>  cameraIrisHolowClose,     <span class="hljs-comment">//关镜头</span><br>  cube,                     <span class="hljs-comment">//立方体</span><br>  suckEffect,               <span class="hljs-comment">//吮吸</span><br>  oglFlip,                  <span class="hljs-comment">//翻转</span><br>  rippleEffect,             <span class="hljs-comment">//波纹</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>subtype</code>：动画类型的方向，<code>4</code>个方向上下左右</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">kCATransitionFromRight,<br>kCATransitionFromLeft,<br>kCATransitionFromTop,<br>kCATransitionFromBottom<br></code></pre></td></tr></table></figure>
 
-<h4 id="TransitionFromViewController"><a href="#TransitionFromViewController" class="headerlink" title="TransitionFromViewController"></a>TransitionFromViewController</h4><ul>
+<h2 id="TransitionFromViewController"><a href="#TransitionFromViewController" class="headerlink" title="TransitionFromViewController"></a>TransitionFromViewController</h2><ul>
 <li>同一页面显示多个视图的方式，采用<code>UIViewController</code>自带的方法：<code>transitionFromViewController:toViewController:duration:options:animations:completion:</code>这种转场动画是在当一个父视图控制器中有几个<code>childViewController</code>，当要在这个几个子视图控制器之间切换时可以用这个方法</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">//1. 在一个控制器内加入多个子控制器<br>[self addChildViewCOntroller:fristVc];<br>[self addChildViewCOntroller:secondVc];<br>//2. 当前控制器显示的视图<br>[self.view addSubview:[self.childViewControllers[0] view]];<br>//3. 多视图的转换<br>/*<br>     *  fromViewController      当前显示在父视图控制器中的子视图控制器<br>     *  toViewController        将要显示的姿势图控制器<br>     *  duration                动画时间(这个属性,old friend 了 O(∩_∩)O)<br>     *  options                 动画效果(渐变,从下往上等等,具体查看API)<br>     *  animations              转换过程中的动画<br>     *  completion              转换完成<br>*/<br>[self transitionFromViewController:self.childViewControllers[0] toViewController:self.childViewControllers[1] duration:0.5 options:UIViewAnimationOptionTransitionCurlUp animations:^&#123;<br>        <br> &#125; completion:^(BOOL finished) &#123;<br>        <br>&#125;];<br></code></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">//1. 在一个控制器内加入多个子控制器</span><br>[<span class="hljs-keyword">self</span> addChildViewCOntroller:fristVc];<br>[<span class="hljs-keyword">self</span> addChildViewCOntroller:secondVc];<br><span class="hljs-comment">//2. 当前控制器显示的视图</span><br>[<span class="hljs-keyword">self</span>.view addSubview:[<span class="hljs-keyword">self</span>.childViewControllers[<span class="hljs-number">0</span>] view]];<br><span class="hljs-comment">//3. 多视图的转换</span><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">     *  fromViewController      当前显示在父视图控制器中的子视图控制器</span><br><span class="hljs-comment">     *  toViewController        将要显示的姿势图控制器</span><br><span class="hljs-comment">     *  duration                动画时间(这个属性,old friend 了 O(∩_∩)O)</span><br><span class="hljs-comment">     *  options                 动画效果(渐变,从下往上等等,具体查看API)</span><br><span class="hljs-comment">     *  animations              转换过程中的动画</span><br><span class="hljs-comment">     *  completion              转换完成</span><br><span class="hljs-comment">*/</span><br>[<span class="hljs-keyword">self</span> transitionFromViewController:<span class="hljs-keyword">self</span>.childViewControllers[<span class="hljs-number">0</span>] toViewController:<span class="hljs-keyword">self</span>.childViewControllers[<span class="hljs-number">1</span>] duration:<span class="hljs-number">0.5</span> options:<span class="hljs-built_in">UIViewAnimationOptionTransitionCurlUp</span> animations:^&#123;<br>        <br> &#125; completion:^(<span class="hljs-built_in">BOOL</span> finished) &#123;<br>        <br>&#125;];<br></code></pre></td></tr></table></figure>
 
-<h4 id="Transition-Animation（自定义转场动画的实现）"><a href="#Transition-Animation（自定义转场动画的实现）" class="headerlink" title="Transition Animation（自定义转场动画的实现）"></a>Transition Animation（自定义转场动画的实现）</h4><p>官方支持以下几种方式的自定义转场：</p>
+<h2 id="Transition-Animation（自定义转场动画的实现）"><a href="#Transition-Animation（自定义转场动画的实现）" class="headerlink" title="Transition Animation（自定义转场动画的实现）"></a>Transition Animation（自定义转场动画的实现）</h2><p>官方支持以下几种方式的自定义转场：</p>
 <ol>
 <li><code>UINavigationController</code> 中<code> push</code> 和 <code>pop</code></li>
 <li><code> UITabBarController</code> 中切换 <code>Tab</code></li>
 <li><code>Modal</code>转场：<code>presentation</code> 和 <code>dismissal</code>，俗称视图控制器的模态显示和消失，仅限于<code>modalPresentationStyle</code>属性为 <code>UIModalPresentationFullScreen</code> 或 <code>UIModalPresentationCustom</code> 这两种模式;</li>
 <li><code>UICollectionViewController</code> 的布局转场：<code>UICollectionViewController </code>与 <code>UINavigationController </code>结合的转场方式</li>
 </ol>
-<p>转场协议由5种协议组成，实际中只需要提供其中的两个或者三个便能实现绝大部分的转场动画</p>
-<h5 id="转场代理（Transition-Delegate）"><a href="#转场代理（Transition-Delegate）" class="headerlink" title="转场代理（Transition Delegate）"></a>转场代理（<strong>Transition Delegate</strong>）</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">&lt;UINavigationControllerDelegate&gt; //UINavigationController 的 delegate 属性遵守该协议。<br>&lt;UITabBarControllerDelegate&gt; //UITabBarController 的 delegate 属性遵守该协议。<br>&lt;UIViewControllerTransitioningDelegate&gt; //UIViewController 的 transitioningDelegate 属性遵守该协议。<br></code></pre></td></tr></table></figure>
+<p>转场协议由<code>5</code>种协议组成，实际中只需要提供其中的两个或者三个便能实现绝大部分的转场动画</p>
+<h3 id="转场代理（Transition-Delegate）"><a href="#转场代理（Transition-Delegate）" class="headerlink" title="转场代理（Transition Delegate）"></a>转场代理（<strong>Transition Delegate</strong>）</h3><figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">&lt;<span class="hljs-built_in">UINavigationControllerDelegate</span>&gt; <span class="hljs-comment">//UINavigationController 的 delegate 属性遵守该协议。</span><br>&lt;<span class="hljs-built_in">UITabBarControllerDelegate</span>&gt; <span class="hljs-comment">//UITabBarController 的 delegate 属性遵守该协议。</span><br>&lt;<span class="hljs-built_in">UIViewControllerTransitioningDelegate</span>&gt; <span class="hljs-comment">//UIViewController 的 transitioningDelegate 属性遵守该协议。</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>转场发生时，<code>UIKit </code>将要求转场代理将提供转场动画的核心构件：动画控制器和交互控制器(可选的)；由我们实现。</li>
 </ul>
-<h5 id="动画控制器-Animation-Controller-："><a href="#动画控制器-Animation-Controller-：" class="headerlink" title="动画控制器(Animation Controller)："></a>动画控制器(Animation Controller)：</h5><ul>
+<h3 id="动画控制器-Animation-Controller-："><a href="#动画控制器-Animation-Controller-：" class="headerlink" title="动画控制器(Animation Controller)："></a>动画控制器(Animation Controller)：</h3><ul>
 <li>最重要的部分，负责添加视图以及执行动画；遵守<code>&lt;UIViewControllerContextTransitioning&gt;</code>协议。</li>
 </ul>
-<h5 id="交互控制器-Interaction-Controller-："><a href="#交互控制器-Interaction-Controller-：" class="headerlink" title="交互控制器(Interaction Controller)："></a>交互控制器(Interaction Controller)：</h5><p>通过交互手段，通常是手势来驱动动画控制器实现的动画，使得用户能够控制整个过程；遵守<code>&lt;UIViewControllerInteractiveTransitioning&gt;</code>协议；系统已经打包好现成的类供我们使用。</p>
-<h5 id="转场环境-Transition-Context"><a href="#转场环境-Transition-Context" class="headerlink" title="转场环境(Transition Context):"></a>转场环境(Transition Context):</h5><p>提供转场中需要的数据；遵守<code>&lt;UIViewControllerContextTransitioning&gt;</code>协议；由 <code>UIKit </code>在转场开始前生成并提供给我们提交的动画控制器和交互控制器使用。</p>
-<h5 id="转场协调器-Transition-Coordinator-："><a href="#转场协调器-Transition-Coordinator-：" class="headerlink" title="转场协调器(Transition Coordinator)："></a>转场协调器(Transition Coordinator)：</h5><p>可在转场动画发生的同时并行执行其他的动画，其作用与其说协调不如说辅助，主要在 Modal 转场和交互转场取消时使用，其他时候很少用到；遵守<code>&lt;UIViewCOntrollerTrabsitionCoordinator&gt;</code>协议；由<code> UIKit</code> 在转场时生成，<code>UIViewController</code> 在 iOS 7 中新增了方法<code> transitionCoordinator()</code>返回一个遵守该协议的对象，且该方法只在该控制器处于转场过程中才返回一个此类对象，不参与转场时返回 nil。</p>
-<h3 id="阶段一：非交互转场"><a href="#阶段一：非交互转场" class="headerlink" title="阶段一：非交互转场"></a>阶段一：非交互转场</h3><blockquote>
+<h3 id="交互控制器-Interaction-Controller-："><a href="#交互控制器-Interaction-Controller-：" class="headerlink" title="交互控制器(Interaction Controller)："></a>交互控制器(Interaction Controller)：</h3><p>通过交互手段，通常是手势来驱动动画控制器实现的动画，使得用户能够控制整个过程；遵守<code>&lt;UIViewControllerInteractiveTransitioning&gt;</code>协议；系统已经打包好现成的类供我们使用。</p>
+<h3 id="转场环境-Transition-Context"><a href="#转场环境-Transition-Context" class="headerlink" title="转场环境(Transition Context):"></a>转场环境(Transition Context):</h3><p>提供转场中需要的数据；遵守<code>&lt;UIViewControllerContextTransitioning&gt;</code>协议；由 <code>UIKit </code>在转场开始前生成并提供给我们提交的动画控制器和交互控制器使用。</p>
+<h3 id="转场协调器-Transition-Coordinator-："><a href="#转场协调器-Transition-Coordinator-：" class="headerlink" title="转场协调器(Transition Coordinator)："></a>转场协调器(Transition Coordinator)：</h3><p>可在转场动画发生的同时并行执行其他的动画，其作用与其说协调不如说辅助，主要在 Modal 转场和交互转场取消时使用，其他时候很少用到；遵守<code>&lt;UIViewCOntrollerTrabsitionCoordinator&gt;</code>协议；由<code> UIKit</code> 在转场时生成，<code>UIViewController</code> 在 iOS 7 中新增了方法<code> transitionCoordinator()</code>返回一个遵守该协议的对象，且该方法只在该控制器处于转场过程中才返回一个此类对象，不参与转场时返回 nil。</p>
+<h1 id="阶段一：非交互转场"><a href="#阶段一：非交互转场" class="headerlink" title="阶段一：非交互转场"></a>阶段一：非交互转场</h1><blockquote>
 <p>这个阶段要做两件事，提供转场代理并由代理提供动画控制器。在转场代理协议里动画控制器和交互控制器都是可选实现的，没有实现或者返回 nil 的话则使用默认的转场效果。动画控制器是表现转场效果的核心部分</p>
 </blockquote>
-<h4 id="动画控制器协议"><a href="#动画控制器协议" class="headerlink" title="动画控制器协议"></a>动画控制器协议</h4><ol>
+<h2 id="动画控制器协议"><a href="#动画控制器协议" class="headerlink" title="动画控制器协议"></a>动画控制器协议</h2><ol>
 <li>动画控制器实现代理<code>&lt;UIViewControllerAnimatedTransitioning&gt;</code></li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">-(void)animateTransition:(id&lt;UIViewControllerContextTransitioning&gt;)transitionContext &#123; <br>  //1. <br>  UIView *container = [transitionContext containerView];<br>  <br>  //2. <br> if ([transitionContext respondsToSelector:@selector(viewForKey:)]) &#123;<br>        // iOS8以上新增加API获取参与转场的视图，能精确获取参与转场的视图<br>        fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];<br>        toView = [transitionContext viewForKey:UITransitionContextToViewKey];<br>    &#125; else &#123;<br>   		//获取参与转场的控制器视图<br>        fromView = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view;<br>        toView = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view;<br>    &#125;<br>  <br>  //3. <br>  [container addSubview:toView];<br>  ......<br>  [UIView animateWithDuration:[self transitionDuration:transitionContext] 					animations:^&#123;<br>  				  ......<br>        &#125; completion:^(BOOL finished) &#123;<br>    //4. <br>   					BOOL isCancelled = [transitionContext transitionWasCancelled];<br>            [transitionContext completeTransition:!isCancelled];<br>        &#125;];<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">-(<span class="hljs-keyword">void</span>)animateTransition:(<span class="hljs-keyword">id</span>&lt;<span class="hljs-built_in">UIViewControllerContextTransitioning</span>&gt;)transitionContext &#123; <br>  <span class="hljs-comment">//1. </span><br>  <span class="hljs-built_in">UIView</span> *container = [transitionContext containerView];<br>  <br>  <span class="hljs-comment">//2. </span><br> <span class="hljs-keyword">if</span> ([transitionContext respondsToSelector:<span class="hljs-keyword">@selector</span>(viewForKey:)]) &#123;<br>        <span class="hljs-comment">// iOS8以上新增加API获取参与转场的视图，能精确获取参与转场的视图</span><br>        fromView = [transitionContext viewForKey:<span class="hljs-built_in">UITransitionContextFromViewKey</span>];<br>        toView = [transitionContext viewForKey:<span class="hljs-built_in">UITransitionContextToViewKey</span>];<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>   		<span class="hljs-comment">//获取参与转场的控制器视图</span><br>        fromView = [transitionContext viewControllerForKey:<span class="hljs-built_in">UITransitionContextFromViewControllerKey</span>].view;<br>        toView = [transitionContext viewControllerForKey:<span class="hljs-built_in">UITransitionContextToViewControllerKey</span>].view;<br>    &#125;<br>  <br>  <span class="hljs-comment">//3. </span><br>  [container addSubview:toView];<br>  ......<br>  [<span class="hljs-built_in">UIView</span> animateWithDuration:[<span class="hljs-keyword">self</span> transitionDuration:transitionContext] 					animations:^&#123;<br>  				  ......<br>        &#125; completion:^(<span class="hljs-built_in">BOOL</span> finished) &#123;<br>    <span class="hljs-comment">//4. </span><br>   					<span class="hljs-built_in">BOOL</span> isCancelled = [transitionContext transitionWasCancelled];<br>            [transitionContext completeTransition:!isCancelled];<br>        &#125;];<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <ol>
 <li>返回容器视图，也就是转场动画发生的地方</li>
-<li>通过<code>viewForKey:</code>获取的视图是<code>viewControllerForKey:</code>返回的控制器的根视图，或者<code> nil</code>。<code>viewForKey:</code>方法返回<code> nil</code> 只有一种情况：<code> UIModalPresentationCustom</code>以及 <code> UIModalPresentationOverFullScreen</code>等模式下的<code> Modal</code> 转场 （这些转场结束后不会移除<code>preserting</code>），通过此方法获取 <code>presentingView </code>时得到的将是 nil。</li>
+<li>通过<code>viewForKey:</code>获取的视图是<code>viewControllerForKey:</code>返回的控制器的根视图，或者<code> nil</code>。<code>viewForKey:</code>方法返回<code> nil</code> 只有一种情况：<code> UIModalPresentationCustom</code>以及 <code> UIModalPresentationOverFullScreen</code>等模式下的<code> Modal</code> 转场 （这些转场结束后不会移除<code>preserting</code>），通过此方法获取 <code>presentingView </code>时得到的将是 <code>nil</code>。</li>
 <li>将<code>toView</code>添加到容器视图中，使得<code>toView</code>在屏幕上显示（<code>Modal</code>转场中此点稍有不同）</li>
 <li>正确地结束转场过程。转场的结果有两种：完成或取消。非交互转场的结果只有完成一种情况，不过交互式转场需要考虑取消的情况。如何结束取决于转场的进度，通过<code>transitionWasCancelled</code>方法来获取转场的状态，使用<code>completeTransition:</code>来完成或取消转场</li>
 </ol>
-<p>​    转场的本质是下一个场景的视图替换当前场景的视图，从当前场景过渡下一个场景。下面称即将消失的场景的视图为<code> fromView</code>，对应的视图控制器为<code> fromVC</code>，即将出现的视图为 <code>toView</code>，对应的视图控制器称之为<code> toVC</code>。几种转场方式的转场操作都是可逆的，一种操作里的<code> fromView</code> 和 <code>toView</code> 在逆向操作里的角色互换成对方，<code>fromVC</code> 和<code>toVC</code>也是如此。在动画控制器里，参与转场的视图只有 <code>fromView </code>和<code> toView</code> 之分，与转场方式无关。</p>
-<p>​    实际上无论是简单的转场动画，还是那些很复杂的转场动画在转场的部分要做的事情都是上面提到的4个过程，它们的区别主要在于动画的部分。</p>
-<h5 id="逐帧播放的动画方式"><a href="#逐帧播放的动画方式" class="headerlink" title="逐帧播放的动画方式"></a>逐帧播放的动画方式</h5><blockquote>
+<ul>
+<li><p>转场的本质是下一个场景的视图替换当前场景的视图，从当前场景过渡下一个场景。下面称即将消失的场景的视图为<code> fromView</code>，对应的视图控制器为<code> fromVC</code>，即将出现的视图为 <code>toView</code>，对应的视图控制器称之为<code> toVC</code>。几种转场方式的转场操作都是可逆的，一种操作里的<code> fromView</code> 和 <code>toView</code> 在逆向操作里的角色互换成对方，<code>fromVC</code> 和<code>toVC</code>也是如此。在动画控制器里，参与转场的视图只有 <code>fromView </code>和<code> toView</code> 之分，与转场方式无关。</p>
+</li>
+<li><p>实际上无论是简单的转场动画，还是那些很复杂的转场动画在转场的部分要做的事情都是上面提到的<code>4</code>个过程，它们的区别主要在于动画的部分。</p>
+</li>
+</ul>
+<h3 id="逐帧播放的动画方式"><a href="#逐帧播放的动画方式" class="headerlink" title="逐帧播放的动画方式"></a>逐帧播放的动画方式</h3><blockquote>
 <p>与原来的动画相比能在动画里面，在通过帧率逐帧的实现</p>
 </blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">[UIView animateKeyframesWithDuration:self.duration delay:0 options:0 animations:^&#123;<br>            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:0.9 animations:^&#123;<br>                ......<br>            &#125;];<br>            [UIView addKeyframeWithRelativeStartTime:0.9 relativeDuration:0.1 animations:^&#123;<br>                ......<br>            &#125;];<br>        &#125; completion:^(BOOL finished) &#123;<br>            [imageView removeFromSuperview];<br>            BOOL wasCancelled = [transitionContext transitionWasCancelled];<br>            [transitionContext completeTransition:!wasCancelled];<br>        &#125;];<br></code></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">[<span class="hljs-built_in">UIView</span> animateKeyframesWithDuration:<span class="hljs-keyword">self</span>.duration delay:<span class="hljs-number">0</span> options:<span class="hljs-number">0</span> animations:^&#123;<br>            [<span class="hljs-built_in">UIView</span> addKeyframeWithRelativeStartTime:<span class="hljs-number">0</span> relativeDuration:<span class="hljs-number">0.9</span> animations:^&#123;<br>                ......<br>            &#125;];<br>            [<span class="hljs-built_in">UIView</span> addKeyframeWithRelativeStartTime:<span class="hljs-number">0.9</span> relativeDuration:<span class="hljs-number">0.1</span> animations:^&#123;<br>                ......<br>            &#125;];<br>        &#125; completion:^(<span class="hljs-built_in">BOOL</span> finished) &#123;<br>            [imageView removeFromSuperview];<br>            <span class="hljs-built_in">BOOL</span> wasCancelled = [transitionContext transitionWasCancelled];<br>            [transitionContext completeTransition:!wasCancelled];<br>        &#125;];<br></code></pre></td></tr></table></figure>
 
-<h4 id="特殊的Modal转场"><a href="#特殊的Modal转场" class="headerlink" title="特殊的Modal转场"></a>特殊的Modal转场</h4><blockquote>
-<p>Modal 转场中需要做的事情和两种容器 VC 的转场一样，但在细节上有些差异。</p>
+<h2 id="特殊的Modal转场"><a href="#特殊的Modal转场" class="headerlink" title="特殊的Modal转场"></a>特殊的Modal转场</h2><blockquote>
+<p><code>Modal</code> 转场中需要做的事情和两种容器 <code>V</code>C 的转场一样，但在细节上有些差异。</p>
 </blockquote>
 <p><img src="2.png" alt="2.png"></p>
 <ol>
-<li>根视图是否参与转场</li>
-</ol>
-<p>​        <code>   UINavigationController</code>和<code>UITabBarController</code>这两个容器 <code>VC</code> 的根视图在屏幕上是不可见的(或者说是透明的)，可见的只是内嵌在这两者中的<code>子 VC </code>中的视图，转场是从<code>子 VC </code>的视图转换到另外一个<code>子 VC </code>的视图，其根视图并未参与转场；而<code>Modal</code>转场，以 <code>presentation </code>为例，是从 <code>presentingView </code>转换到 <code>presentedView</code>，根视图 <code>presentingView </code>也就是<code>fromView</code>参与了转场。而且 <code>NavigationController</code> 和 <code>TabBarController</code> 转场中的<code> containerView</code> 也并非这两者的根视图。</p>
-<ol start="2">
-<li>转场后的<code>fromView</code>是否依然可见</li>
-</ol>
-<p>​        <code>Modal </code>转场结束后 <code>presentingView </code>可能依然可见，除<code>UIModalPresentationFullScreen</code>之外，其他模式就是这样。这种不同导致了 <code>Modal </code>转场和<code>容器 VC</code> 的转场对 <code>fromView</code> 的处理差异：<code>容器 VC</code> 的转场结束后 <code>fromView </code>会被主动移出视图结构，这是可预见的结果，我们也可以在转场结束前手动移除；而<code>Modal</code> 转场中，<code>presentation</code> 结束后 <code>presentingView(fromView) </code>并未主动被从视图结构中移除。准确来说，是 <code>UIModalPresentationCustom </code>这种模式下的 <code>Modal</code> 转场结束时<code>fromView</code>并未从视图结构中移除；<code>UIModalPresentationFullScreen </code>模式的<code> Modal</code> 转场结束后<code>fromView</code>依然主动被从视图结构中移除了。这种差异导致在处理<code> dismissal</code> 转场的时候很容易出现问题，没有意识到这个不同点的话出错时就会毫无头绪。</p>
-<p>​        下面来看看 <code>dismissal</code> 转场时的场景：</p>
-<ol>
-<li><code>UIModalPresentationFullScreen </code>模式：:转场时 <code>containerView </code>并不管理 <code>presentingView</code> ，<code>presentation</code> 后，<code>presentingView </code>被主动移出视图结构，在 <code>dismissal</code> 中<code> presentingView</code> 是 <code>toView</code> 的角色，其将会重新加入<code>containerView</code>中，实际上，我们不主动将其加入，<code>UIKit </code>也会这么做，前面的两种容器控制器的转场里不是这样处理的，不过这个差异基本没什么影响。</li>
-<li><code>UIModalPresentationCustom 模式</code>:转场时 <code>containerView </code>并不担任 <code>presentingView</code> 的父视图，后者由 <code>UIKit</code> 另行管理。在 <code>presentation</code> 后，<code>fromView(presentingView) </code>未被移出视图结构，在 <code>dismissal </code>中，注意不要像其他转场中那样将 <code>toView(presentingView)</code> 加入 <code>containerView </code>中，否则本来可见的<code> presentingView</code> 将会被移除出自身所处的视图结构消失不见<ol>
-<li>这里注意：如果采用<code>viewForKey</code>直接获取视图，那么<code>custon模式</code>下，**present时，<code>fromView（presentingView）为nil</code>，而<code>dimissal</code>时，<code>toView（presentingView）为nil</code>**，也就是用这种方式获取的视图，添加到containerView中，<code>dismissal</code>不会出问题。但是如果通过<code>viewControllerForKey</code>直接获取控制器中的<code>View</code>则不会为nil，这时候添加则会出现问题</li>
-</ol>
+<li><p>根视图是否参与转场</p>
+<ul>
+<li><code>UINavigationController </code>和<code>UITabBarController</code>这两个容器 <code>VC</code> 的根视图在屏幕上是不可见的(或者说是透明的)，可见的只是内嵌在这两者中的<code>子 VC </code>中的视图，转场是从<code>子 VC </code>的视图转换到另外一个<code>子 VC </code>的视图，其根视图并未参与转场；而<code>Modal</code>转场，以 <code>presentation </code>为例，是从 <code>presentingView </code>转换到 <code>presentedView</code>，根视图 <code>presentingView </code>也就是<code>fromView</code>参与了转场。而且 <code>NavigationController</code> 和 <code>TabBarController</code> 转场中的<code> containerView</code> 也并非这两者的根视图。</li>
+</ul>
+</li>
+<li><p>转场后的<code>fromView</code>是否依然可见</p>
+<ul>
+<li><code>Modal </code>转场结束后 <code>presentingView </code>可能依然可见，除<code>UIModalPresentationFullScreen</code>之外，其他模式就是这样。这种不同导致了 <code>Modal </code>转场和<code>容器 VC</code> 的转场对 <code>fromView</code> 的处理差异：<code>容器 VC</code> 的转场结束后 <code>fromView </code>会被主动移出视图结构，这是可预见的结果，我们也可以在转场结束前手动移除；而<code>Modal</code> 转场中，<code>presentation</code> 结束后 <code>presentingView(fromView) </code>并未主动被从视图结构中移除。准确来说，是 <code>UIModalPresentationCustom </code>这种模式下的 <code>Modal</code> 转场结束时<code>fromView</code>并未从视图结构中移除；<code>UIModalPresentationFullScreen </code>模式的<code> Modal</code> 转场结束后<code>fromView</code>依然主动被从视图结构中移除了。这种差异导致在处理<code> dismissal</code> 转场的时候很容易出现问题，没有意识到这个不同点的话出错时就会毫无头绪。</li>
+</ul>
 </li>
 </ol>
-<h4 id="实现代理"><a href="#实现代理" class="headerlink" title="实现代理"></a>实现代理</h4><ol>
+<ul>
+<li><p>下面来看看 <code>dismissal</code> 转场时的场景：</p>
+<ol>
+<li><code>UIModalPresentationFullScreen </code>模式：:转场时 <code>containerView </code>并不管理 <code>presentingView</code> ，<code>presentation</code> 后，<code>presentingView </code>被主动移出视图结构，在 <code>dismissal</code> 中<code> presentingView</code> 是 <code>toView</code> 的角色，其将会重新加入<code>containerView</code>中，实际上，我们不主动将其加入，<code>UIKit </code>也会这么做，前面的两种容器控制器的转场里不是这样处理的，不过这个差异基本没什么影响。</li>
+<li><code>UIModalPresentationCustom 模式</code>:转场时 <code>containerView </code>并不担任 <code>presentingView</code> 的父视图，后者由 <code>UIKit</code> 另行管理。在 <code>presentation</code> 后，<code>fromView(presentingView) </code>未被移出视图结构，在 <code>dismissal </code>中，注意不要像其他转场中那样将 <code>toView(presentingView)</code> 加入 <code>containerView </code>中，否则本来可见的<code> presentingView</code> 将会被移除出自身所处的视图结构消失不见<ul>
+<li>这里注意：如果采用<code>viewForKey</code>直接获取视图，那么<code>custon模式</code>下，**present时，<code>fromView（presentingView）为nil</code>，而<code>dimissal</code>时，<code>toView（presentingView）为nil</code>**，也就是用这种方式获取的视图，添加到containerView中，<code>dismissal</code>不会出问题。但是如果通过<code>viewControllerForKey</code>直接获取控制器中的<code>View</code>则不会为<code>nil</code>，这时候添加则会出现问题</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="实现代理"><a href="#实现代理" class="headerlink" title="实现代理"></a>实现代理</h2><ol>
 <li><code>UINavigationController</code>转场动画的实现，实现代理 <code>&lt;UINavigationControllerDelegate&gt;</code></li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">//self.navigationController.delegate = self;<br><br>-(id&lt;UIViewControllerAnimatedTransitioning&gt;)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC &#123; <br>  ....<br>    //返回自定义的动画控制器，push和pop都在这个方法中返回<br>  switch (operation) &#123;<br>        case UINavigationControllerOperationPush:<br>            animationController.type = AnimationTypePush;<br>            return  animationController;<br>        case UINavigationControllerOperationPop:<br>            animationController.type = AnimationTypePop;<br>            return animationController;<br>        default: return nil;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">//self.navigationController.delegate = self;</span><br><br>-(<span class="hljs-keyword">id</span>&lt;<span class="hljs-built_in">UIViewControllerAnimatedTransitioning</span>&gt;)navigationController:(<span class="hljs-built_in">UINavigationController</span> *)navigationController animationControllerForOperation:(<span class="hljs-built_in">UINavigationControllerOperation</span>)operation fromViewController:(<span class="hljs-built_in">UIViewController</span> *)fromVC toViewController:(<span class="hljs-built_in">UIViewController</span> *)toVC &#123; <br>  ....<br>    <span class="hljs-comment">//返回自定义的动画控制器，push和pop都在这个方法中返回</span><br>  <span class="hljs-keyword">switch</span> (operation) &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-built_in">UINavigationControllerOperationPush</span>:<br>            animationController.type = AnimationTypePush;<br>            <span class="hljs-keyword">return</span>  animationController;<br>        <span class="hljs-keyword">case</span> <span class="hljs-built_in">UINavigationControllerOperationPop</span>:<br>            animationController.type = AnimationTypePop;<br>            <span class="hljs-keyword">return</span> animationController;<br>        <span class="hljs-keyword">default</span>: <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <ol start="2">
 <li><code>presenting</code>出的视图</li>
 </ol>
-<h3 id="阶段二：交互式转场"><a href="#阶段二：交互式转场" class="headerlink" title="阶段二：交互式转场"></a>阶段二：交互式转场</h3><blockquote>
+<h1 id="阶段二：交互式转场"><a href="#阶段二：交互式转场" class="headerlink" title="阶段二：交互式转场"></a>阶段二：交互式转场</h1><blockquote>
 <p>实现交互化，在非交互转场的基础上将之交互化需要两个条件：</p>
 </blockquote>
 <ol>
 <li>由转场代理提供交互控制器，这是一个遵守<code>&lt;UIViewControllerInteractiveTransitioning&gt;</code>协议的对象，不过系统已经打包好了现成的类<code>UIPercentDrivenInteractiveTransition</code>。我们不需要做任何配置，仅仅在转场代理的相应方法中提供一个该类实例便能工作。另外交互控制器必须有动画控制器才能工作。</li>
 <li>交互控制器还需要交互手段的配合，最常见的是使用手势</li>
 </ol>
-<p>正确的提供交互控制器:</p>
-<p>​    转场代理中提供了交互控制器，而转场发生时并没有方法来驱动转场进程（比如手势），转场过程将一直处于开始阶段无法结束，应用界面也会失去响应：在<code>NavigationController </code>中点击 <code>NavigationBar </code>也能实现 <code>pop </code>返回操作，但此时没有了交互手段的支持，转场过程卡壳；在 <code>TabBarController </code>的代理里提供交互控制器存在同样的问题，点击 <code>TabBar</code> 切换页面时也没有实现交互控制。因此仅在确实处于交互状态时才提供交互控制器，可以使用一个变量来标记交互状态，该变量由交互手势来更新状态。、</p>
-<h4 id="UINavigationControllerDelegaate的交互转场"><a href="#UINavigationControllerDelegaate的交互转场" class="headerlink" title="UINavigationControllerDelegaate的交互转场"></a>UINavigationControllerDelegaate的交互转场</h4><ol>
+<ul>
+<li>正确的提供交互控制器:<ul>
+<li>转场代理中提供了交互控制器，而转场发生时并没有方法来驱动转场进程（比如手势），转场过程将一直处于开始阶段无法结束，应用界面也会失去响应：在<code>NavigationController </code>中点击 <code>NavigationBar </code>也能实现 <code>pop </code>返回操作，但此时没有了交互手段的支持，转场过程卡壳；在 <code>TabBarController </code>的代理里提供交互控制器存在同样的问题，点击 <code>TabBar</code> 切换页面时也没有实现交互控制。因此仅在确实处于交互状态时才提供交互控制器，可以使用一个变量来标记交互状态，该变量由交互手势来更新状态。、</li>
+</ul>
+</li>
+</ul>
+<h2 id="UINavigationControllerDelegaate的交互转场"><a href="#UINavigationControllerDelegaate的交互转场" class="headerlink" title="UINavigationControllerDelegaate的交互转场"></a>UINavigationControllerDelegaate的交互转场</h2><ol>
 <li>实现代理方法</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">- (nullable id &lt;UIViewControllerInteractiveTransitioning&gt;)navigationController:(UINavigationController *)navigationController<br>                          interactionControllerForAnimationController:(id &lt;UIViewControllerAnimatedTransitioning&gt;) animationController &#123;<br>    //注意没有手势的时候要返回nil，否则无法通过点击导航栏左边的item正常退出                        <br>    if (self.interactiveAnimation.isInteractive) &#123;<br>        return self.interactiveAnimation;<br>    &#125;<br>    return  nil<br>                          &#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">- (<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerInteractiveTransitioning</span>&gt;)navigationController:(<span class="hljs-built_in">UINavigationController</span> *)navigationController<br>                          interactionControllerForAnimationController:(<span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerAnimatedTransitioning</span>&gt;) animationController &#123;<br>    <span class="hljs-comment">//注意没有手势的时候要返回nil，否则无法通过点击导航栏左边的item正常退出                        </span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.interactiveAnimation.isInteractive) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>.interactiveAnimation;<br>    &#125;<br>    <span class="hljs-keyword">return</span>  <span class="hljs-literal">nil</span><br>                          &#125;<br></code></pre></td></tr></table></figure>
 
-<h4 id="modal弹窗显示交互手势"><a href="#modal弹窗显示交互手势" class="headerlink" title="modal弹窗显示交互手势"></a>modal弹窗显示交互手势</h4><ol>
+<h2 id="modal弹窗显示交互手势"><a href="#modal弹窗显示交互手势" class="headerlink" title="modal弹窗显示交互手势"></a>modal弹窗显示交互手势</h2><ol>
 <li>实现代理</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">- (nullable id &lt;UIViewControllerInteractiveTransitioning&gt;)interactionControllerForPresentation:(id &lt;UIViewControllerAnimatedTransitioning&gt;)animator &#123;<br>    return nil;<br>&#125;<br><br>- (nullable id &lt;UIViewControllerInteractiveTransitioning&gt;)interactionControllerForDismissal:(id &lt;UIViewControllerAnimatedTransitioning&gt;)animator &#123;<br>    if (self.interactiveAnimation.isInteractive) &#123;<br>        return self.interactiveAnimation;<br>    &#125;<br>    return  nil;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">- (<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerInteractiveTransitioning</span>&gt;)interactionControllerForPresentation:(<span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerAnimatedTransitioning</span>&gt;)animator &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;<br>&#125;<br><br>- (<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerInteractiveTransitioning</span>&gt;)interactionControllerForDismissal:(<span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerAnimatedTransitioning</span>&gt;)animator &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.interactiveAnimation.isInteractive) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>.interactiveAnimation;<br>    &#125;<br>    <span class="hljs-keyword">return</span>  <span class="hljs-literal">nil</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h4 id="交互控制器的实现"><a href="#交互控制器的实现" class="headerlink" title="交互控制器的实现"></a>交互控制器的实现</h4><p>交互控制器为继承<code>UIPercentDrivenInteractiveTransition</code>的类，主要结合边缘滑动手势</p>
+<h2 id="交互控制器的实现"><a href="#交互控制器的实现" class="headerlink" title="交互控制器的实现"></a>交互控制器的实现</h2><p>交互控制器为继承<code>UIPercentDrivenInteractiveTransition</code>的类，主要结合边缘滑动手势</p>
 <p><code>UIScreenEdgePanGestureRecognizer</code>，其中主要依靠的方法</p>
 <ol>
 <li><p><code>[self updateInteractiveTransition:_percent]</code>,更新交互转场完成的百分比;</p>
@@ -12259,25 +12497,25 @@
 <li><p><code>[self cancelInteractiveTransition];</code>取消交互转场</p>
 </li>
 </ol>
-<h5 id="具体的实现"><a href="#具体的实现" class="headerlink" title="具体的实现"></a>具体的实现</h5><ol>
+<h3 id="具体的实现"><a href="#具体的实现" class="headerlink" title="具体的实现"></a>具体的实现</h3><ol>
 <li>给页面添加边缘滑动手势</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">UIScreenEdgePanGestureRecognizer *interactiveTransitionRecognizer  = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];<br>interactiveTransitionRecognizer.edges = UIRectEdgeLeft;<br>[vc.view addGestureRecognizer:interactiveTransitionRecognizer];<br></code></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-built_in">UIScreenEdgePanGestureRecognizer</span> *interactiveTransitionRecognizer  = [[<span class="hljs-built_in">UIScreenEdgePanGestureRecognizer</span> alloc] initWithTarget:<span class="hljs-keyword">self</span> action:<span class="hljs-keyword">@selector</span>(panAction:)];<br>interactiveTransitionRecognizer.edges = <span class="hljs-built_in">UIRectEdgeLeft</span>;<br>[vc.view addGestureRecognizer:interactiveTransitionRecognizer];<br></code></pre></td></tr></table></figure>
 
 <ol start="2">
 <li>找到转场动画的容器</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">- (void)startInteractiveTransition:(id&lt;UIViewControllerContextTransitioning&gt;)transitionContext &#123;<br>    [super startInteractiveTransition:transitionContext];<br>    self.transitionContext = transitionContext;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">- (<span class="hljs-keyword">void</span>)startInteractiveTransition:(<span class="hljs-keyword">id</span>&lt;<span class="hljs-built_in">UIViewControllerContextTransitioning</span>&gt;)transitionContext &#123;<br>    [<span class="hljs-keyword">super</span> startInteractiveTransition:transitionContext];<br>    <span class="hljs-keyword">self</span>.transitionContext = transitionContext;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <ol start="3">
 <li>实际手势的实现</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">- (void)panAction:(UIPanGestureRecognizer *)pan&#123;<br>    _percent = 0.0;<br>    //UIView *transitionContainerView = pan.view;从手势中也可以获取手势滑动的view，但是转场动画中涉及3d变化的动画操作，那么将无法从手势中获取相应变换的相对位置<br>    UIView *transitionContainerView = self.transitionContext.containerView;<br>    CGFloat totalWidth  = CGRectGetWidth(transitionContainerView.bounds);<br>    CGFloat totalHeight = CGRectGetHeight(transitionContainerView.bounds);<br>  	CGFloat x = [pan translationInView:transitionContainerView].x;<br>            _percent = -x/totalWidth;<br>  switch (pan.state) &#123;<br>        case UIGestureRecognizerStateBegan:<br>            _isInter = YES;<br>            [self.vc.navigationController popViewControllerAnimated:YES];<br>    			//  [self.vc dismissViewControllerAnimated:YES completion:nil];<br>            break;<br>        case UIGestureRecognizerStateChanged:<br>            [self updateInteractiveTransition:_percent];<br>            break;<br>        case UIGestureRecognizerStateEnded:<br>            _isInter = NO;<br>            [self continueAction];<br>            break;<br>        default:<br>            break;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc">- (<span class="hljs-keyword">void</span>)panAction:(<span class="hljs-built_in">UIPanGestureRecognizer</span> *)pan&#123;<br>    _percent = <span class="hljs-number">0.0</span>;<br>    <span class="hljs-comment">//UIView *transitionContainerView = pan.view;从手势中也可以获取手势滑动的view，但是转场动画中涉及3d变化的动画操作，那么将无法从手势中获取相应变换的相对位置</span><br>    <span class="hljs-built_in">UIView</span> *transitionContainerView = <span class="hljs-keyword">self</span>.transitionContext.containerView;<br>    <span class="hljs-built_in">CGFloat</span> totalWidth  = <span class="hljs-built_in">CGRectGetWidth</span>(transitionContainerView.bounds);<br>    <span class="hljs-built_in">CGFloat</span> totalHeight = <span class="hljs-built_in">CGRectGetHeight</span>(transitionContainerView.bounds);<br>  	<span class="hljs-built_in">CGFloat</span> x = [pan translationInView:transitionContainerView].x;<br>            _percent = -x/totalWidth;<br>  <span class="hljs-keyword">switch</span> (pan.state) &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-built_in">UIGestureRecognizerStateBegan</span>:<br>            _isInter = <span class="hljs-literal">YES</span>;<br>            [<span class="hljs-keyword">self</span>.vc.navigationController popViewControllerAnimated:<span class="hljs-literal">YES</span>];<br>    			<span class="hljs-comment">//  [self.vc dismissViewControllerAnimated:YES completion:nil];</span><br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> <span class="hljs-built_in">UIGestureRecognizerStateChanged</span>:<br>            [<span class="hljs-keyword">self</span> updateInteractiveTransition:_percent];<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> <span class="hljs-built_in">UIGestureRecognizerStateEnded</span>:<br>            _isInter = <span class="hljs-literal">NO</span>;<br>            [<span class="hljs-keyword">self</span> continueAction];<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">default</span>:<br>            <span class="hljs-keyword">break</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
 
 <ol start="4">
 <li>手势结束后动画UI的变化，</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs objective-c">//采用gui定时器的方式来处理转场动画变换<br>- (void)continueAction&#123;<br>    if (_displayLink) &#123;<br>        return;<br>    &#125;<br>    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(UIChange)];<br>    [_displayLink  addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];<br><br>&#125;<br>//转场uI的变换<br>- (void)UIChange &#123;<br>    CGFloat timeDistance = 2.0/60;<br>    if (_percent &gt; 0.4) &#123;<br>        _percent += timeDistance;<br>    &#125;else &#123;<br>        _percent -= timeDistance;<br>    &#125;<br>    [self updateInteractiveTransition:_percent];<br>    if (_percent &gt;= 1.0) &#123;<br>        [self finishInteractiveTransition];<br>        [self stopDisplayLink];<br>    &#125;<br>    <br>    if (_percent &lt;= 0.0) &#123;<br>        [self stopDisplayLink];<br>        [self cancelInteractiveTransition];<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><code class="hljs objc"><span class="hljs-comment">//采用gui定时器的方式来处理转场动画变换</span><br>- (<span class="hljs-keyword">void</span>)continueAction&#123;<br>    <span class="hljs-keyword">if</span> (_displayLink) &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    _displayLink = [<span class="hljs-built_in">CADisplayLink</span> displayLinkWithTarget:<span class="hljs-keyword">self</span> selector:<span class="hljs-keyword">@selector</span>(<span class="hljs-built_in">UIChange</span>)];<br>    [_displayLink  addToRunLoop:[<span class="hljs-built_in">NSRunLoop</span> currentRunLoop] forMode:<span class="hljs-built_in">NSRunLoopCommonModes</span>];<br><br>&#125;<br><span class="hljs-comment">//转场uI的变换</span><br>- (<span class="hljs-keyword">void</span>)<span class="hljs-built_in">UIChange</span> &#123;<br>    <span class="hljs-built_in">CGFloat</span> timeDistance = <span class="hljs-number">2.0</span>/<span class="hljs-number">60</span>;<br>    <span class="hljs-keyword">if</span> (_percent &gt; <span class="hljs-number">0.4</span>) &#123;<br>        _percent += timeDistance;<br>    &#125;<span class="hljs-keyword">else</span> &#123;<br>        _percent -= timeDistance;<br>    &#125;<br>    [<span class="hljs-keyword">self</span> updateInteractiveTransition:_percent];<br>    <span class="hljs-keyword">if</span> (_percent &gt;= <span class="hljs-number">1.0</span>) &#123;<br>        [<span class="hljs-keyword">self</span> finishInteractiveTransition];<br>        [<span class="hljs-keyword">self</span> stopDisplayLink];<br>    &#125;<br>    <br>    <span class="hljs-keyword">if</span> (_percent &lt;= <span class="hljs-number">0.0</span>) &#123;<br>        [<span class="hljs-keyword">self</span> stopDisplayLink];<br>        [<span class="hljs-keyword">self</span> cancelInteractiveTransition];<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 
 

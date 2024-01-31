@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-01-28T16:58:37.900Z</updated>
+  <updated>2024-01-29T15:16:16.579Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>http的升级改进</title>
+    <link href="http://example.com/2024/01/29/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/"/>
+    <id>http://example.com/2024/01/29/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/</id>
+    <published>2024-01-29T13:59:43.000Z</published>
+    <updated>2024-01-29T15:16:16.579Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="网络协议" scheme="http://example.com/categories/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>https</title>
@@ -366,7 +389,7 @@
     <link href="http://example.com/2023/12/26/js%E7%9A%84%E5%AD%A6%E4%B9%A0/JavaScriptCore%20/"/>
     <id>http://example.com/2023/12/26/js%E7%9A%84%E5%AD%A6%E4%B9%A0/JavaScriptCore%20/</id>
     <published>2023-12-26T09:19:26.000Z</published>
-    <updated>2024-01-24T02:04:12.091Z</updated>
+    <updated>2024-01-29T11:51:57.533Z</updated>
     
     
       
@@ -436,29 +459,6 @@
     <id>http://example.com/2023/11/26/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/h264%E8%A7%A3%E7%A0%81%E5%AE%9E%E6%88%98/</id>
     <published>2023-11-26T08:55:04.000Z</published>
     <updated>2023-11-29T03:25:19.435Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>h264编码实战</title>
-    <link href="http://example.com/2023/11/24/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/h264%E7%BC%96%E5%AE%9E%E6%88%98/"/>
-    <id>http://example.com/2023/11/24/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/h264%E7%BC%96%E5%AE%9E%E6%88%98/</id>
-    <published>2023-11-24T06:30:34.000Z</published>
-    <updated>2023-11-26T09:13:44.091Z</updated>
     
     
       
