@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-01-29T15:16:16.579Z</updated>
+  <updated>2024-02-15T16:25:49.146Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>基础语法</title>
+    <link href="http://example.com/2024/02/15/OpenGL/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"/>
+    <id>http://example.com/2024/02/15/OpenGL/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</id>
+    <published>2024-02-15T13:33:35.000Z</published>
+    <updated>2024-02-15T16:25:49.146Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="OpenGL" scheme="http://example.com/categories/OpenGL/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>其他协议</title>
+    <link href="http://example.com/2024/01/31/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E5%85%B6%E4%BB%96%E5%8D%8F%E8%AE%AE/"/>
+    <id>http://example.com/2024/01/31/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E5%85%B6%E4%BB%96%E5%8D%8F%E8%AE%AE/</id>
+    <published>2024-01-31T15:35:21.000Z</published>
+    <updated>2024-01-31T16:37:29.314Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="网络协议" scheme="http://example.com/categories/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>http的升级改进</title>
@@ -136,7 +182,7 @@
     <link href="http://example.com/2024/01/20/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E4%BC%A0%E8%BE%93%E5%B1%82/"/>
     <id>http://example.com/2024/01/20/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E4%BC%A0%E8%BE%93%E5%B1%82/</id>
     <published>2024-01-19T16:46:30.000Z</published>
-    <updated>2024-01-23T12:28:13.748Z</updated>
+    <updated>2024-02-11T15:53:43.158Z</updated>
     
     
       
@@ -426,52 +472,6 @@
     
     
     <category term="C++学习" scheme="http://example.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>视频解封装格式</title>
-    <link href="http://example.com/2023/11/28/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91%E8%A7%A3%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/"/>
-    <id>http://example.com/2023/11/28/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/%E8%A7%86%E9%A2%91%E8%A7%A3%E5%B0%81%E8%A3%85%E6%A0%BC%E5%BC%8F/</id>
-    <published>2023-11-28T15:48:20.000Z</published>
-    <updated>2023-11-30T11:45:49.271Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>h264解码实战</title>
-    <link href="http://example.com/2023/11/26/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/h264%E8%A7%A3%E7%A0%81%E5%AE%9E%E6%88%98/"/>
-    <id>http://example.com/2023/11/26/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/h264%E8%A7%A3%E7%A0%81%E5%AE%9E%E6%88%98/</id>
-    <published>2023-11-26T08:55:04.000Z</published>
-    <updated>2023-11-29T03:25:19.435Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="音视频学习" scheme="http://example.com/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
