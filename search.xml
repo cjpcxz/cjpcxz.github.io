@@ -78,23 +78,65 @@
 </li>
 </ul>
 <h2 id="着⾊器传递渲染数据的方法"><a href="#着⾊器传递渲染数据的方法" class="headerlink" title="着⾊器传递渲染数据的方法"></a>着⾊器传递渲染数据的方法</h2><ul>
-<li>属性<ul>
+<li>属性</li>
+<li><code>Uniform</code></li>
+<li>纹理</li>
+<li>输出</li>
+</ul>
+<h3 id="属性-1"><a href="#属性-1" class="headerlink" title="属性"></a>属性</h3><blockquote>
+<ul>
 <li>就是对⼀个顶点都要作出改变的数据元素.实际上,顶点位置本身就是⼀个属性. 属性可以是浮点类型,整型,布尔类型等.</li>
 </ul>
-</li>
-<li><code>Uniform</code><ul>
-<li>通过设置<code>Uniform</code>变量就紧接着发送⼀个图元批次处理命令. <code>Uniform</code>变量实际上可以⽆限次的使用. 设置⼀个应⽤于整个表面的单个颜色值,还可也是⼀个时间值.</li>
+</blockquote>
+<ul>
+<li>属性总是以四维向量的形式进行内部存储的，即使我们不会使用所有的<code>4</code>个分量。一个顶点位置可能存储（<code>x</code>,<code>y</code>,<code>z</code>），将占有<code>4</code>个分量中的<code>3</code>个。</li>
+<li>实际上如果是在平面情况下：只要在<code>xy</code>平面上就能绘制，那么<code>z</code>分量就会自动设置为<code>O</code>；</li>
+<li>属性还可以是：纹理坐标、颜色值、关照计算表面法线</li>
+<li>在顶点程序（<code>shader</code>渲染）可以代表你想要的任何意义。因为都是你设定的。</li>
+<li>属性会从本地客户机内存中复制存储在图形硬件中的一个缓冲区上。这些属性只提供给顶点着色器使用，对于片元着色器木有太大意义。</li>
+<li>声明：这些属性对每个顶点都要做改变，但并不意味着它们的值不能重复。通常情况下，它们都是不一样的，但有可能整个数组都是同一值的情况。</li>
 </ul>
-</li>
-<li>纹理</li>
+<h3 id="Uniform值"><a href="#Uniform值" class="headerlink" title="Uniform值"></a><code>Uniform</code>值</h3><blockquote>
+<ul>
+<li>属性是一种对整个批次属性都取统一值的单一值。它是不变的。通过设置<code>uniform</code>变量就紧接着发送一个图元批次命令，<code>Uniform</code>变量实际上可以无数次限制地使用，设置一个应用于整个表面的单个颜色值，还可以设置一个时间值。在每次渲染某种类型的顶点动画时修改它。</li>
 </ul>
-<h2 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h2><ul>
-<li>输出数据: 简单的从⼀个阶段传递到下⼀个阶段.客户端代码接触不到的内部变量.</li>
+</blockquote>
+<ul>
+<li>注意：这里的<code>uniform</code> 变量每个批次改变一次，而不是每个顶点改变一次。</li>
+<li><code>uniform</code>变量最常见的应用是在顶点渲染中设置变换矩阵</li>
+<li>与属性相同点：可以是浮点值、整数、布尔值</li>
+<li>与属性不同点：顶点着色器和片元着色器都可以使用<code>uniform</code>变量。<code>uniform</code>变量还可以是标量类型、矢量类型、<code>uniform</code>矩阵。</li>
 </ul>
-<h2 id="创建坐标系"><a href="#创建坐标系" class="headerlink" title="创建坐标系"></a>创建坐标系</h2><p><img src="17080112001807.jpg"></p>
+<h3 id="纹理"><a href="#纹理" class="headerlink" title="纹理"></a>纹理</h3><blockquote>
+<ul>
+<li>传递给着色器的第三种数据类型：纹理数据</li>
+</ul>
+</blockquote>
+<ul>
+<li>在顶点着色器、片段着色器中都可以对纹理数据进行采样和筛选。</li>
+<li>典型的应用场景：片段着色器对一个纹理值进行采样，然后在一个三角形表面应用渲染纹理数据。</li>
+<li>纹理数据，不仅仅表现在图形，很多图形文件格式都是以无符号字节（每个颜色通道<code>8</code>位）形式对颜色分量进行存储的。</li>
+</ul>
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><blockquote>
+<p>在图表中第四种数据类型是输出（<code>out</code>）；输出数据是作为一个阶段着色器的输出定义的，二后续阶段的着色器则作为输入定义。</p>
+</blockquote>
+<ul>
+<li>输出数据可以简单的从一个阶段传递到下一个阶段，也可以用不同的方式插入。</li>
+<li>客户端的代码接触不到这些内部变量我们的<code>OpenGL</code>开发暂时接触不到。</li>
+</ul>
+<h1 id="创建坐标系"><a href="#创建坐标系" class="headerlink" title="创建坐标系"></a>创建坐标系</h1><p><img src="17080112001807.jpg"></p>
+<ul>
+<li>这就是一个正投影的例子，在所在<code>3</code>个轴（<code>X</code>,<code>Y</code>,<code>Z</code>）中，它们的范围都是从<code>-100</code>到<code>+100</code>。这个视景体将包括所有的几何图形。</li>
+<li>如果你指定了视景体外的几何图形，就会被裁减掉！（它将沿着视景体的边界进行剪切）</li>
+<li>在正投影中，所有在这个空间范围内的所有东西都将被呈现在屏幕上。而不存在照相机或视点坐标系的概念。</li>
+</ul>
 <h3 id="透视投影"><a href="#透视投影" class="headerlink" title="透视投影"></a>透视投影</h3><ul>
 <li><code>setPerspective(float fFov,float fNear,float fFar)</code><br><img src="17080112962384.jpg"></li>
+<li>透视投影会进行透视除法对距离观察者很远的对象进行缩短和收缩。在投影到屏幕之后，视景体背面与视景体正面的宽度测量标准不同。</li>
+<li>上图所示：平截头体（<code>frustum</code>）的几何体，它的观察方向是从金字塔的尖端到宽阔端。观察者的视点与金字塔的尖端拉开一定距离。</li>
 </ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// GLFrustum类通过SetPerspective方法构建一个平载头体</span><br><span class="hljs-comment">// - fFov : 垂直方向上的市场角度</span><br><span class="hljs-comment">// - fAspect : 窗口的宽度与高度的纵横比</span><br><span class="hljs-comment">// - fNear : 近裁剪面距离</span><br><span class="hljs-comment">// - fFar : 远裁剪面距离</span><br>GLFrustum::<span class="hljs-built_in">SetPerspective</span>(<span class="hljs-keyword">float</span> fFov, <span class="hljs-keyword">float</span> fAspect, <span class="hljs-keyword">float</span> fNear, <span class="hljs-keyword">float</span> fFar)<br></code></pre></td></tr></table></figure>
+
 <h2 id="存储着色器器"><a href="#存储着色器器" class="headerlink" title="存储着色器器"></a>存储着色器器</h2><ul>
 <li><p>存储着⾊器分类</p>
 <ul>
@@ -359,8 +401,8 @@
   </entry>
   <entry>
     <title>http的升级改进</title>
-    <url>/2024/01/29/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="HTTP-1，1协议的不足"><a href="#HTTP-1，1协议的不足" class="headerlink" title="HTTP/1，1协议的不足"></a><code>HTTP/1，1</code>协议的不足</h1><ul>
+    <url>/2024/01/29/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/http_%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="HTTP-1-1协议的不足"><a href="#HTTP-1-1协议的不足" class="headerlink" title="HTTP/1.1协议的不足"></a><code>HTTP/1.1</code>协议的不足</h1><ul>
 <li><p>同一时间，一个连接只能对应一个请求</p>
 <ul>
 <li>针对同一个域名，大多数浏览器允许同时最多<code>6</code>个并发连接。(ios的<code>NSURLSession</code>最多可以建立<code>4</code>个<code>tcp</code>连接,<code>OSX</code>中最多<code>6</code>个)</li>
@@ -395,7 +437,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="http%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/1.jpg"></p>
+<p><img src="http_%E7%9A%84%E5%8D%87%E7%BA%A7%E6%94%B9%E8%BF%9B/1.jpg"></p>
 <h1 id="HTTP-2"><a href="#HTTP-2" class="headerlink" title="HTTP/2"></a><code>HTTP/2</code></h1><ul>
 <li><p><code>HTTP/2</code>，于<code>2015</code>年<code>5</code>月以<a href>RFC 7540</a>正式发表</p>
 <ul>
@@ -6827,7 +6869,7 @@
 </li>
 </ul>
 <h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><ul>
-<li>汇编代码,<code>test.s</code>,汇编中<code>;</code>使注解，等于<code>//</code><figure class="highlight as"><table><tr><td class="code"><pre><code class="hljs as">.text ;函数位置，在代码端<br>.global _test,_add ;使函数公有，外界可以访问<br>_test:<br>mov x0,#<span class="hljs-number">0x8</span>  ;将<span class="hljs-number">8</span>赋值给寄存器x0<br>ret   ;函数返回<br><br>;add函数的调用<br>_add:<br>add x0,x0,x1 ;x0 = x0 + x1<br>ret<br></code></pre></td></tr></table></figure></li>
+<li>汇编代码,<code>test.s</code>,汇编中<code>;</code>是注解，等于<code>//</code><figure class="highlight as"><table><tr><td class="code"><pre><code class="hljs as">.text ;函数位置，在代码端<br>.global _test,_add ;使函数公有，外界可以访问<br>_test:<br>mov x0,#<span class="hljs-number">0x8</span>  ;将<span class="hljs-number">8</span>赋值给寄存器x0<br>ret   ;函数返回<br><br>;add函数的调用<br>_add:<br>add x0,x0,x1 ;x0 = x0 + x1<br>ret<br></code></pre></td></tr></table></figure></li>
 <li>调用,汇编中的方法会多个<code>_</code><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">test();<br>add(<span class="hljs-number">2</span>,<span class="hljs-number">9</span>); <span class="hljs-comment">//输出11</span><br></code></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><h3 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h3><ul>
@@ -7256,7 +7298,7 @@
 <li><code>register write rax O</code></li>
 </ul>
 <h3 id="读取内存中的值"><a href="#读取内存中的值" class="headerlink" title="读取内存中的值"></a>读取内存中的值</h3><ul>
-<li>x/数量-格式-字节大小 内存地址</li>
+<li><code>x/数量-格式-字节大小 内存地址</code></li>
 <li><code>x/3xw 0x000010</code>,显示内存中的数据，<code>3</code>组数据，每组<code>4</code>个字节以<code>16</code>进制显示</li>
 <li>格式<ul>
 <li><code>x</code>是<code>16</code>进制，</li>
@@ -7468,7 +7510,7 @@
 <li>此外，<strong>注意</strong>，一般而言<code>extension</code>中定义的方法，子类是无法重写的，但是由于加了<code>@objc</code>为消息转发机制，和<code>OC</code>类中方法一样，可以在子类中<code>重写</code>(无论是在<code>类中</code>还是<code>extension</code>均可重写)，并且<code>重写</code>后的方法，同样是<code>消息派发机制</code></li>
 </ul>
 </li>
-<li>方法前加上<code>@objc dynamic</code>，<code>swift</code>和<code>OC</code>中调用，均为<code>消息派发</code></li>
+<li>在类中，方法前加上<code>@objc dynamic</code>，<code>swift</code>和<code>OC</code>中调用，均为<code>消息派发</code></li>
 </ul>
 </li>
 </ul>
@@ -7821,7 +7863,7 @@
 <li><p>加载插件,在Xcode项目中指定加载插件动态库:<code>BuildSettings</code> &gt; <code>OTHER_CFLAGS</code></p>
 <ul>
 <li><code>-Xclang -load -Xclang 动态库路径 -Xclang -add-plugin -Xclang 插件名称</code></li>
-<li>-Xclang -load -Xclang /Users/chenjingpo/Desktop/源码/LLVVM/llvm_xcode/Debug/lib/JBPlugin.dylib -Xclang -add-plugin -Xclang JBPlugin</li>
+<li><code>-Xclang -load -Xclang /Users/chenjingpo/Desktop/源码/LLVVM/llvm_xcode/Debug/lib/JBPlugin.dylib -Xclang -add-plugin -Xclang JBPlugin</code></li>
 <li></li>
 </ul>
 </li>
@@ -7938,8 +7980,8 @@
 </ul>
 <h1 id="dynamic"><a href="#dynamic" class="headerlink" title="dynamic"></a><code>dynamic</code></h1><ul>
 <li><code>@objc dynamic</code>修饰的内容会具有动态性，比如,在<code>swift</code>中调用方法会走<code>runtime</code>那一套流程<ul>
-<li>只通过<code>@objc</code>修饰的，在<code>OC</code>调用，是<code>objc_msg</code>,在<code>swift</code>中调用：如果不是<code>extension</code>中，则是<code>静态派发</code>，否则还是<code>虚表</code>的方式</li>
-<li>要让<code>swift</code>中类主题中的方法还是<code>objc_msg</code>，需要加上<code>dynamic</code></li>
+<li>只通过<code>@objc</code>修饰的，在<code>OC</code>调用，是<code>objc_msg</code>,在<code>swift</code>中调用：如果是<code>extension</code>中,则是<code>objc_msg</code>，否则还是<code>虚表</code>的方式。</li>
+<li>要让<code>swift</code>类中的方法，在<code>swift</code>中调用还是<code>objc_msg</code>，需要加上<code>dynamic</code></li>
 </ul>
 </li>
 </ul>
