@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-02-20T15:06:04.631Z</updated>
+  <updated>2024-02-25T09:56:47.267Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,57 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>OpenGL基础变化</title>
+    <link href="http://example.com/2024/02/23/OpenGL/OpenGL%E5%9F%BA%E7%A1%80%E5%8F%98%E5%8C%96/"/>
+    <id>http://example.com/2024/02/23/OpenGL/OpenGL%E5%9F%BA%E7%A1%80%E5%8F%98%E5%8C%96/</id>
+    <published>2024-02-23T09:41:07.000Z</published>
+    <updated>2024-02-25T09:56:47.267Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="OpenGL" scheme="http://example.com/categories/OpenGL/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>深度测试</title>
+    <link href="http://example.com/2024/02/21/OpenGL/%E6%B7%B1%E5%BA%A6%E6%B5%8B%E8%AF%95/"/>
+    <id>http://example.com/2024/02/21/OpenGL/%E6%B7%B1%E5%BA%A6%E6%B5%8B%E8%AF%95/</id>
+    <published>2024-02-21T14:47:37.000Z</published>
+    <updated>2024-02-25T09:38:29.612Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="OpenGL" scheme="http://example.com/categories/OpenGL/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>图元</title>
     <link href="http://example.com/2024/02/20/OpenGL/%E5%9B%BE%E5%85%83/"/>
     <id>http://example.com/2024/02/20/OpenGL/%E5%9B%BE%E5%85%83/</id>
     <published>2024-02-20T14:39:20.000Z</published>
-    <updated>2024-02-20T15:06:04.631Z</updated>
+    <updated>2024-02-21T14:46:29.239Z</updated>
     
     
       
@@ -413,52 +459,6 @@
     <id>http://example.com/2024/01/03/C++%E5%AD%A6%E4%B9%A0/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/</id>
     <published>2024-01-03T15:55:00.000Z</published>
     <updated>2024-01-04T16:22:16.254Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="C++学习" scheme="http://example.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>c++面向对像(2)</title>
-    <link href="http://example.com/2024/01/01/C++%E5%AD%A6%E4%B9%A0/c++%E9%9D%A2%E5%90%91%E5%AF%B9%E5%83%8F(2)/"/>
-    <id>http://example.com/2024/01/01/C++%E5%AD%A6%E4%B9%A0/c++%E9%9D%A2%E5%90%91%E5%AF%B9%E5%83%8F(2)/</id>
-    <published>2024-01-01T15:59:25.000Z</published>
-    <updated>2024-01-03T16:34:41.831Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="C++学习" scheme="http://example.com/categories/C-%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>拷贝构造函数</title>
-    <link href="http://example.com/2024/01/01/C++%E5%AD%A6%E4%B9%A0/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/"/>
-    <id>http://example.com/2024/01/01/C++%E5%AD%A6%E4%B9%A0/%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/</id>
-    <published>2024-01-01T06:11:55.000Z</published>
-    <updated>2024-01-22T09:48:00.785Z</updated>
     
     
       
