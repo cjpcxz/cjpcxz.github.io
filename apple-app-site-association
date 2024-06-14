@@ -1,0 +1,46 @@
+{
+    "applinks": {
+        "apps": [
+
+        ],
+        "details": [
+            {
+                "appID": "UBX9CH9GDX.com.insta360.one",
+                "paths": [
+                    "/one/*"
+                ]
+            },
+            {
+                "appID": "UBX9CH9GDX.com.insta360.Insta360Nano",
+                "paths": [
+                    "/nano/*"
+                ]
+            },
+            {
+                "appID": "UBX9CH9GDX.com.insta360.nanos",
+                "paths": [
+                    "/nanos/*"
+                ]
+            },
+            {
+                "appID": "UBX9CH9GDX.com.insta360.oner",
+                "paths": [
+                    "/oner/*",
+                    "/wxd4813b01cd522205",
+                    "/wxd4813b01cd522205/*"
+                ]
+            },
+            {
+                "appID": "UBX9CH9GDX.com.insta360.onex",
+                "paths": [
+                    "/onex/*"
+                ]
+            }
+        ]
+    },
+    "appclips": {
+        "apps": [
+            "UBX9CH9GDX.com.insta360.oner.Insta360Clip"
+        ]
+    }
+}
